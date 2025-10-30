@@ -7,10 +7,22 @@ const PLAYERS_COUNT = [2, 3, 4];
 export default function PlayersCount() {
   const playersCount = usePlayersStore((state) => state.playersCount);
   const setPlayersCount = usePlayersStore((state) => state.setPlayersCount);
+  const setPlayersNames = usePlayersStore((state) => state.setPlayersNames);
 
   const theme = useTheme();
 
   const handlePlayersCountChange = (count: number) => {
+    if (count === 2) {
+      setPlayersNames({
+        '2': '',
+        '3': '',
+      });
+    } else if (count === 3) {
+      setPlayersNames({
+        '3': '',
+      });
+    }
+
     setPlayersCount(count);
   };
 

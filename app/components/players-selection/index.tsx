@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import PlayersCount from './playersCount';
+import PlayersNames from './playersNames';
 
 export default function PlayersSelection() {
   return (
@@ -9,6 +10,7 @@ export default function PlayersSelection() {
 
       <View style={styles.form}>
         <PlayersCount />
+        <PlayersNames />
       </View>
     </>
   );
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   form: {
-    gap: 10,
+    gap: 20,
   },
   numberOfPlayersInput: {},
 });
