@@ -21,10 +21,20 @@ export const usePlayersStore = create<PlayersStore>((set) => ({
     '2': '',
     '3': '',
   },
+  isUpdated: false,
   setPlayersCount: (playersCount: number) => set(() => ({ playersCount })),
   setPlayersNames: (playersNames: Record<string, string>) =>
     set((state) => ({
       playersNames: { ...state.playersNames, ...playersNames },
     })),
-  reset: () => set(() => ({ playersCount: 2, playersNames: {} })),
+  reset: () =>
+    set(() => ({
+      playersCount: 2,
+      playersNames: {
+        '0': '',
+        '1': '',
+        '2': '',
+        '3': '',
+      },
+    })),
 }));
