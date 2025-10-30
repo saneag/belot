@@ -1,10 +1,10 @@
 import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import PlayersSelection from '../components/players-selection';
 
-export default function PlayersSelection() {
+export default function PlayersSelectionScreen() {
   return (
     <View style={styles.container}>
-      <Text>Players selection</Text>
+      <PlayersSelection />
     </View>
   );
 }
