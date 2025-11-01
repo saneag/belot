@@ -35,14 +35,11 @@ function App({ theme }: AppProps) {
 
 const styles = StyleSheet.create({
   safeAreaContainer: {
-    paddingStart: 10,
-    paddingEnd: 10,
     flex: 1,
   },
   keyboardAwareContainer: {
     flexGrow: 1,
     justifyContent: 'center',
-    padding: 20,
   },
 });
 
