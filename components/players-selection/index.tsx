@@ -10,6 +10,7 @@ import {
   validatePlayersNames,
 } from '../../helpers/playerNamesValidations';
 import { removeFromStorage, setToStorage } from '../../helpers/storageHelpers';
+import { useGameStore } from '../../store/game';
 import { PlayersNamesValidation } from '../../types/validations';
 import PlayersCount from './playersCount';
 import PlayersNames from './playersNames';
@@ -22,6 +23,7 @@ export default function PlayersSelection() {
     repeatingNames: [],
   });
 
+  const initGame = useGameStore((state) => state.initScore);
   const playersCount = usePlayersStore((state) => state.playersCount);
   const playersNames = usePlayersStore((state) => state.playersNames);
   const resetPlayersStore = usePlayersStore((state) => state.reset);
@@ -46,6 +48,7 @@ export default function PlayersSelection() {
 
     if (isPlayerNameValid(validation)) {
       await setToStorage(StorageKeys.playersNames, playersNames);
+      initGame(playersCount);
       router.navigate('/game-table');
     }
   };
