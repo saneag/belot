@@ -1,16 +1,22 @@
 import { usePlayersStore } from '@/store/players';
 import { useCallback, useMemo } from 'react';
-import { View } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Text, TextInput } from 'react-native-paper';
+import {
+  isPlayerNameValid,
+  isPlayersNamesEmpty,
+  isPlayersNamesRepeating,
+} from '../../helpers/playerNamesValidations';
+import { PlayersNamesValidation } from '../../types/validations';
 
 interface PlayersNamesProps {
-  isFormValid: boolean;
-  setIsFormValid: (isValid: boolean) => void;
+  validations: PlayersNamesValidation;
+  resetValidation: VoidFunction;
 }
 
 export default function PlayersNames({
-  isFormValid,
-  setIsFormValid,
+  validations,
+  resetValidation,
 }: PlayersNamesProps) {
   const playersCount = usePlayersStore((state) => state.playersCount);
   const playersNames = usePlayersStore((state) => state.playersNames);
@@ -26,35 +32,67 @@ export default function PlayersNames({
       setPlayersNames({
         [index]: value,
       });
-      setIsFormValid(true);
+
+      resetValidation();
     },
-    [setIsFormValid, setPlayersNames]
+    [resetValidation, setPlayersNames]
   );
 
   return (
     <View style={{ gap: 15 }}>
-      {players.map((_, index) => (
-        <TextInput
-          key={index}
-          mode='outlined'
-          label={`Player ${index + 1}`}
-          value={playersNames[index]}
-          onChangeText={(value) => handlePlayersNamesChange(value, index)}
-          style={{ borderRadius: 12, maxHeight: 60 }}
-          error={!isFormValid && !playersNames[index].trim()}
-          theme={{
-            roundness: 12,
-          }}
-          right={
-            playersNames[index] && (
-              <TextInput.Icon
-                icon='close'
-                onPress={() => handlePlayersNamesChange('', index)}
+      {players.map((_, index) => {
+        const isInvalid = !isPlayerNameValid(validations, index);
+        const isNameEmpty =
+          isInvalid && isPlayersNamesEmpty(validations, index);
+        const isRepeatingName =
+          isInvalid && isPlayersNamesRepeating(validations, index);
+
+        return (
+          <View key={index}>
+            <View style={{ gap: 5 }}>
+              <TextInput
+                mode='outlined'
+                label={`Player ${index + 1}`}
+                value={playersNames[index]}
+                onChangeText={(value) => handlePlayersNamesChange(value, index)}
+                style={{ borderRadius: 12, maxHeight: 60 }}
+                error={isInvalid}
+                theme={{
+                  roundness: 12,
+                }}
+                right={
+                  playersNames[index] && (
+                    <TextInput.Icon
+                      icon='close'
+                      onPress={() => handlePlayersNamesChange('', index)}
+                    />
+                  )
+                }
               />
-            )
-          }
-        />
-      ))}
+              {isNameEmpty && (
+                <Text
+                  variant='bodySmall'
+                  style={style.error}>
+                  Please enter a name
+                </Text>
+              )}
+              {isRepeatingName && (
+                <Text
+                  variant='bodySmall'
+                  style={style.error}>
+                  You have already a similar name
+                </Text>
+              )}
+            </View>
+          </View>
+        );
+      })}
     </View>
   );
 }
+
+const style = StyleSheet.create({
+  error: {
+    paddingStart: 5,
+  },
+});

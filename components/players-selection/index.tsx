@@ -5,36 +5,46 @@ import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import {
+  isPlayerNameValid,
+  validatePlayersNames,
+} from '../../helpers/playerNamesValidations';
 import { removeFromStorage, setToStorage } from '../../helpers/storageHelpers';
+import { PlayersNamesValidation } from '../../types/validations';
 import PlayersCount from './playersCount';
 import PlayersNames from './playersNames';
 
 export default function PlayersSelection() {
   const router = useRouter();
 
-  const [isFormValid, setIsFormValid] = useState(true);
+  const [validations, setValidations] = useState<PlayersNamesValidation>({
+    emptyNames: [],
+    repeatingNames: [],
+  });
 
   const playersCount = usePlayersStore((state) => state.playersCount);
   const playersNames = usePlayersStore((state) => state.playersNames);
   const resetPlayersStore = usePlayersStore((state) => state.reset);
 
+  const resetValidation = useCallback(() => {
+    setValidations({
+      emptyNames: [],
+      repeatingNames: [],
+    });
+  }, []);
+
   const handleReset = useCallback(async () => {
     resetPlayersStore();
+    resetValidation();
     await removeFromStorage(StorageKeys.playersNames);
-  }, [resetPlayersStore]);
-
-  const validatePlayersNames = useCallback(() => {
-    return Object.entries(playersNames)
-      .filter(([key]) => Number(key) < playersCount)
-      .every(([_, value]) => value.trim());
-  }, [playersCount, playersNames]);
+  }, [resetPlayersStore, resetValidation]);
 
   const handleSubmit = async () => {
-    const isValid = validatePlayersNames();
+    const validation = validatePlayersNames(playersNames, playersCount);
 
-    setIsFormValid(isValid);
+    setValidations(validation);
 
-    if (isValid) {
+    if (isPlayerNameValid(validation)) {
       await setToStorage(StorageKeys.playersNames, playersNames);
       router.navigate('/game-table');
     }
@@ -49,8 +59,8 @@ export default function PlayersSelection() {
       <View style={styles.form}>
         <PlayersCount />
         <PlayersNames
-          isFormValid={isFormValid}
-          setIsFormValid={setIsFormValid}
+          validations={validations}
+          resetValidation={resetValidation}
         />
 
         <View style={styles.buttonsGroup}>

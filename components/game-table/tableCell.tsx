@@ -12,7 +12,7 @@ export default function TableCell({ index, children }: TableCellProps) {
     <View
       style={[
         styles.playerNameContainer,
-        index % 2 === 0 ? { borderRightWidth: 1 } : {},
+        index !== 0 ? { borderLeftWidth: 1 } : {},
       ]}>
       {typeof children === 'string' ? (
         <Text
