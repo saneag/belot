@@ -1,7 +1,7 @@
+import { usePlayersStore } from '@/store/players';
 import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { usePlayersStore } from '../../store/players';
 
 export default function PlayersNames() {
   const playersCount = usePlayersStore((state) => state.playersCount);

@@ -1,9 +1,9 @@
+import { storeKeys } from '@/constants/storeKeys';
+import { useLoadPlayersNames } from '@/hooks/useLoadPlayersNames';
+import { usePlayersStore } from '@/store/players';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import { storeKeys } from '../../constants/storeKeys';
-import { useLoadPlayersNames } from '../../hooks/useLoadPlayersNames';
-import { usePlayersStore } from '../../store/players';
 import PlayersCount from './playersCount';
 import PlayersNames from './playersNames';
 

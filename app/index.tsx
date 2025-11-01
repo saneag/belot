@@ -1,8 +1,8 @@
+import Navigation from '@/components/navigation';
 import { Keyboard, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MD3LightTheme, withTheme } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Navigation from './components/navigation';
 
 interface AppProps {
   theme: typeof MD3LightTheme;

@@ -1,6 +1,6 @@
+import { routes } from '@/constants/routes';
 import { createStackNavigator } from '@react-navigation/stack';
-import { routes } from '../constants/routes';
-import PlayersSelectionScreen from '../screens/players-selection';
+import PlayersSelectionScreen from '../app/players-selection';
 
 const Stack = createStackNavigator();
 

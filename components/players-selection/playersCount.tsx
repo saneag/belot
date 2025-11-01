@@ -1,6 +1,6 @@
+import { usePlayersStore } from '@/store/players';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { usePlayersStore } from '../../store/players';
 
 const PLAYERS_COUNT = [2, 3, 4];
 
