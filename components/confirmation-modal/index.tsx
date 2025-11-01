@@ -38,8 +38,7 @@ export default function ConfirmationModal({
       <Portal>
         <Dialog
           visible={isVisible}
-          onDismiss={hideDialog}
-          style={style.container}>
+          onDismiss={hideDialog}>
           <Dialog.Title>
             {typeof title === 'string' ? <Text>{title}</Text> : title}
           </Dialog.Title>
@@ -68,9 +67,6 @@ export default function ConfirmationModal({
 }
 
 const style = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-  },
   button: {
     paddingHorizontal: 10,
   },
