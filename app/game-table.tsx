@@ -1,9 +1,10 @@
 import { useRouter } from 'expo-router';
-import { useCallback, useEffect } from 'react';
-import { BackHandler, StyleSheet, View } from 'react-native';
+import { useCallback } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Divider, IconButton } from 'react-native-paper';
 import ConfirmationModal from '../components/confirmation-modal';
 import GameTable from '../components/game-table';
+import { usePreventBackPress } from '../hooks/usePreventBackPress';
 import { useGameStore } from '../store/game';
 
 export default function GameTableScreen() {
@@ -11,16 +12,7 @@ export default function GameTableScreen() {
 
   const resetGame = useGameStore((state) => state.reset);
 
-  useEffect(() => {
-    const onBackPress = () => true;
-
-    const subscription = BackHandler.addEventListener(
-      'hardwareBackPress',
-      onBackPress
-    );
-
-    return () => subscription.remove();
-  }, []);
+  usePreventBackPress();
 
   const handleReset = useCallback(() => {
     router.navigate('/players-selection');
