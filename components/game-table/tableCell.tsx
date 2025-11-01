@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 
 interface TableCellProps {
   index: number;
@@ -8,11 +8,15 @@ interface TableCellProps {
 }
 
 export default function TableCell({ index, children }: TableCellProps) {
+  const theme = useTheme();
+
   return (
     <View
       style={[
         styles.playerNameContainer,
-        index !== 0 ? { borderLeftWidth: 1 } : {},
+        index !== 0
+          ? { borderLeftWidth: 1, borderColor: theme.colors.primary }
+          : {},
       ]}>
       {typeof children === 'string' ? (
         <Text

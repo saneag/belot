@@ -1,14 +1,20 @@
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import NewRow from './newRow';
 import TableBody from './table-body';
 import TableHeader from './tableHeader';
 
 export default function GameTable() {
   const { height } = useWindowDimensions();
+  const theme = useTheme();
 
   return (
     <View style={styles.container}>
-      <View style={[styles.tableContainer, { maxHeight: height - 170 }]}>
+      <View
+        style={[
+          styles.tableContainer,
+          { maxHeight: height - 170, borderColor: theme.colors.primary },
+        ]}>
         <TableHeader />
         <TableBody />
       </View>
@@ -26,7 +32,6 @@ const styles = StyleSheet.create({
   },
   tableContainer: {
     borderWidth: 1,
-    borderColor: '#000',
     borderRadius: 8,
     overflow: 'hidden',
   },
