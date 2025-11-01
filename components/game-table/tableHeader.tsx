@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
 import { usePlayersStore } from '../../store/players';
+import TableCell from './tableCell';
+import TableRow from './tableRow';
 
 export default function TableHeader() {
   const playersNames = usePlayersStore((state) => state.playersNames);
@@ -12,31 +12,14 @@ export default function TableHeader() {
   );
 
   return (
-    <View style={styles.container}>
+    <TableRow>
       {filteredPlayerNames.map((playerName, index) => (
-        <View
+        <TableCell
           key={index}
-          style={[
-            styles.playerNameContainer,
-            index % 2 === 0 ? { borderRightWidth: 1 } : {},
-          ]}>
-          <Text style={styles.playerNameText}>{playerName}</Text>
-        </View>
+          index={index}>
+          {playerName}
+        </TableCell>
       ))}
-    </View>
+    </TableRow>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-  playerNameContainer: {
-    flex: 1,
-  },
-  playerNameText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
