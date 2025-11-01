@@ -1,5 +1,5 @@
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
-import TableBody from './tableBody';
+import TableBody from './table-body';
 import TableHeader from './tableHeader';
 
 export default function GameTable() {
