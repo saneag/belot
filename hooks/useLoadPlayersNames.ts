@@ -1,20 +1,20 @@
-import { storeKeys } from '@/constants/storeKeys';
+import { StorageKeys } from '@/constants/storageKeys';
 import { usePlayersStore } from '@/store/players';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect } from 'react';
+import { convertToObject, getFromStorage } from '../helpers/storageHelpers';
 
 export const useLoadPlayersNames = () => {
   const setPlayersNames = usePlayersStore((state) => state.setPlayersNames);
 
   const loadPlayersNamesFromStore = useCallback(async () => {
     try {
-      const playersNames = await AsyncStorage.getItem(storeKeys.playersNames);
+      const playersNames = await getFromStorage(StorageKeys.playersNames);
 
       if (!playersNames) {
         return;
       }
 
-      setPlayersNames(JSON.parse(playersNames));
+      setPlayersNames(convertToObject(playersNames));
     } catch (error) {
       console.error('Error in useLoadPlayersNames', error);
     }

@@ -1,9 +1,9 @@
-import { storeKeys } from '@/constants/storeKeys';
+import { StorageKeys } from '@/constants/storageKeys';
 import { useLoadPlayersNames } from '@/hooks/useLoadPlayersNames';
 import { usePlayersStore } from '@/store/players';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import { removeFromStorage, setToStorage } from '../../helpers/storageHelpers';
 import PlayersCount from './playersCount';
 import PlayersNames from './playersNames';
 
@@ -13,14 +13,11 @@ export default function PlayersSelection() {
 
   const handleReset = async () => {
     resetPlayersStore();
-    await AsyncStorage.removeItem(storeKeys.playersNames);
+    await removeFromStorage(StorageKeys.playersNames);
   };
 
   const handleSubmit = async () => {
-    await AsyncStorage.setItem(
-      storeKeys.playersNames,
-      JSON.stringify(playersNames)
-    );
+    await setToStorage(StorageKeys.playersNames, playersNames);
   };
 
   useLoadPlayersNames();
