@@ -3,7 +3,15 @@ import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-export default function PlayersNames() {
+interface PlayersNamesProps {
+  isFormValid: boolean;
+  setIsFormValid: (isValid: boolean) => void;
+}
+
+export default function PlayersNames({
+  isFormValid,
+  setIsFormValid,
+}: PlayersNamesProps) {
   const playersCount = usePlayersStore((state) => state.playersCount);
   const playersNames = usePlayersStore((state) => state.playersNames);
   const setPlayersNames = usePlayersStore((state) => state.setPlayersNames);
@@ -18,8 +26,9 @@ export default function PlayersNames() {
       setPlayersNames({
         [index]: value,
       });
+      setIsFormValid(true);
     },
-    [setPlayersNames]
+    [setIsFormValid, setPlayersNames]
   );
 
   return (
@@ -32,6 +41,7 @@ export default function PlayersNames() {
           value={playersNames[index]}
           onChangeText={(value) => handlePlayersNamesChange(value, index)}
           style={{ borderRadius: 12, maxHeight: 60 }}
+          error={!isFormValid && !playersNames[index].trim()}
           theme={{
             roundness: 12,
           }}
