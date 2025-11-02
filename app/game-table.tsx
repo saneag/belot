@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Divider, IconButton } from 'react-native-paper';
 import ConfirmationModal from '../components/confirmation-modal';
 import GameTable from '../components/game-table';
+import TimeTracker from '../components/time-tracker';
 import { usePreventBackPress } from '../hooks/usePreventBackPress';
 import { useGameStore } from '../store/game';
 
@@ -33,8 +34,12 @@ export default function GameTableScreen() {
           )}
           confirmationCallback={handleReset}
         />
-        <Divider bold />
+        <TimeTracker />
       </View>
+      <Divider
+        bold
+        style={style.divider}
+      />
       <GameTable />
     </View>
   );
@@ -46,6 +51,12 @@ const style = StyleSheet.create({
     alignContent: 'space-between',
   },
   headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingEnd: 10,
+  },
+  divider: {
     marginBottom: 10,
   },
 });
