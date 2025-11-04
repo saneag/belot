@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useGameStore } from '../../store/game';
 import { usePlayersStore } from '../../store/players';
@@ -14,12 +13,10 @@ export default function NewRow() {
   }, [playersCount, setNextScore]);
 
   return (
-    <View>
-      <Button
-        mode='contained'
-        onPress={handleAddEmptyRow}>
-        Next round
-      </Button>
-    </View>
+    <Button
+      mode='contained'
+      onPress={handleAddEmptyRow}>
+      Next round
+    </Button>
   );
 }

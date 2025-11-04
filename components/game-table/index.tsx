@@ -1,6 +1,6 @@
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import NewRow from './newRow';
+import NewRow from './newRowButton';
 import TableBody from './table-body';
 import TableHeader from './tableHeader';
 
