@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { useGameStore } from '../../../store/game';
-import TableRows from './tableRows';
+import TableScoreRows from './tableScoreRows';
 
 export default function TableBody() {
   const score = useGameStore((state) => state.score);
@@ -13,7 +13,7 @@ export default function TableBody() {
 
   return (
     <ScrollView ref={scrollViewRef}>
-      <TableRows />
+      <TableScoreRows />
     </ScrollView>
   );
 }

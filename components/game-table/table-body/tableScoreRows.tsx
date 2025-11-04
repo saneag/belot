@@ -2,7 +2,7 @@ import { useGameStore } from '../../../store/game';
 import TableCell from '../tableCell';
 import TableRow from '../tableRow';
 
-export default function TableRows() {
+export default function TableScoreRows() {
   const score = useGameStore((state) => state.score);
 
   return (
