@@ -7,18 +7,21 @@ import GameTable from '../components/game-table';
 import TimeTracker from '../components/time-tracker';
 import { usePreventBackPress } from '../hooks/usePreventBackPress';
 import { useGameStore } from '../store/game';
+import { usePlayersStore } from '../store/players';
 
 export default function GameTableScreen() {
   const router = useRouter();
 
+  const resetPlayers = usePlayersStore((state) => state.reset);
   const resetGame = useGameStore((state) => state.reset);
 
   usePreventBackPress();
 
   const handleReset = useCallback(() => {
     router.navigate('/players-selection');
+    resetPlayers();
     resetGame();
-  }, [resetGame, router]);
+  }, [resetGame, resetPlayers, router]);
 
   return (
     <View style={style.container}>

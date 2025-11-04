@@ -1,8 +1,9 @@
-import { useLoadPlayersNames } from '@/hooks/useLoadPlayersNames';
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useLoadPreviousGame } from '../../hooks/useLoadPreviousGame';
 import { PlayersNamesValidation } from '../../types/validations';
+import LoadPreviousGameButton from './loadPreviousGameButton';
 import PlayersCount from './playersCount';
 import PlayersNames from './playersNames';
 import ResetButton from './resetButton';
@@ -21,7 +22,7 @@ export default function PlayersSelection() {
     });
   }, []);
 
-  useLoadPlayersNames();
+  useLoadPreviousGame();
 
   return (
     <>
@@ -35,8 +36,11 @@ export default function PlayersSelection() {
         />
 
         <View style={styles.buttonsGroup}>
-          <ResetButton resetValidation={resetValidation} />
-          <SubmitButton setValidations={setValidations} />
+          <View style={styles.submitButtons}>
+            <ResetButton resetValidation={resetValidation} />
+            <SubmitButton setValidations={setValidations} />
+          </View>
+          <LoadPreviousGameButton />
         </View>
       </View>
     </>
@@ -57,6 +61,9 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   buttonsGroup: {
+    gap: 20,
+  },
+  submitButtons: {
     justifyContent: 'space-between',
     flexDirection: 'row',
   },

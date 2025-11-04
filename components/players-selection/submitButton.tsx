@@ -28,7 +28,9 @@ export default function SubmitButton({ setValidations }: SubmitButtonProps) {
     setValidations(validation);
 
     if (isPlayerNameValid(validation)) {
+      await setToStorage(StorageKeys.playersCount, playersCount);
       await setToStorage(StorageKeys.playersNames, playersNames);
+      await setToStorage(StorageKeys.hasPreviousGame, true);
       initGame(playersCount);
       router.navigate('/game-table');
     }
