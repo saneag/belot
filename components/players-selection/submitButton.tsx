@@ -6,7 +6,7 @@ import {
   isPlayerNameValid,
   validatePlayersNames,
 } from '../../helpers/playerNamesValidations';
-import { setToStorage } from '../../helpers/storageHelpers';
+import { setMultipleItemsToStorage } from '../../helpers/storageHelpers';
 import { useGameStore } from '../../store/game';
 import { usePlayersStore } from '../../store/players';
 import { PlayersNamesValidation } from '../../types/validations';
@@ -28,9 +28,11 @@ export default function SubmitButton({ setValidations }: SubmitButtonProps) {
     setValidations(validation);
 
     if (isPlayerNameValid(validation)) {
-      await setToStorage(StorageKeys.playersCount, playersCount);
-      await setToStorage(StorageKeys.playersNames, playersNames);
-      await setToStorage(StorageKeys.hasPreviousGame, true);
+      await setMultipleItemsToStorage({
+        [StorageKeys.playersCount]: playersCount,
+        [StorageKeys.playersNames]: playersNames,
+        [StorageKeys.hasPreviousGame]: true,
+      });
       initGame(playersCount);
       router.navigate('/game-table');
     }

@@ -8,6 +8,16 @@ export const setToStorage = async <T>(
   await AsyncStorage.setItem(key, JSON.stringify(value));
 };
 
+export const setMultipleItemsToStorage = async (
+  items: Record<string, number | string | boolean | Record<string, string>>
+): Promise<void> => {
+  const arrayItems: [string, string][] = Object.entries(items).map(
+    ([key, value]) => [key, JSON.stringify(value)]
+  );
+
+  await AsyncStorage.multiSet(arrayItems);
+};
+
 export const getFromStorage = async (
   key: StorageKeys
 ): Promise<string | null> => {
