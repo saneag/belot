@@ -1,19 +1,24 @@
 import { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
 interface TableCellProps {
   index: number;
   children: ReactNode;
+  style?: StyleProp<TextStyle>;
 }
 
-export default function TableCell({ index, children }: TableCellProps) {
+export default function TableCell({
+  index,
+  children,
+  style = {},
+}: TableCellProps) {
   const theme = useTheme();
 
   return (
     <View
       style={[
-        styles.playerNameContainer,
+        baseStyle.playerNameContainer,
         index !== 0
           ? { borderLeftWidth: 1, borderColor: theme.colors.primary }
           : {},
@@ -21,7 +26,7 @@ export default function TableCell({ index, children }: TableCellProps) {
       {typeof children === 'string' ? (
         <Text
           variant='headlineMedium'
-          style={styles.playerNameText}>
+          style={[baseStyle.playerNameText, style]}>
           {children}
         </Text>
       ) : (
@@ -31,12 +36,11 @@ export default function TableCell({ index, children }: TableCellProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const baseStyle = StyleSheet.create({
   playerNameContainer: {
     flex: 1,
   },
   playerNameText: {
-    fontWeight: 'bold',
     textAlign: 'center',
   },
 });

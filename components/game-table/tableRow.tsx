@@ -1,22 +1,25 @@
 import { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 interface TableRowProps {
   showTopBorder?: boolean;
   children: ReactNode;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function TableRow({
   children,
   showTopBorder = false,
+  style = {},
 }: TableRowProps) {
   const theme = useTheme();
 
   return (
     <View
       style={[
-        style.container,
+        baseStyle.container,
+        style,
         showTopBorder && {
           borderTopWidth: 1,
           borderColor: theme.colors.primary,
@@ -27,7 +30,7 @@ export default function TableRow({
   );
 }
 
-const style = StyleSheet.create({
+const baseStyle = StyleSheet.create({
   container: {
     flexDirection: 'row',
   },
