@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useGameStore } from '../../../store/game';
 import TableRows from './tableRows';
 
@@ -12,14 +12,8 @@ export default function TableBody() {
   }, [score]);
 
   return (
-    <ScrollView
-      ref={scrollViewRef}
-      style={style.container}>
+    <ScrollView ref={scrollViewRef}>
       <TableRows />
     </ScrollView>
   );
 }
-
-const style = StyleSheet.create({
-  container: {},
-});
