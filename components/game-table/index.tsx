@@ -9,10 +9,10 @@ export default function GameTable() {
   const theme = useTheme();
 
   return (
-    <View style={styles.container}>
+    <View style={style.container}>
       <View
         style={[
-          styles.tableContainer,
+          style.tableContainer,
           { maxHeight: height - 170, borderColor: theme.colors.primary },
         ]}>
         <TableHeader />
@@ -23,7 +23,7 @@ export default function GameTable() {
   );
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,

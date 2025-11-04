@@ -13,13 +13,13 @@ function App({ theme }: AppProps) {
     <SafeAreaProvider>
       <SafeAreaView
         style={[
-          styles.safeAreaContainer,
+          style.safeAreaContainer,
           {
             backgroundColor: theme.colors.background,
           },
         ]}>
         <KeyboardAwareScrollView
-          contentContainerStyle={styles.keyboardAwareContainer}
+          contentContainerStyle={style.keyboardAwareContainer}
           enableOnAndroid
           keyboardShouldPersistTaps='handled'>
           <TouchableWithoutFeedback
@@ -33,7 +33,7 @@ function App({ theme }: AppProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   safeAreaContainer: {
     flex: 1,
   },

@@ -26,17 +26,17 @@ export default function PlayersSelection() {
 
   return (
     <>
-      <Text style={styles.header}>Setup</Text>
+      <Text style={style.header}>Setup</Text>
 
-      <View style={styles.form}>
+      <View style={style.form}>
         <PlayersCount />
         <PlayersNames
           validations={validations}
           resetValidation={resetValidation}
         />
 
-        <View style={styles.buttonsGroup}>
-          <View style={styles.submitButtons}>
+        <View style={style.buttonsGroup}>
+          <View style={style.submitButtons}>
             <ResetButton resetValidation={resetValidation} />
             <SubmitButton setValidations={setValidations} />
           </View>
@@ -47,7 +47,7 @@ export default function PlayersSelection() {
   );
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',

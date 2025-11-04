@@ -27,9 +27,9 @@ export default function PlayersCount() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Number of players</Text>
-      <View style={styles.playersCountContainer}>
+    <View style={style.container}>
+      <Text style={style.label}>Number of players</Text>
+      <View style={style.playersCountContainer}>
         {PLAYERS_COUNT.map((count) => (
           <Button
             key={count}
@@ -48,7 +48,7 @@ export default function PlayersCount() {
   );
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     gap: 10,
   },

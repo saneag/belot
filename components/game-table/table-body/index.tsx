@@ -14,12 +14,12 @@ export default function TableBody() {
   return (
     <ScrollView
       ref={scrollViewRef}
-      style={styles.container}>
+      style={style.container}>
       <TableRows />
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {},
 });

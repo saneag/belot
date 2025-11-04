@@ -3,13 +3,13 @@ import PlayersSelection from '../components/players-selection';
 
 export default function PlayersSelectionScreen() {
   return (
-    <View style={styles.container}>
+    <View style={style.container}>
       <PlayersSelection />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
