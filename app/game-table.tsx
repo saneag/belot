@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Divider, IconButton } from 'react-native-paper';
-import ConfirmationModal from '../components/confirmation-modal';
+import ConfirmationDialog from '../components/confirmation-dialog';
 import GameTable from '../components/game-table';
 import TimeTracker from '../components/time-tracker';
 import { usePreventBackPress } from '../hooks/usePreventBackPress';
@@ -26,10 +26,10 @@ export default function GameTableScreen() {
   return (
     <View style={style.container}>
       <View style={style.headerContainer}>
-        <ConfirmationModal
+        <ConfirmationDialog
           title='Game reset'
           content='Are you sure you want to reset the game?'
-          render={(showModal) => (
+          renderShowDialog={(showModal) => (
             <IconButton
               icon='arrow-left'
               onPress={showModal}

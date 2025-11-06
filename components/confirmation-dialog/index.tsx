@@ -5,15 +5,15 @@ import { Button, Dialog, Portal, Text } from 'react-native-paper';
 interface ConfirmationModalProps {
   title: ReactNode;
   content: ReactNode;
-  render: (showModal: VoidFunction) => ReactNode;
+  renderShowDialog: (showDialog: VoidFunction) => ReactNode;
   confirmationCallback: VoidFunction;
   cancelCallback?: VoidFunction;
 }
 
-export default function ConfirmationModal({
+export default function ConfirmationDialog({
   title,
   content,
-  render,
+  renderShowDialog,
   confirmationCallback,
   cancelCallback,
 }: ConfirmationModalProps) {
@@ -35,6 +35,7 @@ export default function ConfirmationModal({
 
   return (
     <View>
+      {renderShowDialog(showDialog)}
       <Portal>
         <Dialog
           visible={isVisible}
@@ -61,7 +62,6 @@ export default function ConfirmationModal({
           </Dialog.Actions>
         </Dialog>
       </Portal>
-      {render(showDialog)}
     </View>
   );
 }
