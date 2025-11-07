@@ -2,9 +2,13 @@ import { usePlayersStore } from '@/store/players';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 
+interface PlayersCountProps {
+  resetValidations: VoidFunction;
+}
+
 const PLAYERS_COUNT = [2, 3, 4];
 
-export default function PlayersCount() {
+export default function PlayersCount({ resetValidations }: PlayersCountProps) {
   const playersCount = usePlayersStore((state) => state.playersCount);
   const setPlayersCount = usePlayersStore((state) => state.setPlayersCount);
   const setPlayersNames = usePlayersStore((state) => state.setPlayersNames);
@@ -24,6 +28,7 @@ export default function PlayersCount() {
     }
 
     setPlayersCount(count);
+    resetValidations();
   };
 
   return (

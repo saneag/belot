@@ -29,7 +29,7 @@ export default function PlayersSelection() {
       <Text style={style.header}>Setup</Text>
 
       <View style={style.form}>
-        <PlayersCount />
+        <PlayersCount resetValidations={resetValidation} />
         <PlayersNames
           validations={validations}
           resetValidation={resetValidation}
