@@ -1,17 +1,20 @@
 import { ReactNode } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
+import { VariantProp } from 'react-native-paper/lib/typescript/components/Typography/types';
 
 interface TableCellProps {
   index: number;
   children: ReactNode;
   style?: StyleProp<TextStyle>;
+  textVariant?: VariantProp<TextStyle>;
 }
 
 export default function TableCell({
   index,
   children,
   style = {},
+  textVariant = 'headlineSmall',
 }: TableCellProps) {
   const theme = useTheme();
 
@@ -25,7 +28,7 @@ export default function TableCell({
       ]}>
       {typeof children === 'string' ? (
         <Text
-          variant='headlineMedium'
+          variant={textVariant}
           style={[baseStyle.playerNameText, style]}>
           {children}
         </Text>
