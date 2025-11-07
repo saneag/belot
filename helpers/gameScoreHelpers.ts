@@ -13,12 +13,7 @@ export const prepareEmptyScoreRow = (
     return acc;
   }, {});
 
-  const roundPointsWithoutMicroPoints = String(DEFAULT_ROUND_POINTS).slice(
-    0,
-    2
-  );
-
-  rawScore[ROUND_POINTS_INDEX] = String(roundPointsWithoutMicroPoints);
+  rawScore[ROUND_POINTS_INDEX] = String(DEFAULT_ROUND_POINTS);
 
   return {
     [rowIndex.toString()]: rawScore,
