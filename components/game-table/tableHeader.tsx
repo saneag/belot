@@ -14,9 +14,14 @@ export default function TableHeader() {
     [playersNames]
   );
 
+  const playerNamesWithScoreColumn = useMemo(
+    () => [...filteredPlayerNames, 'Score'],
+    [filteredPlayerNames]
+  );
+
   return (
     <TableRow style={{ backgroundColor: theme.colors.backdrop }}>
-      {filteredPlayerNames.map((playerName, index) => (
+      {playerNamesWithScoreColumn.map((playerName, index) => (
         <TableCell
           key={index}
           index={index}
