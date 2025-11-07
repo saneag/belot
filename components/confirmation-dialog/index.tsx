@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Dialog, Portal, Text } from 'react-native-paper';
+import { Button, ButtonProps, Dialog, Portal, Text } from 'react-native-paper';
 
 interface ConfirmationModalProps {
   title: ReactNode;
@@ -8,6 +8,7 @@ interface ConfirmationModalProps {
   renderShowDialog: (showDialog: VoidFunction) => ReactNode;
   confirmationCallback: VoidFunction;
   cancelCallback?: VoidFunction;
+  primaryButton?: 'confirm' | 'cancel';
 }
 
 export default function ConfirmationDialog({
@@ -16,6 +17,7 @@ export default function ConfirmationDialog({
   renderShowDialog,
   confirmationCallback,
   cancelCallback,
+  primaryButton = 'cancel',
 }: ConfirmationModalProps) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -33,6 +35,17 @@ export default function ConfirmationDialog({
     hideDialog();
   }, [cancelCallback, hideDialog]);
 
+  const buttonMode: Record<string, ButtonProps['mode']> =
+    primaryButton === 'confirm'
+      ? {
+          confirm: 'contained',
+          cancel: 'outlined',
+        }
+      : {
+          confirm: 'outlined',
+          cancel: 'contained',
+        };
+
   return (
     <View>
       {renderShowDialog(showDialog)}
@@ -48,13 +61,13 @@ export default function ConfirmationDialog({
           </Dialog.Content>
           <Dialog.Actions>
             <Button
-              mode='outlined'
+              mode={buttonMode.confirm}
               onPress={handleDialogConfirmation}
               style={style.button}>
               Confirm
             </Button>
             <Button
-              mode='contained'
+              mode={buttonMode.cancel}
               onPress={handleDialogCancel}
               style={style.button}>
               Cancel
