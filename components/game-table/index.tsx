@@ -29,6 +29,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 10,
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
   tableContainer: {
     borderWidth: 1,
