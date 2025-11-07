@@ -1,0 +1,35 @@
+import { DimensionValue } from 'react-native';
+import { TABLE_HEIGHT, TABLE_WIDTH } from '../constants/gameConstants';
+
+export const getTopPosition = (
+  index: number,
+  playersCount: number
+): DimensionValue => {
+  const topPosition = -20;
+  const bottomPosition = TABLE_HEIGHT - 50;
+  const middlePosition = bottomPosition / 2 - 10;
+
+  const layouts: Record<number, number[]> = {
+    2: [topPosition, bottomPosition],
+    3: [topPosition, middlePosition, bottomPosition],
+    4: [topPosition, middlePosition, bottomPosition, middlePosition],
+  };
+
+  return layouts[playersCount]?.[index] ?? 'auto';
+};
+
+export const getRightPosition = (
+  index: number,
+  playersCount: number
+): DimensionValue => {
+  const defaultRightShift = 5;
+  const middlePosition = TABLE_WIDTH / 2;
+
+  const layouts: Record<number, number[]> = {
+    2: [defaultRightShift, defaultRightShift],
+    3: [defaultRightShift, -middlePosition, defaultRightShift],
+    4: [defaultRightShift, -middlePosition, defaultRightShift, middlePosition],
+  };
+
+  return layouts[playersCount]?.[index] ?? 'auto';
+};

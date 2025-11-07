@@ -1,8 +1,13 @@
 import { usePlayersStore } from '@/store/players';
 import { useMemo } from 'react';
 import { View } from 'react-native';
+import {
+  getRightPosition,
+  getTopPosition,
+} from '../../helpers/playerNamesHelpers';
 import { PlayersNamesValidation } from '../../types/validations';
 import PlayersNamesInput from './playersNamesInput';
+import PlayersTable from './playersTable';
 
 export interface PlayersNamesProps {
   validations: PlayersNamesValidation;
@@ -21,10 +26,16 @@ export default function PlayersNames({
   );
 
   return (
-    <View style={{ gap: 10 }}>
+    <PlayersTable>
       {players.map((_, index) => {
         return (
-          <View key={index}>
+          <View
+            key={index}
+            style={{
+              position: 'absolute',
+              top: getTopPosition(index, playersCount),
+              right: getRightPosition(index, playersCount),
+            }}>
             <PlayersNamesInput
               validations={validations}
               resetValidation={resetValidation}
@@ -33,6 +44,6 @@ export default function PlayersNames({
           </View>
         );
       })}
-    </View>
+    </PlayersTable>
   );
 }

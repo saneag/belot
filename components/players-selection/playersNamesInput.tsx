@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { View } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { isPlayerNameValid } from '../../helpers/playerNamesValidations';
 import { usePlayersStore } from '../../store/players';
 import { EmptyNameError, RepeatingNamesError } from './inputErrors';
@@ -15,7 +15,6 @@ export default function PlayersNamesInput({
   resetValidation,
   index,
 }: PlayersNamesInputProps) {
-  const playersCount = usePlayersStore((state) => state.playersCount);
   const playersNames = usePlayersStore((state) => state.playersNames);
   const setPlayersNames = usePlayersStore((state) => state.setPlayersNames);
 
@@ -34,16 +33,12 @@ export default function PlayersNamesInput({
 
   return (
     <View>
-      {playersCount === 4 && index === 0 && <Text>Team 1</Text>}
-      {playersCount === 4 && index === 2 && (
-        <Text style={{ marginTop: 10 }}>Team 2</Text>
-      )}
       <TextInput
         mode='outlined'
         label={`Player ${index + 1}`}
         value={playersNames[index]}
         onChangeText={(value) => handlePlayersNamesChange(value, index)}
-        style={{ borderRadius: 12, maxHeight: 60 }}
+        style={{ borderRadius: 12, maxHeight: 60, width: 130 }}
         error={isInvalid}
         theme={{
           roundness: 12,

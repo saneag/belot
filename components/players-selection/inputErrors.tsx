@@ -18,6 +18,7 @@ export function EmptyNameError({
       <HelperText
         type='error'
         variant='bodySmall'
+        padding='none'
         visible={isNameEmpty}>
         Please enter a name
       </HelperText>
@@ -38,8 +39,9 @@ export function RepeatingNamesError({
       <HelperText
         type='error'
         variant='bodySmall'
+        padding='none'
         visible={isRepeatingName}>
-        You have already a similar name
+        Duplicated name
       </HelperText>
     )
   );
