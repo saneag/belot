@@ -1,20 +1,25 @@
 import { create } from 'zustand';
+import { DEFAULT_ROUND_POINTS } from '../constants/gameConstants';
 import { prepareEmptyScoreRow } from '../helpers/gameScoreHelpers';
 
 interface GameStoreValues {
   score: Record<string, Record<string, string>>;
+  roundPoints: number;
 }
 
 interface GameStoreFunctions {
   initScore: (playersCount: number) => void;
   setNextScore: (playersCount: number) => void;
   reset: VoidFunction;
+  setRoundPoints: (roundPoints: number) => void;
+  resetRoundPoints: VoidFunction;
 }
 
 interface GameStore extends GameStoreValues, GameStoreFunctions {}
 
 export const useGameStore = create<GameStore>((set) => ({
   score: {},
+  roundPoints: DEFAULT_ROUND_POINTS,
   initScore: (playersCount) =>
     set(() => {
       return {
@@ -33,5 +38,7 @@ export const useGameStore = create<GameStore>((set) => ({
         },
       };
     }),
-  reset: () => set(() => ({ score: {} })),
+  reset: () => set(() => ({ score: {}, roundPoints: DEFAULT_ROUND_POINTS })),
+  setRoundPoints: (roundPoints) => set(() => ({ roundPoints })),
+  resetRoundPoints: () => set(() => ({ roundPoints: DEFAULT_ROUND_POINTS })),
 }));

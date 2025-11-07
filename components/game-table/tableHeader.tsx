@@ -7,11 +7,15 @@ import TableRow from './tableRow';
 export default function TableHeader() {
   const theme = useTheme();
 
+  const playersCount = usePlayersStore((state) => state.playersCount);
   const playersNames = usePlayersStore((state) => state.playersNames);
 
   const filteredPlayerNames = useMemo(
-    () => Object.values(playersNames).filter(Boolean),
-    [playersNames]
+    () =>
+      playersCount !== 4
+        ? Object.values(playersNames).filter(Boolean)
+        : ['N', 'V'],
+    [playersCount, playersNames]
   );
 
   const playerNamesWithScoreColumn = useMemo(
