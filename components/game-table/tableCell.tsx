@@ -1,5 +1,11 @@
 import { ReactNode } from 'react';
-import { Pressable, StyleProp, StyleSheet, TextStyle } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  View,
+} from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { VariantProp } from 'react-native-paper/lib/typescript/components/Typography/types';
 
@@ -20,8 +26,10 @@ export default function TableCell({
 }: TableCellProps) {
   const theme = useTheme();
 
+  const Container = onPress ? Pressable : View;
+
   return (
-    <Pressable
+    <Container
       onPress={onPress}
       style={[
         baseStyle.playerNameContainer,
@@ -38,7 +46,7 @@ export default function TableCell({
       ) : (
         children
       )}
-    </Pressable>
+    </Container>
   );
 }
 
