@@ -1,4 +1,7 @@
-import { DEFAULT_ROUND_POINTS } from '../constants/gameConstants';
+import {
+  DEFAULT_ROUND_POINTS,
+  ROUND_POINTS_INDEX,
+} from '../constants/gameConstants';
 
 export const prepareEmptyScoreRow = (
   playersCount: number,
@@ -15,7 +18,7 @@ export const prepareEmptyScoreRow = (
     2
   );
 
-  rawScore['-1'] = String(roundPointsWithoutMicroPoints);
+  rawScore[ROUND_POINTS_INDEX] = String(roundPointsWithoutMicroPoints);
 
   return {
     [rowIndex.toString()]: rawScore,
