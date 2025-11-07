@@ -13,12 +13,13 @@ interface ConfirmationModalProps {
   title: ReactNode;
   content: ReactNode;
   renderShowDialog: (showDialog: VoidFunction) => ReactNode;
-  confirmationCallback: VoidFunction;
+  confirmationCallback?: VoidFunction;
   cancelCallback?: VoidFunction;
   primaryButton?: 'confirm' | 'cancel';
   visible?: boolean;
   setVisible?: Dispatch<SetStateAction<boolean>>;
   asChild?: boolean;
+  isConfirmButtonDisabled?: boolean;
 }
 
 export default function ConfirmationDialog({
@@ -31,6 +32,7 @@ export default function ConfirmationDialog({
   visible,
   setVisible,
   asChild = false,
+  isConfirmButtonDisabled = false,
 }: ConfirmationModalProps) {
   const [internalIsVisible, setInternalIsVisible] = useState(false);
 
@@ -42,7 +44,7 @@ export default function ConfirmationDialog({
   const hideDialog = useCallback(() => setIsVisible(false), [setIsVisible]);
 
   const handleDialogConfirmation = useCallback(() => {
-    confirmationCallback();
+    confirmationCallback?.();
     hideDialog();
   }, [confirmationCallback, hideDialog]);
 
@@ -81,7 +83,8 @@ export default function ConfirmationDialog({
             <Button
               mode={buttonMode.confirm}
               onPress={handleDialogConfirmation}
-              style={style.button}>
+              style={style.button}
+              disabled={isConfirmButtonDisabled}>
               Confirm
             </Button>
             <Button
