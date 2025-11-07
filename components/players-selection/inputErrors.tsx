@@ -1,5 +1,4 @@
-import { StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
+import { HelperText } from 'react-native-paper';
 import {
   isPlayerNameValid,
   isPlayersNamesEmpty,
@@ -16,11 +15,12 @@ export function EmptyNameError({
 
   return (
     isNameEmpty && (
-      <Text
+      <HelperText
+        type='error'
         variant='bodySmall'
-        style={style.error}>
+        visible={isNameEmpty}>
         Please enter a name
-      </Text>
+      </HelperText>
     )
   );
 }
@@ -35,17 +35,12 @@ export function RepeatingNamesError({
 
   return (
     isRepeatingName && (
-      <Text
+      <HelperText
+        type='error'
         variant='bodySmall'
-        style={style.error}>
+        visible={isRepeatingName}>
         You have already a similar name
-      </Text>
+      </HelperText>
     )
   );
 }
-
-const style = StyleSheet.create({
-  error: {
-    paddingStart: 5,
-  },
-});
