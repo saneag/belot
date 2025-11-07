@@ -1,8 +1,9 @@
-import {
+import React, {
   Dispatch,
   ReactNode,
   SetStateAction,
   useCallback,
+  useMemo,
   useState,
 } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -17,6 +18,7 @@ interface ConfirmationModalProps {
   primaryButton?: 'confirm' | 'cancel';
   visible?: boolean;
   setVisible?: Dispatch<SetStateAction<boolean>>;
+  asChild?: boolean;
 }
 
 export default function ConfirmationDialog({
@@ -28,6 +30,7 @@ export default function ConfirmationDialog({
   primaryButton = 'cancel',
   visible,
   setVisible,
+  asChild = false,
 }: ConfirmationModalProps) {
   const [internalIsVisible, setInternalIsVisible] = useState(false);
 
@@ -59,8 +62,10 @@ export default function ConfirmationDialog({
           cancel: 'contained',
         };
 
+  const Container = useMemo(() => (asChild ? React.Fragment : View), [asChild]);
+
   return (
-    <View>
+    <Container>
       {renderShowDialog(showDialog)}
       <Portal>
         <Dialog
@@ -88,7 +93,7 @@ export default function ConfirmationDialog({
           </Dialog.Actions>
         </Dialog>
       </Portal>
-    </View>
+    </Container>
   );
 }
 
