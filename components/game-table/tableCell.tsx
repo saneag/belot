@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
+import { Pressable, StyleProp, StyleSheet, TextStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { VariantProp } from 'react-native-paper/lib/typescript/components/Typography/types';
 
@@ -8,6 +8,7 @@ interface TableCellProps {
   children: ReactNode;
   style?: StyleProp<TextStyle>;
   textVariant?: VariantProp<TextStyle>;
+  onPress?: VoidFunction;
 }
 
 export default function TableCell({
@@ -15,11 +16,13 @@ export default function TableCell({
   children,
   style = {},
   textVariant = 'headlineSmall',
+  onPress,
 }: TableCellProps) {
   const theme = useTheme();
 
   return (
-    <View
+    <Pressable
+      onPress={onPress}
       style={[
         baseStyle.playerNameContainer,
         index !== 0
@@ -35,7 +38,7 @@ export default function TableCell({
       ) : (
         children
       )}
-    </View>
+    </Pressable>
   );
 }
 
