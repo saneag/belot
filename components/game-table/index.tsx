@@ -1,6 +1,6 @@
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import NewRow from './newRowButton';
+import NextRoundButton from './next-round-button';
 import TableBody from './table-body';
 import TableHeader from './tableHeader';
 
@@ -18,7 +18,7 @@ export default function GameTable() {
         <TableHeader />
         <TableBody />
       </View>
-      <NewRow />
+      <NextRoundButton />
     </View>
   );
 }
