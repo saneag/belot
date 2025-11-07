@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 import { DEFAULT_ROUND_POINTS } from '../constants/gameConstants';
 import { prepareEmptyScoreRow } from '../helpers/gameScoreHelpers';
+import { GameScore } from '../types/game';
 
 interface GameStoreValues {
-  score: Record<string, Record<string, string>>;
+  score: GameScore;
   roundPoints: number;
+  currentRound: number;
 }
 
 interface GameStoreFunctions {
@@ -13,6 +15,7 @@ interface GameStoreFunctions {
   reset: VoidFunction;
   setRoundPoints: (roundPoints: number) => void;
   resetRoundPoints: VoidFunction;
+  setCurrentRound: (roundNumber: number) => void;
 }
 
 interface GameStore extends GameStoreValues, GameStoreFunctions {}
@@ -20,6 +23,7 @@ interface GameStore extends GameStoreValues, GameStoreFunctions {}
 export const useGameStore = create<GameStore>((set) => ({
   score: {},
   roundPoints: DEFAULT_ROUND_POINTS,
+  currentRound: 0,
   initScore: (playersCount) =>
     set(() => {
       return {
@@ -36,9 +40,11 @@ export const useGameStore = create<GameStore>((set) => ({
           ...state.score,
           ...prepareEmptyScoreRow(playersCount, Number(rowIndex)),
         },
+        currentRound: rowIndex,
       };
     }),
   reset: () => set(() => ({ score: {}, roundPoints: DEFAULT_ROUND_POINTS })),
   setRoundPoints: (roundPoints) => set(() => ({ roundPoints })),
   resetRoundPoints: () => set(() => ({ roundPoints: DEFAULT_ROUND_POINTS })),
+  setCurrentRound: (currentRound) => set(() => ({ currentRound })),
 }));
