@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Button } from 'react-native-paper';
-import { validateEnteredScore } from '../../../helpers/gameScoreHelpers';
+import { validateEnteredScore } from '../../../helpers/gameScoreValidationHelpers';
 import { useGameStore } from '../../../store/game';
 import { usePlayersStore } from '../../../store/players';
 import ConfirmationDialog from '../../confirmation-dialog';
