@@ -40,7 +40,7 @@ export default function PlayersCount() {
             }
             mode='elevated'
             onPress={() => handlePlayersCountChange(count)}>
-            {count}
+            {count !== 4 ? count : '2vs2'}
           </Button>
         ))}
       </View>
