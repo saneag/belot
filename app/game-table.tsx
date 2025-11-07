@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Divider, IconButton } from 'react-native-paper';
 import ConfirmationDialog from '../components/confirmation-dialog';
@@ -10,15 +10,17 @@ import { useGameStore } from '../store/game';
 import { usePlayersStore } from '../store/players';
 
 export default function GameTableScreen() {
+  const [showDialog, setShowDialog] = useState(false);
+
   const router = useRouter();
 
   const resetPlayers = usePlayersStore((state) => state.reset);
   const resetGame = useGameStore((state) => state.reset);
 
-  usePreventBackPress();
+  usePreventBackPress(() => setShowDialog(true));
 
   const handleReset = useCallback(() => {
-    router.navigate('/players-selection');
+    router.back();
     resetPlayers();
     resetGame();
   }, [resetGame, resetPlayers, router]);
@@ -36,6 +38,8 @@ export default function GameTableScreen() {
             />
           )}
           confirmationCallback={handleReset}
+          visible={showDialog}
+          setVisible={setShowDialog}
         />
         <TimeTracker />
       </View>

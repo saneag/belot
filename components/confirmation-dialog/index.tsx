@@ -1,4 +1,10 @@
-import { ReactNode, useCallback, useState } from 'react';
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useCallback,
+  useState,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, ButtonProps, Dialog, Portal, Text } from 'react-native-paper';
 
@@ -9,6 +15,8 @@ interface ConfirmationModalProps {
   confirmationCallback: VoidFunction;
   cancelCallback?: VoidFunction;
   primaryButton?: 'confirm' | 'cancel';
+  visible?: boolean;
+  setVisible?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ConfirmationDialog({
@@ -18,12 +26,17 @@ export default function ConfirmationDialog({
   confirmationCallback,
   cancelCallback,
   primaryButton = 'cancel',
+  visible,
+  setVisible,
 }: ConfirmationModalProps) {
-  const [isVisible, setIsVisible] = useState(false);
+  const [internalIsVisible, setInternalIsVisible] = useState(false);
 
-  const showDialog = useCallback(() => setIsVisible(true), []);
+  const isVisible = visible ?? internalIsVisible;
+  const setIsVisible = setVisible ?? setInternalIsVisible;
 
-  const hideDialog = useCallback(() => setIsVisible(false), []);
+  const showDialog = useCallback(() => setIsVisible(true), [setIsVisible]);
+
+  const hideDialog = useCallback(() => setIsVisible(false), [setIsVisible]);
 
   const handleDialogConfirmation = useCallback(() => {
     confirmationCallback();
