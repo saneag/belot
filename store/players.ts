@@ -5,6 +5,7 @@ interface PlayersStoreValues {
   playersNames: Record<string, string>;
   hasPreviousGame: boolean;
   dealer: number;
+  isTeamVsTeam: boolean;
 }
 
 interface PlayersStoreFunctions {
@@ -22,7 +23,9 @@ export const usePlayersStore = create<PlayersStore>((set) => ({
   playersNames: {},
   hasPreviousGame: false,
   dealer: 0,
-  setPlayersCount: (playersCount: number) => set(() => ({ playersCount })),
+  isTeamVsTeam: false,
+  setPlayersCount: (playersCount: number) =>
+    set(() => ({ playersCount, isTeamVsTeam: playersCount === 4 })),
   setPlayersNames: (playersNames: Record<string, string>) =>
     set(() => ({ playersNames })),
   setHasPreviousGame: (hasPreviousGame) => set(() => ({ hasPreviousGame })),
@@ -31,6 +34,7 @@ export const usePlayersStore = create<PlayersStore>((set) => ({
       playersCount: 2,
       playersNames: {},
       dealer: 0,
+      isTeamVsTeam: false,
     })),
   setDealer: (dealer) => set(() => ({ dealer })),
 }));

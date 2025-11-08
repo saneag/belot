@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { useGameStore } from '../../../store/game';
-import TableScoreRows from './tableScoreRows';
+import TableRow from '../tableRow';
+import PointCells from './pointCells';
 
 export default function TableBody() {
   const score = useGameStore((state) => state.score);
@@ -13,7 +14,18 @@ export default function TableBody() {
 
   return (
     <ScrollView ref={scrollViewRef}>
-      <TableScoreRows />
+      <>
+        {Object.entries(score).map(([rowIndex, points]) => (
+          <TableRow
+            key={rowIndex}
+            showTopBorder>
+            <PointCells
+              rowIndex={rowIndex}
+              points={points}
+            />
+          </TableRow>
+        ))}
+      </>
     </ScrollView>
   );
 }

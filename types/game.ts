@@ -8,4 +8,5 @@ export interface ValidateEnteredScoreProps {
   currentRound: number;
   playersCount: number;
   setIsEmptyGame: Dispatch<SetStateAction<boolean>>;
+  isTeamVsTeam: boolean;
 }

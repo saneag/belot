@@ -1,21 +1,20 @@
 import { useMemo } from 'react';
-import { useTheme } from 'react-native-paper';
+import { useAppTheme } from '../../helpers/themeHelpers';
 import { usePlayersStore } from '../../store/players';
 import TableCell from './tableCell';
 import TableRow from './tableRow';
 
 export default function TableHeader() {
-  const theme = useTheme();
+  const { colors } = useAppTheme();
 
-  const playersCount = usePlayersStore((state) => state.playersCount);
   const playersNames = usePlayersStore((state) => state.playersNames);
+  const isTeamVsTeam = usePlayersStore((state) => state.isTeamVsTeam);
+  const dealer = usePlayersStore((state) => state.dealer);
 
   const filteredPlayerNames = useMemo(
     () =>
-      playersCount !== 4
-        ? Object.values(playersNames).filter(Boolean)
-        : ['N', 'V'],
-    [playersCount, playersNames]
+      !isTeamVsTeam ? Object.values(playersNames).filter(Boolean) : ['N', 'V'],
+    [isTeamVsTeam, playersNames]
   );
 
   const playerNamesWithScoreColumn = useMemo(
@@ -23,13 +22,23 @@ export default function TableHeader() {
     [filteredPlayerNames]
   );
 
+  const columnsCount = useMemo(
+    () => filteredPlayerNames.length,
+    [filteredPlayerNames.length]
+  );
+
   return (
-    <TableRow style={{ backgroundColor: theme.colors.backdrop }}>
+    <TableRow style={{ backgroundColor: colors.backdrop }}>
       {playerNamesWithScoreColumn.map((playerName, index) => (
         <TableCell
           key={index}
           index={index}
-          style={{ fontWeight: 'bold' }}>
+          style={{
+            fontWeight: 'bold',
+            ...(index === dealer % columnsCount
+              ? { backgroundColor: colors.successLight }
+              : {}),
+          }}>
           {playerName}
         </TableCell>
       ))}

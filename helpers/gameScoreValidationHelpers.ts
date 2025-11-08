@@ -6,6 +6,7 @@ export const validateEnteredScore = ({
   currentRound,
   playersCount,
   setIsEmptyGame,
+  isTeamVsTeam,
 }: ValidateEnteredScoreProps) => {
   const roundScore = score[currentRound];
 
@@ -16,9 +17,11 @@ export const validateEnteredScore = ({
     };
   }
 
+  const finalPlayersCount = isTeamVsTeam ? 2 : playersCount;
+
   const roundPoints = Number(roundScore[ROUND_POINTS_INDEX]);
   const playersPoints = Object.values(roundScore)
-    .splice(0, playersCount)
+    .splice(0, finalPlayersCount)
     .map(Number);
 
   const playersPointsSum = playersPoints.reduce((acc, curr) => acc + curr, 0);
