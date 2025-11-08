@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import { Button, ButtonProps, Dialog, Portal, Text } from 'react-native-paper';
 
 interface ConfirmationModalProps {
@@ -39,7 +39,10 @@ export default function ConfirmationDialog({
   const isVisible = visible ?? internalIsVisible;
   const setIsVisible = setVisible ?? setInternalIsVisible;
 
-  const showDialog = useCallback(() => setIsVisible(true), [setIsVisible]);
+  const showDialog = useCallback(() => {
+    Keyboard.dismiss();
+    setIsVisible(true);
+  }, [setIsVisible]);
 
   const hideDialog = useCallback(() => setIsVisible(false), [setIsVisible]);
 
