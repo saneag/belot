@@ -25,7 +25,7 @@ export default function TimeTracker() {
 
   return (
     <Text>
-      Game time: {hours > 0 && hours.toString().padStart(2, '0') + ':'}
+      Time: {hours > 0 && hours.toString().padStart(2, '0') + ':'}
       {minutes > 0 && minutes.toString().padStart(2, '0') + ':'}
       {seconds.toString().padStart(isMoreThanTenSeconds.current ? 2 : 1, '0')}
     </Text>

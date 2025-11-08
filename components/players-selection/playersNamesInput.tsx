@@ -46,6 +46,7 @@ export default function PlayersNamesInput({
           theme={{
             roundness: 30,
           }}
+          maxLength={15}
           right={
             playersNames[index] && (
               <TextInput.Icon
