@@ -1,5 +1,5 @@
 import Navigation from '@/components/navigation';
-import { Keyboard, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MD3LightTheme, withTheme } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -22,11 +22,7 @@ function App({ theme }: AppProps) {
           contentContainerStyle={style.keyboardAwareContainer}
           enableOnAndroid
           keyboardShouldPersistTaps='handled'>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}>
-            <Navigation />
-          </TouchableWithoutFeedback>
+          <Navigation />
         </KeyboardAwareScrollView>
       </SafeAreaView>
     </SafeAreaProvider>

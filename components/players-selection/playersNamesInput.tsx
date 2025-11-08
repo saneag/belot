@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { isPlayerNameValid } from '../../helpers/playerNamesValidations';
 import { usePlayersStore } from '../../store/players';
+import DismissKeyboardView from '../dismissKeyboardView';
 import { EmptyNameError, RepeatingNamesError } from './inputErrors';
 import { PlayersNamesProps } from './playersNames';
 
@@ -32,34 +33,36 @@ export default function PlayersNamesInput({
   );
 
   return (
-    <View>
-      <TextInput
-        mode='outlined'
-        label={`Player ${index + 1}`}
-        value={playersNames[index]}
-        onChangeText={(value) => handlePlayersNamesChange(value, index)}
-        style={{ borderRadius: 12, maxHeight: 60, width: 130 }}
-        error={isInvalid}
-        theme={{
-          roundness: 12,
-        }}
-        right={
-          playersNames[index] && (
-            <TextInput.Icon
-              icon='close'
-              onPress={() => handlePlayersNamesChange('', index)}
-            />
-          )
-        }
-      />
-      <EmptyNameError
-        index={index}
-        validations={validations}
-      />
-      <RepeatingNamesError
-        index={index}
-        validations={validations}
-      />
-    </View>
+    <DismissKeyboardView>
+      <View>
+        <TextInput
+          mode='outlined'
+          label={`Player ${index + 1}`}
+          value={playersNames[index]}
+          onChangeText={(value) => handlePlayersNamesChange(value, index)}
+          style={{ borderRadius: 12, maxHeight: 60, width: 130 }}
+          error={isInvalid}
+          theme={{
+            roundness: 12,
+          }}
+          right={
+            playersNames[index] && (
+              <TextInput.Icon
+                icon='close'
+                onPress={() => handlePlayersNamesChange('', index)}
+              />
+            )
+          }
+        />
+        <EmptyNameError
+          index={index}
+          validations={validations}
+        />
+        <RepeatingNamesError
+          index={index}
+          validations={validations}
+        />
+      </View>
+    </DismissKeyboardView>
   );
 }
