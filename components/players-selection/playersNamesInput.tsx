@@ -41,10 +41,10 @@ export default function PlayersNamesInput({
           label={`Player ${index + 1}`}
           value={playersNames[index] ?? ''}
           onChangeText={(value) => handlePlayersNamesChange(value, index)}
-          style={{ borderRadius: 12, maxHeight: 60, width: 130 }}
+          style={{ maxHeight: 60, width: 130 }}
           error={isInvalid}
           theme={{
-            roundness: 12,
+            roundness: 30,
           }}
           right={
             playersNames[index] && (

@@ -27,23 +27,21 @@ export default function PlayersNames({
 
   return (
     <PlayersTable>
-      {players.map((_, index) => {
-        return (
-          <View
-            key={index}
-            style={{
-              position: 'absolute',
-              top: getTopPosition(index, playersCount),
-              right: getRightPosition(index, playersCount),
-            }}>
-            <PlayersNamesInput
-              validations={validations}
-              resetValidation={resetValidation}
-              index={index}
-            />
-          </View>
-        );
-      })}
+      {players.map((_, index) => (
+        <View
+          key={index}
+          style={{
+            position: 'absolute',
+            top: getTopPosition(index, playersCount),
+            right: getRightPosition(index, playersCount),
+          }}>
+          <PlayersNamesInput
+            validations={validations}
+            resetValidation={resetValidation}
+            index={index}
+          />
+        </View>
+      ))}
     </PlayersTable>
   );
 }

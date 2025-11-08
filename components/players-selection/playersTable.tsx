@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { TABLE_HEIGHT, TABLE_WIDTH } from '../../constants/gameConstants';
 
 interface PlayersTableProps {
@@ -7,20 +7,9 @@ interface PlayersTableProps {
 }
 
 export default function PlayersTable({ children }: PlayersTableProps) {
-  const { width } = useWindowDimensions();
-
   return (
     <View style={style.container}>
-      <View
-        style={[
-          style.circle,
-          {
-            left: width / 2,
-            transform: [{ translateX: -150 }],
-          },
-        ]}>
-        {children}
-      </View>
+      <View style={style.circle}>{children}</View>
     </View>
   );
 }
@@ -28,6 +17,7 @@ export default function PlayersTable({ children }: PlayersTableProps) {
 const style = StyleSheet.create({
   container: {
     position: 'relative',
+    alignItems: 'center',
     height: 280,
   },
   circle: {
@@ -35,7 +25,7 @@ const style = StyleSheet.create({
     height: TABLE_HEIGHT,
     marginTop: 15,
     borderRadius: 1200,
-    borderWidth: 4,
+    borderWidth: 5,
     borderColor: '#3f3f3fff',
     // shadow (iOS)
     shadowColor: '#000',
