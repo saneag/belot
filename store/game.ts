@@ -43,7 +43,12 @@ export const useGameStore = create<GameStore>((set) => ({
         currentRound: rowIndex,
       };
     }),
-  reset: () => set(() => ({ score: {}, roundPoints: DEFAULT_ROUND_POINTS })),
+  reset: () =>
+    set(() => ({
+      score: {},
+      roundPoints: DEFAULT_ROUND_POINTS,
+      currentRound: 0,
+    })),
   setRoundPoints: (roundPoints) => set(() => ({ roundPoints })),
   resetRoundPoints: () => set(() => ({ roundPoints: DEFAULT_ROUND_POINTS })),
   setCurrentRound: (currentRound) => set(() => ({ currentRound })),

@@ -4,6 +4,7 @@ interface PlayersStoreValues {
   playersCount: number;
   playersNames: Record<string, string>;
   hasPreviousGame: boolean;
+  dealer: number;
 }
 
 interface PlayersStoreFunctions {
@@ -11,33 +12,25 @@ interface PlayersStoreFunctions {
   setPlayersNames: (playersNames: Record<string, string>) => void;
   setHasPreviousGame: (hasPreviousGame: boolean) => void;
   reset: VoidFunction;
+  setDealer: (dealer: number) => void;
 }
 
 interface PlayersStore extends PlayersStoreValues, PlayersStoreFunctions {}
 
 export const usePlayersStore = create<PlayersStore>((set) => ({
   playersCount: 2,
-  playersNames: {
-    '0': '',
-    '1': '',
-    '2': '',
-    '3': '',
-  },
+  playersNames: {},
   hasPreviousGame: false,
+  dealer: 0,
   setPlayersCount: (playersCount: number) => set(() => ({ playersCount })),
   setPlayersNames: (playersNames: Record<string, string>) =>
-    set((state) => ({
-      playersNames: { ...state.playersNames, ...playersNames },
-    })),
+    set(() => ({ playersNames })),
   setHasPreviousGame: (hasPreviousGame) => set(() => ({ hasPreviousGame })),
   reset: () =>
     set(() => ({
       playersCount: 2,
-      playersNames: {
-        '0': '',
-        '1': '',
-        '2': '',
-        '3': '',
-      },
+      playersNames: {},
+      dealer: 0,
     })),
+  setDealer: (dealer) => set(() => ({ dealer })),
 }));

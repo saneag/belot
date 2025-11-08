@@ -24,12 +24,13 @@ export default function PlayersNamesInput({
   const handlePlayersNamesChange = useCallback(
     (value: string, index: number) => {
       setPlayersNames({
+        ...playersNames,
         [index]: value,
       });
 
       resetValidation();
     },
-    [resetValidation, setPlayersNames]
+    [playersNames, resetValidation, setPlayersNames]
   );
 
   return (
@@ -38,7 +39,7 @@ export default function PlayersNamesInput({
         <TextInput
           mode='outlined'
           label={`Player ${index + 1}`}
-          value={playersNames[index]}
+          value={playersNames[index] ?? ''}
           onChangeText={(value) => handlePlayersNamesChange(value, index)}
           style={{ borderRadius: 12, maxHeight: 60, width: 130 }}
           error={isInvalid}
