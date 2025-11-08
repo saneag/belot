@@ -68,9 +68,10 @@ export default function ConfirmationDialog({
         };
 
   const Container = useMemo(() => (asChild ? React.Fragment : View), [asChild]);
+  const containerStyle = asChild ? {} : { style: { zIndex: 1, elevation: 1 } };
 
   return (
-    <Container>
+    <Container {...containerStyle}>
       {renderShowDialog(showDialog)}
       <Portal>
         <Dialog

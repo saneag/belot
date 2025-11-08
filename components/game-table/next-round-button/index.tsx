@@ -43,8 +43,7 @@ export default function NextRoundButton() {
 
       setIsScoreValid(true);
       setNextScore(playersCount);
-      const finalPlayersCount = isTeamVsTeam ? 2 : playersCount;
-      setDealer(dealer + 1 === finalPlayersCount ? 0 : dealer + 1);
+      setDealer(dealer + 1 === playersCount ? 0 : dealer + 1);
     },
     [
       currentRound,
@@ -62,16 +61,8 @@ export default function NextRoundButton() {
       setNextScore(playersCount);
     }
 
-    const finalPlayersCount = isTeamVsTeam ? 2 : playersCount;
-    setDealer(dealer + 1 === finalPlayersCount ? 0 : dealer + 1);
-  }, [
-    dealer,
-    isEmptyGame,
-    isTeamVsTeam,
-    playersCount,
-    setDealer,
-    setNextScore,
-  ]);
+    setDealer(dealer + 1 === playersCount ? 0 : dealer + 1);
+  }, [dealer, isEmptyGame, playersCount, setDealer, setNextScore]);
 
   return (
     <ConfirmationDialog

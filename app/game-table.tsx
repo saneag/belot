@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Divider, IconButton } from 'react-native-paper';
 import ConfirmationDialog from '../components/confirmation-dialog';
+import CurrentDealer from '../components/current-dealer';
 import GameTable from '../components/game-table';
 import TimeTracker from '../components/time-tracker';
 import { usePreventBackPress } from '../hooks/usePreventBackPress';
@@ -41,6 +42,7 @@ export default function GameTableScreen() {
           visible={showDialog}
           setVisible={setShowDialog}
         />
+        <CurrentDealer />
         <TimeTracker />
       </View>
       <Divider
