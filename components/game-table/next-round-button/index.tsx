@@ -2,6 +2,7 @@ import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useHandleNextRound } from '../../../hooks/useHandleNextRound';
 import ConfirmationDialog from '../../confirmation-dialog';
+import SkipRoundButton from '../skip-round-button';
 import DialogContent from './dialogContent';
 import DialogTitle from './dialogTitle';
 
@@ -10,6 +11,8 @@ export default function NextRoundButton() {
 
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+      <SkipRoundButton />
+
       <ConfirmationDialog
         title={<DialogTitle />}
         content={<DialogContent />}
