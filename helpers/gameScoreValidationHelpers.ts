@@ -2,15 +2,12 @@ import { ROUND_POINTS_INDEX } from '../constants/gameConstants';
 import { ValidateEnteredScoreProps } from '../types/game';
 
 export const validateEnteredScore = ({
-  score,
-  currentRound,
+  roundScore,
   playersCount,
   setIsEmptyGame,
   isTeamVsTeam,
 }: ValidateEnteredScoreProps) => {
-  const roundScore = score[currentRound];
-
-  if (!roundScore) {
+  if (!Object.keys(roundScore)) {
     return {
       isValid: false,
       isEmptyGame: false,
@@ -35,7 +32,7 @@ export const validateEnteredScore = ({
   }
 
   return {
-    isValid: playersPointsSum !== roundPoints,
+    isValid: playersPointsSum === roundPoints,
     isEmptyGame: false,
   };
 };

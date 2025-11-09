@@ -23,8 +23,7 @@ export default function NextRoundButton() {
   const handleNextRound = useCallback(
     (showDialog: VoidFunction) => {
       const validation = validateEnteredScore({
-        score,
-        currentRound,
+        roundScore: score[currentRound],
         playersCount,
         setIsEmptyGame,
         isTeamVsTeam,
