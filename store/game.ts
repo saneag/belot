@@ -1,35 +1,32 @@
 import { create } from 'zustand';
-import { DEFAULT_ROUND_POINTS } from '../constants/gameConstants';
 import { prepareEmptyScoreRow } from '../helpers/gameScoreHelpers';
 import { GameScore } from '../types/game';
 
 interface GameStoreValues {
   score: GameScore;
-  roundPoints: number;
   currentRound: number;
+  dealers: Record<number, string>;
 }
 
 interface GameStoreFunctions {
   initScore: (playersCount: number) => void;
   setNextScore: (playersCount: number) => void;
   reset: VoidFunction;
-  setRoundPoints: (roundPoints: number) => void;
-  resetRoundPoints: VoidFunction;
   setCurrentRound: (roundNumber: number) => void;
+  updateScore: (score: GameScore) => void;
+  setDealers: (dealer: Record<number, string>) => void;
 }
 
 interface GameStore extends GameStoreValues, GameStoreFunctions {}
 
 export const useGameStore = create<GameStore>((set) => ({
   score: {},
-  roundPoints: DEFAULT_ROUND_POINTS,
   currentRound: 0,
+  dealers: {},
   initScore: (playersCount) =>
-    set(() => {
-      return {
-        score: prepareEmptyScoreRow(playersCount, 0),
-      };
-    }),
+    set(() => ({
+      score: prepareEmptyScoreRow(playersCount, 0),
+    })),
   setNextScore: (playersCount) =>
     set((state) => {
       const rawRowIndex = Object.keys(state.score).at(-1);
@@ -46,10 +43,11 @@ export const useGameStore = create<GameStore>((set) => ({
   reset: () =>
     set(() => ({
       score: {},
-      roundPoints: DEFAULT_ROUND_POINTS,
       currentRound: 0,
     })),
-  setRoundPoints: (roundPoints) => set(() => ({ roundPoints })),
-  resetRoundPoints: () => set(() => ({ roundPoints: DEFAULT_ROUND_POINTS })),
   setCurrentRound: (currentRound) => set(() => ({ currentRound })),
+  updateScore: (score) =>
+    set((state) => ({ score: { ...state.score, ...score } })),
+  setDealers: (dealer) =>
+    set((state) => ({ dealers: { ...state.dealers, ...dealer } })),
 }));

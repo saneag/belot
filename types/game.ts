@@ -4,8 +4,7 @@ export type PlayersScore = Record<string, string>;
 export type GameScore = Record<string, PlayersScore>;
 
 export interface ValidateEnteredScoreProps {
-  score: GameScore;
-  currentRound: number;
+  roundScore: PlayersScore;
   playersCount: number;
   setIsEmptyGame: Dispatch<SetStateAction<boolean>>;
   isTeamVsTeam: boolean;
