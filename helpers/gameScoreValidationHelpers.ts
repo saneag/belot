@@ -1,16 +1,20 @@
 import { ROUND_POINTS_INDEX } from '../constants/gameConstants';
-import { ValidateEnteredScoreProps } from '../types/game';
+import { PlayersScore } from '../types/game';
+
+interface ValidateEnteredScoreProps {
+  roundScore: PlayersScore;
+  playersCount: number;
+  isTeamVsTeam: boolean;
+}
 
 export const validateEnteredScore = ({
   roundScore,
   playersCount,
-  setIsEmptyGame,
   isTeamVsTeam,
 }: ValidateEnteredScoreProps) => {
   if (!Object.keys(roundScore)) {
     return {
       isValid: false,
-      isEmptyGame: false,
     };
   }
 
@@ -24,15 +28,12 @@ export const validateEnteredScore = ({
   const playersPointsSum = playersPoints.reduce((acc, curr) => acc + curr, 0);
 
   if (playersPointsSum === 0) {
-    setIsEmptyGame(true);
     return {
       isValid: true,
-      isEmptyGame: true,
     };
   }
 
   return {
     isValid: playersPointsSum === roundPoints,
-    isEmptyGame: false,
   };
 };
