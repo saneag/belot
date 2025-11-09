@@ -5,7 +5,7 @@ import { GameScore } from '../types/game';
 interface GameStoreValues {
   score: GameScore;
   currentRound: number;
-  dealers: Record<number, string>;
+  roundPlayers: Record<number, string>;
 }
 
 interface GameStoreFunctions {
@@ -14,7 +14,7 @@ interface GameStoreFunctions {
   reset: VoidFunction;
   setCurrentRound: (roundNumber: number) => void;
   updateScore: (score: GameScore) => void;
-  setDealers: (dealer: Record<number, string>) => void;
+  setRoundPlayers: (dealer: Record<number, string>) => void;
 }
 
 interface GameStore extends GameStoreValues, GameStoreFunctions {}
@@ -22,7 +22,7 @@ interface GameStore extends GameStoreValues, GameStoreFunctions {}
 export const useGameStore = create<GameStore>((set) => ({
   score: {},
   currentRound: 0,
-  dealers: {},
+  roundPlayers: {},
   initScore: (playersCount) =>
     set(() => ({
       score: prepareEmptyScoreRow(playersCount, 0),
@@ -48,6 +48,6 @@ export const useGameStore = create<GameStore>((set) => ({
   setCurrentRound: (currentRound) => set(() => ({ currentRound })),
   updateScore: (score) =>
     set((state) => ({ score: { ...state.score, ...score } })),
-  setDealers: (dealer) =>
-    set((state) => ({ dealers: { ...state.dealers, ...dealer } })),
+  setRoundPlayers: (dealer) =>
+    set((state) => ({ roundPlayers: { ...state.roundPlayers, ...dealer } })),
 }));
