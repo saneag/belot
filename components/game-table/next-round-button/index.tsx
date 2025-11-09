@@ -74,7 +74,7 @@ export default function NextRoundButton() {
           Next round
         </Button>
       )}
-      isConfirmButtonDisabled={!isScoreValid}
+      isConfirmationButtonVisible={isScoreValid}
       confirmationCallback={handleAddEmptyRow}
     />
   );

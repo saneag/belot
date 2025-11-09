@@ -28,7 +28,7 @@ export default function ScoreTableCell({
           : {}),
       }}
       onPress={onPress}>
-      {point.slice(0, 2)}
+      {Math.floor(Number(point) / 10)}
     </TableCell>
   );
 }

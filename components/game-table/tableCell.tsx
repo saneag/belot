@@ -37,7 +37,7 @@ export default function TableCell({
           ? { borderLeftWidth: 1, borderColor: theme.colors.primary }
           : {},
       ]}>
-      {typeof children === 'string' ? (
+      {typeof children === 'string' || typeof children === 'number' ? (
         <Text
           variant={textVariant}
           style={[baseStyle.playerNameText, style]}>
