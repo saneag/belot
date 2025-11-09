@@ -19,10 +19,7 @@ export default function TableBody() {
           <TableRow
             key={rowIndex}
             showTopBorder>
-            <PointCells
-              rowIndex={rowIndex}
-              points={points}
-            />
+            <PointCells points={points} />
           </TableRow>
         ))}
       </>
