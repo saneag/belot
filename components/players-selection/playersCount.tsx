@@ -41,7 +41,7 @@ export default function PlayersCount({ resetValidations }: PlayersCountProps) {
             }
             mode='elevated'
             onPress={() => handlePlayersCountChange(count)}>
-            {count !== 4 ? count : '2vs2'}
+            {count}
           </Button>
         ))}
       </View>
