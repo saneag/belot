@@ -67,6 +67,5 @@ const style = StyleSheet.create({
   },
   divider: {
     marginBottom: 10,
-    marginTop: -10,
   },
 });
