@@ -20,6 +20,7 @@ interface ConfirmationModalProps {
   setVisible?: Dispatch<SetStateAction<boolean>>;
   asChild?: boolean;
   isConfirmButtonDisabled?: boolean;
+  isConfirmationButtonVisible?: boolean;
 }
 
 export default function ConfirmationDialog({
@@ -33,6 +34,7 @@ export default function ConfirmationDialog({
   setVisible,
   asChild = false,
   isConfirmButtonDisabled = false,
+  isConfirmationButtonVisible = true,
 }: ConfirmationModalProps) {
   const [internalIsVisible, setInternalIsVisible] = useState(false);
 
@@ -84,13 +86,15 @@ export default function ConfirmationDialog({
             {typeof content === 'string' ? <Text>{content}</Text> : content}
           </Dialog.Content>
           <Dialog.Actions>
-            <Button
-              mode={buttonMode.confirm}
-              onPress={handleDialogConfirmation}
-              style={style.button}
-              disabled={isConfirmButtonDisabled}>
-              Confirm
-            </Button>
+            {isConfirmationButtonVisible && (
+              <Button
+                mode={buttonMode.confirm}
+                onPress={handleDialogConfirmation}
+                style={style.button}
+                disabled={isConfirmButtonDisabled}>
+                Confirm
+              </Button>
+            )}
             <Button
               mode={buttonMode.cancel}
               onPress={handleDialogCancel}
