@@ -3,19 +3,36 @@ import { Button } from 'react-native-paper';
 import { useHandleNextRound } from '../../../hooks/useHandleNextRound';
 import ConfirmationDialog from '../../confirmation-dialog';
 import SkipRoundButton from '../skip-round-button';
-import DialogContent from './dialogContent';
-import DialogTitle from './dialogTitle';
+import ScoreDialogContent from './scoreDialogContent';
 
 export default function NextRoundButton() {
-  const { handleNextRound, isScoreValid } = useHandleNextRound();
+  const {
+    handleNextRound,
+    handleCancel,
+    inputValue,
+    setInputValue,
+    roundPlayer,
+    setRoundPlayer,
+    roundScore,
+    setRoundScore,
+  } = useHandleNextRound();
 
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
       <SkipRoundButton />
 
       <ConfirmationDialog
-        title={<DialogTitle />}
-        content={<DialogContent />}
+        title='Enter score'
+        content={
+          <ScoreDialogContent
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            roundPlayer={roundPlayer}
+            setRoundPlayer={setRoundPlayer}
+            roundScore={roundScore}
+            setRoundScore={setRoundScore}
+          />
+        }
         renderShowDialog={(showDialog) => (
           <Button
             mode='contained'
@@ -23,8 +40,8 @@ export default function NextRoundButton() {
             Next round
           </Button>
         )}
-        isConfirmationButtonVisible={isScoreValid}
         confirmationCallback={handleNextRound}
+        cancelCallback={handleCancel}
       />
     </View>
   );

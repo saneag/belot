@@ -13,7 +13,6 @@ export const createTheme = (
     colors: {
       ...baseTheme.colors,
       ...materialColors,
-      success: colorScheme === 'dark' ? '#22C55E' : '#16A34A',
       successLight: colorScheme === 'dark' ? '#4ADE80' : '#86EFAC',
     },
   };

@@ -13,7 +13,6 @@ interface GameStoreFunctions {
   setNextScore: (playersCount: number) => void;
   reset: VoidFunction;
   setCurrentRound: (roundNumber: number) => void;
-  updateScore: (score: GameScore) => void;
   setRoundPlayers: (dealer: Record<number, string>) => void;
 }
 
@@ -46,8 +45,6 @@ export const useGameStore = create<GameStore>((set) => ({
       currentRound: 0,
     })),
   setCurrentRound: (currentRound) => set(() => ({ currentRound })),
-  updateScore: (score) =>
-    set((state) => ({ score: { ...state.score, ...score } })),
   setRoundPlayers: (dealer) =>
     set((state) => ({ roundPlayers: { ...state.roundPlayers, ...dealer } })),
 }));
