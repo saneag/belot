@@ -33,7 +33,9 @@ export default function DealerSelectDialogContent() {
           icon={index === dealer ? 'check' : ''}
           textColor='#000'
           mode='outlined'
-          style={{ backgroundColor: colors.success }}>
+          style={
+            dealer === index ? { backgroundColor: colors.successLight } : {}
+          }>
           {playersNames[index]}
         </Button>
       ))}
