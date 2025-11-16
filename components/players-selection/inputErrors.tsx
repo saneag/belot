@@ -8,10 +8,10 @@ import { PlayersNamesInputProps } from './playersNamesInput';
 
 export function EmptyNameError({
   validations,
-  index,
+  player,
 }: Omit<PlayersNamesInputProps, 'resetValidation'>) {
-  const isInvalid = !isPlayerNameValid(validations, index);
-  const isNameEmpty = isInvalid && isPlayersNamesEmpty(validations, index);
+  const isInvalid = !isPlayerNameValid(validations, player.id);
+  const isNameEmpty = isInvalid && isPlayersNamesEmpty(validations, player.id);
 
   return (
     isNameEmpty && (
@@ -28,11 +28,11 @@ export function EmptyNameError({
 
 export function RepeatingNamesError({
   validations,
-  index,
+  player,
 }: Omit<PlayersNamesInputProps, 'resetValidation'>) {
-  const isInvalid = !isPlayerNameValid(validations, index);
+  const isInvalid = !isPlayerNameValid(validations, player.id);
   const isRepeatingName =
-    isInvalid && isPlayersNamesRepeating(validations, index);
+    isInvalid && isPlayersNamesRepeating(validations, player.id);
 
   return (
     isRepeatingName && (

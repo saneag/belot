@@ -1,2 +1,12 @@
-export type PlayersScore = Record<string, string>;
-export type GameScore = Record<string, PlayersScore>;
+import { Player } from './players';
+
+export interface PlayersScore extends Player {
+  score: number;
+}
+
+export interface GameScore {
+  id: number;
+  totalRoundScore: number;
+  roundPlayer: Player | null;
+  playersScores: PlayersScore[];
+}

@@ -9,7 +9,7 @@ export const setToStorage = async <T>(
 };
 
 export const setMultipleItemsToStorage = async (
-  items: Record<string, number | string | boolean | Record<string, string>>
+  items: Record<string, number | string | boolean | unknown[]>
 ): Promise<void> => {
   const arrayItems: [string, string][] = Object.entries(items).map(
     ([key, value]) => [key, JSON.stringify(value)]

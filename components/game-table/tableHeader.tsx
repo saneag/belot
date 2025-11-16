@@ -1,4 +1,9 @@
 import { useMemo } from 'react';
+import {
+  getDealer,
+  getPlayersCount,
+  getPlayersNames,
+} from '../../helpers/playerNamesHelpers';
 import { useAppTheme } from '../../helpers/themeHelpers';
 import { usePlayersStore } from '../../store/players';
 import TableCell from './tableCell';
@@ -7,9 +12,10 @@ import TableRow from './tableRow';
 export default function TableHeader() {
   const { colors } = useAppTheme();
 
-  const playersCount = usePlayersStore((state) => state.playersCount);
-  const playersNames = usePlayersStore((state) => state.playersNames);
-  const dealer = usePlayersStore((state) => state.dealer);
+  const players = usePlayersStore((state) => state.players);
+  const playersCount = useMemo(() => getPlayersCount(players), [players]);
+  const playersNames = useMemo(() => getPlayersNames(players), [players]);
+  const dealer = useMemo(() => getDealer(players), [players]);
 
   const filteredPlayerNames = useMemo(
     () =>
@@ -37,7 +43,7 @@ export default function TableHeader() {
           index={index}
           style={{
             fontWeight: 'bold',
-            ...(index === dealer % columnsCount
+            ...(index === (dealer?.id || 0) % columnsCount
               ? { backgroundColor: colors.successLight }
               : {}),
           }}>

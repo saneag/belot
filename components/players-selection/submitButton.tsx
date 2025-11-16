@@ -21,13 +21,13 @@ export default function SubmitButton({ setValidations }: SubmitButtonProps) {
   const router = useRouter();
 
   const initGame = useGameStore((state) => state.initScore);
-  const playersCount = usePlayersStore((state) => state.playersCount);
-  const playersNames = usePlayersStore((state) => state.playersNames);
+
+  const players = usePlayersStore((state) => state.players);
   const setDealer = usePlayersStore((state) => state.setDealer);
 
   const handleOpenDialog = useCallback(
     (showDialog: VoidFunction) => {
-      const validation = validatePlayersNames(playersNames, playersCount);
+      const validation = validatePlayersNames(players);
 
       setValidations(validation);
 
@@ -37,11 +37,11 @@ export default function SubmitButton({ setValidations }: SubmitButtonProps) {
 
       showDialog();
     },
-    [playersCount, playersNames, setValidations]
+    [players, setValidations]
   );
 
   const handleSubmit = useCallback(async () => {
-    const validation = validatePlayersNames(playersNames, playersCount);
+    const validation = validatePlayersNames(players);
 
     setValidations(validation);
 
@@ -50,13 +50,18 @@ export default function SubmitButton({ setValidations }: SubmitButtonProps) {
     }
 
     await setMultipleItemsToStorage({
-      [StorageKeys.playersCount]: playersCount,
-      [StorageKeys.playersNames]: playersNames,
+      [StorageKeys.players]: players,
       [StorageKeys.hasPreviousGame]: true,
     });
-    initGame(playersCount);
+    initGame(players);
     router.navigate('/game-table');
-  }, [initGame, playersCount, playersNames, router, setValidations]);
+  }, [initGame, players, router, setValidations]);
+
+  const handleCancel = useCallback(() => {
+    if (players.length) {
+      setDealer(players[0].id);
+    }
+  }, [players, setDealer]);
 
   return (
     <ConfirmationDialog
@@ -70,7 +75,7 @@ export default function SubmitButton({ setValidations }: SubmitButtonProps) {
         </Button>
       )}
       confirmationCallback={handleSubmit}
-      cancelCallback={() => setDealer(0)}
+      cancelCallback={handleCancel}
       primaryButton='confirm'
     />
   );

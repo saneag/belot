@@ -1,28 +1,29 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { ScrollView } from 'react-native';
+import { getPlayersCount } from '../../../helpers/playerNamesHelpers';
 import { useGameStore } from '../../../store/game';
+import { usePlayersStore } from '../../../store/players';
 import TableRow from '../tableRow';
 import PointCells from './pointCells';
 
 export default function TableBody() {
-  const score = useGameStore((state) => state.score);
+  const players = usePlayersStore((state) => state.players);
+  const playersCount = useMemo(() => getPlayersCount(players), [players]);
+
+  const scores = useGameStore((state) => state.scores);
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
-  }, [score]);
+  }, [scores]);
 
   return (
     <ScrollView ref={scrollViewRef}>
-      <>
-        {Object.entries(score).map(([rowIndex, points]) => (
-          <TableRow
-            key={rowIndex}
-            showTopBorder>
-            <PointCells points={points} />
-          </TableRow>
-        ))}
-      </>
+      {scores.map((score) => (
+        <TableRow key={score.id} showTopBorder>
+          <PointCells score={score} playersCount={playersCount} />
+        </TableRow>
+      ))}
     </ScrollView>
   );
 }

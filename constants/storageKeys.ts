@@ -1,5 +1,4 @@
 export enum StorageKeys {
-  playersCount = 'playersCount',
-  playersNames = 'playersNames',
+  players = 'players',
   hasPreviousGame = 'hasPreviousGame',
 }

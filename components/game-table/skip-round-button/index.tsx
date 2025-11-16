@@ -5,26 +5,22 @@ import { usePlayersStore } from '../../../store/players';
 import ConfirmationDialog from '../../confirmation-dialog';
 
 export default function SkipRoundButton() {
-  const playersCount = usePlayersStore((state) => state.playersCount);
-  const dealer = usePlayersStore((state) => state.dealer);
-  const setDealer = usePlayersStore((state) => state.setDealer);
+  const players = usePlayersStore((state) => state.players);
+  const setNextDealer = usePlayersStore((state) => state.setNextDealer);
 
   const setNextScore = useGameStore((state) => state.setNextScore);
 
   const handleAddEmptyRow = useCallback(() => {
-    setNextScore(playersCount);
-
-    setDealer(dealer + 1 === playersCount ? 0 : dealer + 1);
-  }, [dealer, playersCount, setDealer, setNextScore]);
+    setNextScore(players);
+    setNextDealer();
+  }, [players, setNextDealer, setNextScore]);
 
   return (
     <ConfirmationDialog
-      title='Skip round'
-      content='Are you sure you want to skip the round?'
+      title="Skip round"
+      content="Are you sure you want to skip the round?"
       renderShowDialog={(showDialog) => (
-        <Button
-          mode='outlined'
-          onPress={showDialog}>
+        <Button mode="outlined" onPress={showDialog}>
           Skip round
         </Button>
       )}

@@ -2,6 +2,7 @@ import { usePlayersStore } from '@/store/players';
 import { useMemo } from 'react';
 import { View } from 'react-native';
 import {
+  getPlayersCount,
   getRightPosition,
   getTopPosition,
 } from '../../helpers/playerNamesHelpers';
@@ -18,27 +19,24 @@ export default function PlayersNames({
   validations,
   resetValidation,
 }: PlayersNamesProps) {
-  const playersCount = usePlayersStore((state) => state.playersCount);
+  const players = usePlayersStore((state) => state.players);
 
-  const players = useMemo(
-    () => Array.from({ length: playersCount }),
-    [playersCount]
-  );
+  const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
   return (
     <PlayersTable>
-      {players.map((_, index) => (
+      {players.map((player) => (
         <View
-          key={index}
+          key={player.id}
           style={{
             position: 'absolute',
-            top: getTopPosition(index, playersCount),
-            right: getRightPosition(index, playersCount),
+            top: getTopPosition(player.id, playersCount),
+            right: getRightPosition(player.id, playersCount),
           }}>
           <PlayersNamesInput
             validations={validations}
             resetValidation={resetValidation}
-            index={index}
+            player={player}
           />
         </View>
       ))}

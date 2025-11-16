@@ -1,24 +1,31 @@
-import { useMemo } from 'react';
-import { PlayersScore } from '../../../types/game';
-import ScoreTableCell from './scoreTableCell';
+import { ROUND_POINTS_INDEX } from '../../../constants/gameConstants';
+import { GameScore } from '../../../types/game';
+import TableCell from '../tableCell';
 
 interface PointCellsProps {
-  points: PlayersScore;
+  score: GameScore;
+  playersCount: number;
 }
 
-export default function PointCells({ points }: PointCellsProps) {
-  const pointsArray = useMemo(() => Object.entries(points), [points]);
-  const columnsCount = useMemo(
-    () => pointsArray.length - 1,
-    [pointsArray.length]
+export default function PointCells({ score, playersCount }: PointCellsProps) {
+  return (
+    <>
+      {score.playersScores.map((playerScore, index) =>
+        playersCount === 4 ? (
+          index % 2 === 0 && (
+            <TableCell key={playerScore.id} index={index}>
+              {Math.floor(playerScore.score / 10)}
+            </TableCell>
+          )
+        ) : (
+          <TableCell key={playerScore.id} index={index}>
+            {Math.floor(playerScore.score / 10)}
+          </TableCell>
+        )
+      )}
+      <TableCell index={ROUND_POINTS_INDEX}>
+        {Math.floor(score.totalRoundScore / 10)}
+      </TableCell>
+    </>
   );
-
-  return pointsArray.map(([playerIndex, playerPoint], index) => (
-    <ScoreTableCell
-      key={playerIndex}
-      index={index}
-      point={playerPoint}
-      columnsCount={columnsCount}
-    />
-  ));
 }

@@ -11,8 +11,6 @@ export default function NextRoundButton() {
     handleCancel,
     inputValue,
     setInputValue,
-    roundPlayer,
-    setRoundPlayer,
     roundScore,
     setRoundScore,
   } = useHandleNextRound();
@@ -27,8 +25,6 @@ export default function NextRoundButton() {
           <ScoreDialogContent
             inputValue={inputValue}
             setInputValue={setInputValue}
-            roundPlayer={roundPlayer}
-            setRoundPlayer={setRoundPlayer}
             roundScore={roundScore}
             setRoundScore={setRoundScore}
           />

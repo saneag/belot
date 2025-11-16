@@ -1,50 +1,35 @@
 import { create } from 'zustand';
-import { prepareEmptyScoreRow } from '../helpers/gameScoreHelpers';
+import {
+  prepareEmptyScoreRow,
+  prepareFirstScoreRow,
+} from '../helpers/gameScoreHelpers';
 import { GameScore } from '../types/game';
+import { Player } from '../types/players';
 
 interface GameStoreValues {
-  score: GameScore;
-  currentRound: number;
-  roundPlayers: Record<number, string>;
+  scores: GameScore[];
 }
 
 interface GameStoreFunctions {
-  initScore: (playersCount: number) => void;
-  setNextScore: (playersCount: number) => void;
+  initScore: (players: Player[]) => void;
+  setNextScore: (players: Player[]) => void;
   reset: VoidFunction;
-  setCurrentRound: (roundNumber: number) => void;
-  setRoundPlayers: (dealer: Record<number, string>) => void;
 }
 
 interface GameStore extends GameStoreValues, GameStoreFunctions {}
 
 export const useGameStore = create<GameStore>((set) => ({
-  score: {},
-  currentRound: 0,
-  roundPlayers: {},
-  initScore: (playersCount) =>
-    set(() => ({
-      score: prepareEmptyScoreRow(playersCount, 0),
+  scores: [],
+  initScore: (players) =>
+    set((state) => ({
+      scores: prepareFirstScoreRow(state.scores, players),
     })),
-  setNextScore: (playersCount) =>
-    set((state) => {
-      const rawRowIndex = Object.keys(state.score).at(-1);
-      const rowIndex = rawRowIndex ? Number(rawRowIndex) + 1 : 0;
-
-      return {
-        score: {
-          ...state.score,
-          ...prepareEmptyScoreRow(playersCount, Number(rowIndex)),
-        },
-        currentRound: rowIndex,
-      };
-    }),
+  setNextScore: (players) =>
+    set((state) => ({
+      scores: [...state.scores, ...prepareEmptyScoreRow(state.scores, players)],
+    })),
   reset: () =>
     set(() => ({
-      score: {},
-      currentRound: 0,
+      scores: [],
     })),
-  setCurrentRound: (currentRound) => set(() => ({ currentRound })),
-  setRoundPlayers: (dealer) =>
-    set((state) => ({ roundPlayers: { ...state.roundPlayers, ...dealer } })),
 }));

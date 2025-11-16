@@ -1,70 +1,68 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { isPlayerNameValid } from '../../helpers/playerNamesValidations';
 import { usePlayersStore } from '../../store/players';
-import DismissKeyboardView from '../dismissKeyboardView';
+import { Player } from '../../types/players';
 import { EmptyNameError, RepeatingNamesError } from './inputErrors';
 import { PlayersNamesProps } from './playersNames';
 
 export interface PlayersNamesInputProps extends PlayersNamesProps {
-  index: number;
+  player: Player;
 }
 
 export default function PlayersNamesInput({
   validations,
   resetValidation,
-  index,
+  player,
 }: PlayersNamesInputProps) {
-  const playersNames = usePlayersStore((state) => state.playersNames);
-  const setPlayersNames = usePlayersStore((state) => state.setPlayersNames);
+  const updatePlayers = usePlayersStore((state) => state.updatePlayers);
 
-  const isInvalid = !isPlayerNameValid(validations, index);
+  const isInvalid = useMemo(
+    () => !isPlayerNameValid(validations, player.id),
+    [player.id, validations]
+  );
 
-  const handlePlayersNamesChange = useCallback(
-    (value: string, index: number) => {
-      setPlayersNames({
-        ...playersNames,
-        [index]: value,
+  const handlePlayerNameChange = useCallback(
+    (value: string) => {
+      updatePlayers(player.id, {
+        name: value,
       });
-
       resetValidation();
     },
-    [playersNames, resetValidation, setPlayersNames]
+    [player.id, resetValidation, updatePlayers]
   );
 
   return (
-    <DismissKeyboardView>
-      <View>
-        <TextInput
-          mode='outlined'
-          label={`Player ${index + 1}`}
-          value={playersNames[index] ?? ''}
-          onChangeText={(value) => handlePlayersNamesChange(value, index)}
-          style={{ maxHeight: 60, width: 130 }}
-          error={isInvalid}
-          theme={{
-            roundness: 30,
-          }}
-          maxLength={15}
-          right={
-            playersNames[index] && (
-              <TextInput.Icon
-                icon='close'
-                onPress={() => handlePlayersNamesChange('', index)}
-              />
-            )
-          }
-        />
-        <EmptyNameError
-          index={index}
-          validations={validations}
-        />
-        <RepeatingNamesError
-          index={index}
-          validations={validations}
-        />
-      </View>
-    </DismissKeyboardView>
+    <View>
+      <TextInput
+        mode='outlined'
+        label={`Player ${player.id + 1}`}
+        value={player.name}
+        onChangeText={handlePlayerNameChange}
+        style={{ maxHeight: 60, width: 130 }}
+        error={isInvalid}
+        theme={{
+          roundness: 30,
+        }}
+        maxLength={15}
+        right={
+          player.name && (
+            <TextInput.Icon
+              icon='close'
+              onPress={() => handlePlayerNameChange('')}
+            />
+          )
+        }
+      />
+      <EmptyNameError
+        player={player}
+        validations={validations}
+      />
+      <RepeatingNamesError
+        player={player}
+        validations={validations}
+      />
+    </View>
   );
 }

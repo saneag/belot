@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useLoadPreviousGame } from '../../hooks/useLoadPreviousGame';
 import { PlayersNamesValidation } from '../../types/validations';
+import DismissKeyboardView from '../dismissKeyboardView';
 import LoadPreviousGameButton from './loadPreviousGameButton';
 import PlayersCount from './playersCount';
 import PlayersNames from './playersNames';
@@ -25,7 +26,7 @@ export default function PlayersSelection() {
   useLoadPreviousGame();
 
   return (
-    <>
+    <DismissKeyboardView>
       <Text style={style.header}>Setup</Text>
 
       <View style={style.form}>
@@ -43,7 +44,7 @@ export default function PlayersSelection() {
           <LoadPreviousGameButton />
         </View>
       </View>
-    </>
+    </DismissKeyboardView>
   );
 }
 

@@ -1,13 +1,17 @@
+import { Player } from '../types/players';
 import { PlayersNamesValidation } from '../types/validations';
+import { getPlayersCount, getPlayersNames } from './playerNamesHelpers';
 
 export const validatePlayersNames = (
-  playersNames: Record<string, string>,
-  playersCount: number
+  players: Player[]
 ): PlayersNamesValidation => {
   const emptyNames: string[] = [];
   const repeatingNames: string[] = [];
 
   const seenNames = new Set<string>();
+
+  const playersNames = getPlayersNames(players);
+  const playersCount = getPlayersCount(players);
 
   for (let [key, value] of Object.entries(playersNames)) {
     if (Number(key) >= playersCount) {

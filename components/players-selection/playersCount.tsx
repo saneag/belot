@@ -1,6 +1,11 @@
 import { usePlayersStore } from '@/store/players';
+import { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
+import {
+  getPlayersCount,
+  setEmptyPlayers,
+} from '../../helpers/playerNamesHelpers';
 
 interface PlayersCountProps {
   resetValidations: VoidFunction;
@@ -9,23 +14,24 @@ interface PlayersCountProps {
 const PLAYERS_COUNT = [2, 3, 4];
 
 export default function PlayersCount({ resetValidations }: PlayersCountProps) {
-  const playersCount = usePlayersStore((state) => state.playersCount);
-  const setPlayersCount = usePlayersStore((state) => state.setPlayersCount);
-  const playersNames = usePlayersStore((state) => state.playersNames);
-  const setPlayersNames = usePlayersStore((state) => state.setPlayersNames);
+  const players = usePlayersStore((state) => state.players);
+  const setPlayers = usePlayersStore((state) => state.setPlayers);
+
+  const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
   const theme = useTheme();
 
   const handlePlayersCountChange = (count: number) => {
-    setPlayersNames(
-      Object.fromEntries(
-        Object.entries(playersNames).filter(([key]) => Number(key) < count)
-      )
-    );
+    setPlayers(setEmptyPlayers(count));
 
-    setPlayersCount(count);
     resetValidations();
   };
+
+  useEffect(() => {
+    if (playersCount === 0) {
+      setPlayers(setEmptyPlayers());
+    }
+  }, [playersCount, setPlayers]);
 
   return (
     <View style={style.container}>

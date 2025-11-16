@@ -1,21 +1,17 @@
 import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
+import { getDealer } from '../../helpers/playerNamesHelpers';
 import { useAppTheme } from '../../helpers/themeHelpers';
 import { usePlayersStore } from '../../store/players';
 
 export default function DealerSelectDialogContent() {
   const { colors } = useAppTheme();
 
-  const playersNames = usePlayersStore((state) => state.playersNames);
-  const playersCount = usePlayersStore((state) => state.playersCount);
-  const dealer = usePlayersStore((state) => state.dealer);
+  const players = usePlayersStore((state) => state.players);
   const setDealer = usePlayersStore((state) => state.setDealer);
 
-  const players = useMemo(
-    () => Array.from({ length: playersCount }),
-    [playersCount]
-  );
+  const dealer = useMemo(() => getDealer(players), [players]);
 
   const handleDealerChange = useCallback(
     (index: number) => {
@@ -26,17 +22,19 @@ export default function DealerSelectDialogContent() {
 
   return (
     <View style={{ gap: 10 }}>
-      {players.map((_, index) => (
+      {players.map((player) => (
         <Button
-          key={index}
-          onPress={() => handleDealerChange(index)}
-          icon={index === dealer ? 'check' : ''}
+          key={player.id}
+          onPress={() => handleDealerChange(player.id)}
+          icon={player.id === dealer?.id ? 'check' : ''}
           textColor='#000'
           mode='outlined'
           style={
-            dealer === index ? { backgroundColor: colors.successLight } : {}
+            player.id === dealer?.id
+              ? { backgroundColor: colors.successLight }
+              : {}
           }>
-          {playersNames[index]}
+          {player.name}
         </Button>
       ))}
     </View>

@@ -1,21 +1,15 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { useCallback } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { usePlayersStore } from '../../../store/players';
 
-export interface RoundPlayerSelectProps {
-  roundPlayer: string;
-  setRoundPlayer: Dispatch<SetStateAction<string>>;
-}
+export default function RoundPlayerSelect() {
+  const players = usePlayersStore((state) => state.players);
+  const setRoundPlayer = usePlayersStore((state) => state.setRoundPlayer);
 
-export default function RoundPlayerSelect({
-  setRoundPlayer,
-}: RoundPlayerSelectProps) {
-  const playersNames = usePlayersStore((state) => state.playersNames);
-
-  const handleDealerChange = useCallback(
-    (playerIndex: string) => {
-      setRoundPlayer(playerIndex);
+  const handleRoundPlayerChange = useCallback(
+    (playerId: number) => {
+      setRoundPlayer(playerId);
     },
     [setRoundPlayer]
   );
@@ -29,13 +23,15 @@ export default function RoundPlayerSelect({
           justifyContent: 'center',
           gap: 10,
           flexWrap: 'wrap',
-        }}>
-        {Object.entries(playersNames).map(([playerIndex, playerName]) => (
+        }}
+      >
+        {players.map((player) => (
           <Button
-            key={playerIndex}
-            mode='outlined'
-            onPress={() => handleDealerChange(playerIndex)}>
-            {playerName}
+            key={player.id}
+            mode="outlined"
+            onPress={() => handleRoundPlayerChange(player.id)}
+          >
+            {player.name}
           </Button>
         ))}
       </View>

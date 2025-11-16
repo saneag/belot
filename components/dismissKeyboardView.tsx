@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 
 interface DismissKeyboardViewProps {
   children: ReactNode;
@@ -12,7 +12,7 @@ export default function DismissKeyboardView({
     <TouchableWithoutFeedback
       onPress={Keyboard.dismiss}
       accessible={false}>
-      {children}
+      {Array.isArray(children) ? <View>{children}</View> : children}
     </TouchableWithoutFeedback>
   );
 }

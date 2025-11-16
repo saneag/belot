@@ -1,27 +1,24 @@
 import { StorageKeys } from '@/constants/storageKeys';
 import { usePlayersStore } from '@/store/players';
 import { useCallback } from 'react';
-import { convertToObject, getFromStorage } from '../helpers/storageHelpers';
+import { getFromStorage } from '../helpers/storageHelpers';
 
 export const useLoadPlayersNames = () => {
-  const setPlayersCount = usePlayersStore((state) => state.setPlayersCount);
-  const setPlayersNames = usePlayersStore((state) => state.setPlayersNames);
+  const setPlayers = usePlayersStore((state) => state.setPlayers);
 
   const loadPlayersNamesFromStore = useCallback(async () => {
     try {
-      const playersCount = await getFromStorage(StorageKeys.playersCount);
-      const playersNames = await getFromStorage(StorageKeys.playersNames);
+      const players = await getFromStorage(StorageKeys.players);
 
-      if (!playersCount || !playersNames) {
+      if (!players) {
         return;
       }
 
-      setPlayersCount(convertToObject(playersCount));
-      setPlayersNames(convertToObject(playersNames));
+      setPlayers(JSON.parse(players));
     } catch (error) {
       console.error('Error in useLoadPlayersNames', error);
     }
-  }, [setPlayersCount, setPlayersNames]);
+  }, [setPlayers]);
 
   return loadPlayersNamesFromStore;
 };
