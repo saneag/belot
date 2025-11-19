@@ -15,10 +15,7 @@ export interface RoundSlice {
   setDealer: (dealer: Player | null) => void;
   setRoundPlayer: (roundPlayer: Player | null) => void;
   setRoundsScores: (roundsScores: RoundScore[]) => void;
-  updateRoundScore: (
-    roundScoreId: number,
-    roundScore: Partial<Omit<RoundScore, 'id'>>
-  ) => void;
+  updateRoundScore: (roundScore: Partial<RoundScore>) => void;
   setEmptyRoundScore: VoidFunction;
 }
 
@@ -38,13 +35,17 @@ export const createRoundSlice: StateCreator<
     })),
   setRoundsScores: (roundsScores) =>
     set((state) => ({ roundsScores, ...setNextDealer(state) })),
-  updateRoundScore: (roundScoreId, roundScore) =>
-    set((state) => ({
-      roundsScores: state.roundsScores.map((stateRoundScore) =>
-        stateRoundScore.id === roundScoreId
-          ? { ...stateRoundScore, ...roundScore }
-          : stateRoundScore
-      ),
-      ...setNextDealer(state),
-    })),
+  updateRoundScore: (roundScore) =>
+    set((state) => {
+      const { id: roundScoreId, ...restRoundScore } = roundScore;
+
+      return {
+        roundsScores: state.roundsScores.map((stateRoundScore) =>
+          stateRoundScore.id === roundScoreId
+            ? { ...stateRoundScore, ...restRoundScore }
+            : stateRoundScore
+        ),
+        ...setNextDealer(state),
+      };
+    }),
 });

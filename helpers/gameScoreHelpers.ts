@@ -1,4 +1,7 @@
-import { DEFAULT_ROUND_POINTS } from '../constants/gameConstants';
+import {
+  DEFAULT_ROUND_POINTS,
+  LIMIT_OF_ROUND_POINTS,
+} from '../constants/gameConstants';
 import { GameSlice } from '../store/game.slice';
 import { PlayersSlice } from '../store/players.slice';
 import { RoundSlice } from '../store/rounds.slice';
@@ -72,7 +75,7 @@ export const prepareEmptyRoundScoreRow = (
   const lastRoundScore = state.roundsScores.at(-1);
 
   return {
-    id: (lastRoundScore?.id || 0) + 1,
+    id: lastRoundScore?.id ? lastRoundScore.id + 1 : 0,
     playersScores: preparePlayersScores(state),
     teamsScores: prepareTeamsScores(state),
     totalRoundScore: DEFAULT_ROUND_POINTS,
@@ -115,4 +118,34 @@ export const prepareTeams = (players: Player[], mode: GameMode) => {
           playersIds: [players[1].id, players[3].id],
         },
       ];
+};
+
+export const roundToDecimal = (totalRoundScore: number) =>
+  Math.floor(totalRoundScore / 10);
+
+export const calculateTotalRoundScore = (
+  operationSign: string,
+  roundPoint: number,
+  prev: RoundScore
+): RoundScore => {
+  let totalRoundScore = prev.totalRoundScore;
+
+  if (operationSign === '+') {
+    totalRoundScore += roundPoint;
+  } else {
+    totalRoundScore -= roundPoint;
+  }
+
+  if (totalRoundScore >= LIMIT_OF_ROUND_POINTS.positive) {
+    totalRoundScore = LIMIT_OF_ROUND_POINTS.positive;
+  }
+
+  if (totalRoundScore <= LIMIT_OF_ROUND_POINTS.negative) {
+    totalRoundScore = LIMIT_OF_ROUND_POINTS.negative;
+  }
+
+  return {
+    ...prev,
+    totalRoundScore,
+  };
 };
