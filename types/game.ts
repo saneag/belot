@@ -2,6 +2,7 @@ import { BaseEntity } from './common';
 
 export interface Player extends BaseEntity {
   name: string;
+  teamId?: number;
 }
 
 export type GameMode = 'classic' | 'team';
@@ -24,4 +25,11 @@ export interface PlayerScore extends BaseEntity {
 export interface TeamScore extends BaseEntity {
   teamId: number;
   score: number;
+}
+
+export interface CalculateRoundScoreProps<T extends PlayerScore | TeamScore> {
+  prevRoundScore: RoundScore;
+  gameMode: GameMode;
+  newScoreValue: number;
+  opponent: T;
 }

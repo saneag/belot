@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import PlayerScoreInput from './playerScoreInput';
+import PlayerScoreInputWrapper from './playerScoreInputWrapper';
 import RoundPlayerDisplay from './roundPlayerDisplay';
 import RoundPlayerSelect, { RoundPlayerSelectProps } from './roundPlayerSelect';
 import RoundScoreSelect, { RoundScoreSelectProps } from './roundScoreSelect';
@@ -26,7 +26,11 @@ export default function ScoreDialogContent(props: ScoreDialogContentProps) {
         roundScore={props.roundScore}
         setRoundScore={props.setRoundScore}
       />
-      <PlayerScoreInput />
+      <PlayerScoreInputWrapper
+        roundScore={props.roundScore}
+        setRoundScore={props.setRoundScore}
+        roundPlayer={props.roundPlayer}
+      />
     </View>
   );
 }

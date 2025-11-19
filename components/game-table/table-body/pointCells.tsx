@@ -1,4 +1,5 @@
 import { ROUND_POINTS_INDEX } from '../../../constants/gameConstants';
+import { roundToDecimal } from '../../../helpers/gameScoreHelpers';
 import { GameMode, RoundScore } from '../../../types/game';
 import TableCell from '../tableCell';
 
@@ -15,11 +16,13 @@ export default function PointCells({ score, gameMode }: PointCellsProps) {
     <>
       {scoreArray.map((playerScore, index) => (
         <TableCell key={playerScore.id} index={index}>
-          {Math.floor(playerScore.score / 10)}
+          {playerScore.score}
         </TableCell>
       ))}
       <TableCell index={ROUND_POINTS_INDEX}>
-        {Math.floor(score.totalRoundScore / 10)}
+        {String(score.totalRoundScore).length === 3
+          ? roundToDecimal(score.totalRoundScore)
+          : score.totalRoundScore}
       </TableCell>
     </>
   );

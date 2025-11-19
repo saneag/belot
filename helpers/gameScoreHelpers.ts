@@ -6,6 +6,7 @@ import { GameSlice } from '../store/game.slice';
 import { PlayersSlice } from '../store/players.slice';
 import { RoundSlice } from '../store/rounds.slice';
 import {
+  CalculateRoundScoreProps,
   GameMode,
   Player,
   PlayerScore,
@@ -22,7 +23,7 @@ const preparePlayersScores = (
 
   if (mode === 'team' || !players) return [];
 
-  if (!lastRoundScore) {
+  if (lastRoundScore === undefined) {
     return players.map((player, index) => ({
       id: index,
       playerId: player.id,
@@ -50,7 +51,7 @@ const prepareTeamsScores = (
 
   if (mode === 'classic' || !teams) return [];
 
-  if (!lastRoundScore) {
+  if (lastRoundScore === undefined) {
     return teams.map((team, index) => ({
       id: index,
       teamId: team.id,
@@ -62,7 +63,7 @@ const prepareTeamsScores = (
     (teamScore) => ({
       id: teamScore.id + 1,
       teamId: teamScore.teamId,
-      score: teamScore.score,
+      score: 0,
     })
   );
 
@@ -75,7 +76,7 @@ export const prepareEmptyRoundScoreRow = (
   const lastRoundScore = state.roundsScores.at(-1);
 
   return {
-    id: lastRoundScore?.id ? lastRoundScore.id + 1 : 0,
+    id: lastRoundScore?.id !== undefined ? lastRoundScore.id + 1 : 0,
     playersScores: preparePlayersScores(state),
     teamsScores: prepareTeamsScores(state),
     totalRoundScore: DEFAULT_ROUND_POINTS,
@@ -148,4 +149,106 @@ export const calculateTotalRoundScore = (
     ...prev,
     totalRoundScore,
   };
+};
+
+export const getOpponentPlayersScore = (
+  roundPlayer: Player | null,
+  playersScores?: PlayerScore[]
+) => {
+  return playersScores?.filter(
+    (playerScore) => playerScore.playerId !== roundPlayer?.id
+  );
+};
+
+export const getOpponentTeamScore = (
+  roundPlayer: Player | null,
+  teamsScores?: TeamScore[]
+) => {
+  return teamsScores?.filter(
+    (teamScore) => teamScore.teamId !== roundPlayer?.teamId
+  );
+};
+
+export const prepareRoundScoresBasedOnGameMode = (
+  gameMode: GameMode,
+  roundScore: RoundScore,
+  opponent: PlayerScore | TeamScore
+) => {
+  return gameMode === 'classic'
+    ? roundScore.playersScores.find(
+        (playersScore) => playersScore.id === opponent.id
+      )
+    : roundScore.teamsScores.find(
+        (teamsScore) => teamsScore.id === opponent.id
+      );
+};
+
+const calculatePlayersScore = () => {};
+
+const calculateTeamsScore = ({
+  newScoreValue,
+  prevRoundScore,
+  opponent,
+}: Omit<CalculateRoundScoreProps<TeamScore>, 'gameMode'>): RoundScore => {
+  const { totalRoundScore, teamsScores } = prevRoundScore;
+
+  const scoreDifference = totalRoundScore - newScoreValue;
+  const isScoreLower = scoreDifference < totalRoundScore / 2;
+
+  if (isScoreLower) {
+    return {
+      ...prevRoundScore,
+      teamsScores: teamsScores.map((teamScore) => {
+        if (teamScore.id === opponent.id) {
+          return {
+            ...teamScore,
+            score: totalRoundScore,
+          };
+        }
+
+        return {
+          ...teamScore,
+          score: -1,
+        };
+      }),
+    };
+  }
+
+  return {
+    ...prevRoundScore,
+    teamsScores: teamsScores.map((teamScore) => {
+      if (teamScore.id === opponent.id) {
+        return {
+          ...teamScore,
+          score: newScoreValue,
+        };
+      }
+
+      return {
+        ...teamScore,
+        score: scoreDifference,
+      };
+    }),
+  };
+};
+
+export const calculateRoundScore = <T extends PlayerScore | TeamScore>({
+  gameMode,
+  newScoreValue,
+  prevRoundScore,
+  opponent,
+}: CalculateRoundScoreProps<T>): RoundScore => {
+  let roundScore = { ...prevRoundScore };
+
+  if (gameMode === 'classic') {
+    calculatePlayersScore();
+  } else {
+    roundScore = calculateTeamsScore({
+      newScoreValue,
+      prevRoundScore,
+      opponent: opponent as TeamScore,
+    });
+  }
+
+  return roundScore;
 };

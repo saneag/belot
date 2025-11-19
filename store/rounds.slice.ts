@@ -39,12 +39,19 @@ export const createRoundSlice: StateCreator<
     set((state) => {
       const { id: roundScoreId, ...restRoundScore } = roundScore;
 
+      const updatedRoundsScores = state.roundsScores.map((stateRoundScore) =>
+        stateRoundScore.id === roundScoreId
+          ? { ...stateRoundScore, ...restRoundScore }
+          : stateRoundScore
+      );
+
+      const newEmptyRow = prepareEmptyRoundScoreRow({
+        ...state,
+        roundsScores: updatedRoundsScores,
+      });
+
       return {
-        roundsScores: state.roundsScores.map((stateRoundScore) =>
-          stateRoundScore.id === roundScoreId
-            ? { ...stateRoundScore, ...restRoundScore }
-            : stateRoundScore
-        ),
+        roundsScores: [...updatedRoundsScores, newEmptyRow],
         ...setNextDealer(state),
       };
     }),

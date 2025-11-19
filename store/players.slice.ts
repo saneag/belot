@@ -26,14 +26,15 @@ export const createPlayersSlice: StateCreator<
     }),
   setEmptyPlayersNames: (count) =>
     set(() => {
+      const mode = count === 4 ? 'team' : 'classic';
+
       const emptyPlayers: Player[] = Array.from({ length: count }).map(
         (_, index) => ({
           id: index,
           name: '',
+          ...(mode === 'team' && { teamId: index % 2 }),
         })
       );
-
-      const mode = emptyPlayers.length === 4 ? 'team' : 'classic';
 
       return {
         players: emptyPlayers,
