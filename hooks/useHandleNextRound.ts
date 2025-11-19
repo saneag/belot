@@ -1,20 +1,22 @@
 import { useCallback, useState } from 'react';
-import { DEFAULT_ROUND_POINTS } from '../constants/gameConstants';
+import { useGameStore } from '../store/game';
+import { Player } from '../types/game';
 
 export const useHandleNextRound = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [roundScore, setRoundScore] = useState(String(DEFAULT_ROUND_POINTS));
+  const [roundPlayer, setRoundPlayer] = useState<Player | null>(null);
+
+  const setStateRoundPlayer = useGameStore((state) => state.setRoundPlayer);
 
   const handleCancel = useCallback(() => {}, []);
 
-  const handleNextRound = useCallback(() => {}, []);
+  const handleNextRound = useCallback(() => {
+    setStateRoundPlayer(roundPlayer);
+  }, [roundPlayer, setStateRoundPlayer]);
 
   return {
     handleNextRound,
     handleCancel,
-    inputValue,
-    setInputValue,
-    roundScore,
-    setRoundScore,
+    roundPlayer,
+    setRoundPlayer,
   };
 };

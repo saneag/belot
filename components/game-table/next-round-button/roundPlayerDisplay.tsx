@@ -1,12 +1,23 @@
+import { useCallback } from 'react';
 import { View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 import { useAppTheme } from '../../../helpers/themeHelpers';
 import { useGameStore } from '../../../store/game';
+import { RoundPlayerSelectProps } from './roundPlayerSelect';
 
-export default function RoundPlayer() {
+type RoundPlayerDisplayProps = RoundPlayerSelectProps;
+
+export default function RoundPlayerDisplay({
+  roundPlayer,
+  setRoundPlayer,
+}: RoundPlayerDisplayProps) {
   const { colors } = useAppTheme();
 
-  const roundPlayer = useGameStore((state) => state.roundPlayer);
+  const stateRoundPlayer = useGameStore((state) => state.roundPlayer);
+
+  const handleRoundPlayerEdit = useCallback(() => {
+    setRoundPlayer(null);
+  }, [setRoundPlayer]);
 
   return (
     <View
@@ -24,16 +35,16 @@ export default function RoundPlayer() {
           fontWeight: 'bold',
         }}
       >
-        {roundPlayer?.name} played this round
+        {stateRoundPlayer?.name ?? roundPlayer?.name} played this round
       </Text>
-      {!roundPlayer && (
+      {!stateRoundPlayer && (
         <IconButton
           icon="pencil"
           iconColor="#001affff"
           mode="contained-tonal"
           size={16}
           style={{ padding: 0 }}
-          onPress={() => {}}
+          onPress={handleRoundPlayerEdit}
         />
       )}
     </View>

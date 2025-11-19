@@ -1,12 +1,18 @@
-import { useCallback } from 'react';
+import { Dispatch, SetStateAction, useCallback } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { useGameStore } from '../../../store/game';
 import { Player } from '../../../types/game';
 
-export default function RoundPlayerSelect() {
+export interface RoundPlayerSelectProps {
+  roundPlayer: Player | null;
+  setRoundPlayer: Dispatch<SetStateAction<Player | null>>;
+}
+
+export default function RoundPlayerSelect({
+  setRoundPlayer,
+}: RoundPlayerSelectProps) {
   const players = useGameStore((state) => state.players);
-  const setRoundPlayer = useGameStore((state) => state.setRoundPlayer);
 
   const handleRoundPlayerChange = useCallback(
     (player: Player) => {

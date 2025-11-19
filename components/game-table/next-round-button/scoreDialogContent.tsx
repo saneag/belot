@@ -1,31 +1,29 @@
 import { View } from 'react-native';
-import { useGameStore } from '../../../store/game';
-import PlayerScoreInput, { PlayerScoreInputProps } from './playerScoreInput';
-import RoundPlayer from './roundPlayer';
-import RoundPlayerSelect from './roundPlayerSelect';
-import RoundScoreSelect, { RoundScoreSelectProps } from './roundScoreSelect';
+import PlayerScoreInput from './playerScoreInput';
+import RoundPlayerDisplay from './roundPlayerDisplay';
+import RoundPlayerSelect, { RoundPlayerSelectProps } from './roundPlayerSelect';
+import RoundScoreSelect from './roundScoreSelect';
 
-interface ScoreDialogContentProps
-  extends PlayerScoreInputProps,
-    RoundScoreSelectProps {}
+type ScoreDialogContentProps = RoundPlayerSelectProps;
 
-export default function ScoreDialogContent({
-  inputValue,
-  roundScore,
-  setInputValue,
-  setRoundScore,
-}: ScoreDialogContentProps) {
-  const roundPlayer = useGameStore((state) => state.roundPlayer);
-
-  if (!roundPlayer) {
-    return <RoundPlayerSelect />;
+export default function ScoreDialogContent(props: ScoreDialogContentProps) {
+  if (!props.roundPlayer) {
+    return (
+      <RoundPlayerSelect
+        roundPlayer={props.roundPlayer}
+        setRoundPlayer={props.setRoundPlayer}
+      />
+    );
   }
 
   return (
     <View style={{ gap: 10 }}>
-      <RoundPlayer />
-      <RoundScoreSelect roundScore={roundScore} setRoundScore={setRoundScore} />
-      <PlayerScoreInput inputValue={inputValue} setInputValue={setInputValue} />
+      <RoundPlayerDisplay
+        roundPlayer={props.roundPlayer}
+        setRoundPlayer={props.setRoundPlayer}
+      />
+      <RoundScoreSelect />
+      <PlayerScoreInput />
     </View>
   );
 }
