@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { usePreventBackPress } from '../../hooks/usePreventBackPress';
 import { useGameStore } from '../../store/game';
-import { usePlayersStore } from '../../store/players';
 import ConfirmationDialog from '../confirmation-dialog';
 import CurrentDealer from '../current-dealer';
 import TimeTracker from '../time-tracker';
@@ -14,16 +13,14 @@ export default function Header() {
 
   const router = useRouter();
 
-  const resetPlayers = usePlayersStore((state) => state.reset);
   const resetGame = useGameStore((state) => state.reset);
 
   usePreventBackPress(() => setShowDialog(true));
 
   const handleReset = useCallback(() => {
     router.back();
-    resetPlayers();
     resetGame();
-  }, [resetGame, resetPlayers, router]);
+  }, [resetGame, router]);
 
   return (
     <View style={style.headerContainer}>

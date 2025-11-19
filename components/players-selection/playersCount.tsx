@@ -1,11 +1,8 @@
-import { usePlayersStore } from '@/store/players';
 import { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import {
-  getPlayersCount,
-  setEmptyPlayers,
-} from '../../helpers/playerNamesHelpers';
+import { getPlayersCount } from '../../helpers/playerNamesHelpers';
+import { useGameStore } from '../../store/game';
 
 interface PlayersCountProps {
   resetValidations: VoidFunction;
@@ -14,24 +11,25 @@ interface PlayersCountProps {
 const PLAYERS_COUNT = [2, 3, 4];
 
 export default function PlayersCount({ resetValidations }: PlayersCountProps) {
-  const players = usePlayersStore((state) => state.players);
-  const setPlayers = usePlayersStore((state) => state.setPlayers);
+  const theme = useTheme();
+
+  const players = useGameStore((state) => state.players);
+  const setEmptyPlayersNames = useGameStore(
+    (state) => state.setEmptyPlayersNames
+  );
 
   const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
-  const theme = useTheme();
-
   const handlePlayersCountChange = (count: number) => {
-    setPlayers(setEmptyPlayers(count));
-
+    setEmptyPlayersNames(count);
     resetValidations();
   };
 
   useEffect(() => {
     if (playersCount === 0) {
-      setPlayers(setEmptyPlayers());
+      setEmptyPlayersNames(2);
     }
-  }, [playersCount, setPlayers]);
+  }, [playersCount, players, setEmptyPlayersNames]);
 
   return (
     <View style={style.container}>
@@ -45,8 +43,9 @@ export default function PlayersCount({ resetValidations }: PlayersCountProps) {
                 backgroundColor: theme.colors.inversePrimary,
               }
             }
-            mode='elevated'
-            onPress={() => handlePlayersCountChange(count)}>
+            mode="elevated"
+            onPress={() => handlePlayersCountChange(count)}
+          >
             {count}
           </Button>
         ))}

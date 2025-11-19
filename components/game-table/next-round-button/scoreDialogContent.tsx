@@ -1,7 +1,5 @@
-import { useMemo } from 'react';
 import { View } from 'react-native';
-import { getRoundPlayer } from '../../../helpers/playerNamesHelpers';
-import { usePlayersStore } from '../../../store/players';
+import { useGameStore } from '../../../store/game';
 import PlayerScoreInput, { PlayerScoreInputProps } from './playerScoreInput';
 import RoundPlayer from './roundPlayer';
 import RoundPlayerSelect from './roundPlayerSelect';
@@ -17,8 +15,7 @@ export default function ScoreDialogContent({
   setInputValue,
   setRoundScore,
 }: ScoreDialogContentProps) {
-  const players = usePlayersStore((state) => state.players);
-  const roundPlayer = useMemo(() => getRoundPlayer(players), [players]);
+  const roundPlayer = useGameStore((state) => state.roundPlayer);
 
   if (!roundPlayer) {
     return <RoundPlayerSelect />;
@@ -27,14 +24,8 @@ export default function ScoreDialogContent({
   return (
     <View style={{ gap: 10 }}>
       <RoundPlayer />
-      <RoundScoreSelect
-        roundScore={roundScore}
-        setRoundScore={setRoundScore}
-      />
-      <PlayerScoreInput
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-      />
+      <RoundScoreSelect roundScore={roundScore} setRoundScore={setRoundScore} />
+      <PlayerScoreInput inputValue={inputValue} setInputValue={setInputValue} />
     </View>
   );
 }

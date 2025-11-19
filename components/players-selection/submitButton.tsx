@@ -8,7 +8,6 @@ import {
 } from '../../helpers/playerNamesValidations';
 import { setMultipleItemsToStorage } from '../../helpers/storageHelpers';
 import { useGameStore } from '../../store/game';
-import { usePlayersStore } from '../../store/players';
 import { PlayersNamesValidation } from '../../types/validations';
 import ConfirmationDialog from '../confirmation-dialog';
 import DealerSelectDialogContent from './dealerSelectDialogContent';
@@ -20,10 +19,8 @@ interface SubmitButtonProps {
 export default function SubmitButton({ setValidations }: SubmitButtonProps) {
   const router = useRouter();
 
-  const initGame = useGameStore((state) => state.initScore);
-
-  const players = usePlayersStore((state) => state.players);
-  const setDealer = usePlayersStore((state) => state.setDealer);
+  const players = useGameStore((state) => state.players);
+  const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
 
   const handleOpenDialog = useCallback(
     (showDialog: VoidFunction) => {
@@ -53,30 +50,23 @@ export default function SubmitButton({ setValidations }: SubmitButtonProps) {
       [StorageKeys.players]: players,
       [StorageKeys.hasPreviousGame]: true,
     });
-    initGame(players);
-    router.navigate('/game-table');
-  }, [initGame, players, router, setValidations]);
 
-  const handleCancel = useCallback(() => {
-    if (players.length) {
-      setDealer(players[0].id);
-    }
-  }, [players, setDealer]);
+    setEmptyRoundScore();
+
+    router.navigate('/game-table');
+  }, [players, router, setEmptyRoundScore, setValidations]);
 
   return (
     <ConfirmationDialog
-      title='Select the dealer'
+      title="Select the dealer"
       content={<DealerSelectDialogContent />}
       renderShowDialog={(showDialog) => (
-        <Button
-          mode='contained'
-          onPress={() => handleOpenDialog(showDialog)}>
+        <Button mode="contained" onPress={() => handleOpenDialog(showDialog)}>
           Submit
         </Button>
       )}
       confirmationCallback={handleSubmit}
-      cancelCallback={handleCancel}
-      primaryButton='confirm'
+      primaryButton="confirm"
     />
   );
 }

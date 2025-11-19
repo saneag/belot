@@ -1,4 +1,4 @@
-import { Player } from '../types/players';
+import { Player } from '../types/game';
 import { PlayersNamesValidation } from '../types/validations';
 import { getPlayersCount, getPlayersNames } from './playerNamesHelpers';
 

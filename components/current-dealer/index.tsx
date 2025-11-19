@@ -1,12 +1,9 @@
-import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
-import { getDealer } from '../../helpers/playerNamesHelpers';
-import { usePlayersStore } from '../../store/players';
+import { useGameStore } from '../../store/game';
 
 export default function CurrentDealer() {
-  const players = usePlayersStore((state) => state.players);
-  const dealer = useMemo(() => getDealer(players), [players]);
+  const dealer = useGameStore((state) => state.dealer);
 
   return <Text style={style.dealer}>Dealer: {dealer?.name}</Text>;
 }

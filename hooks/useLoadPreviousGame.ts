@@ -2,12 +2,10 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
 import { StorageKeys } from '../constants/storageKeys';
 import { getFromStorage } from '../helpers/storageHelpers';
-import { usePlayersStore } from '../store/players';
+import { useGameStore } from '../store/game';
 
 export const useLoadPreviousGame = () => {
-  const setHasPreviousGame = usePlayersStore(
-    (state) => state.setHasPreviousGame
-  );
+  const setHasPreviousGame = useGameStore((state) => state.setHasPreviousGame);
 
   const checkForPreviousGame = useCallback(async () => {
     try {

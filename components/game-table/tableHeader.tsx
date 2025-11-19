@@ -1,28 +1,21 @@
 import { useMemo } from 'react';
-import {
-  getDealer,
-  getPlayersCount,
-  getPlayersNames,
-} from '../../helpers/playerNamesHelpers';
+import { getPlayersNames } from '../../helpers/playerNamesHelpers';
 import { useAppTheme } from '../../helpers/themeHelpers';
-import { usePlayersStore } from '../../store/players';
+import { useGameStore } from '../../store/game';
 import TableCell from './tableCell';
 import TableRow from './tableRow';
 
 export default function TableHeader() {
   const { colors } = useAppTheme();
 
-  const players = usePlayersStore((state) => state.players);
-  const playersCount = useMemo(() => getPlayersCount(players), [players]);
+  const players = useGameStore((state) => state.players);
+  const mode = useGameStore((state) => state.mode);
   const playersNames = useMemo(() => getPlayersNames(players), [players]);
-  const dealer = useMemo(() => getDealer(players), [players]);
+  const dealer = useGameStore((state) => state.dealer);
 
   const filteredPlayerNames = useMemo(
-    () =>
-      playersCount !== 4
-        ? Object.values(playersNames).filter(Boolean)
-        : ['N', 'V'],
-    [playersCount, playersNames]
+    () => (mode === 'classic' ? playersNames : ['N', 'V']),
+    [mode, playersNames]
   );
 
   const playerNamesWithScoreColumn = useMemo(
@@ -46,7 +39,8 @@ export default function TableHeader() {
             ...(index === (dealer?.id || 0) % columnsCount
               ? { backgroundColor: colors.successLight }
               : {}),
-          }}>
+          }}
+        >
           {playerName}
         </TableCell>
       ))}

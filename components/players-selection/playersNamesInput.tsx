@@ -2,8 +2,8 @@ import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { isPlayerNameValid } from '../../helpers/playerNamesValidations';
-import { usePlayersStore } from '../../store/players';
-import { Player } from '../../types/players';
+import { useGameStore } from '../../store/game';
+import { Player } from '../../types/game';
 import { EmptyNameError, RepeatingNamesError } from './inputErrors';
 import { PlayersNamesProps } from './playersNames';
 
@@ -16,7 +16,7 @@ export default function PlayersNamesInput({
   resetValidation,
   player,
 }: PlayersNamesInputProps) {
-  const updatePlayers = usePlayersStore((state) => state.updatePlayers);
+  const updatePlayer = useGameStore((state) => state.updatePlayer);
 
   const isInvalid = useMemo(
     () => !isPlayerNameValid(validations, player.id),
@@ -25,18 +25,18 @@ export default function PlayersNamesInput({
 
   const handlePlayerNameChange = useCallback(
     (value: string) => {
-      updatePlayers(player.id, {
+      updatePlayer(player.id, {
         name: value,
       });
       resetValidation();
     },
-    [player.id, resetValidation, updatePlayers]
+    [player.id, resetValidation, updatePlayer]
   );
 
   return (
     <View>
       <TextInput
-        mode='outlined'
+        mode="outlined"
         label={`Player ${player.id + 1}`}
         value={player.name}
         onChangeText={handlePlayerNameChange}
@@ -49,20 +49,14 @@ export default function PlayersNamesInput({
         right={
           player.name && (
             <TextInput.Icon
-              icon='close'
+              icon="close"
               onPress={() => handlePlayerNameChange('')}
             />
           )
         }
       />
-      <EmptyNameError
-        player={player}
-        validations={validations}
-      />
-      <RepeatingNamesError
-        player={player}
-        validations={validations}
-      />
+      <EmptyNameError player={player} validations={validations} />
+      <RepeatingNamesError player={player} validations={validations} />
     </View>
   );
 }

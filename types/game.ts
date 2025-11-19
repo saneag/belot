@@ -1,12 +1,27 @@
-import { Player } from './players';
+import { BaseEntity } from './common';
 
-export interface PlayersScore extends Player {
+export interface Player extends BaseEntity {
+  name: string;
+}
+
+export type GameMode = 'classic' | 'team';
+
+export interface Team extends BaseEntity {
+  playersIds: number[];
+}
+
+export interface RoundScore extends BaseEntity {
+  playersScores: PlayerScore[];
+  teamsScores: TeamScore[];
+  totalRoundScore: number;
+}
+
+export interface PlayerScore extends BaseEntity {
+  playerId: number;
   score: number;
 }
 
-export interface GameScore {
-  id: number;
-  totalRoundScore: number;
-  roundPlayer: Player | null;
-  playersScores: PlayersScore[];
+export interface TeamScore extends BaseEntity {
+  teamId: number;
+  score: number;
 }

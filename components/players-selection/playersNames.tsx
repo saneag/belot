@@ -1,4 +1,3 @@
-import { usePlayersStore } from '@/store/players';
 import { useMemo } from 'react';
 import { View } from 'react-native';
 import {
@@ -6,6 +5,7 @@ import {
   getRightPosition,
   getTopPosition,
 } from '../../helpers/playerNamesHelpers';
+import { useGameStore } from '../../store/game';
 import { PlayersNamesValidation } from '../../types/validations';
 import PlayersNamesInput from './playersNamesInput';
 import PlayersTable from './playersTable';
@@ -19,7 +19,7 @@ export default function PlayersNames({
   validations,
   resetValidation,
 }: PlayersNamesProps) {
-  const players = usePlayersStore((state) => state.players);
+  const players = useGameStore((state) => state.players);
 
   const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
@@ -32,7 +32,8 @@ export default function PlayersNames({
             position: 'absolute',
             top: getTopPosition(player.id, playersCount),
             right: getRightPosition(player.id, playersCount),
-          }}>
+          }}
+        >
           <PlayersNamesInput
             validations={validations}
             resetValidation={resetValidation}

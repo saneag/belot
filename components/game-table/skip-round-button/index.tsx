@@ -1,19 +1,14 @@
 import { useCallback } from 'react';
 import { Button } from 'react-native-paper';
 import { useGameStore } from '../../../store/game';
-import { usePlayersStore } from '../../../store/players';
 import ConfirmationDialog from '../../confirmation-dialog';
 
 export default function SkipRoundButton() {
-  const players = usePlayersStore((state) => state.players);
-  const setNextDealer = usePlayersStore((state) => state.setNextDealer);
-
-  const setNextScore = useGameStore((state) => state.setNextScore);
+  const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
 
   const handleAddEmptyRow = useCallback(() => {
-    setNextScore(players);
-    setNextDealer();
-  }, [players, setNextDealer, setNextScore]);
+    setEmptyRoundScore();
+  }, [setEmptyRoundScore]);
 
   return (
     <ConfirmationDialog

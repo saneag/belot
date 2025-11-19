@@ -1,15 +1,16 @@
 import { useCallback } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import { usePlayersStore } from '../../../store/players';
+import { useGameStore } from '../../../store/game';
+import { Player } from '../../../types/game';
 
 export default function RoundPlayerSelect() {
-  const players = usePlayersStore((state) => state.players);
-  const setRoundPlayer = usePlayersStore((state) => state.setRoundPlayer);
+  const players = useGameStore((state) => state.players);
+  const setRoundPlayer = useGameStore((state) => state.setRoundPlayer);
 
   const handleRoundPlayerChange = useCallback(
-    (playerId: number) => {
-      setRoundPlayer(playerId);
+    (player: Player) => {
+      setRoundPlayer(player);
     },
     [setRoundPlayer]
   );
@@ -29,7 +30,7 @@ export default function RoundPlayerSelect() {
           <Button
             key={player.id}
             mode="outlined"
-            onPress={() => handleRoundPlayerChange(player.id)}
+            onPress={() => handleRoundPlayerChange(player)}
           >
             {player.name}
           </Button>

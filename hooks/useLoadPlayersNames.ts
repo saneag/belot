@@ -1,10 +1,10 @@
 import { StorageKeys } from '@/constants/storageKeys';
-import { usePlayersStore } from '@/store/players';
 import { useCallback } from 'react';
 import { getFromStorage } from '../helpers/storageHelpers';
+import { useGameStore } from '../store/game';
 
 export const useLoadPlayersNames = () => {
-  const setPlayers = usePlayersStore((state) => state.setPlayers);
+  const setPlayers = useGameStore((state) => state.setPlayers);
 
   const loadPlayersNamesFromStore = useCallback(async () => {
     try {

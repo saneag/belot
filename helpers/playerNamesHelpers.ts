@@ -1,11 +1,6 @@
 import { DimensionValue } from 'react-native';
-import {
-  DEFAULT_PLAYERS_COUNT,
-  TABLE_HEIGHT,
-  TABLE_WIDTH,
-  TEAM_MEMBERS_MAP,
-} from '../constants/gameConstants';
-import { Player } from '../types/players';
+import { TABLE_HEIGHT, TABLE_WIDTH } from '../constants/gameConstants';
+import { Player } from '../types/game';
 
 export const getTopPosition = (
   index: number,
@@ -40,27 +35,7 @@ export const getRightPosition = (
   return layouts[playersCount]?.[index] ?? 'auto';
 };
 
-export const setEmptyPlayers = (count = DEFAULT_PLAYERS_COUNT): Player[] => {
-  return Array.from({ length: count }).map((_, index) => ({
-    id: index,
-    name: '',
-    isDealer: index === 0,
-    isRoundPlayer: false,
-    ...(count === 4 && {
-      teamMembers: {
-        id: TEAM_MEMBERS_MAP[index],
-      },
-    }),
-  }));
-};
+export const getPlayersCount = (players: Player[]) => players.length;
 
 export const getPlayersNames = (players: Player[]) =>
   players.map((player) => player.name);
-
-export const getPlayersCount = (players: Player[]) => players.length;
-
-export const getDealer = (players: Player[]) =>
-  players.find((player) => player.isDealer);
-
-export const getRoundPlayer = (players: Player[]) =>
-  players.find((player) => player.isRoundPlayer);

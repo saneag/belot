@@ -1,23 +1,21 @@
 import { useCallback } from 'react';
 import { Button } from 'react-native-paper';
-import { usePlayersStore } from '../../store/players';
+import { useGameStore } from '../../store/game';
 
 interface ResetButtonProps {
   resetValidation: VoidFunction;
 }
 
 export default function ResetButton({ resetValidation }: ResetButtonProps) {
-  const resetPlayersStore = usePlayersStore((state) => state.reset);
+  const resetGameStore = useGameStore((state) => state.reset);
 
   const handleReset = useCallback(async () => {
-    resetPlayersStore();
+    resetGameStore();
     resetValidation();
-  }, [resetPlayersStore, resetValidation]);
+  }, [resetGameStore, resetValidation]);
 
   return (
-    <Button
-      mode='contained-tonal'
-      onPress={handleReset}>
+    <Button mode="contained-tonal" onPress={handleReset}>
       Reset
     </Button>
   );

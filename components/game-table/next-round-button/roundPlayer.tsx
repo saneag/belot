@@ -1,15 +1,12 @@
-import { useMemo } from 'react';
 import { View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
-import { getRoundPlayer } from '../../../helpers/playerNamesHelpers';
 import { useAppTheme } from '../../../helpers/themeHelpers';
-import { usePlayersStore } from '../../../store/players';
+import { useGameStore } from '../../../store/game';
 
 export default function RoundPlayer() {
   const { colors } = useAppTheme();
 
-  const players = usePlayersStore((state) => state.players);
-  const roundPlayer = useMemo(() => getRoundPlayer(players), [players]);
+  const roundPlayer = useGameStore((state) => state.roundPlayer);
 
   return (
     <View
@@ -19,19 +16,21 @@ export default function RoundPlayer() {
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: -10,
-      }}>
+      }}
+    >
       <Text
         style={{
           color: colors.error,
           fontWeight: 'bold',
-        }}>
+        }}
+      >
         {roundPlayer?.name} played this round
       </Text>
       {!roundPlayer && (
         <IconButton
-          icon='pencil'
-          iconColor='#001affff'
-          mode='contained-tonal'
+          icon="pencil"
+          iconColor="#001affff"
+          mode="contained-tonal"
           size={16}
           style={{ padding: 0 }}
           onPress={() => {}}
