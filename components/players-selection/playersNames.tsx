@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import {
   getPlayersCount,
   getRightPosition,
+  getRotation,
   getTopPosition,
 } from '../../helpers/playerNamesHelpers';
 import { useGameStore } from '../../store/game';
@@ -25,13 +26,14 @@ export default function PlayersNames({
 
   return (
     <PlayersTable>
-      {players.map((player) => (
+      {players.map((player, index) => (
         <View
           key={player.id}
           style={{
             position: 'absolute',
-            top: getTopPosition(player.id, playersCount),
-            right: getRightPosition(player.id, playersCount),
+            top: getTopPosition(index, playersCount),
+            right: getRightPosition(index, playersCount),
+            transform: getRotation(index, playersCount),
           }}
         >
           <PlayersNamesInput

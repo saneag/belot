@@ -1,4 +1,4 @@
-import { DimensionValue } from 'react-native';
+import { DimensionValue, TransformsStyle } from 'react-native';
 import { TABLE_HEIGHT, TABLE_WIDTH } from '../constants/gameConstants';
 import { Player } from '../types/game';
 
@@ -29,10 +29,28 @@ export const getRightPosition = (
   const layouts: Record<number, number[]> = {
     2: [defaultRightShift, defaultRightShift],
     3: [defaultRightShift, -middlePosition, defaultRightShift],
-    4: [defaultRightShift, -middlePosition, defaultRightShift, middlePosition],
+    4: [
+      defaultRightShift,
+      -middlePosition,
+      defaultRightShift,
+      middlePosition + defaultRightShift,
+    ],
   };
 
   return layouts[playersCount]?.[index] ?? 'auto';
+};
+
+export const getRotation = (
+  index: number,
+  playersCount: number
+): TransformsStyle['transform'] => {
+  const layouts: Record<number, TransformsStyle['transform'][]> = {
+    2: [],
+    3: [[], [{ rotateZ: '90deg' }], []],
+    4: [[], [{ rotateZ: '90deg' }], [], [{ rotateZ: '-90deg' }]],
+  };
+
+  return layouts[playersCount]?.[index] ?? [];
 };
 
 export const getPlayersCount = (players: Player[]) => players.length;
