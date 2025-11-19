@@ -32,7 +32,7 @@ export default function DealerSelectDialogContent() {
           key={player.id}
           onPress={() => handleDealerChange(player)}
           icon={player.id === dealer?.id ? 'check' : ''}
-          textColor="#000"
+          textColor={player.id === dealer?.id ? '#000' : ''}
           mode="outlined"
           style={
             player.id === dealer?.id
