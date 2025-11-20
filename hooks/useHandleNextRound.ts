@@ -22,7 +22,6 @@ export const useHandleNextRound = () => {
   const updateRoundScore = useGameStore((state) => state.updateRoundScore);
 
   const handleCancel = useCallback(() => {
-    setRoundScore(defaultRoundScoreState);
     setRoundPlayer(null);
     setStateRoundPlayer(null);
   }, [setStateRoundPlayer]);

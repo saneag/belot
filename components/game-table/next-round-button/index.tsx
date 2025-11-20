@@ -20,6 +20,7 @@ export default function NextRoundButton() {
             Next round
           </Button>
         )}
+        isConfirmationButtonVisible={!!rest.roundPlayer}
         confirmationCallback={handleNextRound}
         cancelCallback={handleCancel}
       />
