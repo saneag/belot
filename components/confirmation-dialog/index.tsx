@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { Button, ButtonProps, Dialog, Portal, Text } from 'react-native-paper';
+import { useKeyboardAvoidView } from '../../hooks/useKeyboardAvoidView';
 
 interface ConfirmationModalProps {
   title: ReactNode;
@@ -37,6 +38,7 @@ export default function ConfirmationDialog({
   isConfirmationButtonVisible = true,
 }: ConfirmationModalProps) {
   const [internalIsVisible, setInternalIsVisible] = useState(false);
+  const bottom = useKeyboardAvoidView();
 
   const isVisible = visible ?? internalIsVisible;
   const setIsVisible = setVisible ?? setInternalIsVisible;
@@ -76,9 +78,7 @@ export default function ConfirmationDialog({
     <Container {...containerStyle}>
       {renderShowDialog(showDialog)}
       <Portal>
-        <Dialog
-          visible={isVisible}
-          onDismiss={hideDialog}>
+        <Dialog visible={isVisible} onDismiss={hideDialog} style={{ bottom }}>
           <Dialog.Title>
             {typeof title === 'string' ? <Text>{title}</Text> : title}
           </Dialog.Title>
@@ -91,14 +91,16 @@ export default function ConfirmationDialog({
                 mode={buttonMode.confirm}
                 onPress={handleDialogConfirmation}
                 style={style.button}
-                disabled={isConfirmButtonDisabled}>
+                disabled={isConfirmButtonDisabled}
+              >
                 Confirm
               </Button>
             )}
             <Button
               mode={buttonMode.cancel}
               onPress={handleDialogCancel}
-              style={style.button}>
+              style={style.button}
+            >
               Cancel
             </Button>
           </Dialog.Actions>
