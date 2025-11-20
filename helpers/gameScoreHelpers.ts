@@ -23,7 +23,7 @@ const preparePlayersScores = (
   const lastRoundScore = state.roundsScores.at(-1);
   const players = state.players;
 
-  if (mode === 'team' || !players) return [];
+  if (mode === 'teams' || !players) return [];
 
   if (lastRoundScore === undefined) {
     return players.map((player, index) => ({
@@ -176,20 +176,6 @@ export const getOpponentTeamScore = (
   return teamsScores?.filter(
     (teamScore) => teamScore.teamId !== roundPlayer?.teamId
   );
-};
-
-export const prepareRoundScoresBasedOnGameMode = (
-  gameMode: GameMode,
-  roundScore: RoundScore,
-  opponent: PlayerScore | TeamScore
-) => {
-  return gameMode === 'classic'
-    ? roundScore.playersScores.find(
-        (playersScore) => playersScore.id === opponent.id
-      )
-    : roundScore.teamsScores.find(
-        (teamsScore) => teamsScore.id === opponent.id
-      );
 };
 
 const handlePlayersScoreChange = () => {};

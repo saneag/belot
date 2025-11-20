@@ -18,6 +18,7 @@ export default function PlayerScoreInputWrapper({
   setRoundScore,
   roundPlayer,
 }: PlayerScoreInputWrapperProps) {
+  const players = useGameStore((state) => state.players);
   const roundsScores = useGameStore((state) => state.roundsScores);
   const gameMode = useGameStore((state) => state.mode);
 
@@ -42,6 +43,7 @@ export default function PlayerScoreInputWrapper({
       roundScore={roundScore}
       setRoundScore={setRoundScore}
       gameMode={gameMode}
+      players={players}
     />
   ));
 }
