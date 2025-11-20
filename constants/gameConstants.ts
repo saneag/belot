@@ -13,3 +13,5 @@ export const TEAM_MEMBERS_MAP: Record<number, number> = {
   2: 0,
   3: 1,
 };
+export const BOLT_POINTS = -999;
+export const BOLT_COUNT_LIMIT = 3;

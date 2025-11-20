@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { useGameStore } from '../../../store/game';
 import TableRow from '../tableRow';
@@ -8,6 +8,10 @@ export default function TableBody() {
   const roundsScores = useGameStore((state) => state.roundsScores);
   const gameMode = useGameStore((state) => state.mode);
   const scrollViewRef = useRef<ScrollView>(null);
+  const roundsScoresCount = useMemo(
+    () => roundsScores.length,
+    [roundsScores.length]
+  );
 
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -15,11 +19,14 @@ export default function TableBody() {
 
   return (
     <ScrollView ref={scrollViewRef}>
-      {roundsScores.map((score) => (
-        <TableRow key={score.id} showTopBorder>
-          <PointCells score={score} gameMode={gameMode} />
-        </TableRow>
-      ))}
+      {roundsScores.map(
+        (score, index) =>
+          (roundsScoresCount === 1 || index !== roundsScoresCount - 1) && (
+            <TableRow key={score.id} showTopBorder>
+              <PointCells score={score} gameMode={gameMode} />
+            </TableRow>
+          )
+      )}
     </ScrollView>
   );
 }

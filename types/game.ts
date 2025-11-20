@@ -7,6 +7,12 @@ export interface Player extends BaseEntity {
 
 export type GameMode = 'classic' | 'team';
 
+export interface BaseScore {
+  score: number;
+  boltCount: number;
+  totalScore: number;
+}
+
 export interface Team extends BaseEntity {
   playersIds: number[];
 }
@@ -17,14 +23,12 @@ export interface RoundScore extends BaseEntity {
   totalRoundScore: number;
 }
 
-export interface PlayerScore extends BaseEntity {
+export interface PlayerScore extends BaseEntity, BaseScore {
   playerId: number;
-  score: number;
 }
 
-export interface TeamScore extends BaseEntity {
+export interface TeamScore extends BaseEntity, BaseScore {
   teamId: number;
-  score: number;
 }
 
 export interface CalculateRoundScoreProps<T extends PlayerScore | TeamScore> {

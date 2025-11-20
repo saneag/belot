@@ -1,8 +1,14 @@
-import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
 import { View } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
 import {
-  calculateRoundScore,
+  handleRoundScoreChange,
   prepareRoundScoresBasedOnGameMode,
 } from '../../../helpers/gameScoreHelpers';
 import {
@@ -33,7 +39,7 @@ export default function PlayerScoreInput({
   const handleInputChange = useCallback(
     (value: number) => {
       setRoundScore((prev) =>
-        calculateRoundScore({
+        handleRoundScoreChange({
           opponent,
           prevRoundScore: prev,
           gameMode,
@@ -44,6 +50,10 @@ export default function PlayerScoreInput({
     [gameMode, opponent, setRoundScore]
   );
 
+  useEffect(() => {
+    handleInputChange(0);
+  }, [handleInputChange]);
+
   return (
     <View>
       <TextInput
@@ -52,7 +62,7 @@ export default function PlayerScoreInput({
         maxLength={3}
         keyboardType="number-pad"
         style={{ minHeight: 60 }}
-        value={String(finalOpponent?.score || opponent.score)}
+        value={String(finalOpponent?.score || 0)}
         onChangeText={(value) => handleInputChange(Number(value))}
         selectTextOnFocus
       />

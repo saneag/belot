@@ -36,11 +36,10 @@ export default function TableCell({
         index !== 0
           ? { borderLeftWidth: 1, borderColor: theme.colors.primary }
           : {},
-      ]}>
+      ]}
+    >
       {typeof children === 'string' || typeof children === 'number' ? (
-        <Text
-          variant={textVariant}
-          style={[baseStyle.playerNameText, style]}>
+        <Text variant={textVariant} style={[baseStyle.playerNameText, style]}>
           {children}
         </Text>
       ) : (
