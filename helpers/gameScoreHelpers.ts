@@ -224,11 +224,20 @@ export const handleRoundScoreChange = <T extends PlayerScore | TeamScore>({
 }: CalculateRoundScoreProps<T>): RoundScore => {
   let roundScore = { ...prevRoundScore };
 
+  let scoreValue = newScoreValue;
+
+  if (scoreValue < 0) {
+    scoreValue = 0;
+  }
+  if (scoreValue > roundScore.totalRoundScore) {
+    scoreValue = roundScore.totalRoundScore;
+  }
+
   if (gameMode === GameMode.classic) {
     handlePlayersScoreChange();
   } else {
     roundScore = handleTeamsScoreChange({
-      newScoreValue,
+      newScoreValue: scoreValue,
       prevRoundScore,
       opponent: opponent as TeamScore,
     });
