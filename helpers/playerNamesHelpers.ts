@@ -1,6 +1,6 @@
 import { DimensionValue, TransformsStyle } from 'react-native';
 import { TABLE_HEIGHT, TABLE_WIDTH } from '../constants/gameConstants';
-import { Player } from '../types/game';
+import { Player, Team } from '../types/game';
 
 export const getTopPosition = (
   index: number,
@@ -57,3 +57,5 @@ export const getPlayersCount = (players: Player[]) => players.length;
 
 export const getPlayersNames = (players: Player[]) =>
   players.map((player) => player.name);
+
+export const getTeamsNames = (teams: Team[]) => teams.map((team) => team.name);

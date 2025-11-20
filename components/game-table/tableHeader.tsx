@@ -1,5 +1,8 @@
 import { useMemo } from 'react';
-import { getPlayersNames } from '../../helpers/playerNamesHelpers';
+import {
+  getPlayersNames,
+  getTeamsNames,
+} from '../../helpers/playerNamesHelpers';
 import { useAppTheme } from '../../helpers/themeHelpers';
 import { useGameStore } from '../../store/game';
 import { GameMode } from '../../types/game';
@@ -13,10 +16,12 @@ export default function TableHeader() {
   const mode = useGameStore((state) => state.mode);
   const playersNames = useMemo(() => getPlayersNames(players), [players]);
   const dealer = useGameStore((state) => state.dealer);
+  const teams = useGameStore((state) => state.teams);
+  const teamsNames = useMemo(() => getTeamsNames(teams), [teams]);
 
   const filteredPlayerNames = useMemo(
-    () => (mode === GameMode.classic ? playersNames : ['N', 'V']),
-    [mode, playersNames]
+    () => (mode === GameMode.classic ? playersNames : teamsNames),
+    [mode, playersNames, teamsNames]
   );
 
   const playerNamesWithScoreColumn = useMemo(

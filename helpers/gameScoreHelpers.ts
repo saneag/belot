@@ -13,6 +13,7 @@ import {
   Player,
   PlayerScore,
   RoundScore,
+  Team,
   TeamScore,
 } from '../types/game';
 
@@ -115,17 +116,19 @@ export const setNextDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
   };
 };
 
-export const prepareTeams = (players: Player[], mode: GameMode) => {
+export const prepareTeams = (players: Player[], mode: GameMode): Team[] => {
   return mode === GameMode.classic
     ? []
     : [
         {
           id: 0,
           playersIds: [players[0].id, players[2].id],
+          name: 'N',
         },
         {
           id: 1,
           playersIds: [players[1].id, players[3].id],
+          name: 'V',
         },
       ];
 };

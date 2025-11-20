@@ -13,6 +13,7 @@ import {
   Player,
   PlayerScore,
   RoundScore,
+  Team,
   TeamScore,
 } from '../../../types/game';
 
@@ -22,6 +23,7 @@ interface PlayerScoreInputProps {
   setRoundScore: Dispatch<SetStateAction<RoundScore>>;
   gameMode: GameMode;
   players: Player[];
+  teams: Team[];
 }
 
 export default function PlayerScoreInput({
@@ -29,6 +31,7 @@ export default function PlayerScoreInput({
   setRoundScore,
   gameMode,
   players,
+  teams,
 }: PlayerScoreInputProps) {
   const inputLabel = useMemo(() => {
     if ('playerId' in opponent) {
@@ -36,8 +39,9 @@ export default function PlayerScoreInput({
       return `Score for ${player?.name}`;
     }
 
-    return `Score for ${opponent.teamId === 0 ? 'N' : 'V'}`;
-  }, [opponent, players]);
+    const team = teams.find((team) => team.id === opponent.teamId);
+    return `Score for ${team?.name}`;
+  }, [opponent, players, teams]);
 
   const handleInputChange = useCallback(
     (value: number) => {

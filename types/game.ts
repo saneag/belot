@@ -18,6 +18,7 @@ export interface BaseScore {
 
 export interface Team extends BaseEntity {
   playersIds: number[];
+  name: string;
 }
 
 export interface RoundScore extends BaseEntity {
