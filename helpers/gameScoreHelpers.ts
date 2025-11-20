@@ -23,7 +23,7 @@ const preparePlayersScores = (
   const lastRoundScore = state.roundsScores.at(-1);
   const players = state.players;
 
-  if (mode === 'teams' || !players) return [];
+  if (mode === GameMode.teams || !players) return [];
 
   if (lastRoundScore === undefined) {
     return players.map((player, index) => ({
@@ -54,7 +54,7 @@ const prepareTeamsScores = (
   const { mode, teams, roundsScores } = state;
   const lastRoundScore = roundsScores.at(-1);
 
-  if (mode === 'classic' || !teams) return [];
+  if (mode === GameMode.classic || !teams) return [];
 
   if (lastRoundScore === undefined) {
     return teams.map((team, index) => ({
@@ -116,7 +116,7 @@ export const setNextDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
 };
 
 export const prepareTeams = (players: Player[], mode: GameMode) => {
-  return mode === 'classic'
+  return mode === GameMode.classic
     ? []
     : [
         {
@@ -207,7 +207,7 @@ export const handleRoundScoreChange = <T extends PlayerScore | TeamScore>({
 }: CalculateRoundScoreProps<T>): RoundScore => {
   let roundScore = { ...prevRoundScore };
 
-  if (gameMode === 'classic') {
+  if (gameMode === GameMode.classic) {
     handlePlayersScoreChange();
   } else {
     roundScore = handleTeamsScoreChange({

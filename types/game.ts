@@ -5,7 +5,10 @@ export interface Player extends BaseEntity {
   teamId?: number;
 }
 
-export type GameMode = 'classic' | 'teams';
+export enum GameMode {
+  classic = 'classic',
+  teams = 'teams',
+}
 
 export interface BaseScore {
   score: number;

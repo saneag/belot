@@ -20,19 +20,20 @@ export const createPlayersSlice: StateCreator<
 
   setPlayers: (players) =>
     set(() => {
-      const mode: GameMode = players.length === 4 ? 'teams' : 'classic';
+      const mode: GameMode =
+        players.length === 4 ? GameMode.teams : GameMode.classic;
 
       return { players, mode, teams: prepareTeams(players, mode) };
     }),
   setEmptyPlayersNames: (count) =>
     set(() => {
-      const mode = count === 4 ? 'teams' : 'classic';
+      const mode = count === 4 ? GameMode.teams : GameMode.classic;
 
       const emptyPlayers: Player[] = Array.from({ length: count }).map(
         (_, index) => ({
           id: index,
           name: '',
-          ...(mode === 'teams' && { teamId: index % 2 }),
+          ...(mode === GameMode.teams && { teamId: index % 2 }),
         })
       );
 

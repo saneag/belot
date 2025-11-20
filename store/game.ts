@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { GameMode } from '../types/game';
 import { createGameSlice, GameSlice } from './game.slice';
 import { createPlayersSlice, PlayersSlice } from './players.slice';
 import { createRoundSlice, RoundSlice } from './rounds.slice';
@@ -15,7 +16,7 @@ export const useGameStore = create<GameStore>((set, ...rest) => ({
   reset: () =>
     set(() => ({
       players: [],
-      mode: 'classic',
+      mode: GameMode.classic,
       dealer: null,
       roundPlayer: null,
       roundsScores: [],

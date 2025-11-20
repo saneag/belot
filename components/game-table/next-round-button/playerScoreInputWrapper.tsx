@@ -4,7 +4,7 @@ import {
   getOpponentTeamScore,
 } from '../../../helpers/gameScoreHelpers';
 import { useGameStore } from '../../../store/game';
-import { Player, RoundScore } from '../../../types/game';
+import { GameMode, Player, RoundScore } from '../../../types/game';
 import PlayerScoreInput from './playerScoreInput';
 
 interface PlayerScoreInputWrapperProps {
@@ -25,7 +25,7 @@ export default function PlayerScoreInputWrapper({
   const lastRoundScore = useMemo(() => roundsScores.at(-1), [roundsScores]);
   const opponents = useMemo(
     () =>
-      gameMode === 'classic'
+      gameMode === GameMode.classic
         ? getOpponentPlayersScore(roundPlayer, lastRoundScore?.playersScores)
         : getOpponentTeamScore(roundPlayer, lastRoundScore?.teamsScores),
     [

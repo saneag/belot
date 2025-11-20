@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { getPlayersNames } from '../../helpers/playerNamesHelpers';
 import { useAppTheme } from '../../helpers/themeHelpers';
 import { useGameStore } from '../../store/game';
+import { GameMode } from '../../types/game';
 import TableCell from './tableCell';
 import TableRow from './tableRow';
 
@@ -14,7 +15,7 @@ export default function TableHeader() {
   const dealer = useGameStore((state) => state.dealer);
 
   const filteredPlayerNames = useMemo(
-    () => (mode === 'classic' ? playersNames : ['N', 'V']),
+    () => (mode === GameMode.classic ? playersNames : ['N', 'V']),
     [mode, playersNames]
   );
 

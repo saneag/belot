@@ -19,7 +19,7 @@ export default function PointCells({ score, gameMode }: PointCellsProps) {
   const { colors } = useAppTheme();
 
   const scoreArray =
-    gameMode === 'classic' ? score.playersScores : score.teamsScores;
+    gameMode === GameMode.classic ? score.playersScores : score.teamsScores;
 
   const getScore = useCallback((score: BaseScore) => {
     if (score.score === BOLT_POINTS) return `BT-${score.boltCount}`;
