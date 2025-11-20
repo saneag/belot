@@ -181,6 +181,20 @@ export const getOpponentTeamScore = (
   );
 };
 
+export const prepareRoundScoresBasedOnGameMode = (
+  gameMode: GameMode,
+  roundScore: RoundScore,
+  opponent: PlayerScore | TeamScore
+) => {
+  return gameMode === 'classic'
+    ? roundScore.playersScores.find(
+        (playersScore) => playersScore.id === opponent.id
+      )
+    : roundScore.teamsScores.find(
+        (teamsScore) => teamsScore.id === opponent.id
+      );
+};
+
 const handlePlayersScoreChange = () => {};
 
 const handleTeamsScoreChange = ({

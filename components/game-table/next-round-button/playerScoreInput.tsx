@@ -7,7 +7,10 @@ import {
 } from 'react';
 import { View } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
-import { handleRoundScoreChange } from '../../../helpers/gameScoreHelpers';
+import {
+  handleRoundScoreChange,
+  prepareRoundScoresBasedOnGameMode,
+} from '../../../helpers/gameScoreHelpers';
 import {
   GameMode,
   Player,
@@ -28,11 +31,17 @@ interface PlayerScoreInputProps {
 
 export default function PlayerScoreInput({
   opponent,
+  roundScore,
   setRoundScore,
   gameMode,
   players,
   teams,
 }: PlayerScoreInputProps) {
+  const finalRoundScore = useMemo(
+    () => prepareRoundScoresBasedOnGameMode(gameMode, roundScore, opponent),
+    [gameMode, opponent, roundScore]
+  );
+
   const inputLabel = useMemo(() => {
     if ('playerId' in opponent) {
       const player = players.find((player) => player.id === opponent.playerId);
@@ -69,7 +78,7 @@ export default function PlayerScoreInput({
         maxLength={3}
         keyboardType="number-pad"
         style={{ minHeight: 60 }}
-        value={String(opponent?.score || 0)}
+        value={String(finalRoundScore?.score || 0)}
         onChangeText={(value) => handleInputChange(Number(value))}
         selectTextOnFocus
       />
