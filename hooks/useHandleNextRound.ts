@@ -23,7 +23,9 @@ export const useHandleNextRound = () => {
 
   const handleCancel = useCallback(() => {
     setRoundScore(defaultRoundScoreState);
-  }, []);
+    setRoundPlayer(null);
+    setStateRoundPlayer(null);
+  }, [setStateRoundPlayer]);
 
   const handleNextRound = useCallback(() => {
     setStateRoundPlayer(roundPlayer);
@@ -31,6 +33,7 @@ export const useHandleNextRound = () => {
 
     setRoundPlayer(null);
     setRoundScore(defaultRoundScoreState);
+    setStateRoundPlayer(null);
   }, [roundPlayer, roundScore, setStateRoundPlayer, updateRoundScore]);
 
   useEffect(() => {
