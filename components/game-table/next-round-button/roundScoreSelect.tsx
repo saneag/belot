@@ -2,10 +2,8 @@ import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { ROUND_POINTS } from '../../../constants/gameConstants';
-import {
-  calculateTotalRoundScore,
-  roundToDecimal,
-} from '../../../helpers/gameScoreHelpers';
+import { roundToDecimal } from '../../../helpers/commonHelpers';
+import { calculateTotalRoundScore } from '../../../helpers/gameScoreHelpers';
 import { RoundScore } from '../../../types/game';
 
 export interface RoundScoreSelectProps {
