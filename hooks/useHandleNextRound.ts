@@ -1,8 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { DEFAULT_ROUND_POINTS } from '../constants/gameConstants';
-import { calculateRoundScore } from '../helpers/gameScoreHelpers';
+import {
+  calculateRoundScore,
+  checkForGameWinner,
+} from '../helpers/gameScoreHelpers';
 import { useGameStore } from '../store/game';
-import { Player, RoundScore } from '../types/game';
+import { Player, RoundScore, Team } from '../types/game';
 
 const defaultRoundScoreState: RoundScore = {
   id: 0,
@@ -11,12 +20,20 @@ const defaultRoundScoreState: RoundScore = {
   totalRoundScore: DEFAULT_ROUND_POINTS,
 };
 
-export const useHandleNextRound = () => {
+interface UseHandleNextRoundProps {
+  setWinner: Dispatch<SetStateAction<Player | Team | null>>;
+}
+
+export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
   const [roundPlayer, setRoundPlayer] = useState<Player | null>(null);
   const [roundScore, setRoundScore] = useState<RoundScore>(
     defaultRoundScoreState
   );
+  const [gameOverflowCount, setGameOverflowCount] = useState(0);
 
+  const players = useGameStore((state) => state.players);
+  const teams = useGameStore((state) => state.teams);
+  const gameMode = useGameStore((state) => state.mode);
   const roundsScores = useGameStore((state) => state.roundsScores);
   const setStateRoundPlayer = useGameStore((state) => state.setRoundPlayer);
   const updateRoundScore = useGameStore((state) => state.updateRoundScore);
@@ -28,12 +45,34 @@ export const useHandleNextRound = () => {
 
   const handleNextRound = useCallback(() => {
     setStateRoundPlayer(roundPlayer);
-    updateRoundScore(calculateRoundScore(roundScore, roundPlayer));
+    const calculatedRoundScore = calculateRoundScore(roundScore, roundPlayer);
+    updateRoundScore(calculatedRoundScore);
 
     setRoundPlayer(null);
     setRoundScore(defaultRoundScoreState);
     setStateRoundPlayer(null);
-  }, [roundPlayer, roundScore, setStateRoundPlayer, updateRoundScore]);
+
+    setWinner(
+      checkForGameWinner(
+        gameMode,
+        players,
+        teams,
+        calculatedRoundScore,
+        gameOverflowCount,
+        setGameOverflowCount
+      )
+    );
+  }, [
+    gameMode,
+    gameOverflowCount,
+    players,
+    roundPlayer,
+    roundScore,
+    setStateRoundPlayer,
+    setWinner,
+    teams,
+    updateRoundScore,
+  ]);
 
   useEffect(() => {
     const lastRoundScores = roundsScores.at(-1);
