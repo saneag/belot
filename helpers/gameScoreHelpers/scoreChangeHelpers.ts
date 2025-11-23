@@ -15,29 +15,33 @@ const handlePlayersScoreChange = ({
 }: Omit<CalculateRoundScoreProps<PlayerScore>, 'gameMode'>): RoundScore => {
   const { playersScores } = prevRoundScore;
 
-  const roundPlayerScore = sumOpponentPlayersScores(
-    prevRoundScore,
-    roundPlayer
-  );
-
-  const getScore = (playerScore: PlayerScore) => {
-    if (playerScore.playerId === opponent.playerId) {
-      return newScoreValue;
-    }
-
-    if (playerScore.playerId === roundPlayer?.id) {
-      return roundPlayerScore;
-    }
-
-    return playerScore.score;
-  };
-
-  return {
+  const opponentsCalculatedRoundScore = {
     ...prevRoundScore,
     playersScores: playersScores.map((playerScore) => ({
       ...playerScore,
-      score: getScore(playerScore),
+      score:
+        playerScore.playerId === opponent.playerId
+          ? newScoreValue
+          : playerScore.score,
     })),
+  };
+
+  let roundPlayerScore = sumOpponentPlayersScores(
+    opponentsCalculatedRoundScore,
+    roundPlayer
+  );
+
+  return {
+    ...opponentsCalculatedRoundScore,
+    playersScores: opponentsCalculatedRoundScore.playersScores.map(
+      (playerScore) => ({
+        ...playerScore,
+        score:
+          playerScore.playerId === roundPlayer?.id
+            ? roundPlayerScore
+            : playerScore.score,
+      })
+    ),
   };
 };
 
@@ -71,21 +75,16 @@ export const handleRoundScoreChange = <T extends PlayerScore | TeamScore>({
 
   const { totalRoundScore } = roundScore;
 
-  let scoreValue = newScoreValue;
+  const opponentsScores = sumOpponentPlayersScores(
+    roundScore,
+    roundPlayer,
+    opponent
+  );
 
-  if (scoreValue < 0) {
-    scoreValue = 0;
-  }
-
-  if (scoreValue > totalRoundScore) {
-    scoreValue = totalRoundScore;
-  }
-
-  const maxAllowed = sumOpponentPlayersScores(roundScore, roundPlayer);
-
-  if (scoreValue > maxAllowed) {
-    scoreValue = maxAllowed;
-  }
+  let scoreValue =
+    gameMode === GameMode.teams
+      ? Math.max(0, Math.min(newScoreValue, totalRoundScore))
+      : Math.max(0, Math.min(newScoreValue, opponentsScores));
 
   if (gameMode === GameMode.classic) {
     roundScore = handlePlayersScoreChange({
