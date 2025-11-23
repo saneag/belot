@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { DEFAULT_ROUND_POINTS } from '../constants/gameConstants';
 import {
   calculateRoundScore,
@@ -74,16 +68,21 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
     updateRoundScore,
   ]);
 
-  useEffect(() => {
-    const lastRoundScores = roundsScores.at(-1);
-    if (lastRoundScores) {
-      setRoundScore(lastRoundScores);
-    }
-  }, [roundsScores]);
+  const handleDialogOpen = useCallback(
+    (showDialog: VoidFunction) => {
+      const lastRoundScores = roundsScores.at(-1);
+      if (lastRoundScores) {
+        setRoundScore(lastRoundScores);
+      }
+      showDialog();
+    },
+    [roundsScores]
+  );
 
   return {
     handleNextRound,
     handleCancel,
+    handleDialogOpen,
     roundPlayer,
     setRoundPlayer,
     roundScore,

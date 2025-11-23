@@ -10,16 +10,17 @@ interface NextRoundButtonProps {
 }
 
 export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
-  const { handleNextRound, handleCancel, ...rest } = useHandleNextRound({
-    setWinner,
-  });
+  const { handleNextRound, handleCancel, handleDialogOpen, ...rest } =
+    useHandleNextRound({
+      setWinner,
+    });
 
   return (
     <ConfirmationDialog
       title="Enter score"
       content={<ScoreDialogContent {...rest} />}
       renderShowDialog={(showDialog) => (
-        <Button mode="contained" onPress={showDialog}>
+        <Button mode="contained" onPress={() => handleDialogOpen(showDialog)}>
           Next round
         </Button>
       )}

@@ -67,8 +67,10 @@ export default function PlayerScoreInput({
   );
 
   useEffect(() => {
-    handleInputChange(0);
-  }, [handleInputChange]);
+    if (roundScore.totalRoundScore) {
+      handleInputChange(finalRoundScore?.score || 0);
+    }
+  }, [finalRoundScore?.score, handleInputChange, roundScore.totalRoundScore]);
 
   return (
     <View>
