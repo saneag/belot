@@ -40,4 +40,5 @@ export interface CalculateRoundScoreProps<T extends PlayerScore | TeamScore> {
   gameMode: GameMode;
   newScoreValue: number;
   opponent: T;
+  roundPlayer?: Player | null;
 }

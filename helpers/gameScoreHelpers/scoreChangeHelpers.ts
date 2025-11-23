@@ -5,8 +5,41 @@ import {
   RoundScore,
   TeamScore,
 } from '../../types/game';
+import { sumOpponentPlayersScores } from './scoreCalculationHelpers';
 
-const handlePlayersScoreChange = () => {};
+const handlePlayersScoreChange = ({
+  newScoreValue,
+  prevRoundScore,
+  opponent,
+  roundPlayer,
+}: Omit<CalculateRoundScoreProps<PlayerScore>, 'gameMode'>): RoundScore => {
+  const { playersScores } = prevRoundScore;
+
+  const roundPlayerScore = sumOpponentPlayersScores(
+    prevRoundScore,
+    roundPlayer
+  );
+
+  const getScore = (playerScore: PlayerScore) => {
+    if (playerScore.playerId === opponent.playerId) {
+      return newScoreValue;
+    }
+
+    if (playerScore.playerId === roundPlayer?.id) {
+      return roundPlayerScore;
+    }
+
+    return playerScore.score;
+  };
+
+  return {
+    ...prevRoundScore,
+    playersScores: playersScores.map((playerScore) => ({
+      ...playerScore,
+      score: getScore(playerScore),
+    })),
+  };
+};
 
 const handleTeamsScoreChange = ({
   newScoreValue,
@@ -32,20 +65,35 @@ export const handleRoundScoreChange = <T extends PlayerScore | TeamScore>({
   newScoreValue,
   prevRoundScore,
   opponent,
+  roundPlayer,
 }: CalculateRoundScoreProps<T>): RoundScore => {
   let roundScore = { ...prevRoundScore };
+
+  const { totalRoundScore } = roundScore;
 
   let scoreValue = newScoreValue;
 
   if (scoreValue < 0) {
     scoreValue = 0;
   }
-  if (scoreValue > roundScore.totalRoundScore) {
-    scoreValue = roundScore.totalRoundScore;
+
+  if (scoreValue > totalRoundScore) {
+    scoreValue = totalRoundScore;
+  }
+
+  const maxAllowed = sumOpponentPlayersScores(roundScore, roundPlayer);
+
+  if (scoreValue > maxAllowed) {
+    scoreValue = maxAllowed;
   }
 
   if (gameMode === GameMode.classic) {
-    handlePlayersScoreChange();
+    roundScore = handlePlayersScoreChange({
+      newScoreValue: scoreValue,
+      prevRoundScore,
+      opponent: opponent as PlayerScore,
+      roundPlayer,
+    });
   } else {
     roundScore = handleTeamsScoreChange({
       newScoreValue: scoreValue,

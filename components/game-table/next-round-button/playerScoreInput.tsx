@@ -27,6 +27,7 @@ interface PlayerScoreInputProps {
   gameMode: GameMode;
   players: Player[];
   teams: Team[];
+  roundPlayer: Player | null;
 }
 
 export default function PlayerScoreInput({
@@ -36,6 +37,7 @@ export default function PlayerScoreInput({
   gameMode,
   players,
   teams,
+  roundPlayer,
 }: PlayerScoreInputProps) {
   const finalRoundScore = useMemo(
     () => prepareRoundScoresBasedOnGameMode(gameMode, roundScore, opponent),
@@ -60,10 +62,11 @@ export default function PlayerScoreInput({
           prevRoundScore: prev,
           gameMode,
           newScoreValue: value,
+          roundPlayer,
         })
       );
     },
-    [gameMode, opponent, setRoundScore]
+    [gameMode, opponent, roundPlayer, setRoundScore]
   );
 
   useEffect(() => {

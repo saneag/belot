@@ -46,6 +46,7 @@ export default function PlayerScoreInputWrapper({
       gameMode={gameMode}
       players={players}
       teams={teams}
+      roundPlayer={roundPlayer}
     />
   ));
 }

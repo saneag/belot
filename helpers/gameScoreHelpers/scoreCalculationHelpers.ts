@@ -119,3 +119,19 @@ export const calculateTotalRoundScore = (
     totalRoundScore,
   };
 };
+
+export const sumOpponentPlayersScores = (
+  roundScore: RoundScore,
+  roundPlayer?: Player | null
+) => {
+  const { playersScores, totalRoundScore } = roundScore;
+
+  return (
+    totalRoundScore -
+    playersScores.reduce(
+      (acc, playerScore) =>
+        acc + playerScore.playerId !== roundPlayer?.id ? playerScore.score : 0,
+      0
+    )
+  );
+};
