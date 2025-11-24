@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { useGameStore } from '../../../store/game';
-import { Player, Team } from '../../../types/game';
+import { GameMode, Player, Team } from '../../../types/game';
 import ConfirmationDialog from '../../confirmation-dialog';
 
 interface WindDialogProps {
@@ -18,6 +18,7 @@ interface WindDialogProps {
 export default function WindDialog({ winner, setWinner }: WindDialogProps) {
   const router = useRouter();
 
+  const gameMode = useGameStore((state) => state.mode);
   const reset = useGameStore((state) => state.reset);
 
   const [isVisible, setIsVisible] = useState(false);
@@ -40,7 +41,7 @@ export default function WindDialog({ winner, setWinner }: WindDialogProps) {
 
   return (
     <ConfirmationDialog
-      title={`${winner?.name} ${winner && 'teamId' in winner ? '' : 'team'} win`}
+      title={`${winner?.name} ${gameMode === GameMode.classic ? 'player' : 'team'} win`}
       content="You can reset the game or check current game points. Do you want to reset the game?"
       renderShowDialog={() => <></>}
       visible={isVisible}
