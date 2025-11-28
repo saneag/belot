@@ -3,18 +3,126 @@ import {
   BOLT_POINTS,
   LIMIT_OF_ROUND_POINTS,
 } from '../../constants/gameConstants';
-import { Player, PlayerScore, RoundScore, TeamScore } from '../../types/game';
+import {
+  Player,
+  PlayerScore,
+  RoundScore,
+  SumOpponentPlayersScoresProps,
+  TeamScore,
+} from '../../types/game';
 import { roundByLastDigit, roundToDecimal } from '../commonHelpers';
 
-const calculatePlayersScore = (
+const calculatePlayersScoresHelper = (
+  playersScores: PlayerScore[],
+  roundPlayer: Player | null,
+  totalRoundScore: number,
+  shouldRoundScore?: boolean
+): PlayerScore[] => {
+  const playerWithHighestScore = getPlayerWithHighestScore(
+    playersScores,
+    roundPlayer,
+    shouldRoundScore
+  );
+  const roundPlayerScore = sumOpponentPlayersScores({
+    roundScore: { playersScores, totalRoundScore },
+    roundPlayer,
+    shouldRoundScore,
+  });
+
+  return playersScores.map((playerScore) => {
+    const { score, boltCount, totalScore, playerId } = playerScore;
+    const roundedScore = shouldRoundScore ? roundByLastDigit(score) : score;
+
+    if (roundedScore === 0) {
+      return {
+        ...playerScore,
+        score: -10,
+        totalScore: totalScore - 10,
+      };
+    }
+
+    if (roundPlayer?.id === playerId) {
+      if (
+        playerWithHighestScore &&
+        roundPlayerScore < playerWithHighestScore.score
+      ) {
+        if (boltCount === BOLT_COUNT_LIMIT) {
+          return {
+            ...playerScore,
+            score: BOLT_POINTS,
+            boltCount: 1,
+            totalScore,
+          };
+        }
+
+        return {
+          ...playerScore,
+          score: BOLT_POINTS,
+          boltCount: boltCount + 1,
+          totalScore:
+            boltCount + 1 === BOLT_COUNT_LIMIT ? totalScore - 10 : totalScore,
+        };
+      } else {
+        return {
+          ...playerScore,
+          score: shouldRoundScore
+            ? roundPlayerScore
+            : roundByLastDigit(roundPlayerScore),
+          totalScore:
+            totalScore +
+            (shouldRoundScore
+              ? roundPlayerScore
+              : roundByLastDigit(roundPlayerScore)),
+        };
+      }
+    }
+
+    if (
+      playerWithHighestScore?.playerId === playerId &&
+      roundPlayerScore < playerWithHighestScore.score
+    ) {
+      return {
+        ...playerScore,
+        score: roundedScore + roundPlayerScore,
+        totalScore: totalScore + roundedScore + roundPlayerScore,
+      };
+    }
+
+    return {
+      ...playerScore,
+      score: roundByLastDigit(score),
+      totalScore: totalScore + roundByLastDigit(score),
+    };
+  });
+};
+
+const calculatePlayersScores = (
   playersScores: PlayerScore[],
   roundPlayer: Player | null,
   totalRoundScore: number
 ): PlayerScore[] => {
-  return playersScores.map((playerScore) => ({
-    ...playerScore,
-    score: roundToDecimal(playerScore.score),
-  }));
+  const calculatedRoundedPlayersScores = calculatePlayersScoresHelper(
+    playersScores,
+    roundPlayer,
+    totalRoundScore,
+    true
+  );
+
+  const scores = calculatedRoundedPlayersScores.map(
+    (playerScore) => playerScore.score
+  );
+  const hasAtLeastTwoEqualScores =
+    new Set(scores).size !== playersScores.length;
+
+  if (hasAtLeastTwoEqualScores) {
+    return calculatePlayersScoresHelper(
+      playersScores,
+      roundPlayer,
+      totalRoundScore
+    );
+  }
+
+  return calculatedRoundedPlayersScores;
 };
 
 const calculateTeamsScore = (
@@ -23,12 +131,12 @@ const calculateTeamsScore = (
   totalRoundScore: number
 ): TeamScore[] => {
   return teamsScores.map((teamScore) => {
-    const { score, boltCount, totalScore } = teamScore;
+    const { score, boltCount, totalScore, teamId } = teamScore;
     const halfScore = totalRoundScore / 2;
 
-    const isScoreLowerThanHalfOfTotalScore = teamScore.score < halfScore;
-    const isEqualScore = teamScore.score === halfScore;
-    const isOwnTeam = roundPlayer?.teamId === teamScore.teamId;
+    const isScoreLowerThanHalfOfTotalScore = score < halfScore;
+    const isEqualScore = score === halfScore;
+    const isOwnTeam = roundPlayer?.teamId === teamId;
 
     if (score === 0) {
       return {
@@ -79,7 +187,7 @@ export const calculateRoundScore = (
 ) => {
   return {
     ...roundScore,
-    playersScores: calculatePlayersScore(
+    playersScores: calculatePlayersScores(
       roundScore.playersScores,
       roundPlayer,
       roundScore.totalRoundScore
@@ -120,18 +228,58 @@ export const calculateTotalRoundScore = (
   };
 };
 
-export const sumOpponentPlayersScores = (
-  roundScore: RoundScore,
-  roundPlayer?: Player | null
-) => {
+export const sumOpponentPlayersScores = ({
+  roundScore,
+  currentOpponent,
+  roundPlayer,
+  shouldRoundScore,
+}: SumOpponentPlayersScoresProps) => {
   const { playersScores, totalRoundScore } = roundScore;
 
-  return (
-    totalRoundScore -
-    playersScores.reduce(
-      (acc, playerScore) =>
-        acc + playerScore.playerId !== roundPlayer?.id ? playerScore.score : 0,
-      0
-    )
-  );
+  const sumScores = playersScores.reduce((acc, playerScore) => {
+    if (playerScore.playerId === roundPlayer?.id) {
+      return acc;
+    }
+
+    if (playerScore.id === currentOpponent?.id) {
+      return acc;
+    }
+
+    return (
+      acc +
+      (shouldRoundScore
+        ? roundByLastDigit(playerScore.score)
+        : playerScore.score)
+    );
+  }, 0);
+
+  if (totalRoundScore && shouldRoundScore) {
+    return roundByLastDigit(totalRoundScore) - sumScores;
+  }
+
+  if (totalRoundScore) {
+    return totalRoundScore - sumScores;
+  }
+
+  return sumScores;
+};
+
+export const getPlayerWithHighestScore = (
+  playersScores: PlayerScore[],
+  roundPlayer: Player | null,
+  shouldRoundScore?: boolean
+): PlayerScore | undefined => {
+  const playerWithHighestScore = playersScores
+    .filter((playerScore) => playerScore.playerId !== roundPlayer?.id)
+    .sort((a, b) => b.score - a.score)
+    .at(0);
+
+  if (playerWithHighestScore && shouldRoundScore) {
+    return {
+      ...playerWithHighestScore,
+      score: roundByLastDigit(playerWithHighestScore.score),
+    };
+  }
+
+  return playerWithHighestScore;
 };

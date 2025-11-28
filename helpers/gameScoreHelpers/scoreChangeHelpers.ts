@@ -26,10 +26,10 @@ const handlePlayersScoreChange = ({
     })),
   };
 
-  let roundPlayerScore = sumOpponentPlayersScores(
-    opponentsCalculatedRoundScore,
-    roundPlayer
-  );
+  let roundPlayerScore = sumOpponentPlayersScores({
+    roundScore: opponentsCalculatedRoundScore,
+    roundPlayer,
+  });
 
   return {
     ...opponentsCalculatedRoundScore,
@@ -75,11 +75,11 @@ export const handleRoundScoreChange = <T extends PlayerScore | TeamScore>({
 
   const { totalRoundScore } = roundScore;
 
-  const opponentsScores = sumOpponentPlayersScores(
+  const opponentsScores = sumOpponentPlayersScores({
     roundScore,
     roundPlayer,
-    opponent
-  );
+    currentOpponent: opponent,
+  });
 
   let scoreValue =
     gameMode === GameMode.teams

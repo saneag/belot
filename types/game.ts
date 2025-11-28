@@ -42,3 +42,10 @@ export interface CalculateRoundScoreProps<T extends PlayerScore | TeamScore> {
   opponent: T;
   roundPlayer?: Player | null;
 }
+
+export interface SumOpponentPlayersScoresProps {
+  roundScore: Pick<RoundScore, 'playersScores' | 'totalRoundScore'>;
+  roundPlayer?: Player | null;
+  currentOpponent?: TeamScore | PlayerScore;
+  shouldRoundScore?: boolean;
+}
