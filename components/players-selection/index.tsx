@@ -57,6 +57,7 @@ const style = StyleSheet.create({
   header: {
     fontSize: 32,
     marginBottom: 20,
+    textAlign: 'center',
   },
   form: {
     gap: 20,
