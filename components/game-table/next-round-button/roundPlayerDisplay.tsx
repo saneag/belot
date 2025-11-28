@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 import { useAppTheme } from '../../../helpers/themeHelpers';
+import { useLocalization } from '../../../localizations/useLocalization';
 import { useGameStore } from '../../../store/game';
 import { RoundPlayerSelectProps } from './roundPlayerSelect';
 
@@ -14,6 +15,10 @@ export default function RoundPlayerDisplay({
   const { colors } = useAppTheme();
 
   const stateRoundPlayer = useGameStore((state) => state.roundPlayer);
+
+  const roundPlayerMsg = useLocalization('next.round.player.display', [
+    stateRoundPlayer?.name ?? roundPlayer?.name,
+  ]);
 
   const handleRoundPlayerEdit = useCallback(() => {
     setRoundPlayer(null);
@@ -35,7 +40,7 @@ export default function RoundPlayerDisplay({
           fontWeight: 'bold',
         }}
       >
-        {stateRoundPlayer?.name ?? roundPlayer?.name} played this round
+        {roundPlayerMsg}
       </Text>
       {!stateRoundPlayer && (
         <IconButton

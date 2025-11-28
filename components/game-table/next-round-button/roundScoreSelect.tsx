@@ -4,6 +4,7 @@ import { Button, Text } from 'react-native-paper';
 import { ROUND_POINTS } from '../../../constants/gameConstants';
 import { roundToDecimal } from '../../../helpers/commonHelpers';
 import { calculateTotalRoundScore } from '../../../helpers/gameScoreHelpers';
+import { useLocalization } from '../../../localizations/useLocalization';
 import { RoundScore } from '../../../types/game';
 
 export interface RoundScoreSelectProps {
@@ -16,6 +17,10 @@ export default function RoundScoreSelect({
   setRoundScore,
 }: RoundScoreSelectProps) {
   const [isPositive, setIsPositive] = useState(true);
+
+  const roundScoreMsg = useLocalization('next.round.score', [
+    roundToDecimal(roundScore.totalRoundScore),
+  ]);
 
   const operationSign = isPositive ? '+' : '-';
 
@@ -31,7 +36,7 @@ export default function RoundScoreSelect({
   return (
     <View style={{ gap: 10, justifyContent: 'center' }}>
       <Text variant="bodyLarge" style={{ textAlign: 'center' }}>
-        Round score: {roundToDecimal(roundScore.totalRoundScore)}
+        {roundScoreMsg}
       </Text>
       <View
         style={{

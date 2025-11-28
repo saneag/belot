@@ -21,7 +21,7 @@ export default function TableBody() {
     <ScrollView ref={scrollViewRef}>
       {roundsScores.map(
         (score, index) =>
-          (roundsScoresCount === 1 || index !== roundsScoresCount - 1) && (
+          index !== roundsScoresCount - 1 && (
             <TableRow key={score.id} showTopBorder>
               <PointCells score={score} gameMode={gameMode} />
             </TableRow>

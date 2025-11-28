@@ -7,6 +7,7 @@ import {
   validatePlayersNames,
 } from '../../helpers/playerNamesValidations';
 import { setMultipleItemsToStorage } from '../../helpers/storageHelpers';
+import { useLocalizations } from '../../localizations/useLocalization';
 import { useGameStore } from '../../store/game';
 import { PlayersNamesValidation } from '../../types/validations';
 import ConfirmationDialog from '../confirmation-dialog';
@@ -18,6 +19,11 @@ interface SubmitButtonProps {
 
 export default function SubmitButton({ setValidations }: SubmitButtonProps) {
   const router = useRouter();
+
+  const messages = useLocalizations([
+    { key: 'players.submit.dialog.title' },
+    { key: 'players.submit.dialog.button' },
+  ]);
 
   const players = useGameStore((state) => state.players);
   const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
@@ -58,11 +64,11 @@ export default function SubmitButton({ setValidations }: SubmitButtonProps) {
 
   return (
     <ConfirmationDialog
-      title="Select the dealer"
+      title={messages.playersSubmitDialogTitle}
       content={<DealerSelectDialogContent />}
       renderShowDialog={(showDialog) => (
         <Button mode="contained" onPress={() => handleOpenDialog(showDialog)}>
-          Submit
+          {messages.playersSubmitDialogButton}
         </Button>
       )}
       confirmationCallback={handleSubmit}

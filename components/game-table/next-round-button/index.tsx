@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Button } from 'react-native-paper';
 import { useHandleNextRound } from '../../../hooks/useHandleNextRound';
+import { useLocalizations } from '../../../localizations/useLocalization';
 import { Player, Team } from '../../../types/game';
 import ConfirmationDialog from '../../confirmation-dialog';
 import ScoreDialogContent from './scoreDialogContent';
@@ -10,6 +11,11 @@ interface NextRoundButtonProps {
 }
 
 export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
+  const messages = useLocalizations([
+    { key: 'next.round.title' },
+    { key: 'next.round.button' },
+  ]);
+
   const { handleNextRound, handleCancel, handleDialogOpen, ...rest } =
     useHandleNextRound({
       setWinner,
@@ -17,11 +23,11 @@ export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
 
   return (
     <ConfirmationDialog
-      title="Enter score"
+      title={messages.nextRoundTitle}
       content={<ScoreDialogContent {...rest} />}
       renderShowDialog={(showDialog) => (
         <Button mode="contained" onPress={() => handleDialogOpen(showDialog)}>
-          Next round
+          {messages.nextRoundButton}
         </Button>
       )}
       isConfirmationButtonVisible={!!rest.roundPlayer}

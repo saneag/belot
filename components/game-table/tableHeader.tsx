@@ -4,6 +4,7 @@ import {
   getTeamsNames,
 } from '../../helpers/playerNamesHelpers';
 import { useAppTheme } from '../../helpers/themeHelpers';
+import { useLocalization } from '../../localizations/useLocalization';
 import { useGameStore } from '../../store/game';
 import { GameMode } from '../../types/game';
 import TableCell from './tableCell';
@@ -11,6 +12,8 @@ import TableRow from './tableRow';
 
 export default function TableHeader() {
   const { colors } = useAppTheme();
+
+  const scoreMsg = useLocalization('score');
 
   const players = useGameStore((state) => state.players);
   const mode = useGameStore((state) => state.mode);
@@ -25,8 +28,8 @@ export default function TableHeader() {
   );
 
   const playerNamesWithScoreColumn = useMemo(
-    () => [...filteredPlayerNames, 'Score'],
-    [filteredPlayerNames]
+    () => [...filteredPlayerNames, scoreMsg],
+    [filteredPlayerNames, scoreMsg]
   );
 
   const columnsCount = useMemo(

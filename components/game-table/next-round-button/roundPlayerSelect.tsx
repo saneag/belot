@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import { useLocalization } from '../../../localizations/useLocalization';
 import { useGameStore } from '../../../store/game';
 import { Player } from '../../../types/game';
 
@@ -12,6 +13,8 @@ export interface RoundPlayerSelectProps {
 export default function RoundPlayerSelect({
   setRoundPlayer,
 }: RoundPlayerSelectProps) {
+  const nextRoundPlayerMsg = useLocalization('next.round.player.select');
+
   const players = useGameStore((state) => state.players);
 
   const handleRoundPlayerChange = useCallback(
@@ -23,7 +26,7 @@ export default function RoundPlayerSelect({
 
   return (
     <View style={{ gap: 10 }}>
-      <Text>Who played?</Text>
+      <Text>{nextRoundPlayerMsg}</Text>
       <View
         style={{
           flexDirection: 'row',

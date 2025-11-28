@@ -1,9 +1,12 @@
 import { useCallback } from 'react';
 import { Button } from 'react-native-paper';
 import { useLoadPlayersNames } from '../../hooks/useLoadPlayersNames';
+import { useLocalization } from '../../localizations/useLocalization';
 import { useGameStore } from '../../store/game';
 
 export default function LoadPreviousGameButton() {
+  const buttonMsg = useLocalization('load.previous.game.button');
+
   const hasPreviousGame = useGameStore((state) => state.hasPreviousGame);
   const loadPlayersNames = useLoadPlayersNames();
 
@@ -17,7 +20,7 @@ export default function LoadPreviousGameButton() {
 
   return (
     <Button icon="reload" mode="outlined" onPress={handleLoadPreviousGame}>
-      Load previous game
+      {buttonMsg}
     </Button>
   );
 }

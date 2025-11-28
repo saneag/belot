@@ -4,8 +4,13 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
+import {
+  formatLocalizationString,
+  useLocalizations,
+} from '../../../localizations/useLocalization';
 import { useGameStore } from '../../../store/game';
 import { GameMode, Player, Team } from '../../../types/game';
 import ConfirmationDialog from '../../confirmation-dialog';
@@ -18,8 +23,31 @@ interface WindDialogProps {
 export default function WindDialog({ winner, setWinner }: WindDialogProps) {
   const router = useRouter();
 
+  const messages = useLocalizations([
+    { key: 'win.dialog.title.player' },
+    { key: 'win.dialog.title.team' },
+    { key: 'win.dialog.content' },
+  ]);
+
   const gameMode = useGameStore((state) => state.mode);
   const reset = useGameStore((state) => state.reset);
+
+  const formattedTitle = useMemo(() => {
+    if (gameMode === GameMode.classic) {
+      return formatLocalizationString(messages.winDialogTitlePlayer, [
+        winner?.name,
+      ]);
+    }
+
+    return formatLocalizationString(messages.winDialogTitleTeam, [
+      winner?.name,
+    ]);
+  }, [
+    gameMode,
+    messages.winDialogTitlePlayer,
+    messages.winDialogTitleTeam,
+    winner?.name,
+  ]);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -41,8 +69,8 @@ export default function WindDialog({ winner, setWinner }: WindDialogProps) {
 
   return (
     <ConfirmationDialog
-      title={`${winner?.name} ${gameMode === GameMode.classic ? 'player' : 'team'} win`}
-      content="You can reset the game or check current game points. Do you want to reset the game?"
+      title={formattedTitle}
+      content={messages.winDialogContent}
       renderShowDialog={() => <></>}
       visible={isVisible}
       setVisible={setIsVisible}

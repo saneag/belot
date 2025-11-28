@@ -56,5 +56,7 @@ const style = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    gap: 5,
+    flexWrap: 'wrap',
   },
 });

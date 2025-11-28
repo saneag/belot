@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { isPlayerNameValid } from '../../helpers/playerNamesValidations';
+import { useLocalization } from '../../localizations/useLocalization';
 import { useGameStore } from '../../store/game';
 import { Player } from '../../types/game';
 import { EmptyNameError, RepeatingNamesError } from './inputErrors';
@@ -16,6 +17,10 @@ export default function PlayersNamesInput({
   resetValidation,
   player,
 }: PlayersNamesInputProps) {
+  const playerNameInputLabel = useLocalization('players.names.input.label', [
+    player.id + 1,
+  ]);
+
   const updatePlayer = useGameStore((state) => state.updatePlayer);
 
   const isInvalid = useMemo(
@@ -37,7 +42,7 @@ export default function PlayersNamesInput({
     <View>
       <TextInput
         mode="outlined"
-        label={`Player ${player.id + 1}`}
+        label={playerNameInputLabel}
         value={player.name}
         onChangeText={handlePlayerNameChange}
         style={{ maxHeight: 60, width: 130 }}

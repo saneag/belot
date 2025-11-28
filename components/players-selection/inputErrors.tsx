@@ -4,23 +4,27 @@ import {
   isPlayersNamesEmpty,
   isPlayersNamesRepeating,
 } from '../../helpers/playerNamesValidations';
+import { useLocalization } from '../../localizations/useLocalization';
 import { PlayersNamesInputProps } from './playersNamesInput';
 
 export function EmptyNameError({
   validations,
   player,
 }: Omit<PlayersNamesInputProps, 'resetValidation'>) {
+  const emptyError = useLocalization('players.names.input.empty.error');
+
   const isInvalid = !isPlayerNameValid(validations, player.id);
   const isNameEmpty = isInvalid && isPlayersNamesEmpty(validations, player.id);
 
   return (
     isNameEmpty && (
       <HelperText
-        type='error'
-        variant='bodySmall'
-        padding='none'
-        visible={isNameEmpty}>
-        Please enter a name
+        type="error"
+        variant="bodySmall"
+        padding="none"
+        visible={isNameEmpty}
+      >
+        {emptyError}
       </HelperText>
     )
   );
@@ -30,6 +34,10 @@ export function RepeatingNamesError({
   validations,
   player,
 }: Omit<PlayersNamesInputProps, 'resetValidation'>) {
+  const duplicatedName = useLocalization(
+    'players.names.input.duplicated.name.error'
+  );
+
   const isInvalid = !isPlayerNameValid(validations, player.id);
   const isRepeatingName =
     isInvalid && isPlayersNamesRepeating(validations, player.id);
@@ -37,11 +45,12 @@ export function RepeatingNamesError({
   return (
     isRepeatingName && (
       <HelperText
-        type='error'
-        variant='bodySmall'
-        padding='none'
-        visible={isRepeatingName}>
-        Duplicated name
+        type="error"
+        variant="bodySmall"
+        padding="none"
+        visible={isRepeatingName}
+      >
+        {duplicatedName}
       </HelperText>
     )
   );

@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
 import { getPlayersCount } from '../../helpers/playerNamesHelpers';
+import { useLocalization } from '../../localizations/useLocalization';
 import { useGameStore } from '../../store/game';
 
 interface PlayersCountProps {
@@ -12,6 +13,8 @@ const PLAYERS_COUNT = [3, 4];
 
 export default function PlayersCount({ resetValidations }: PlayersCountProps) {
   const theme = useTheme();
+
+  const numberOfPlayersMsg = useLocalization('players.count.number.of.players');
 
   const players = useGameStore((state) => state.players);
   const setEmptyPlayersNames = useGameStore(
@@ -33,7 +36,7 @@ export default function PlayersCount({ resetValidations }: PlayersCountProps) {
 
   return (
     <View style={style.container}>
-      <Text style={style.label}>Number of players</Text>
+      <Text style={style.label}>{numberOfPlayersMsg}</Text>
       <View style={style.playersCountContainer}>
         {PLAYERS_COUNT.map((count) => (
           <Button

@@ -9,6 +9,7 @@ import React, {
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { Button, ButtonProps, Dialog, Portal, Text } from 'react-native-paper';
 import { useKeyboardAvoidView } from '../../hooks/useKeyboardAvoidView';
+import { useLocalizations } from '../../localizations/useLocalization';
 
 interface ConfirmationModalProps {
   title: ReactNode;
@@ -39,6 +40,11 @@ export default function ConfirmationDialog({
 }: ConfirmationModalProps) {
   const [internalIsVisible, setInternalIsVisible] = useState(false);
   const bottom = useKeyboardAvoidView();
+
+  const messages = useLocalizations([
+    { key: 'confirmation.dialog.confirm.button' },
+    { key: 'confirmation.dialog.cancel.button' },
+  ]);
 
   const isVisible = visible ?? internalIsVisible;
   const setIsVisible = setVisible ?? setInternalIsVisible;
@@ -93,7 +99,7 @@ export default function ConfirmationDialog({
                 style={style.button}
                 disabled={isConfirmButtonDisabled}
               >
-                Confirm
+                {messages.confirmationDialogConfirmButton}
               </Button>
             )}
             <Button
@@ -101,7 +107,7 @@ export default function ConfirmationDialog({
               onPress={handleDialogCancel}
               style={style.button}
             >
-              Cancel
+              {messages.confirmationDialogCancelButton}
             </Button>
           </Dialog.Actions>
         </Dialog>

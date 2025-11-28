@@ -3,15 +3,24 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { usePreventBackPress } from '../../hooks/usePreventBackPress';
+import { useLocalizations } from '../../localizations/useLocalization';
 import { useGameStore } from '../../store/game';
 import ConfirmationDialog from '../confirmation-dialog';
 import CurrentDealer from '../current-dealer';
 import TimeTracker from '../time-tracker';
 
 export default function Header() {
-  const [showDialog, setShowDialog] = useState(false);
-
   const router = useRouter();
+  const messages = useLocalizations([
+    {
+      key: 'game.reset.title',
+    },
+    {
+      key: 'game.reset.content',
+    },
+  ]);
+
+  const [showDialog, setShowDialog] = useState(false);
 
   const resetGame = useGameStore((state) => state.reset);
 
@@ -25,8 +34,8 @@ export default function Header() {
   return (
     <View style={style.headerContainer}>
       <ConfirmationDialog
-        title="Game reset"
-        content="Are you sure you want to reset the game?"
+        title={messages.gameResetTitle}
+        content={messages.gameResetContent}
         renderShowDialog={(showModal) => (
           <IconButton icon="arrow-left" onPress={showModal} />
         )}

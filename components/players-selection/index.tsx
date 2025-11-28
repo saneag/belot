@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useLoadPreviousGame } from '../../hooks/useLoadPreviousGame';
+import { useLocalization } from '../../localizations/useLocalization';
 import { PlayersNamesValidation } from '../../types/validations';
 import DismissKeyboardView from '../dismissKeyboardView';
 import LoadPreviousGameButton from './loadPreviousGameButton';
@@ -11,6 +12,8 @@ import ResetButton from './resetButton';
 import SubmitButton from './submitButton';
 
 export default function PlayersSelection() {
+  const playersSetupMsg = useLocalization('players.setup');
+
   const [validations, setValidations] = useState<PlayersNamesValidation>({
     emptyNames: [],
     repeatingNames: [],
@@ -27,7 +30,7 @@ export default function PlayersSelection() {
 
   return (
     <DismissKeyboardView>
-      <Text style={style.header}>Setup</Text>
+      <Text style={style.header}>{playersSetupMsg}</Text>
 
       <View style={style.form}>
         <PlayersCount resetValidations={resetValidation} />
@@ -68,5 +71,6 @@ const style = StyleSheet.create({
   submitButtons: {
     justifyContent: 'space-between',
     flexDirection: 'row',
+    gap: 10,
   },
 });

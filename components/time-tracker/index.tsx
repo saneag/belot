@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Text } from 'react-native-paper';
+import { useLocalization } from '../../localizations/useLocalization';
 
 export default function TimeTracker() {
+  const timeMsg = useLocalization('time');
+
   const [timeSpent, setTimeSpent] = useState(0);
   const hours = Math.floor(timeSpent / 3600);
   const minutes = Math.floor((timeSpent % 3600) / 60);
@@ -25,7 +28,7 @@ export default function TimeTracker() {
 
   return (
     <Text>
-      Time: {hours > 0 && hours.toString().padStart(2, '0') + ':'}
+      {timeMsg}: {hours > 0 && hours.toString().padStart(2, '0') + ':'}
       {minutes > 0 && minutes.toString().padStart(2, '0') + ':'}
       {seconds.toString().padStart(isMoreThanTenSeconds.current ? 2 : 1, '0')}
     </Text>

@@ -12,6 +12,10 @@ import {
   prepareRoundScoresBasedOnGameMode,
 } from '../../../helpers/gameScoreHelpers';
 import {
+  formatLocalizationString,
+  useLocalizations,
+} from '../../../localizations/useLocalization';
+import {
   GameMode,
   Player,
   PlayerScore,
@@ -39,6 +43,11 @@ export default function PlayerScoreInput({
   teams,
   roundPlayer,
 }: PlayerScoreInputProps) {
+  const messages = useLocalizations([
+    { key: 'next.round.score.for.player' },
+    { key: 'next.round.score.for.player.input.helper' },
+  ]);
+
   const finalRoundScore = useMemo(
     () => prepareRoundScoresBasedOnGameMode(gameMode, roundScore, opponent),
     [gameMode, opponent, roundScore]
@@ -47,12 +56,16 @@ export default function PlayerScoreInput({
   const inputLabel = useMemo(() => {
     if ('playerId' in opponent) {
       const player = players.find((player) => player.id === opponent.playerId);
-      return `Score for ${player?.name}`;
+      return formatLocalizationString(messages.nextRoundScoreForPlayer, [
+        player?.name,
+      ]);
     }
 
     const team = teams.find((team) => team.id === opponent.teamId);
-    return `Score for ${team?.name}`;
-  }, [opponent, players, teams]);
+    return formatLocalizationString(messages.nextRoundScoreForPlayer, [
+      team?.name,
+    ]);
+  }, [messages.nextRoundScoreForPlayer, opponent, players, teams]);
 
   const handleInputChange = useCallback(
     (value: number) => {
@@ -87,7 +100,9 @@ export default function PlayerScoreInput({
         onChangeText={(value) => handleInputChange(Number(value))}
         selectTextOnFocus
       />
-      <HelperText type="info">Please enter micropoints</HelperText>
+      <HelperText type="info">
+        {messages.nextRoundScoreForPlayerInputHelper}
+      </HelperText>
     </View>
   );
 }
