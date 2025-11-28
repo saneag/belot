@@ -8,7 +8,7 @@ interface PlayersCountProps {
   resetValidations: VoidFunction;
 }
 
-const PLAYERS_COUNT = [2, 3, 4];
+const PLAYERS_COUNT = [3, 4];
 
 export default function PlayersCount({ resetValidations }: PlayersCountProps) {
   const theme = useTheme();
@@ -27,7 +27,7 @@ export default function PlayersCount({ resetValidations }: PlayersCountProps) {
 
   useEffect(() => {
     if (playersCount === 0) {
-      setEmptyPlayersNames(2);
+      setEmptyPlayersNames(PLAYERS_COUNT[0]);
     }
   }, [playersCount, players, setEmptyPlayersNames]);
 
