@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { ScrollView } from 'react-native';
-import { useGameStore } from '../../../store/game';
+import { useGameStore } from '@/store/game';
 import TableRow from '../tableRow';
 import PointCells from './pointCells';
 

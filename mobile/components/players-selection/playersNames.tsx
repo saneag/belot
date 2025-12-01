@@ -5,9 +5,9 @@ import {
   getRightPosition,
   getRotation,
   getTopPosition,
-} from '../../helpers/playerNamesHelpers';
-import { useGameStore } from '../../store/game';
-import { PlayersNamesValidation } from '../../types/validations';
+} from '@/helpers/playerNamesHelpers';
+import { useGameStore } from '@/store/game';
+import { PlayersNamesValidation } from '@/types/validations';
 import PlayersNamesInput from './playersNamesInput';
 import PlayersTable from './playersTable';
 

@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { DEFAULT_ROUND_POINTS } from '../constants/gameConstants';
+import { DEFAULT_ROUND_POINTS } from '@/constants/gameConstants';
 import {
   calculateRoundScore,
   checkForGameWinner,
-} from '../helpers/gameScoreHelpers';
-import { useGameStore } from '../store/game';
-import { Player, RoundScore, Team } from '../types/game';
+} from '@/helpers/gameScoreHelpers';
+import { useGameStore } from '@/store/game';
+import { Player, RoundScore, Team } from '@/types/game';
 
 const defaultRoundScoreState: RoundScore = {
   id: 0,

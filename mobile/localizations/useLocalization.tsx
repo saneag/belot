@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Localization, LocalizationKey } from '../types/localizations';
+import { Localization, LocalizationKey } from '@/types/localizations';
 import { i18nLocale } from './i18nLocale';
 
 export const formatLocalizationString = (

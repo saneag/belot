@@ -1,7 +1,7 @@
 import { routes } from '@/constants/routes';
 import { createStackNavigator } from '@react-navigation/stack';
-import GameTableScreen from '../app/game-table';
-import PlayersSelectionScreen from '../app/players-selection';
+import GameTableScreen from '@/app/game-table';
+import PlayersSelectionScreen from '@/app/players-selection';
 
 const Stack = createStackNavigator();
 
@@ -12,15 +12,13 @@ export default function Navigation() {
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: 'transparent', padding: 0, margin: 0 },
-      }}>
+      }}
+    >
       <Stack.Screen
         name={routes.playersSelection}
         component={PlayersSelectionScreen}
       />
-      <Stack.Screen
-        name={routes.gameTable}
-        component={GameTableScreen}
-      />
+      <Stack.Screen name={routes.gameTable} component={GameTableScreen} />
     </Stack.Navigator>
   );
 }

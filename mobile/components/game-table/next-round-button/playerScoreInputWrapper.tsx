@@ -2,9 +2,9 @@ import { Dispatch, SetStateAction, useMemo } from 'react';
 import {
   getOpponentPlayersScore,
   getOpponentTeamScore,
-} from '../../../helpers/gameScoreHelpers';
-import { useGameStore } from '../../../store/game';
-import { GameMode, Player, RoundScore } from '../../../types/game';
+} from '@/helpers/gameScoreHelpers';
+import { useGameStore } from '@/store/game';
+import { GameMode, Player, RoundScore } from '@/types/game';
 import PlayerScoreInput from './playerScoreInput';
 
 interface PlayerScoreInputWrapperProps {

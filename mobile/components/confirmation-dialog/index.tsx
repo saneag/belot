@@ -8,8 +8,8 @@ import React, {
 } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { Button, ButtonProps, Dialog, Portal, Text } from 'react-native-paper';
-import { useKeyboardAvoidView } from '../../hooks/useKeyboardAvoidView';
-import { useLocalizations } from '../../localizations/useLocalization';
+import { useKeyboardAvoidView } from '@/hooks/useKeyboardAvoidView';
+import { useLocalizations } from '@/localizations/useLocalization';
 
 interface ConfirmationModalProps {
   title: ReactNode;

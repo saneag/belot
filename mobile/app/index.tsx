@@ -17,11 +17,13 @@ function App({ theme }: AppProps) {
           {
             backgroundColor: theme.colors.background,
           },
-        ]}>
+        ]}
+      >
         <KeyboardAwareScrollView
           contentContainerStyle={style.keyboardAwareContainer}
           enableOnAndroid
-          keyboardShouldPersistTaps='handled'>
+          keyboardShouldPersistTaps="handled"
+        >
           <Navigation />
         </KeyboardAwareScrollView>
       </SafeAreaView>

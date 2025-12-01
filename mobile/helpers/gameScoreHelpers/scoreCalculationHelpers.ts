@@ -2,14 +2,14 @@ import {
   BOLT_COUNT_LIMIT,
   BOLT_POINTS,
   LIMIT_OF_ROUND_POINTS,
-} from '../../constants/gameConstants';
+} from '@/constants/gameConstants';
 import {
   Player,
   PlayerScore,
   RoundScore,
   SumOpponentPlayersScoresProps,
   TeamScore,
-} from '../../types/game';
+} from '@/types/game';
 import { roundByLastDigit, roundToDecimal } from '../commonHelpers';
 
 const calculatePlayersScoresHelper = (

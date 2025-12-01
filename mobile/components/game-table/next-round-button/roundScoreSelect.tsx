@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import { ROUND_POINTS } from '../../../constants/gameConstants';
-import { roundToDecimal } from '../../../helpers/commonHelpers';
-import { calculateTotalRoundScore } from '../../../helpers/gameScoreHelpers';
-import { useLocalization } from '../../../localizations/useLocalization';
-import { RoundScore } from '../../../types/game';
+import { ROUND_POINTS } from '@/constants/gameConstants';
+import { roundToDecimal } from '@/helpers/commonHelpers';
+import { calculateTotalRoundScore } from '@/helpers/gameScoreHelpers';
+import { useLocalization } from '@/localizations/useLocalization';
+import { RoundScore } from '@/types/game';
 
 export interface RoundScoreSelectProps {
   roundScore: RoundScore;

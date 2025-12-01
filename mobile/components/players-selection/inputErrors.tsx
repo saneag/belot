@@ -3,8 +3,8 @@ import {
   isPlayerNameValid,
   isPlayersNamesEmpty,
   isPlayersNamesRepeating,
-} from '../../helpers/playerNamesValidations';
-import { useLocalization } from '../../localizations/useLocalization';
+} from '@/helpers/playerNamesValidations';
+import { useLocalization } from '@/localizations/useLocalization';
 import { PlayersNamesInputProps } from './playersNamesInput';
 
 export function EmptyNameError({

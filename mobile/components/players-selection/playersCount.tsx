@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { getPlayersCount } from '../../helpers/playerNamesHelpers';
-import { useLocalization } from '../../localizations/useLocalization';
-import { useGameStore } from '../../store/game';
+import { getPlayersCount } from '@/helpers/playerNamesHelpers';
+import { useLocalization } from '@/localizations/useLocalization';
+import { useGameStore } from '@/store/game';
 
 interface PlayersCountProps {
   resetValidations: VoidFunction;

@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-paper';
-import GameTable from '../components/game-table';
-import Header from '../components/game-table/header';
+import GameTable from '@/components/game-table';
+import Header from '@/components/game-table/header';
 
 export default function GameTableScreen() {
   return (

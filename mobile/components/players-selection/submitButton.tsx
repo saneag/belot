@@ -1,15 +1,15 @@
 import { useRouter } from 'expo-router';
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { Button } from 'react-native-paper';
-import { StorageKeys } from '../../constants/storageKeys';
+import { StorageKeys } from '@/constants/storageKeys';
 import {
   isPlayerNameValid,
   validatePlayersNames,
-} from '../../helpers/playerNamesValidations';
-import { setMultipleItemsToStorage } from '../../helpers/storageHelpers';
-import { useLocalizations } from '../../localizations/useLocalization';
-import { useGameStore } from '../../store/game';
-import { PlayersNamesValidation } from '../../types/validations';
+} from '@/helpers/playerNamesValidations';
+import { setMultipleItemsToStorage } from '@/helpers/storageHelpers';
+import { useLocalizations } from '@/localizations/useLocalization';
+import { useGameStore } from '@/store/game';
+import { PlayersNamesValidation } from '@/types/validations';
 import ConfirmationDialog from '../confirmation-dialog';
 import DealerSelectDialogContent from './dealerSelectDialogContent';
 

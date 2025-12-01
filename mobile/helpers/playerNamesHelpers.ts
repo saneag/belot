@@ -1,6 +1,6 @@
 import { DimensionValue, TransformsStyle } from 'react-native';
-import { TABLE_HEIGHT, TABLE_WIDTH } from '../constants/gameConstants';
-import { Player, Team } from '../types/game';
+import { TABLE_HEIGHT, TABLE_WIDTH } from '@/constants/gameConstants';
+import { Player, Team } from '@/types/game';
 
 export const getTopPosition = (
   index: number,

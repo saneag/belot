@@ -1,12 +1,9 @@
 import { useMemo } from 'react';
-import {
-  getPlayersNames,
-  getTeamsNames,
-} from '../../helpers/playerNamesHelpers';
-import { useAppTheme } from '../../helpers/themeHelpers';
-import { useLocalization } from '../../localizations/useLocalization';
-import { useGameStore } from '../../store/game';
-import { GameMode } from '../../types/game';
+import { getPlayersNames, getTeamsNames } from '@/helpers/playerNamesHelpers';
+import { useAppTheme } from '@/helpers/themeHelpers';
+import { useLocalization } from '@/localizations/useLocalization';
+import { useGameStore } from '@/store/game';
+import { GameMode } from '@/types/game';
 import TableCell from './tableCell';
 import TableRow from './tableRow';
 

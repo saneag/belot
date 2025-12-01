@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useLocalization } from '../../localizations/useLocalization';
-import { useGameStore } from '../../store/game';
+import { useLocalization } from '@/localizations/useLocalization';
+import { useGameStore } from '@/store/game';
 
 export default function CurrentDealer() {
   const dealer = useGameStore((state) => state.dealer);

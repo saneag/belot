@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { Button } from 'react-native-paper';
-import { useLoadPlayersNames } from '../../hooks/useLoadPlayersNames';
-import { useLocalization } from '../../localizations/useLocalization';
-import { useGameStore } from '../../store/game';
+import { useLoadPlayersNames } from '@/hooks/useLoadPlayersNames';
+import { useLocalization } from '@/localizations/useLocalization';
+import { useGameStore } from '@/store/game';
 
 export default function LoadPreviousGameButton() {
   const buttonMsg = useLocalization('load.previous.game.button');

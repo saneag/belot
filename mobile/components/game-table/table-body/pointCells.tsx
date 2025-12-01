@@ -4,10 +4,10 @@ import {
   BOLT_COUNT_LIMIT,
   BOLT_POINTS,
   ROUND_POINTS_INDEX,
-} from '../../../constants/gameConstants';
-import { roundToDecimal } from '../../../helpers/commonHelpers';
-import { useAppTheme } from '../../../helpers/themeHelpers';
-import { BaseScore, GameMode, RoundScore } from '../../../types/game';
+} from '@/constants/gameConstants';
+import { roundToDecimal } from '@/helpers/commonHelpers';
+import { useAppTheme } from '@/helpers/themeHelpers';
+import { BaseScore, GameMode, RoundScore } from '@/types/game';
 import TableCell from '../tableCell';
 
 interface PointCellsProps {

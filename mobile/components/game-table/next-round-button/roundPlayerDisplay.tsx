@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
-import { useAppTheme } from '../../../helpers/themeHelpers';
-import { useLocalization } from '../../../localizations/useLocalization';
-import { useGameStore } from '../../../store/game';
+import { useAppTheme } from '@/helpers/themeHelpers';
+import { useLocalization } from '@/localizations/useLocalization';
+import { useGameStore } from '@/store/game';
 import { RoundPlayerSelectProps } from './roundPlayerSelect';
 
 type RoundPlayerDisplayProps = RoundPlayerSelectProps;

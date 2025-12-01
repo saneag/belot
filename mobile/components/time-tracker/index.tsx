@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Text } from 'react-native-paper';
-import { useLocalization } from '../../localizations/useLocalization';
+import { useLocalization } from '@/localizations/useLocalization';
 
 export default function TimeTracker() {
   const timeMsg = useLocalization('time');

@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import PlayersSelection from '../components/players-selection';
+import PlayersSelection from '@/components/players-selection';
 
 export default function PlayersSelectionScreen() {
   return (

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { Player, Team } from '../../types/game';
+import { Player, Team } from '@/types/game';
 import ResetGameButton from '../reset-game-button';
 import NextRoundButton from './next-round-button';
 import SkipRoundButton from './skip-round-button';
