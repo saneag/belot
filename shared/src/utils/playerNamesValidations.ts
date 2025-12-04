@@ -1,5 +1,4 @@
-import { Player } from '@/types/game';
-import { PlayersNamesValidation } from '@/types/validations';
+import { Player, PlayersNamesValidation } from '../types';
 import { getPlayersCount, getPlayersNames } from './playerNamesHelpers';
 
 export const validatePlayersNames = (

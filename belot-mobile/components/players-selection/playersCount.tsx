@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { getPlayersCount } from '@/helpers/playerNamesHelpers';
+import { getPlayersCount } from '@belot/shared';
 import { useLocalization } from '@/localizations/useLocalization';
 import { useGameStore } from '@/store/game';
 

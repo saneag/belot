@@ -5,7 +5,7 @@ import {
   getRightPosition,
   getRotation,
   getTopPosition,
-} from '@/helpers/playerNamesHelpers';
+} from '@belot/shared';
 import { useGameStore } from '@/store/game';
 import { PlayersNamesValidation } from '@/types/validations';
 import PlayersNamesInput from './playersNamesInput';

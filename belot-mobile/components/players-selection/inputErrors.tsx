@@ -3,7 +3,7 @@ import {
   isPlayerNameValid,
   isPlayersNamesEmpty,
   isPlayersNamesRepeating,
-} from '@/helpers/playerNamesValidations';
+} from '@belot/shared';
 import { useLocalization } from '@/localizations/useLocalization';
 import { PlayersNamesInputProps } from './playersNamesInput';
 

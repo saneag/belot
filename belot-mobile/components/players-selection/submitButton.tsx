@@ -1,11 +1,11 @@
 import { useRouter } from 'expo-router';
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { Button } from 'react-native-paper';
-import { StorageKeys } from '@belot/shared';
 import {
+  StorageKeys,
   isPlayerNameValid,
   validatePlayersNames,
-} from '@/helpers/playerNamesValidations';
+} from '@belot/shared';
 import { setMultipleItemsToStorage } from '@/helpers/storageHelpers';
 import { useLocalizations } from '@/localizations/useLocalization';
 import { useGameStore } from '@/store/game';
