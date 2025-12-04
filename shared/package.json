@@ -1,0 +1,17 @@
+{
+  "name": "@belot/shared",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "react-native": "*",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "belot",
+  "private": true,
+  "workspaces": [
+    "belot-fe/*",
+    "belot-mobile/*",
+    "shared/*"
+  ]
+}
