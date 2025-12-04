@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
-import { NEXT_WINNING_STEP, WIN_POINTS } from '@belot/shared';
-import { PlayersSlice } from '@/store/players.slice';
-import { RoundSlice } from '@/store/rounds.slice';
+import type { Dispatch, SetStateAction } from 'react';
+import { NEXT_WINNING_STEP, WIN_POINTS } from '../../constants';
+import { PlayersSlice } from '../../store/players.slice';
+import { RoundSlice } from '../../store/rounds.slice';
 import {
   GameMode,
   Player,
@@ -9,7 +9,7 @@ import {
   RoundScore,
   Team,
   TeamScore,
-} from '@/types/game';
+} from '../../types';
 
 export const setNextDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
   if (state.roundsScores.length === 0) {

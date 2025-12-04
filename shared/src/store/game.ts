@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { GameMode } from '@/types/game';
+import { GameMode } from '../types';
 import { createGameSlice, GameSlice } from './game.slice';
 import { createPlayersSlice, PlayersSlice } from './players.slice';
 import { createRoundSlice, RoundSlice } from './rounds.slice';

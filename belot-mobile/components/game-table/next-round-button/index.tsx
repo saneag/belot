@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { Button } from 'react-native-paper';
 import { useHandleNextRound } from '@/hooks/useHandleNextRound';
 import { useLocalizations } from '@/localizations/useLocalization';
-import { Player, Team } from '@/types/game';
+import { Player, Team } from '@belot/shared';
 import ConfirmationDialog from '../../confirmation-dialog';
 import ScoreDialogContent from './scoreDialogContent';
 

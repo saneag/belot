@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
-import { getPlayersNames, getTeamsNames } from '@belot/shared';
+import {
+  getPlayersNames,
+  getTeamsNames,
+  useGameStore,
+  GameMode,
+} from '@belot/shared';
 import { useAppTheme } from '@/helpers/themeHelpers';
 import { useLocalization } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
-import { GameMode } from '@/types/game';
 import TableCell from './tableCell';
 import TableRow from './tableRow';
 

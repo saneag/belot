@@ -2,9 +2,11 @@ import { Dispatch, SetStateAction, useMemo } from 'react';
 import {
   getOpponentPlayersScore,
   getOpponentTeamScore,
-} from '@/helpers/gameScoreHelpers';
-import { useGameStore } from '@/store/game';
-import { GameMode, Player, RoundScore } from '@/types/game';
+  useGameStore,
+  GameMode,
+  Player,
+  RoundScore,
+} from '@belot/shared';
 import PlayerScoreInput from './playerScoreInput';
 
 interface PlayerScoreInputWrapperProps {

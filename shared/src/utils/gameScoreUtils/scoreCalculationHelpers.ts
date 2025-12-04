@@ -2,16 +2,15 @@ import {
   BOLT_COUNT_LIMIT,
   BOLT_POINTS,
   LIMIT_OF_ROUND_POINTS,
-  roundByLastDigit,
-  roundToDecimal,
-} from '@belot/shared';
+} from '../../constants';
 import {
   Player,
   PlayerScore,
   RoundScore,
   SumOpponentPlayersScoresProps,
   TeamScore,
-} from '@/types/game';
+} from '../../types';
+import { roundByLastDigit, roundToDecimal } from '../commonUtils';
 
 const calculatePlayersScoresHelper = (
   playersScores: PlayerScore[],

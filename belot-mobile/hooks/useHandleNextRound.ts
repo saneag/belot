@@ -1,11 +1,13 @@
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { DEFAULT_ROUND_POINTS } from '@belot/shared';
 import {
+  DEFAULT_ROUND_POINTS,
+  useGameStore,
   calculateRoundScore,
   checkForGameWinner,
-} from '@/helpers/gameScoreHelpers';
-import { useGameStore } from '@/store/game';
-import { Player, RoundScore, Team } from '@/types/game';
+  Player,
+  RoundScore,
+  Team,
+} from '@belot/shared';
 
 const defaultRoundScoreState: RoundScore = {
   id: 0,

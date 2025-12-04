@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Button } from 'react-native-paper';
 import { useLocalizations } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
+import { useGameStore } from '@belot/shared';
 import ConfirmationDialog from '../../confirmation-dialog';
 
 export default function SkipRoundButton() {

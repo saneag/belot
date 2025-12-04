@@ -5,9 +5,9 @@ import {
   getRightPosition,
   getRotation,
   getTopPosition,
+  useGameStore,
+  PlayersNamesValidation,
 } from '@belot/shared';
-import { useGameStore } from '@/store/game';
-import { PlayersNamesValidation } from '@/types/validations';
 import PlayersNamesInput from './playersNamesInput';
 import PlayersTable from './playersTable';
 

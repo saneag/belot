@@ -5,10 +5,11 @@ import {
   BOLT_POINTS,
   ROUND_POINTS_INDEX,
   roundToDecimal,
+  BaseScore,
+  GameMode,
+  RoundScore,
 } from '@belot/shared';
-
 import { useAppTheme } from '@/helpers/themeHelpers';
-import { BaseScore, GameMode, RoundScore } from '@/types/game';
 import TableCell from '../tableCell';
 
 interface PointCellsProps {

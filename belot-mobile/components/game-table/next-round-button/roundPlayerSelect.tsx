@@ -2,8 +2,7 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { useLocalization } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
-import { Player } from '@/types/game';
+import { useGameStore, Player } from '@belot/shared';
 
 export interface RoundPlayerSelectProps {
   roundPlayer: Player | null;

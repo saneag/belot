@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { usePreventBackPress } from '@/hooks/usePreventBackPress';
 import { useLocalizations } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
+import { useGameStore } from '@belot/shared';
 import ConfirmationDialog from '../confirmation-dialog';
 import CurrentDealer from '../current-dealer';
 import TimeTracker from '../time-tracker';

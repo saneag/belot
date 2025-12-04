@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useLoadPreviousGame } from '@/hooks/useLoadPreviousGame';
 import { useLocalization } from '@/localizations/useLocalization';
-import { PlayersNamesValidation } from '@/types/validations';
+import { PlayersNamesValidation } from '@belot/shared';
 import DismissKeyboardView from '../dismissKeyboardView';
 import LoadPreviousGameButton from './loadPreviousGameButton';
 import PlayersCount from './playersCount';

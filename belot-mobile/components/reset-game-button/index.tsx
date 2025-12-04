@@ -2,8 +2,7 @@ import { useRouter } from 'expo-router';
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { Button } from 'react-native-paper';
 import { useLocalization } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
-import { Player, Team } from '@/types/game';
+import { useGameStore, Player, Team } from '@belot/shared';
 
 interface ResetGameButtonProps {
   setWinner: Dispatch<SetStateAction<Player | Team | null>>;

@@ -1,9 +1,8 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { getPlayersCount } from '@belot/shared';
+import { getPlayersCount, useGameStore } from '@belot/shared';
 import { useLocalization } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
 
 interface PlayersCountProps {
   resetValidations: VoidFunction;
@@ -23,10 +22,13 @@ export default function PlayersCount({ resetValidations }: PlayersCountProps) {
 
   const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
-  const handlePlayersCountChange = (count: number) => {
-    setEmptyPlayersNames(count);
-    resetValidations();
-  };
+  const handlePlayersCountChange = useCallback(
+    (count: number) => {
+      setEmptyPlayersNames(count);
+      resetValidations();
+    },
+    [resetValidations, setEmptyPlayersNames]
+  );
 
   useEffect(() => {
     if (playersCount === 0) {

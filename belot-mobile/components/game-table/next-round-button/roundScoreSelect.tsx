@@ -1,11 +1,13 @@
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import { ROUND_POINTS, roundToDecimal } from '@belot/shared';
-
-import { calculateTotalRoundScore } from '@/helpers/gameScoreHelpers';
+import {
+  ROUND_POINTS,
+  roundToDecimal,
+  RoundScore,
+  calculateTotalRoundScore,
+} from '@belot/shared';
 import { useLocalization } from '@/localizations/useLocalization';
-import { RoundScore } from '@/types/game';
 
 export interface RoundScoreSelectProps {
   roundScore: RoundScore;

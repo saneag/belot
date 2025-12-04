@@ -1,10 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { isPlayerNameValid } from '@belot/shared';
+import { isPlayerNameValid, useGameStore, Player } from '@belot/shared';
 import { useLocalization } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
-import { Player } from '@/types/game';
 import { EmptyNameError, RepeatingNamesError } from './inputErrors';
 import { PlayersNamesProps } from './playersNames';
 

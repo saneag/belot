@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameMode } from '@/types/game';
+import { GameMode } from '../types';
 
 export interface GameSlice {
   mode: GameMode;

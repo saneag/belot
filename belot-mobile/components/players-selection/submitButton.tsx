@@ -5,11 +5,11 @@ import {
   StorageKeys,
   isPlayerNameValid,
   validatePlayersNames,
+  useGameStore,
+  PlayersNamesValidation,
 } from '@belot/shared';
 import { setMultipleItemsToStorage } from '@/helpers/storageHelpers';
 import { useLocalizations } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
-import { PlayersNamesValidation } from '@/types/validations';
 import ConfirmationDialog from '../confirmation-dialog';
 import DealerSelectDialogContent from './dealerSelectDialogContent';
 

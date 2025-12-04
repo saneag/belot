@@ -1,9 +1,6 @@
 import { StateCreator } from 'zustand';
-import {
-  prepareEmptyRoundScoreRow,
-  setNextDealer,
-} from '@/helpers/gameScoreHelpers';
-import { Player, RoundScore } from '@/types/game';
+import { prepareEmptyRoundScoreRow, setNextDealer } from '../utils';
+import { Player, RoundScore } from '../types';
 import { GameSlice } from './game.slice';
 import { PlayersSlice } from './players.slice';
 

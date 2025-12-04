@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 import { useAppTheme } from '@/helpers/themeHelpers';
 import { useLocalization } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
+import { useGameStore } from '@belot/shared';
 import { RoundPlayerSelectProps } from './roundPlayerSelect';
 
 type RoundPlayerDisplayProps = RoundPlayerSelectProps;

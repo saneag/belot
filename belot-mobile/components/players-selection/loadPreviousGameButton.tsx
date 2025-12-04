@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Button } from 'react-native-paper';
 import { useLoadPlayersNames } from '@/hooks/useLoadPlayersNames';
 import { useLocalization } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
+import { useGameStore } from '@belot/shared';
 
 export default function LoadPreviousGameButton() {
   const buttonMsg = useLocalization('load.previous.game.button');

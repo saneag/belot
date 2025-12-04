@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand';
-import { prepareTeams } from '@/helpers/gameScoreHelpers';
-import { GameMode, Player, Team } from '@/types/game';
+import { prepareTeams } from '../utils';
+import { GameMode, Player, Team } from '../types';
 import { GameSlice } from './game.slice';
 
 export interface PlayersSlice {

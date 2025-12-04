@@ -11,8 +11,7 @@ import {
   formatLocalizationString,
   useLocalizations,
 } from '@/localizations/useLocalization';
-import { useGameStore } from '@/store/game';
-import { GameMode, Player, Team } from '@/types/game';
+import { useGameStore, GameMode, Player, Team } from '@belot/shared';
 import ConfirmationDialog from '../../confirmation-dialog';
 
 interface WindDialogProps {

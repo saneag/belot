@@ -1,7 +1,6 @@
-import { StorageKeys } from '@belot/shared';
+import { StorageKeys, useGameStore } from '@belot/shared';
 import { useCallback } from 'react';
 import { getFromStorage } from '@/helpers/storageHelpers';
-import { useGameStore } from '@/store/game';
 
 export const useLoadPlayersNames = () => {
   const setPlayers = useGameStore((state) => state.setPlayers);

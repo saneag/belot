@@ -10,19 +10,17 @@ import { HelperText, TextInput } from 'react-native-paper';
 import {
   handleRoundScoreChange,
   prepareRoundScoresBasedOnGameMode,
-} from '@/helpers/gameScoreHelpers';
-import {
-  formatLocalizationString,
-  useLocalizations,
-} from '@/localizations/useLocalization';
-import {
   GameMode,
   Player,
   PlayerScore,
   RoundScore,
   Team,
   TeamScore,
-} from '@/types/game';
+} from '@belot/shared';
+import {
+  formatLocalizationString,
+  useLocalizations,
+} from '@/localizations/useLocalization';
 
 interface PlayerScoreInputProps {
   opponent: PlayerScore | TeamScore;

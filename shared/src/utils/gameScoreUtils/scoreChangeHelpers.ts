@@ -4,7 +4,7 @@ import {
   PlayerScore,
   RoundScore,
   TeamScore,
-} from '@/types/game';
+} from '../../types';
 import { sumOpponentPlayersScores } from './scoreCalculationHelpers';
 
 const handlePlayersScoreChange = ({

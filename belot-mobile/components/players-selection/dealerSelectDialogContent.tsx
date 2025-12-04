@@ -2,8 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useAppTheme } from '@/helpers/themeHelpers';
-import { useGameStore } from '@/store/game';
-import { Player } from '@/types/game';
+import { useGameStore, Player } from '@belot/shared';
 
 export default function DealerSelectDialogContent() {
   const { colors } = useAppTheme();
