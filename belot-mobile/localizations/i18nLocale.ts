@@ -1,6 +1,6 @@
 import { getLocales } from 'expo-localization';
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import { initReactI18next } from '@/node_modules/react-i18next';
 import en from './en.json';
 import ro from './ro.json';
 import ru from './ru.json';

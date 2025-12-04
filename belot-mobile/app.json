@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "belot",
-    "slug": "belot",
+    "name": "belot-mobile",
+    "slug": "belot-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "belot",
+    "scheme": "belot-mobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
