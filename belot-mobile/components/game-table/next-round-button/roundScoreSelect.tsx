@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { ROUND_POINTS } from '@/constants/gameConstants';
-import { roundToDecimal } from '@/helpers/commonHelpers';
+import { roundToDecimal } from '@belot/shared';
 import { calculateTotalRoundScore } from '@/helpers/gameScoreHelpers';
 import { useLocalization } from '@/localizations/useLocalization';
 import { RoundScore } from '@/types/game';

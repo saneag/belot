@@ -10,7 +10,7 @@ import {
   SumOpponentPlayersScoresProps,
   TeamScore,
 } from '@/types/game';
-import { roundByLastDigit, roundToDecimal } from '../commonHelpers';
+import { roundByLastDigit, roundToDecimal } from '@belot/shared';
 
 const calculatePlayersScoresHelper = (
   playersScores: PlayerScore[],
