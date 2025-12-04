@@ -1,4 +1,4 @@
-import { DEFAULT_ROUND_POINTS } from '@/constants/gameConstants';
+import { DEFAULT_ROUND_POINTS } from '@belot/shared';
 import { GameSlice } from '@/store/game.slice';
 import { PlayersSlice } from '@/store/players.slice';
 import { RoundSlice } from '@/store/rounds.slice';

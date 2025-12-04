@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StorageKeys } from '@/constants/storageKeys';
+import { StorageKeys } from '@belot/shared';
 
 export const setToStorage = async <T>(
   key: StorageKeys,

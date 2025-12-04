@@ -4,8 +4,9 @@ import {
   BOLT_COUNT_LIMIT,
   BOLT_POINTS,
   ROUND_POINTS_INDEX,
-} from '@/constants/gameConstants';
-import { roundToDecimal } from '@belot/shared';
+  roundToDecimal,
+} from '@belot/shared';
+
 import { useAppTheme } from '@/helpers/themeHelpers';
 import { BaseScore, GameMode, RoundScore } from '@/types/game';
 import TableCell from '../tableCell';

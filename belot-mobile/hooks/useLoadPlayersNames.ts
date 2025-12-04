@@ -1,4 +1,4 @@
-import { StorageKeys } from '@/constants/storageKeys';
+import { StorageKeys } from '@belot/shared';
 import { useCallback } from 'react';
 import { getFromStorage } from '@/helpers/storageHelpers';
 import { useGameStore } from '@/store/game';

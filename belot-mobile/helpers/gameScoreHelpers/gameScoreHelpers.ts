@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { NEXT_WINNING_STEP, WIN_POINTS } from '@/constants/gameConstants';
+import { NEXT_WINNING_STEP, WIN_POINTS } from '@belot/shared';
 import { PlayersSlice } from '@/store/players.slice';
 import { RoundSlice } from '@/store/rounds.slice';
 import {

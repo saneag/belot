@@ -1,6 +1,6 @@
 import { useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
-import { StorageKeys } from '@/constants/storageKeys';
+import { StorageKeys } from '@belot/shared';
 import { getFromStorage } from '@/helpers/storageHelpers';
 import { useGameStore } from '@/store/game';
 

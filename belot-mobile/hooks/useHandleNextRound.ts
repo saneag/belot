@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { DEFAULT_ROUND_POINTS } from '@/constants/gameConstants';
+import { DEFAULT_ROUND_POINTS } from '@belot/shared';
 import {
   calculateRoundScore,
   checkForGameWinner,

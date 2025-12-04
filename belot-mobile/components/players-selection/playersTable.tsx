@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { TABLE_HEIGHT, TABLE_WIDTH } from '@/constants/gameConstants';
+import { TABLE_HEIGHT, TABLE_WIDTH } from '@belot/shared';
 
 interface PlayersTableProps {
   children: ReactNode;

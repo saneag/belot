@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { Button } from 'react-native-paper';
-import { StorageKeys } from '@/constants/storageKeys';
+import { StorageKeys } from '@belot/shared';
 import {
   isPlayerNameValid,
   validatePlayersNames,
