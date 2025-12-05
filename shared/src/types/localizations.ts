@@ -1,4 +1,4 @@
-import en from '@/localizations/en.json';
+import en from '../localizations/en.json';
 
 export type LocalizationKey = keyof typeof en;
 

@@ -1,11 +1,9 @@
 import { getLocales } from 'expo-localization';
 import i18n from 'i18next';
 import { initReactI18next } from '@/node_modules/react-i18next';
-import en from './en.json';
-import ro from './ro.json';
-import ru from './ru.json';
+import { Localizations } from '@belot/shared';
 
-export type TranslationKeys = keyof typeof en;
+export type TranslationKeys = keyof typeof Localizations.en;
 
 const getDeviceLanguage = (): string => {
   const locales = getLocales();
@@ -17,13 +15,13 @@ i18n.use(initReactI18next).init({
   compatibilityJSON: 'v4',
   resources: {
     en: {
-      translation: en,
+      translation: Localizations.en,
     },
     ro: {
-      translation: ro,
+      translation: Localizations.ro,
     },
     ru: {
-      translation: ru,
+      translation: Localizations.ru,
     },
   },
   lng: getDeviceLanguage(),
