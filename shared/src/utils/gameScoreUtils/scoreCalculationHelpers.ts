@@ -38,6 +38,7 @@ const calculatePlayersScoresHelper = (
         ...playerScore,
         score: -10,
         totalScore: totalScore - 10,
+        boltCount: playerId === roundPlayer?.id ? boltCount + 1 : boltCount
       };
     }
 

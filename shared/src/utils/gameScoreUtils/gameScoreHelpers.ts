@@ -60,7 +60,8 @@ const checkForPlayerWinner = (
 ) => {
   const winner = calculatedRoundScore.playersScores.filter(
     (playerScore) =>
-      playerScore.score >= WIN_POINTS + gameOverflowCount * NEXT_WINNING_STEP
+      playerScore.totalScore >=
+      WIN_POINTS + gameOverflowCount * NEXT_WINNING_STEP
   );
 
   if (winner.length > 1) {
