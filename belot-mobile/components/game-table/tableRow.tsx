@@ -19,12 +19,13 @@ export default function TableRow({
     <View
       style={[
         baseStyle.container,
-        style,
         showTopBorder && {
           borderTopWidth: 1,
           borderColor: theme.colors.primary,
         },
-      ]}>
+        style,
+      ]}
+    >
       {children}
     </View>
   );

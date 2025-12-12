@@ -20,7 +20,7 @@ export default function GameTable() {
       <View
         style={[
           style.tableContainer,
-          { maxHeight: height - 170, borderColor: theme.colors.primary },
+          { maxHeight: height - 175, borderColor: theme.colors.primary },
         ]}
       >
         <TableHeader />
