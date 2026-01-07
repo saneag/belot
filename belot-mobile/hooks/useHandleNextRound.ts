@@ -41,7 +41,11 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
 
   const handleNextRound = useCallback(() => {
     setStateRoundPlayer(roundPlayer);
-    const calculatedRoundScore = calculateRoundScore(roundScore, roundPlayer);
+    const calculatedRoundScore = calculateRoundScore(
+      roundScore,
+      roundPlayer,
+      gameMode
+    );
     updateRoundScore(calculatedRoundScore);
 
     setRoundPlayer(null);

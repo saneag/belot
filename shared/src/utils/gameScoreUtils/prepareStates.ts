@@ -87,6 +87,29 @@ export const prepareEmptyRoundScoreRow = (
   };
 };
 
+export const preparePreviousRoundScoreRow = (
+  previousRoundScore: RoundScore,
+  undoneRoundScore: RoundScore
+): RoundScore => {
+  const previousRoundTotalRoundScore = previousRoundScore.totalRoundScore;
+
+  return {
+    id: undoneRoundScore.id,
+    playersScores: previousRoundScore.playersScores.map((playerScore) => ({
+      ...playerScore,
+      score: 0,
+    })),
+    teamsScores: previousRoundScore.teamsScores.map((teamScore) => ({
+      ...teamScore,
+      score: 0,
+    })),
+    totalRoundScore:
+      previousRoundTotalRoundScore === 162
+        ? previousRoundTotalRoundScore
+        : Number(previousRoundTotalRoundScore.toString() + 2),
+  };
+};
+
 export const prepareTeams = (players: Player[], mode: GameMode): Team[] => {
   return mode === GameMode.classic
     ? []

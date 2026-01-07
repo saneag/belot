@@ -1,5 +1,10 @@
 import { StateCreator } from 'zustand';
-import { prepareEmptyRoundScoreRow, setNextDealer } from '../utils';
+import {
+  prepareEmptyRoundScoreRow,
+  recalculateScoreOnRedo,
+  recalculateScoreOnUndo,
+  setNextDealer,
+} from '../utils';
 import { Player, RoundScore } from '../types';
 import { GameSlice } from './game.slice';
 import { PlayersSlice } from './players.slice';
@@ -8,12 +13,15 @@ export interface RoundSlice {
   dealer: Player | null;
   roundPlayer: Player | null;
   roundsScores: RoundScore[];
+  undoneRoundsScores: RoundScore[];
 
   setDealer: (dealer: Player | null) => void;
   setRoundPlayer: (roundPlayer: Player | null) => void;
   setRoundsScores: (roundsScores: RoundScore[]) => void;
   updateRoundScore: (roundScore: Partial<RoundScore>) => void;
   setEmptyRoundScore: VoidFunction;
+  undoRoundScore: () => void;
+  redoRoundScore: () => void;
 }
 
 export const createRoundSlice: StateCreator<
@@ -22,6 +30,7 @@ export const createRoundSlice: StateCreator<
   dealer: null,
   roundPlayer: null,
   roundsScores: [],
+  undoneRoundsScores: [],
 
   setDealer: (dealer) => set(() => ({ dealer })),
   setRoundPlayer: (roundPlayer) => set(() => ({ roundPlayer })),
@@ -29,6 +38,7 @@ export const createRoundSlice: StateCreator<
     set((state) => ({
       roundsScores: [...state.roundsScores, prepareEmptyRoundScoreRow(state)],
       ...setNextDealer(state),
+      undoneRoundsScores: [],
     })),
   setRoundsScores: (roundsScores) =>
     set((state) => ({ roundsScores, ...setNextDealer(state) })),
@@ -50,6 +60,15 @@ export const createRoundSlice: StateCreator<
       return {
         roundsScores: [...updatedRoundsScores, newEmptyRow],
         ...setNextDealer(state),
+        undoneRoundsScores: [],
       };
     }),
+  undoRoundScore: () =>
+    set((state) => ({
+      ...recalculateScoreOnUndo(state),
+    })),
+  redoRoundScore: () =>
+    set((state) => ({
+      ...recalculateScoreOnRedo(state),
+    })),
 });

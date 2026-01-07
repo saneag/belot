@@ -27,5 +27,7 @@
   "confirmation.dialog.confirm.button": "Confirm",
   "confirmation.dialog.cancel.button": "Cancel",
   "dealer": "Dealer: {0}",
-  "time": "Time"
+  "time": "Time",
+  "undo.round.title": "Undo last round",
+  "redo.round.title": "Redo round"
 }

@@ -3,14 +3,27 @@ import {
   BOLT_POINTS,
   LIMIT_OF_ROUND_POINTS,
 } from '../../constants';
+import { GameSlice } from '../../store/game.slice';
+import { PlayersSlice } from '../../store/players.slice';
+import { RoundSlice } from '../../store/rounds.slice';
 import {
+  GameMode,
   Player,
   PlayerScore,
   RoundScore,
   SumOpponentPlayersScoresProps,
   TeamScore,
 } from '../../types';
-import { roundByLastDigit, roundToDecimal } from '../commonUtils';
+import {
+  removeNthElementFromEnd,
+  roundByLastDigit,
+  roundToDecimal,
+} from '../commonUtils';
+import { setNextDealer, setPreviousDealer } from './gameScoreHelpers';
+import {
+  prepareEmptyRoundScoreRow,
+  preparePreviousRoundScoreRow,
+} from './prepareStates';
 
 const calculatePlayersScoresHelper = (
   playersScores: PlayerScore[],
@@ -184,20 +197,27 @@ const calculateTeamsScore = (
 
 export const calculateRoundScore = (
   roundScore: RoundScore,
-  roundPlayer: Player | null
+  roundPlayer: Player | null,
+  gameMode: GameMode
 ) => {
   return {
     ...roundScore,
-    playersScores: calculatePlayersScores(
-      roundScore.playersScores,
-      roundPlayer,
-      roundScore.totalRoundScore
-    ),
-    teamsScores: calculateTeamsScore(
-      roundScore.teamsScores,
-      roundPlayer,
-      roundScore.totalRoundScore
-    ),
+    playersScores:
+      gameMode === GameMode.classic
+        ? calculatePlayersScores(
+            roundScore.playersScores,
+            roundPlayer,
+            roundScore.totalRoundScore
+          )
+        : [],
+    teamsScores:
+      gameMode === GameMode.teams
+        ? calculateTeamsScore(
+            roundScore.teamsScores,
+            roundPlayer,
+            roundScore.totalRoundScore
+          )
+        : [],
     totalRoundScore: roundToDecimal(roundScore.totalRoundScore),
   };
 };
@@ -283,4 +303,70 @@ export const getPlayerWithHighestScore = (
   }
 
   return playerWithHighestScore;
+};
+
+export const recalculateScoreOnUndo = (
+  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>
+): Pick<RoundSlice, 'roundsScores' | 'undoneRoundsScores'> => {
+  const { roundsScores, undoneRoundsScores } = state;
+
+  const undoneRoundScore = roundsScores.at(-2);
+  let previousRoundScore = roundsScores.at(-3);
+
+  if (!undoneRoundScore) {
+    return {
+      roundsScores,
+      undoneRoundsScores,
+    };
+  }
+
+  const adjustedRoundsScores = roundsScores.slice(0, roundsScores.length - 2);
+
+  if (!previousRoundScore) {
+    previousRoundScore = prepareEmptyRoundScoreRow({
+      ...state,
+      roundsScores: adjustedRoundsScores,
+    });
+  }
+
+  return {
+    roundsScores: [
+      ...adjustedRoundsScores,
+      preparePreviousRoundScoreRow(previousRoundScore, undoneRoundScore),
+    ],
+    undoneRoundsScores: [...undoneRoundsScores, undoneRoundScore],
+    ...setPreviousDealer(state),
+  };
+};
+
+export const recalculateScoreOnRedo = (
+  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>
+): Pick<RoundSlice, 'roundsScores' | 'undoneRoundsScores'> => {
+  const { roundsScores, undoneRoundsScores } = state;
+
+  const undoneRoundScore = undoneRoundsScores.at(-1);
+
+  if (!undoneRoundScore) {
+    return {
+      roundsScores,
+      undoneRoundsScores,
+    };
+  }
+
+  const adjustedRoundsScores = [
+    ...removeNthElementFromEnd(roundsScores, 1),
+    undoneRoundScore,
+  ];
+
+  return {
+    roundsScores: [
+      ...adjustedRoundsScores,
+      prepareEmptyRoundScoreRow({
+        ...state,
+        roundsScores: adjustedRoundsScores,
+      }),
+    ],
+    undoneRoundsScores: removeNthElementFromEnd(undoneRoundsScores, 1),
+    ...setNextDealer(state),
+  };
 };

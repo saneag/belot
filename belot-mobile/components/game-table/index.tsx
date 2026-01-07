@@ -8,6 +8,8 @@ import SkipRoundButton from './skip-round-button';
 import TableBody from './table-body';
 import TableHeader from './tableHeader';
 import WindDialog from './win-dialog';
+import UndoRoundButton from './undo-round-button';
+import RedoRoundButton from './redo-round-button';
 
 const CONTAINER_MARGIN_BOTTOM = 20;
 
@@ -35,6 +37,8 @@ export default function GameTable() {
         <ResetGameButton setWinner={setWinner} />
       ) : (
         <View style={style.actionButtons}>
+          <UndoRoundButton />
+          <RedoRoundButton />
           <SkipRoundButton />
           <NextRoundButton setWinner={setWinner} />
         </View>

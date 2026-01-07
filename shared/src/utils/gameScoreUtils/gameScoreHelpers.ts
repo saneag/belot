@@ -34,6 +34,36 @@ export const setNextDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
   };
 };
 
+export const setPreviousDealer = (
+  state: RoundSlice & Partial<PlayersSlice>
+) => {
+  if (state.roundsScores.length === 0) {
+    return {};
+  }
+
+  const players = state.players;
+
+  if (!players || players.length === 0) {
+    return {};
+  }
+
+  const currentDealerIndex = players.findIndex(
+    (player) => player.id === state.dealer?.id
+  );
+
+  const calculatedPreviousDealerIndex =
+    currentDealerIndex - 1 < 0 ? 0 : currentDealerIndex - 1;
+
+  const previousDealerIndex =
+    currentDealerIndex === -1
+      ? 0
+      : calculatedPreviousDealerIndex % players.length;
+
+  return {
+    dealer: players[previousDealerIndex],
+  };
+};
+
 export const getOpponentPlayersScore = (
   roundPlayer: Player | null,
   playersScores?: PlayerScore[]
