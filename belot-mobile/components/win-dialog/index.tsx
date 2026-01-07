@@ -12,7 +12,7 @@ import {
   useLocalizations,
 } from '@/localizations/useLocalization';
 import { useGameStore, GameMode, Player, Team } from '@belot/shared';
-import ConfirmationDialog from '../../confirmation-dialog';
+import ConfirmationDialog from '../confirmation-dialog';
 
 interface WindDialogProps {
   winner: Player | Team | null;

@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { Player, Team } from '@belot/shared';
-import ResetGameButton from '../reset-game-button';
-import NextRoundButton from './next-round-button';
-import SkipRoundButton from './skip-round-button';
+import ResetGameButton from '../action-buttons/reset-game-button';
+import NextRoundButton from '../action-buttons/next-round-button';
+import SkipRoundButton from '../action-buttons/skip-round-button';
 import TableBody from './table-body';
 import TableHeader from './tableHeader';
-import WindDialog from './win-dialog';
-import UndoRoundButton from './undo-round-button';
-import RedoRoundButton from './redo-round-button';
+import WindDialog from '../win-dialog';
+import UndoRoundButton from '../action-buttons/undo-round-button';
+import RedoRoundButton from '../action-buttons/redo-round-button';
 
 const CONTAINER_MARGIN_BOTTOM = 20;
 
