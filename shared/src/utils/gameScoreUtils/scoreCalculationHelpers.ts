@@ -33,15 +33,6 @@ const calculatePlayersScoresHelper = (
     const { score, boltCount, totalScore, playerId } = playerScore;
     const roundedScore = shouldRoundScore ? roundByLastDigit(score) : score;
 
-    if (roundedScore === 0) {
-      return {
-        ...playerScore,
-        score: -10,
-        totalScore: totalScore - 10,
-        boltCount: playerId === roundPlayer?.id ? boltCount + 1 : boltCount
-      };
-    }
-
     if (roundPlayer?.id === playerId) {
       if (
         playerWithHighestScore &&
@@ -86,6 +77,15 @@ const calculatePlayersScoresHelper = (
         ...playerScore,
         score: roundedScore + roundPlayerScore,
         totalScore: totalScore + roundedScore + roundPlayerScore,
+      };
+    }
+
+    if (roundedScore === 0) {
+      return {
+        ...playerScore,
+        score: -10,
+        totalScore: totalScore - 10,
+        boltCount: playerId === roundPlayer?.id ? boltCount + 1 : boltCount,
       };
     }
 
@@ -139,14 +139,6 @@ const calculateTeamsScore = (
     const isEqualScore = score === halfScore;
     const isOwnTeam = roundPlayer?.teamId === teamId;
 
-    if (score === 0) {
-      return {
-        ...teamScore,
-        score: -10,
-        totalScore: totalScore - 10,
-      };
-    }
-
     if (isOwnTeam && isScoreLowerThanHalfOfTotalScore && !isEqualScore) {
       if (boltCount === BOLT_COUNT_LIMIT) {
         return {
@@ -171,6 +163,14 @@ const calculateTeamsScore = (
         ...teamScore,
         score: roundByLastDigit(totalRoundScore),
         totalScore: totalScore + roundByLastDigit(totalRoundScore),
+      };
+    }
+
+    if (score === 0) {
+      return {
+        ...teamScore,
+        score: -10,
+        totalScore: totalScore - 10,
       };
     }
 
