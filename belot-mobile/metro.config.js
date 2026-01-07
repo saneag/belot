@@ -5,6 +5,7 @@ const config = getDefaultConfig(__dirname);
 
 config.watchFolders = [path.resolve(__dirname, '../shared')];
 
+config.resolver.sourceExts.push('ts', 'tsx');
 config.resolver.disableHierarchicalLookup = true;
 config.resolver.nodeModulesPaths = [path.resolve(__dirname, 'node_modules')];
 config.resolver.extraNodeModules = {
@@ -18,5 +19,6 @@ config.resolver.extraNodeModules = {
   semver: path.resolve(__dirname, 'node_modules/semver'),
   zustand: path.resolve(__dirname, 'node_modules/zustand'),
 };
+config.transformer.sourceMap = true;
 
 module.exports = config;
