@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Button } from 'react-native-paper';
+import { IconButton, Tooltip } from 'react-native-paper';
 import { useHandleNextRound } from '@/hooks/useHandleNextRound';
 import { useLocalizations } from '@/localizations/useLocalization';
 import { Player, Team } from '@belot/shared';
@@ -26,13 +26,18 @@ export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
       title={messages.nextRoundTitle}
       content={<ScoreDialogContent {...rest} />}
       renderShowDialog={(showDialog) => (
-        <Button mode="contained" onPress={() => handleDialogOpen(showDialog)}>
-          {messages.nextRoundButton}
-        </Button>
+        <Tooltip title={messages.nextRoundTitle}>
+          <IconButton
+            mode="contained"
+            icon="arrow-right"
+            onPress={() => handleDialogOpen(showDialog)}
+          />
+        </Tooltip>
       )}
       isConfirmationButtonVisible={!!rest.roundPlayer}
       confirmationCallback={handleNextRound}
       cancelCallback={handleCancel}
+      primaryButton={rest.roundPlayer ? 'confirm' : 'cancel'}
     />
   );
 }
