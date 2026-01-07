@@ -55,7 +55,7 @@ export default function PointCells({ score, gameMode }: PointCellsProps) {
                       ? colors.error
                       : colors.green,
                 }}
-                variant="bodySmall"
+                variant="labelSmall"
               >
                 {getCurrentScore(playerScore)}
               </Text>
