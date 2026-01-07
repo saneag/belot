@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Button } from 'react-native-paper';
+import { IconButton, Tooltip } from 'react-native-paper';
 import { useLocalizations } from '@/localizations/useLocalization';
 import { useGameStore } from '@belot/shared';
 import ConfirmationDialog from '../../confirmation-dialog';
@@ -21,9 +21,13 @@ export default function SkipRoundButton() {
       title={messages.skipRoundTitle}
       content={messages.skipRoundContent}
       renderShowDialog={(showDialog) => (
-        <Button mode="outlined" onPress={showDialog}>
-          {messages.skipRoundTitle}
-        </Button>
+        <Tooltip title={messages.skipRoundTitle}>
+          <IconButton
+            mode="outlined"
+            icon="chevron-double-right"
+            onPress={showDialog}
+          />
+        </Tooltip>
       )}
       confirmationCallback={handleAddEmptyRow}
     />
