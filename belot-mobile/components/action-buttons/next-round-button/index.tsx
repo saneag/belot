@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { IconButton, Tooltip } from 'react-native-paper';
 import { useHandleNextRound } from '@/hooks/useHandleNextRound';
 import { useLocalizations } from '@/localizations/useLocalization';
-import { Player, Team } from '@belot/shared';
+import { Player, Team, useGameStore } from '@belot/shared';
 import ConfirmationDialog from '../../confirmation-dialog';
 import ScoreDialogContent from './scoreDialogContent';
 
@@ -21,6 +21,8 @@ export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
       setWinner,
     });
 
+  const isScoreEdit = useGameStore((state) => state.isScoreEdit);
+
   return (
     <ConfirmationDialog
       title={messages.nextRoundTitle}
@@ -31,6 +33,7 @@ export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
             mode="contained"
             icon="arrow-right"
             onPress={() => handleDialogOpen(showDialog)}
+            disabled={isScoreEdit}
           />
         </Tooltip>
       )}

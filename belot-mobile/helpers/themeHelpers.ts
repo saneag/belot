@@ -15,6 +15,7 @@ export const createTheme = (
       ...materialColors,
       successLight: colorScheme === 'dark' ? '#4ADE80' : '#86EFAC',
       green: colorScheme === 'dark' ? '#4ADE80' : '#1B8A36',
+      blue: colorScheme === 'dark' ? '#3B82F6' : '#2563EB',
     },
   };
 };

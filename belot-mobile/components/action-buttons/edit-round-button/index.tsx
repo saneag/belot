@@ -3,16 +3,16 @@ import { useLocalizations } from '../../../localizations/useLocalization';
 import { useGameStore } from '@belot/shared';
 import { useMemo } from 'react';
 
-export default function UndoRoundButton() {
+export default function EditRoundButton() {
   const messages = useLocalizations([
     {
-      key: 'undo.round.title',
+      key: 'edit.round.title',
     },
   ]);
 
-  const roundsScores = useGameStore((state) => state.roundsScores);
-  const undoRoundScore = useGameStore((state) => state.undoRoundScore);
   const isScoreEdit = useGameStore((state) => state.isScoreEdit);
+  const setIsScoreEdit = useGameStore((state) => state.setIsScoreEdit);
+  const roundsScores = useGameStore((state) => state.roundsScores);
 
   const roundsScoresCount = useMemo(
     () => roundsScores.length,
@@ -20,11 +20,11 @@ export default function UndoRoundButton() {
   );
 
   return (
-    <Tooltip title={messages.undoRoundTitle}>
+    <Tooltip title={messages.editRoundTitle}>
       <IconButton
+        icon="pencil"
         mode="outlined"
-        icon="undo"
-        onPress={undoRoundScore}
+        onPress={() => setIsScoreEdit(true)}
         disabled={roundsScoresCount === 1 || isScoreEdit}
       />
     </Tooltip>

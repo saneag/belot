@@ -14,6 +14,7 @@ export interface RoundSlice {
   roundPlayer: Player | null;
   roundsScores: RoundScore[];
   undoneRoundsScores: RoundScore[];
+  isScoreEdit: boolean;
 
   setDealer: (dealer: Player | null) => void;
   setRoundPlayer: (roundPlayer: Player | null) => void;
@@ -22,6 +23,7 @@ export interface RoundSlice {
   setEmptyRoundScore: VoidFunction;
   undoRoundScore: () => void;
   redoRoundScore: () => void;
+  setIsScoreEdit: (isScoreEdit?: boolean) => void;
 }
 
 export const createRoundSlice: StateCreator<
@@ -31,6 +33,7 @@ export const createRoundSlice: StateCreator<
   roundPlayer: null,
   roundsScores: [],
   undoneRoundsScores: [],
+  isScoreEdit: false,
 
   setDealer: (dealer) => set(() => ({ dealer })),
   setRoundPlayer: (roundPlayer) => set(() => ({ roundPlayer })),
@@ -70,5 +73,9 @@ export const createRoundSlice: StateCreator<
   redoRoundScore: () =>
     set((state) => ({
       ...recalculateScoreOnRedo(state),
+    })),
+  setIsScoreEdit: (isScoreEdit = false) =>
+    set(() => ({
+      isScoreEdit,
     })),
 });

@@ -12,6 +12,7 @@ export default function RedoRoundButton() {
 
   const undoneRoundsScores = useGameStore((state) => state.undoneRoundsScores);
   const redoRoundScore = useGameStore((state) => state.redoRoundScore);
+  const isScoreEdit = useGameStore((state) => state.isScoreEdit);
 
   const undoneRoundsScoresCount = useMemo(
     () => undoneRoundsScores.length,
@@ -24,7 +25,7 @@ export default function RedoRoundButton() {
         icon="redo"
         mode="outlined"
         onPress={redoRoundScore}
-        disabled={undoneRoundsScoresCount === 0}
+        disabled={undoneRoundsScoresCount === 0 || isScoreEdit}
       />
     </Tooltip>
   );

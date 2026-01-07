@@ -29,5 +29,7 @@
   "dealer": "Dealer: {0}",
   "time": "Time",
   "undo.round.title": "Undo last round",
-  "redo.round.title": "Redo round"
+  "redo.round.title": "Redo round",
+  "edit.round.title": "Edit round",
+  "edit.round.info": "Select any row to edit"
 }

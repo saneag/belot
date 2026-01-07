@@ -27,5 +27,9 @@
   "confirmation.dialog.confirm.button": "Continuă",
   "confirmation.dialog.cancel.button": "Anulează",
   "dealer": "Dealer: {0}",
-  "time": "Timp"
+  "time": "Timp",
+  "undo.round.title": "Anulează ultima rundă",
+  "redo.round.title": "Refă runda",
+  "edit.round.title": "Editează runda",
+  "edit.round.info": "Selectează o runda spre editare"
 }

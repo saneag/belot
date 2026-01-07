@@ -22,5 +22,6 @@ export const useGameStore = create<GameStore>((set, ...rest) => ({
       roundsScores: [],
       teams: [],
       undoneRoundsScores: [],
+      isScoreEdit: false,
     })),
 }));

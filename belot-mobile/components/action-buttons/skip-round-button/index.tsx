@@ -10,6 +10,7 @@ export default function SkipRoundButton() {
     { key: 'skip.round.content' },
   ]);
 
+  const isScoreEdit = useGameStore((state) => state.isScoreEdit);
   const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
 
   const handleAddEmptyRow = useCallback(() => {
@@ -23,9 +24,10 @@ export default function SkipRoundButton() {
       renderShowDialog={(showDialog) => (
         <Tooltip title={messages.skipRoundTitle}>
           <IconButton
-            mode="outlined"
+            mode="contained"
             icon="chevron-double-right"
             onPress={showDialog}
+            disabled={isScoreEdit}
           />
         </Tooltip>
       )}
