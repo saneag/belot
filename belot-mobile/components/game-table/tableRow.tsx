@@ -4,6 +4,7 @@ import { useTheme } from 'react-native-paper';
 
 interface TableRowProps {
   showTopBorder?: boolean;
+  showBottomBorder?: boolean;
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
 }
@@ -11,6 +12,7 @@ interface TableRowProps {
 export default function TableRow({
   children,
   showTopBorder = false,
+  showBottomBorder = false,
   style = {},
 }: TableRowProps) {
   const theme = useTheme();
@@ -21,6 +23,10 @@ export default function TableRow({
         baseStyle.container,
         showTopBorder && {
           borderTopWidth: 1,
+          borderColor: theme.colors.primary,
+        },
+        showBottomBorder && {
+          borderBottomWidth: 1,
           borderColor: theme.colors.primary,
         },
         style,

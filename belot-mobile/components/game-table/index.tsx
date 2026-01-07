@@ -9,6 +9,8 @@ import TableBody from './table-body';
 import TableHeader from './tableHeader';
 import WindDialog from './win-dialog';
 
+const CONTAINER_MARGIN_BOTTOM = 20;
+
 export default function GameTable() {
   const { height } = useWindowDimensions();
   const theme = useTheme();
@@ -20,7 +22,10 @@ export default function GameTable() {
       <View
         style={[
           style.tableContainer,
-          { maxHeight: height - 175, borderColor: theme.colors.primary },
+          {
+            maxHeight: height - 165 - CONTAINER_MARGIN_BOTTOM,
+            borderColor: theme.colors.primary,
+          },
         ]}
       >
         <TableHeader />
@@ -46,7 +51,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 10,
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: CONTAINER_MARGIN_BOTTOM,
   },
   tableContainer: {
     borderWidth: 1,

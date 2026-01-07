@@ -29,7 +29,7 @@ export default function TableBody() {
           index !== roundsScoresCount - 1 && (
             <TableRow
               key={score.id}
-              showTopBorder
+              showTopBorder={index !== 0}
               style={
                 index !== 0 &&
                 index % playersCount === 0 && {

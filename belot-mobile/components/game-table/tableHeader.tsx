@@ -20,7 +20,9 @@ export default function TableHeader() {
   const playersNames = useMemo(() => getPlayersNames(players), [players]);
   const dealer = useGameStore((state) => state.dealer);
   const teams = useGameStore((state) => state.teams);
+  const roundScores = useGameStore((state) => state.roundsScores);
   const teamsNames = useMemo(() => getTeamsNames(teams), [teams]);
+  const roundsCount = useMemo(() => roundScores.length, [roundScores.length]);
 
   const filteredPlayerNames = useMemo(
     () => (mode === GameMode.classic ? playersNames : teamsNames),
@@ -38,7 +40,12 @@ export default function TableHeader() {
   );
 
   return (
-    <TableRow style={{ backgroundColor: colors.backdrop }}>
+    <TableRow
+      style={{
+        backgroundColor: colors.backdrop,
+      }}
+      showBottomBorder={roundsCount > 1}
+    >
       {playerNamesWithScoreColumn.map((playerName, index) => (
         <TableCell
           key={index}
