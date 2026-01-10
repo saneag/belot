@@ -27,5 +27,8 @@
   "confirmation.dialog.confirm.button": "Подтвердить",
   "confirmation.dialog.cancel.button": "Отменить",
   "dealer": "Дилер: {0}",
-  "time": "Время"
+  "time": "Время",
+  "undo.round.title": "Отменить последний раунд",
+  "redo.round.title": "Вернуть раунд",
+  "shuffle.players": "Перемешать игроков"
 }
