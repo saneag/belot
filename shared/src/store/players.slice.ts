@@ -10,6 +10,7 @@ export interface PlayersSlice {
   setPlayers: (players: Player[]) => void;
   setEmptyPlayersNames: (count: number) => void;
   updatePlayer: (playerId: number, player: Partial<Omit<Player, 'id'>>) => void;
+  shufflePlayers: () => void;
 }
 
 export const createPlayersSlice: StateCreator<
@@ -51,4 +52,20 @@ export const createPlayersSlice: StateCreator<
           : statePlayer
       ),
     })),
+  shufflePlayers: () =>
+    set((state) => {
+      const shuffledPlayers = [...state.players];
+
+      for (let i = shuffledPlayers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledPlayers[i], shuffledPlayers[j]] = [
+          shuffledPlayers[j],
+          shuffledPlayers[i],
+        ];
+      }
+
+      return {
+        players: shuffledPlayers,
+      };
+    }),
 });
