@@ -10,6 +10,7 @@ import {
 } from '@belot/shared';
 import PlayersNamesInput from './playersNamesInput';
 import PlayersTable from './playersTable';
+import PlayersRandomizer from './playersRandomizer';
 
 export interface PlayersNamesProps {
   validations: PlayersNamesValidation;
@@ -26,6 +27,7 @@ export default function PlayersNames({
 
   return (
     <PlayersTable>
+      <PlayersRandomizer />
       {players.map((player, index) => (
         <View
           key={player.id}
