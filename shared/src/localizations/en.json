@@ -29,5 +29,6 @@
   "dealer": "Dealer: {0}",
   "time": "Time",
   "undo.round.title": "Undo last round",
-  "redo.round.title": "Redo round"
+  "redo.round.title": "Redo round",
+  "shuffle.players": "Shuffle players"
 }
