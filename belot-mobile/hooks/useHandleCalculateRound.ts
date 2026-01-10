@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import {
-  DEFAULT_ROUND_POINTS,
   useGameStore,
   calculateRoundScore,
   checkForGameWinner,
@@ -8,23 +7,19 @@ import {
   RoundScore,
   Team,
 } from '@belot/shared';
-
-const defaultRoundScoreState: RoundScore = {
-  id: 0,
-  playersScores: [],
-  teamsScores: [],
-  totalRoundScore: DEFAULT_ROUND_POINTS,
-};
+import { defaultRoundScore } from '../constants/defaultRoundScore';
 
 interface UseHandleNextRoundProps {
+  score: RoundScore;
   setWinner: Dispatch<SetStateAction<Player | Team | null>>;
 }
 
-export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
-  const [roundPlayer, setRoundPlayer] = useState<Player | null>(null);
-  const [roundScore, setRoundScore] = useState<RoundScore>(
-    defaultRoundScoreState
-  );
+export const useHandleCalculateRound = ({
+  score,
+  setWinner,
+}: UseHandleNextRoundProps) => {
+  const [roundPlayer, setRoundPlayer] = useState<Player | null>();
+  const [roundScore, setRoundScore] = useState<RoundScore>(defaultRoundScore);
   const [gameOverflowCount, setGameOverflowCount] = useState(0);
 
   const players = useGameStore((state) => state.players);
@@ -32,24 +27,24 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
   const gameMode = useGameStore((state) => state.mode);
   const roundsScores = useGameStore((state) => state.roundsScores);
   const setStateRoundPlayer = useGameStore((state) => state.setRoundPlayer);
-  const updateRoundScore = useGameStore((state) => state.updateRoundScore);
+  const addRoundScore = useGameStore((state) => state.addRoundScore);
 
   const handleCancel = useCallback(() => {
     setRoundPlayer(null);
     setStateRoundPlayer(null);
   }, [setStateRoundPlayer]);
 
-  const handleNextRound = useCallback(() => {
+  const handleRoundCalculation = useCallback(() => {
     setStateRoundPlayer(roundPlayer);
     const calculatedRoundScore = calculateRoundScore(
       roundScore,
       roundPlayer,
       gameMode
     );
-    updateRoundScore(calculatedRoundScore);
+    addRoundScore(calculatedRoundScore);
 
     setRoundPlayer(null);
-    setRoundScore(defaultRoundScoreState);
+    setRoundScore(defaultRoundScore);
     setStateRoundPlayer(null);
 
     setWinner(
@@ -71,7 +66,7 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
     setStateRoundPlayer,
     setWinner,
     teams,
-    updateRoundScore,
+    addRoundScore,
   ]);
 
   const handleDialogOpen = useCallback(
@@ -86,7 +81,7 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
   );
 
   return {
-    handleNextRound,
+    handleRoundCalculation,
     handleCancel,
     handleDialogOpen,
     roundPlayer,

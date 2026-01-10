@@ -28,7 +28,7 @@ export default function GameTable() {
         ]}
       >
         <TableHeader />
-        <TableBody />
+        <TableBody setWinner={setWinner} />
       </View>
       {winner ? (
         <ResetGameButton setWinner={setWinner} />
