@@ -10,11 +10,11 @@ export default function SkipRoundButton() {
     { key: 'skip.round.content' },
   ]);
 
-  const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
+  const skipRound = useGameStore((state) => state.skipRound);
 
   const handleAddEmptyRow = useCallback(() => {
-    setEmptyRoundScore();
-  }, [setEmptyRoundScore]);
+    skipRound();
+  }, [skipRound]);
 
   return (
     <ConfirmationDialog
