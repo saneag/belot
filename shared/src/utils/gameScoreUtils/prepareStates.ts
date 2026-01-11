@@ -104,7 +104,7 @@ export const preparePreviousRoundScoreRow = (
       score: 0,
     })),
     totalRoundScore:
-      previousRoundTotalRoundScore === 162
+      previousRoundTotalRoundScore === DEFAULT_ROUND_POINTS
         ? previousRoundTotalRoundScore
         : Number(previousRoundTotalRoundScore.toString() + 2),
   };
