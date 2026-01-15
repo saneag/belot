@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "prebuild:android": "expo prebuild -p android",
-    "android:clean": "cd android && gradlew clean",
+    "android:clean": "node ./scripts/android-clean.js",
     "android:apk:debug": "npm run prebuild:android && cd android && gradlew assembleDebug",
     "android:apk:release": "npm run prebuild:android && cd android && gradlew assembleRelease",
     "android:aab:release": "npm run prebuild:android && cd android && gradlew bundleRelease"

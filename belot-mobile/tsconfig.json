@@ -13,5 +13,6 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "../shared/src/types/localizations.ts"
-  ]
+  ],
+  "exclude": ["scripts/android-clean.js"]
 }
