@@ -19,7 +19,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.san3a.belot.score",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "output": "static",
