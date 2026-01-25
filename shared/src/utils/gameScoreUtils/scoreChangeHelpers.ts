@@ -5,7 +5,7 @@ import {
   RoundScore,
   TeamScore,
 } from '../../types';
-import { sumOpponentPlayersScores } from './scoreCalculationHelpers';
+import { sumOpponentPlayersScores } from './playersScoreCalculationHelpers';
 
 const handlePlayersScoreChange = ({
   newScoreValue,
@@ -40,7 +40,7 @@ const handlePlayersScoreChange = ({
           playerScore.playerId === roundPlayer?.id
             ? roundPlayerScore
             : playerScore.score,
-      })
+      }),
     ),
   };
 };
