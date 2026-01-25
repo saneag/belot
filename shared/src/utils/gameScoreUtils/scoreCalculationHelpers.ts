@@ -29,12 +29,12 @@ const calculatePlayersScoresHelper = (
   playersScores: PlayerScore[],
   roundPlayer: Player | null,
   totalRoundScore: number,
-  shouldRoundScore?: boolean
+  shouldRoundScore?: boolean,
 ): PlayerScore[] => {
   const playerWithHighestScore = getPlayerWithHighestScore(
     playersScores,
     roundPlayer,
-    shouldRoundScore
+    shouldRoundScore,
   );
   const roundPlayerScore = sumOpponentPlayersScores({
     roundScore: { playersScores, totalRoundScore },
@@ -86,10 +86,14 @@ const calculatePlayersScoresHelper = (
       playerWithHighestScore?.playerId === playerId &&
       roundPlayerScore < playerWithHighestScore.score
     ) {
+      const finalScore = !shouldRoundScore
+        ? roundByLastDigit(roundedScore + roundPlayerScore)
+        : roundedScore;
+
       return {
         ...playerScore,
-        score: roundedScore + roundPlayerScore,
-        totalScore: totalScore + roundedScore + roundPlayerScore,
+        score: finalScore,
+        totalScore: totalScore + finalScore,
       };
     }
 
@@ -113,17 +117,18 @@ const calculatePlayersScoresHelper = (
 const calculatePlayersScores = (
   playersScores: PlayerScore[],
   roundPlayer: Player | null,
-  totalRoundScore: number
+  totalRoundScore: number,
 ): PlayerScore[] => {
+  debugger;
   const calculatedRoundedPlayersScores = calculatePlayersScoresHelper(
     playersScores,
     roundPlayer,
     totalRoundScore,
-    true
+    true,
   );
 
   const scores = calculatedRoundedPlayersScores.map(
-    (playerScore) => playerScore.score
+    (playerScore) => playerScore.score,
   );
   const hasAtLeastTwoEqualScores =
     new Set(scores).size !== playersScores.length;
@@ -132,7 +137,7 @@ const calculatePlayersScores = (
     return calculatePlayersScoresHelper(
       playersScores,
       roundPlayer,
-      totalRoundScore
+      totalRoundScore,
     );
   }
 
@@ -142,7 +147,7 @@ const calculatePlayersScores = (
 const calculateTeamsScore = (
   teamsScores: TeamScore[],
   roundPlayer: Player | null,
-  totalRoundScore: number
+  totalRoundScore: number,
 ): TeamScore[] => {
   return teamsScores.map((teamScore) => {
     const { score, boltCount, totalScore, teamId } = teamScore;
@@ -198,7 +203,7 @@ const calculateTeamsScore = (
 export const calculateRoundScore = (
   roundScore: RoundScore,
   roundPlayer: Player | null,
-  gameMode: GameMode
+  gameMode: GameMode,
 ) => {
   return {
     ...roundScore,
@@ -207,7 +212,7 @@ export const calculateRoundScore = (
         ? calculatePlayersScores(
             roundScore.playersScores,
             roundPlayer,
-            roundScore.totalRoundScore
+            roundScore.totalRoundScore,
           )
         : [],
     teamsScores:
@@ -215,7 +220,7 @@ export const calculateRoundScore = (
         ? calculateTeamsScore(
             roundScore.teamsScores,
             roundPlayer,
-            roundScore.totalRoundScore
+            roundScore.totalRoundScore,
           )
         : [],
     totalRoundScore: roundToDecimal(roundScore.totalRoundScore),
@@ -225,7 +230,7 @@ export const calculateRoundScore = (
 export const calculateTotalRoundScore = (
   operationSign: string,
   roundPoint: number,
-  prev: RoundScore
+  prev: RoundScore,
 ): RoundScore => {
   let totalRoundScore = prev.totalRoundScore;
 
@@ -288,7 +293,7 @@ export const sumOpponentPlayersScores = ({
 export const getPlayerWithHighestScore = (
   playersScores: PlayerScore[],
   roundPlayer: Player | null,
-  shouldRoundScore?: boolean
+  shouldRoundScore?: boolean,
 ): PlayerScore | undefined => {
   const playerWithHighestScore = playersScores
     .filter((playerScore) => playerScore.playerId !== roundPlayer?.id)
@@ -306,7 +311,7 @@ export const getPlayerWithHighestScore = (
 };
 
 export const recalculateScoreOnUndo = (
-  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>
+  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>,
 ): Pick<RoundSlice, 'roundsScores' | 'undoneRoundsScores'> => {
   const { roundsScores, undoneRoundsScores } = state;
 
@@ -340,7 +345,7 @@ export const recalculateScoreOnUndo = (
 };
 
 export const recalculateScoreOnRedo = (
-  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>
+  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>,
 ): Pick<RoundSlice, 'roundsScores' | 'undoneRoundsScores'> => {
   const { roundsScores, undoneRoundsScores } = state;
 
