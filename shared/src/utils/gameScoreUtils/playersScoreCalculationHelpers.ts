@@ -100,7 +100,6 @@ export const calculatePlayersScores = (
   roundPlayer: Player | null,
   totalRoundScore: number,
 ): PlayerScore[] => {
-  debugger;
   const calculatedRoundedPlayersScores = calculatePlayersScoresHelper(
     playersScores,
     roundPlayer,
