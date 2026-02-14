@@ -7,7 +7,7 @@ import NextRoundButton from '../action-buttons/next-round-button';
 import SkipRoundButton from '../action-buttons/skip-round-button';
 import TableBody from './table-body';
 import TableHeader from './tableHeader';
-import WindDialog from '../win-dialog';
+import WinDialog from '../win-dialog';
 import UndoRoundButton from '../action-buttons/undo-round-button';
 import RedoRoundButton from '../action-buttons/redo-round-button';
 
@@ -44,7 +44,7 @@ export default function GameTable() {
         </View>
       )}
 
-      <WindDialog winner={winner} setWinner={setWinner} />
+      <WinDialog winner={winner} setWinner={setWinner} />
     </View>
   );
 }

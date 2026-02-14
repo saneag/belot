@@ -14,12 +14,12 @@ import {
 import { useGameStore, GameMode, Player, Team } from '@belot/shared';
 import ConfirmationDialog from '../confirmation-dialog';
 
-interface WindDialogProps {
+interface WinDialogProps {
   winner: Player | Team | null;
   setWinner: Dispatch<SetStateAction<Player | Team | null>>;
 }
 
-export default function WindDialog({ winner, setWinner }: WindDialogProps) {
+export default function WinDialog({ winner, setWinner }: WinDialogProps) {
   const router = useRouter();
 
   const messages = useLocalizations([
