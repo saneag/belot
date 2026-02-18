@@ -10,9 +10,9 @@
     "lint": "expo lint",
     "prebuild:android": "expo prebuild -p android",
     "android:clean": "node ./scripts/android-clean.js",
-    "android:apk:debug": "npm run prebuild:android && cd android && gradlew assembleDebug",
-    "android:apk:release": "npm run prebuild:android && cd android && gradlew assembleRelease",
-    "android:aab:release": "npm run prebuild:android && cd android && gradlew bundleRelease",
+    "android:apk:debug": "npm run prebuild:android && node ./scripts/android-gradlew.js assembleDebug",
+    "android:apk:release": "npm run prebuild:android && node ./scripts/android-gradlew.js assembleRelease",
+    "android:aab:release": "npm run prebuild:android && node ./scripts/android-gradlew.js bundleRelease",
     "add-component": "node ./scripts/gluestack-add.js"
   },
   "dependencies": {
