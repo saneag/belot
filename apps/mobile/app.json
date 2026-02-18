@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Belot-score",
+    "slug": "belot",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/playstore-icon.png",
+    "scheme": "belot-score",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/images/ic_launcher_foreground.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.san3a.belot.score",
+      "versionCode": 3
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/ic_launcher.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/playstore-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "971bae5e-b68b-4edc-8411-b399b3a24bf7"
+      }
+    }
+  }
+}
