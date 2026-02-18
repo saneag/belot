@@ -13,10 +13,23 @@ if (tasks.length === 0) {
   process.exit(1);
 }
 
+const env = { ...process.env };
+if (!env.NODE_ENV && tasks.some((task) => task.toLowerCase().includes("release"))) {
+  env.NODE_ENV = "production";
+}
+
+const hasArchitectureOverride = tasks.some((task) =>
+  task.includes("reactNativeArchitectures"),
+);
+const gradleArgs = hasArchitectureOverride
+  ? tasks
+  : [...tasks, "-PreactNativeArchitectures=arm64-v8a,x86_64"];
+
 try {
-  execSync(`${gradlew} ${tasks.join(" ")}`, {
+  execSync(`${gradlew} ${gradleArgs.join(" ")}`, {
     cwd: androidDir,
     stdio: "inherit",
+    env,
     shell: isWindows,
   });
 } catch (err) {
