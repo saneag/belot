@@ -1,0 +1,11 @@
+{
+  "$schema": "https://gluestack.io/gluestack-ui.json",
+  "style": "default",
+  "rsc": false,
+  "tsx": true,
+  "packageManager": "pnpm",
+  "aliases": {
+    "components": "@/components",
+    "ui": "@/components/ui"
+  }
+}

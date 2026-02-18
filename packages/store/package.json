@@ -1,0 +1,14 @@
+{
+  "name": "@belot/store",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "types": "index.ts",
+  "dependencies": {
+    "@belot/types": "workspace:*",
+    "@belot/utils": "workspace:*",
+    "zustand": "^5.0.11"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}
