@@ -19,13 +19,32 @@ export const calculatePlayersScoresHelper = (
     roundPlayer,
     shouldRoundScore,
   });
+  const shouldApplyBolt = !!playerWithHighestScore && roundPlayerScore < playerWithHighestScore.score;
+  const opponentsWithComparableScores = playersScores
+    .filter((playerScore) => playerScore.playerId !== roundPlayer?.id)
+    .map((playerScore) => ({
+      playerId: playerScore.playerId,
+      score: shouldRoundScore ? roundByLastDigit(playerScore.score) : playerScore.score,
+    }));
+  const highestOpponentScore = Math.max(
+    ...opponentsWithComparableScores.map((playerScore) => playerScore.score),
+  );
+  const highestOpponentPlayerIds = opponentsWithComparableScores
+    .filter((playerScore) => playerScore.score === highestOpponentScore)
+    .map((playerScore) => playerScore.playerId);
+  const sharedBoltScore =
+    highestOpponentPlayerIds.length > 0
+      ? Math.floor(roundPlayerScore / highestOpponentPlayerIds.length)
+      : 0;
+  const sharedBoltScoreRemainder =
+    highestOpponentPlayerIds.length > 0 ? roundPlayerScore % highestOpponentPlayerIds.length : 0;
 
   return playersScores.map((playerScore) => {
     const { score, boltCount, totalScore, playerId } = playerScore;
     const roundedScore = shouldRoundScore ? roundByLastDigit(score) : score;
 
     if (roundPlayer?.id === playerId) {
-      if (playerWithHighestScore && roundPlayerScore < playerWithHighestScore.score) {
+      if (shouldApplyBolt) {
         if (boltCount === BOLT_COUNT_LIMIT) {
           return {
             ...playerScore,
@@ -51,13 +70,12 @@ export const calculatePlayersScoresHelper = (
       }
     }
 
-    if (
-      playerWithHighestScore?.playerId === playerId &&
-      roundPlayerScore < playerWithHighestScore.score
-    ) {
+    if (shouldApplyBolt && highestOpponentPlayerIds.includes(playerId)) {
+      const sharedScoreIndex = highestOpponentPlayerIds.indexOf(playerId);
+      const sharedBonus = sharedBoltScore + (sharedScoreIndex < sharedBoltScoreRemainder ? 1 : 0);
       const finalScore = !shouldRoundScore
-        ? roundByLastDigit(roundedScore + roundPlayerScore)
-        : roundedScore + roundPlayerScore;
+        ? roundByLastDigit(roundedScore + sharedBonus)
+        : roundedScore + sharedBonus;
 
       return {
         ...playerScore,
