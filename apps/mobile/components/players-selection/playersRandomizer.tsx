@@ -1,15 +1,14 @@
 import { TABLE_HEIGHT, TABLE_WIDTH } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 
+import ExtendedTooltip from "@/components/extendedTooltip";
+import { Button } from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
 import { Icon } from "@/components/ui/icon";
 
 import { useLocalizations } from "@/localizations/useLocalization";
 
 import { RefreshCcw } from "lucide-react-native";
-
-import ExtendedTooltip from "../extendedTooltip";
-import { Button } from "../ui/button";
 
 export default function PlayersRandomizer() {
   const messages = useLocalizations([{ key: "shuffle.players" }]);

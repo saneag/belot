@@ -1,5 +1,6 @@
-import { usePlayersSelectionContext } from "../../components/players-selection/playersSelectionContext";
-import { getRightPosition, getTopPosition } from "../../helpers/playerNamesHelpers";
+import { usePlayersSelectionContext } from "@/components/players-selection/playersSelectionContext";
+
+import { getRightPosition, getTopPosition } from "@/helpers/playerNamesHelpers";
 
 export const useGetInputPosition = () => {
   const { validations } = usePlayersSelectionContext();
