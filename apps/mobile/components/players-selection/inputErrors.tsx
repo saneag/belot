@@ -1,8 +1,9 @@
 import { isPlayerNameValid, isPlayersNamesEmpty, isPlayersNamesRepeating } from "@belot/utils";
 
+import { Text } from "@/components/ui/text";
+
 import { useLocalization } from "@/localizations/useLocalization";
 
-import { Text } from "../ui/text";
 import { PlayersNamesInputProps } from "./playersNamesInput";
 import { usePlayersSelectionContext } from "./playersSelectionContext";
 
