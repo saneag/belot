@@ -15,6 +15,7 @@ export default function TimeTracker() {
   const hours = Math.floor(timeSpent / 3600);
   const minutes = Math.floor((timeSpent % 3600) / 60);
   const seconds = timeSpent % 60;
+  const shouldPadSeconds = hours > 0 || minutes > 0;
 
   useEffect(() => {
     const updateTime = () => {
@@ -41,7 +42,7 @@ export default function TimeTracker() {
     <Text>
       {timeMsg}: {hours > 0 && hours.toString().padStart(2, "0") + ":"}
       {(hours > 0 || minutes > 0) && minutes.toString().padStart(2, "0") + ":"}
-      {seconds.toString().padStart(2, "0")}
+      {shouldPadSeconds ? seconds.toString().padStart(2, "0") : seconds}
     </Text>
   );
 }
