@@ -1,0 +1,125 @@
+import { DEFAULT_ROUND_POINTS } from "@belot/constants";
+import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
+import { GameSlice, PlayersSlice, RoundSlice } from "@belot/types";
+
+const preparePlayersScores = (
+  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>,
+): PlayerScore[] => {
+  const mode = state.mode;
+  const lastRoundScore = state.roundsScores.at(-1);
+  const players = state.players;
+
+  if (mode === GameMode.teams || !players) return [];
+
+  if (lastRoundScore === undefined) {
+    return players.map((player, index) => ({
+      id: index,
+      playerId: player.id,
+      score: 0,
+      boltCount: 0,
+      totalScore: 0,
+    }));
+  }
+
+  const newPlayersScore: PlayerScore[] = lastRoundScore.playersScores.map((playerScore) => ({
+    id: playerScore.id,
+    playerId: playerScore.playerId,
+    score: 0,
+    boltCount: playerScore.boltCount,
+    totalScore: playerScore.totalScore,
+  }));
+
+  return newPlayersScore;
+};
+
+const prepareTeamsScores = (
+  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>,
+): TeamScore[] => {
+  const { mode, teams, roundsScores } = state;
+  const lastRoundScore = roundsScores.at(-1);
+
+  if (mode === GameMode.classic || !teams) return [];
+
+  if (lastRoundScore === undefined) {
+    return teams.map((team, index) => ({
+      id: index,
+      teamId: team.id,
+      score: 0,
+      boltCount: 0,
+      totalScore: 0,
+    }));
+  }
+
+  const newTeamsScore: TeamScore[] = lastRoundScore.teamsScores.map((teamScore) => ({
+    id: teamScore.id,
+    teamId: teamScore.teamId,
+    score: 0,
+    boltCount: teamScore.boltCount,
+    totalScore: teamScore.totalScore,
+  }));
+
+  return newTeamsScore;
+};
+
+export const prepareEmptyRoundScoreRow = (
+  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>,
+): RoundScore => {
+  const lastRoundScore = state.roundsScores.at(-1);
+
+  return {
+    id: lastRoundScore?.id !== undefined ? lastRoundScore.id + 1 : 0,
+    playersScores: preparePlayersScores(state),
+    teamsScores: prepareTeamsScores(state),
+    totalRoundScore: DEFAULT_ROUND_POINTS,
+  };
+};
+
+export const preparePreviousRoundScoreRow = (
+  previousRoundScore: RoundScore,
+  undoneRoundScore: RoundScore,
+): RoundScore => {
+  const previousRoundTotalRoundScore = previousRoundScore.totalRoundScore;
+
+  return {
+    id: undoneRoundScore.id,
+    playersScores: previousRoundScore.playersScores.map((playerScore) => ({
+      ...playerScore,
+      score: 0,
+    })),
+    teamsScores: previousRoundScore.teamsScores.map((teamScore) => ({
+      ...teamScore,
+      score: 0,
+    })),
+    totalRoundScore:
+      previousRoundTotalRoundScore === DEFAULT_ROUND_POINTS
+        ? previousRoundTotalRoundScore
+        : Number(previousRoundTotalRoundScore.toString() + 2),
+  };
+};
+
+export const prepareTeams = (players: Player[], mode: GameMode): Team[] => {
+  return mode === GameMode.classic
+    ? []
+    : [
+        {
+          id: 0,
+          playersIds: [players[0].id, players[2].id],
+          name: "N",
+        },
+        {
+          id: 1,
+          playersIds: [players[1].id, players[3].id],
+          name: "V",
+        },
+      ];
+};
+
+export const prepareRoundScoresBasedOnGameMode = (
+  gameMode: GameMode,
+  roundScore: RoundScore,
+  opponent: PlayerScore | TeamScore,
+) => {
+  return gameMode === "classic"
+    ? roundScore.playersScores.find((playersScore) => playersScore.id === opponent.id)
+    : roundScore.teamsScores.find((teamsScore) => teamsScore.id === opponent.id);
+};
