@@ -6,12 +6,13 @@ import { useGameStore } from "@belot/store";
 import { Player } from "@belot/types";
 import { isPlayerNameValid } from "@belot/utils";
 
+import { CloseIcon } from "@/components/ui/icon";
+import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
+
 import { useLocalization } from "@/localizations/useLocalization";
 
-import { CloseIcon } from "../ui/icon";
-import { Input, InputField, InputIcon, InputSlot } from "../ui/input";
-import { Text } from "../ui/text";
-import { VStack } from "../ui/vstack";
 import { EmptyNameError, RepeatingNamesError } from "./inputErrors";
 // import { EmptyNameError, RepeatingNamesError } from "./inputErrors";
 import { usePlayersSelectionContext } from "./playersSelectionContext";
