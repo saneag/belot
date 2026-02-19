@@ -7,8 +7,7 @@ import { BaseScore, GameMode, RoundScore } from "@belot/types";
 import { roundToDecimal } from "@belot/utils";
 
 import { TableData } from "@/components/ui/table";
-
-import { Text } from "../ui/text";
+import { Text } from "@/components/ui/text";
 
 interface PointCellsProps {
   roundScore: RoundScore;

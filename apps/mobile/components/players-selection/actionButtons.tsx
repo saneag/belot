@@ -4,12 +4,12 @@ import { View } from "react-native";
 
 import { useGameStore } from "@belot/store";
 
+import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button, ButtonText } from "@/components/ui/button";
 
+import usePlayersSubmit from "@/hooks/players-selection/usePlayersSubmit";
 import { useLocalization, useLocalizations } from "@/localizations/useLocalization";
 
-import usePlayersSubmit from "../../hooks/players-selection/usePlayersSubmit";
-import ConfirmationDialog from "../confirmationDialog";
 import DealerSelectDialogContent from "./dealerSelectDialogContent";
 import { usePlayersSelectionContext } from "./playersSelectionContext";
 

@@ -6,8 +6,8 @@ import { useGameStore } from "@belot/store";
 import { getPlayersCount } from "@belot/utils";
 
 import { getRotation } from "@/helpers/playerNamesHelpers";
+import { useGetInputPosition } from "@/hooks/players-selection/useGetInputPosition";
 
-import { useGetInputPosition } from "../../hooks/players-selection/useGetInputPosition";
 import PlayersNamesInput from "./playersNamesInput";
 import PlayersRandomizer from "./playersRandomizer";
 import PlayersTable from "./playersTable";

@@ -1,3 +1,4 @@
+import { NEXT_WINNING_STEP, WIN_POINTS } from "@belot/constants";
 import {
   GameMode,
   Player,
@@ -8,8 +9,6 @@ import {
   Team,
   TeamScore,
 } from "@belot/types";
-
-import { NEXT_WINNING_STEP, WIN_POINTS } from "../../constants";
 
 export const setNextDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
   if (state.roundsScores.length === 0) {
