@@ -95,10 +95,15 @@ export const calculatePlayersScores = (
     true,
   );
 
-  const scores = calculatedRoundedPlayersScores.map((playerScore) => playerScore.score);
-  const hasAtLeastTwoEqualScores = new Set(scores).size !== playersScores.length;
+  const roundedRoundPlayerScore = calculatedRoundedPlayersScores.find(
+    (playerScore) => playerScore.playerId === roundPlayer?.id,
+  )?.score;
+  const isRoundPlayerTiedOnRoundedScore = calculatedRoundedPlayersScores.some(
+    (playerScore) =>
+      playerScore.playerId !== roundPlayer?.id && playerScore.score === roundedRoundPlayerScore,
+  );
 
-  if (hasAtLeastTwoEqualScores) {
+  if (isRoundPlayerTiedOnRoundedScore) {
     return calculatePlayersScoresHelper(playersScores, roundPlayer, totalRoundScore);
   }
 
