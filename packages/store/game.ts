@@ -1,0 +1,28 @@
+import { GameMode, GameSlice, PlayersSlice, RoundSlice } from "@belot/types";
+
+import { create } from "zustand";
+
+import { createGameSlice } from "./game.slice";
+import { createPlayersSlice } from "./players.slice";
+import { createRoundSlice } from "./rounds.slice";
+
+interface GameStore extends GameSlice, PlayersSlice, RoundSlice {
+  reset: VoidFunction;
+}
+
+export const useGameStore = create<GameStore>((set, ...rest) => ({
+  ...createPlayersSlice(set, ...rest),
+  ...createRoundSlice(set, ...rest),
+  ...createGameSlice(set, ...rest),
+
+  reset: () =>
+    set(() => ({
+      players: [],
+      mode: GameMode.classic,
+      dealer: null,
+      roundPlayer: null,
+      roundsScores: [],
+      teams: [],
+      undoneRoundsScores: [],
+    })),
+}));
