@@ -37,7 +37,7 @@ export default function PlayersCount() {
     if (playersCount === 0) {
       setEmptyPlayersNames(PLAYERS_COUNT[0]);
     }
-  }, [playersCount, players, setEmptyPlayersNames]);
+  }, [playersCount, setEmptyPlayersNames]);
 
   return (
     <View className="gap-2.5">
