@@ -1,11 +1,10 @@
 import { useCallback } from "react";
 
-import { View } from "react-native";
-
 import { useGameStore } from "@belot/store";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button, ButtonText } from "@/components/ui/button";
+import { HStack } from "@/components/ui/hstack";
 
 import usePlayersSubmit from "@/hooks/players-selection/usePlayersSubmit";
 import { useLocalization, useLocalizations } from "@/localizations/useLocalization";
@@ -55,11 +54,9 @@ function SubmitButton() {
 
 export default function ActionButtons() {
   return (
-    <View className="gap-5">
-      <View className="flex-row justify-between gap-2.5">
-        <ResetButton />
-        <SubmitButton />
-      </View>
-    </View>
+    <HStack className="justify-between gap-2.5">
+      <ResetButton />
+      <SubmitButton />
+    </HStack>
   );
 }

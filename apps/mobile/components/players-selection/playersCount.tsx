@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useMemo } from "react";
 
-import { View } from "react-native";
-
 import { useGameStore } from "@belot/store";
 import { getPlayersCount } from "@belot/utils";
 
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 
 import { useLocalization } from "@/localizations/useLocalization";
 
@@ -40,7 +39,7 @@ export default function PlayersCount() {
   }, [playersCount, setEmptyPlayersNames]);
 
   return (
-    <View className="gap-2.5">
+    <VStack space="md">
       <Text className="text-center text-lg">{numberOfPlayersMsg}</Text>
       <HStack className="justify-center gap-2.5">
         {PLAYERS_COUNT.map((count) => (
@@ -54,6 +53,6 @@ export default function PlayersCount() {
           </Button>
         ))}
       </HStack>
-    </View>
+    </VStack>
   );
 }

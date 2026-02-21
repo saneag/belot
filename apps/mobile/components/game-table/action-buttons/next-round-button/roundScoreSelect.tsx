@@ -1,7 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
-import { View } from "react-native";
-
 import { ROUND_POINTS } from "@belot/constants";
 import { RoundScore } from "@belot/types";
 import { calculateTotalRoundScore, roundToDecimal } from "@belot/utils";
@@ -9,6 +7,7 @@ import { calculateTotalRoundScore, roundToDecimal } from "@belot/utils";
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
+import { VStack } from "@/components/ui/vstack";
 
 import { useLocalization } from "@/localizations/useLocalization";
 
@@ -34,7 +33,7 @@ export default function RoundScoreSelect({ roundScore, setRoundScore }: RoundSco
   );
 
   return (
-    <View className="justify-center gap-2.5">
+    <VStack space="sm" className="mb-3">
       <Text size="xl" className="text-center">
         {roundScoreMsg}
       </Text>
@@ -55,6 +54,6 @@ export default function RoundScoreSelect({ roundScore, setRoundScore }: RoundSco
           <ButtonText>{operationSign}</ButtonText>
         </Button>
       </HStack>
-    </View>
+    </VStack>
   );
 }
