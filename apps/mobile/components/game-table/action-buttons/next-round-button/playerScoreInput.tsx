@@ -1,7 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from "react";
 
-import { View } from "react-native";
-
 import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
 import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode } from "@belot/utils";
 
@@ -30,10 +28,7 @@ export default function PlayerScoreInput({
   teams,
   roundPlayer,
 }: PlayerScoreInputProps) {
-  const messages = useLocalizations([
-    { key: "next.round.score.for.player" },
-    { key: "next.round.score.for.player.input.helper" },
-  ]);
+  const messages = useLocalizations([{ key: "next.round.score.for.player" }]);
 
   const finalRoundScore = useMemo(
     () => prepareRoundScoresBasedOnGameMode(gameMode, roundScore, opponent),
@@ -72,33 +67,17 @@ export default function PlayerScoreInput({
   }, [finalRoundScore?.score, handleInputChange, roundScore.totalRoundScore]);
 
   return (
-    <View>
-      {/* <TextInput
-        label={inputLabel}
-        mode="outlined"
-        maxLength={3}
-        keyboardType="number-pad"
-        style={{ minHeight: 60 }}
-        value={String(finalRoundScore?.score || 0)}
-        onChangeText={(value) => handleInputChange(Number(value))}
-        selectTextOnFocus
-      />
-      <HelperText type="info">{messages.nextRoundScoreForPlayerInputHelper}</HelperText> */}
-      <VStack>
-        <Text className="text-typography-500">{inputLabel}</Text>
-        <Input>
-          <InputField
-            value={String(finalRoundScore?.score || 0)}
-            maxLength={3}
-            keyboardType="number-pad"
-            onChangeText={(value) => handleInputChange(Number(value))}
-            selectTextOnFocus
-          />
-        </Input>
-        <Text size="sm" className="text-typography-500">
-          {messages.nextRoundScoreForPlayerInputHelper}
-        </Text>
-      </VStack>
-    </View>
+    <VStack space="xs">
+      <Text className="text-sm text-typography-500">{inputLabel}</Text>
+      <Input variant="rounded" className="w-full">
+        <InputField
+          value={String(finalRoundScore?.score || 0)}
+          maxLength={3}
+          keyboardType="number-pad"
+          onChangeText={(value) => handleInputChange(Number(value))}
+          selectTextOnFocus
+        />
+      </Input>
+    </VStack>
   );
 }
