@@ -31,7 +31,9 @@ export default function RoundPlayerDisplay({
 
   return (
     <HStack className="flex-wrap items-center justify-center gap-1">
-      <Text className="font-bold text-red-500">{roundPlayerMsg}</Text>
+      <Text bold className="text-primary-500">
+        {roundPlayerMsg}
+      </Text>
       {!stateRoundPlayer && (
         <Button variant="link" className="h-fit p-1" onPress={handleRoundPlayerEdit}>
           <Icon as={Pencil} className="text-blue-500" size="sm" />
