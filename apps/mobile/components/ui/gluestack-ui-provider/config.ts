@@ -3,18 +3,19 @@ import { vars } from "nativewind";
 
 export const config = {
   light: vars({
-    "--color-primary-0": "179 179 179",
-    "--color-primary-50": "140 140 140",
-    "--color-primary-100": "100 100 100",
-    "--color-primary-200": "80 80 80",
-    "--color-primary-300": "60 60 60",
-    "--color-primary-400": "45 45 45",
-    "--color-primary-500": "28 28 30",
-    "--color-primary-600": "22 22 24",
-    "--color-primary-700": "18 18 20",
-    "--color-primary-800": "12 12 14",
-    "--color-primary-900": "8 8 10",
-    "--color-primary-950": "5 5 8",
+    /* Primary - faded violet (soft, muted) */
+    "--color-primary-0": "250 249 253",
+    "--color-primary-50": "243 240 251",
+    "--color-primary-100": "230 225 248",
+    "--color-primary-200": "210 200 242",
+    "--color-primary-300": "185 170 232",
+    "--color-primary-400": "155 135 215",
+    "--color-primary-500": "130 110 200",
+    "--color-primary-600": "110 90 180",
+    "--color-primary-700": "90 72 155",
+    "--color-primary-800": "72 58 125",
+    "--color-primary-900": "55 45 95",
+    "--color-primary-950": "40 35 75",
 
     /* Secondary */
     "--color-secondary-0": "253 253 253",
@@ -150,24 +151,24 @@ export const config = {
     "--color-background-info": "235 248 254",
 
     /* Focus Ring Indicator  */
-    "--color-indicator-primary": "55 55 55",
+    "--color-indicator-primary": "155 135 215",
     "--color-indicator-info": "83 153 236",
     "--color-indicator-error": "185 28 28",
   }),
   dark: vars({
-    /* Primary */
-    "--color-primary-0": "166 166 166",
-    "--color-primary-50": "200 200 200",
-    "--color-primary-100": "220 220 220",
-    "--color-primary-200": "232 232 232",
-    "--color-primary-300": "240 240 240",
-    "--color-primary-400": "245 245 245",
-    "--color-primary-500": "248 248 250",
-    "--color-primary-600": "250 250 252",
-    "--color-primary-700": "252 252 254",
-    "--color-primary-800": "254 254 255",
-    "--color-primary-900": "255 255 255",
-    "--color-primary-950": "255 255 255",
+    /* Primary - faded violet (matches light theme) */
+    "--color-primary-0": "40 35 75",
+    "--color-primary-50": "55 45 95",
+    "--color-primary-100": "72 58 125",
+    "--color-primary-200": "90 72 155",
+    "--color-primary-300": "110 90 180",
+    "--color-primary-400": "130 110 200",
+    "--color-primary-500": "155 135 215",
+    "--color-primary-600": "185 170 232",
+    "--color-primary-700": "210 200 242",
+    "--color-primary-800": "230 225 248",
+    "--color-primary-900": "243 240 251",
+    "--color-primary-950": "250 249 253",
 
     /* Secondary */
     "--color-secondary-0": "20 20 20",
@@ -303,7 +304,7 @@ export const config = {
     "--color-background-info": "26 40 46",
 
     /* Focus Ring Indicator  */
-    "--color-indicator-primary": "247 247 247",
+    "--color-indicator-primary": "185 170 232",
     "--color-indicator-info": "161 199 245",
     "--color-indicator-error": "232 70 69",
   }),

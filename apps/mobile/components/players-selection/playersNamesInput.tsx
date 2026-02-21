@@ -1,7 +1,5 @@
 import { useCallback, useMemo } from "react";
 
-import { View } from "react-native";
-
 import { useGameStore } from "@belot/store";
 import { Player } from "@belot/types";
 import { isPlayerNameValid } from "@belot/utils";
@@ -14,7 +12,6 @@ import { VStack } from "@/components/ui/vstack";
 import { useLocalization } from "@/localizations/useLocalization";
 
 import { EmptyNameError, RepeatingNamesError } from "./inputErrors";
-// import { EmptyNameError, RepeatingNamesError } from "./inputErrors";
 import { usePlayersSelectionContext } from "./playersSelectionContext";
 
 export interface PlayersNamesInputProps {
@@ -43,26 +40,24 @@ export default function PlayersNamesInput({ player }: PlayersNamesInputProps) {
   );
 
   return (
-    <View>
-      <VStack>
-        <Text className="ms-2 text-typography-500">{playerNameInputLabel}</Text>
-        <Input isInvalid={isInvalid} className="w-[130px] bg-secondary-50/90" variant="rounded">
-          <InputField
-            value={player.name}
-            onChangeText={handlePlayerNameChange}
-            maxLength={15}
-            className="pe-1 ps-2"
-            type="text"
-          />
-          <InputSlot className="pe-2" onPress={() => handlePlayerNameChange("")}>
-            <InputIcon as={player.name ? CloseIcon : undefined} />
-          </InputSlot>
-        </Input>
-        <View>
-          <EmptyNameError player={player} />
-          <RepeatingNamesError player={player} />
-        </View>
+    <VStack>
+      <Text className="ms-2 text-typography-500">{playerNameInputLabel}</Text>
+      <Input isInvalid={isInvalid} className="w-[130px] bg-secondary-50/90" variant="rounded">
+        <InputField
+          value={player.name}
+          onChangeText={handlePlayerNameChange}
+          maxLength={15}
+          className="pe-1 ps-2"
+          type="text"
+        />
+        <InputSlot className="pe-2" onPress={() => handlePlayerNameChange("")}>
+          <InputIcon as={player.name ? CloseIcon : undefined} />
+        </InputSlot>
+      </Input>
+      <VStack space="xs">
+        <EmptyNameError player={player} />
+        <RepeatingNamesError player={player} />
       </VStack>
-    </View>
+    </VStack>
   );
 }

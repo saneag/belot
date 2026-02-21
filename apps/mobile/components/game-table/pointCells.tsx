@@ -1,11 +1,10 @@
 import { useCallback } from "react";
 
-import { View } from "react-native";
-
 import { BOLT_COUNT_LIMIT, BOLT_POINTS } from "@belot/constants";
 import { BaseScore, GameMode, RoundScore } from "@belot/types";
 import { roundToDecimal } from "@belot/utils";
 
+import { Box } from "@/components/ui/box";
 import { TableData } from "@/components/ui/table";
 import { Text } from "@/components/ui/text";
 
@@ -51,7 +50,7 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
           key={index}
           className={`p-0 ${index !== 0 ? "border-l border-primary-500" : ""}`}
         >
-          <View className={`relative size-full ${COMMON_CELL_CLASSNAME}`}>
+          <Box className={`relative ${COMMON_CELL_CLASSNAME}`}>
             <Text size="xl" className="text-center">
               {getScore(score)}
             </Text>
@@ -60,17 +59,17 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
                 {getCurrentScore(score)}
               </Text>
             ) : null}
-          </View>
+          </Box>
         </TableData>
       ))}
       <TableData className="border-l border-primary-500 p-0">
-        <View className={`size-full ${COMMON_CELL_CLASSNAME}`}>
-          <Text size="xl" className="text-center">
+        <Box className={`${COMMON_CELL_CLASSNAME}`}>
+          <Text size="xl" bold className="text-center">
             {String(roundScore.totalRoundScore).length === 3
               ? roundToDecimal(roundScore.totalRoundScore)
               : roundScore.totalRoundScore}
           </Text>
-        </View>
+        </Box>
       </TableData>
     </>
   );
