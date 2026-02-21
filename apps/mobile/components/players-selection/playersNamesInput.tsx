@@ -14,7 +14,6 @@ import { VStack } from "@/components/ui/vstack";
 import { useLocalization } from "@/localizations/useLocalization";
 
 import { EmptyNameError, RepeatingNamesError } from "./inputErrors";
-// import { EmptyNameError, RepeatingNamesError } from "./inputErrors";
 import { usePlayersSelectionContext } from "./playersSelectionContext";
 
 export interface PlayersNamesInputProps {
