@@ -4,3 +4,8 @@ build
 coverage
 .expo
 .next
+
+# API: Prettier collapses empty blocks to one line, which removes newlines you add
+# inside {} on save. Ignoring so save doesn’t undo your edit. Format when needed via:
+#   pnpm --filter @belot/api format
+apps/api
