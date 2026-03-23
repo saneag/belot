@@ -20,7 +20,6 @@ export const useGameStore = create<GameStore>((set, ...rest) => ({
       players: [],
       mode: GameMode.classic,
       dealer: null,
-      roundPlayer: null,
       roundsScores: [],
       teams: [],
       undoneRoundsScores: [],

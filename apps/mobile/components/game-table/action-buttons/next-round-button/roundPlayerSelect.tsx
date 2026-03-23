@@ -5,18 +5,16 @@ import { View } from "react-native";
 import { useGameStore } from "@belot/store";
 import { Player } from "@belot/types";
 
+import { RoundPlayerDisplayProps } from "@/components/game-table/action-buttons/next-round-button/roundPlayerDisplay";
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
 
 import { useLocalization } from "@/localizations/useLocalization";
 
-export interface RoundPlayerSelectProps {
-  roundPlayer: Player | null;
-  setRoundPlayer: Dispatch<SetStateAction<Player | null>>;
-}
-
-export default function RoundPlayerSelect({ setRoundPlayer }: RoundPlayerSelectProps) {
+export default function RoundPlayerSelect({
+  setRoundPlayer,
+}: Pick<RoundPlayerDisplayProps, "setRoundPlayer">) {
   const nextRoundPlayerMsg = useLocalization("next.round.player.select");
 
   const players = useGameStore((state) => state.players);

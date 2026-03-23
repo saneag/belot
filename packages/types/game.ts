@@ -25,6 +25,7 @@ export interface RoundScore extends BaseEntity<number> {
   playersScores: PlayerScore[];
   teamsScores: TeamScore[];
   totalRoundScore: number;
+  roundPlayer?: Player | null;
 }
 
 export interface PlayerScore extends BaseEntity<number>, BaseScore {
