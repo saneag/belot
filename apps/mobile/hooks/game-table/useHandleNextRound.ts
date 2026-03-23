@@ -10,6 +10,7 @@ const defaultRoundScoreState: RoundScore = {
   playersScores: [],
   teamsScores: [],
   totalRoundScore: DEFAULT_ROUND_POINTS,
+  roundPlayer: null,
 };
 
 interface UseHandleNextRoundProps {
@@ -25,22 +26,18 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
   const teams = useGameStore((state) => state.teams);
   const gameMode = useGameStore((state) => state.mode);
   const roundsScores = useGameStore((state) => state.roundsScores);
-  const setStateRoundPlayer = useGameStore((state) => state.setRoundPlayer);
   const updateRoundScore = useGameStore((state) => state.updateRoundScore);
 
   const handleCancel = useCallback(() => {
     setRoundPlayer(null);
-    setStateRoundPlayer(null);
-  }, [setStateRoundPlayer]);
+  }, []);
 
   const handleNextRound = useCallback(() => {
-    setStateRoundPlayer(roundPlayer);
     const calculatedRoundScore = calculateRoundScore(roundScore, roundPlayer, gameMode);
     updateRoundScore(calculatedRoundScore);
 
     setRoundPlayer(null);
     setRoundScore(defaultRoundScoreState);
-    setStateRoundPlayer(null);
 
     setWinner(
       checkForGameWinner(
@@ -58,7 +55,6 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
     players,
     roundPlayer,
     roundScore,
-    setStateRoundPlayer,
     setWinner,
     teams,
     updateRoundScore,

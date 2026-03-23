@@ -14,6 +14,7 @@ export const calculateRoundScore = (
 ) => {
   return {
     ...roundScore,
+    roundPlayer,
     playersScores:
       gameMode === GameMode.classic
         ? calculatePlayersScores(roundScore.playersScores, roundPlayer, roundScore.totalRoundScore)
