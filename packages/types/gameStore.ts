@@ -15,10 +15,10 @@ export interface RoundSlice {
   setDealer: (dealer: Player | null) => void;
   setRoundsScores: (roundsScores: RoundScore[]) => void;
   updateRoundScore: (roundScore: Partial<RoundScore>) => void;
-  setEmptyRoundScore: VoidFunction;
-  skipRound: VoidFunction;
-  undoRoundScore: VoidFunction;
-  redoRoundScore: VoidFunction;
+  setEmptyRoundScore: () => void;
+  skipRound: () => void;
+  undoRoundScore: () => void;
+  redoRoundScore: () => void;
 }
 
 export interface PlayersSlice {
