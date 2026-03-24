@@ -4,19 +4,17 @@ import { VStack } from "@/components/ui/vstack";
 import { useLocalizations } from "@/localizations/useLocalization";
 
 import PlayerScoreInputWrapper from "./playerScoreInputWrapper";
-import RoundPlayerDisplay from "./roundPlayerDisplay";
-import RoundPlayerSelect, { RoundPlayerSelectProps } from "./roundPlayerSelect";
+import RoundPlayerDisplay, { RoundPlayerDisplayProps } from "./roundPlayerDisplay";
+import RoundPlayerSelect from "./roundPlayerSelect";
 import RoundScoreSelect, { RoundScoreSelectProps } from "./roundScoreSelect";
 
-type ScoreDialogContentProps = RoundPlayerSelectProps & RoundScoreSelectProps;
+type ScoreDialogContentProps = RoundPlayerDisplayProps & RoundScoreSelectProps;
 
 export default function ScoreDialogContent(props: ScoreDialogContentProps) {
   const messages = useLocalizations([{ key: "next.round.score.for.player.input.helper" }]);
 
   if (!props.roundPlayer) {
-    return (
-      <RoundPlayerSelect roundPlayer={props.roundPlayer} setRoundPlayer={props.setRoundPlayer} />
-    );
+    return <RoundPlayerSelect setRoundPlayer={props.setRoundPlayer} />;
   }
 
   return (

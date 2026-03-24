@@ -13,12 +13,10 @@ export const createRoundSlice: StateCreator<
   RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>
 > = (set) => ({
   dealer: null,
-  roundPlayer: null,
   roundsScores: [],
   undoneRoundsScores: [],
 
   setDealer: (dealer) => set(() => ({ dealer })),
-  setRoundPlayer: (roundPlayer) => set(() => ({ roundPlayer })),
   setEmptyRoundScore: () =>
     set((state) => ({
       roundsScores: [...state.roundsScores, prepareEmptyRoundScoreRow(state)],
