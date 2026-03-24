@@ -71,6 +71,7 @@ export const prepareEmptyRoundScoreRow = (
     playersScores: preparePlayersScores(state),
     teamsScores: prepareTeamsScores(state),
     totalRoundScore: DEFAULT_ROUND_POINTS,
+    roundPlayer: null,
   };
 };
 
@@ -94,6 +95,7 @@ export const preparePreviousRoundScoreRow = (
       previousRoundTotalRoundScore === DEFAULT_ROUND_POINTS
         ? previousRoundTotalRoundScore
         : Number(previousRoundTotalRoundScore.toString() + 2),
+    roundPlayer: null,
   };
 };
 
