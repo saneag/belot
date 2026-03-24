@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 
 import { useGameStore } from "@belot/store";
-import { getPlayersCount } from "@belot/utils";
+import { getPlayersCount } from "@belot/utils/src";
 
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";

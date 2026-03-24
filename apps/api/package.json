@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "tsx index.ts",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",

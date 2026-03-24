@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
 import { ROUND_POINTS } from "@belot/constants";
 import { RoundScore } from "@belot/types";
-import { calculateTotalRoundScore, roundToDecimal } from "@belot/utils";
+import { calculateTotalRoundScore, roundToDecimal } from "@belot/utils/src";
 
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";

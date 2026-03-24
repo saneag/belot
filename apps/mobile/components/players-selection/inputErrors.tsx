@@ -1,4 +1,4 @@
-import { isPlayerNameValid, isPlayersNamesEmpty, isPlayersNamesRepeating } from "@belot/utils";
+import { isPlayerNameValid, isPlayersNamesEmpty, isPlayersNamesRepeating } from "@belot/utils/src";
 
 import { Text } from "@/components/ui/text";
 
