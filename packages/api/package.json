@@ -4,6 +4,9 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "sideEffects": false,
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
   "peerDependencies": {
     "react": ">=18",
     "@tanstack/react-query": "^5"

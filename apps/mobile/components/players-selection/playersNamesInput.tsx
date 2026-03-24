@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 
 import { useGameStore } from "@belot/store";
 import { Player } from "@belot/types";
-import { isPlayerNameValid } from "@belot/utils";
+import { isPlayerNameValid } from "@belot/utils/src";
 
 import { CloseIcon } from "@/components/ui/icon";
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";

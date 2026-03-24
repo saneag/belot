@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useMemo } from "react";
 
 import { useGameStore } from "@belot/store";
 import { GameMode, Player, RoundScore } from "@belot/types";
-import { getOpponentPlayersScore, getOpponentTeamScore } from "@belot/utils";
+import { getOpponentPlayersScore, getOpponentTeamScore } from "@belot/utils/src";
 
 import PlayerScoreInput from "./playerScoreInput";
 
