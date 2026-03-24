@@ -30,11 +30,30 @@ export const Icon = React.forwardRef<
     }
 >(function Icon({ size = "md", className, ...props }, ref) {
   if (typeof size === "number") {
-    return <UIIcon ref={ref} {...props} className={iconStyle({ class: className })} size={size} />;
+    return (
+      <UIIcon
+        ref={ref as React.ComponentProps<typeof UIIcon>["ref"]}
+        {...props}
+        className={iconStyle({ class: className })}
+        size={size}
+      />
+    );
   } else if ((props.height !== undefined || props.width !== undefined) && size === undefined) {
-    return <UIIcon ref={ref} {...props} className={iconStyle({ class: className })} />;
+    return (
+      <UIIcon
+        ref={ref as React.ComponentProps<typeof UIIcon>["ref"]}
+        {...props}
+        className={iconStyle({ class: className })}
+      />
+    );
   }
-  return <UIIcon ref={ref} {...props} className={iconStyle({ size, class: className })} />;
+  return (
+    <UIIcon
+      ref={ref as React.ComponentProps<typeof UIIcon>["ref"]}
+      {...props}
+      className={iconStyle({ size, class: className })}
+    />
+  );
 });
 
 type ParameterTypes = Omit<Parameters<typeof createIcon>[0], "Root">;
@@ -58,7 +77,13 @@ const createIconUI = ({ ...props }: ParameterTypes) => {
     const calculateClassName = React.useMemo(() => {
       return className === undefined ? accessClassName(inComingprops?.style) : className;
     }, [className, inComingprops?.style]);
-    return <NewUIIcon ref={ref} {...inComingprops} className={calculateClassName} />;
+    return (
+      <NewUIIcon
+        ref={ref as React.ComponentProps<typeof NewUIIcon>["ref"]}
+        {...inComingprops}
+        className={calculateClassName}
+      />
+    );
   });
 };
 

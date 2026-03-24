@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { DEFAULT_ROUND_POINTS } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import { Player, RoundScore, Team } from "@belot/types";
-import { calculateRoundScore, checkForGameWinner } from "@belot/utils";
+import { calculateRoundScore, checkForGameWinner } from "@belot/utils/src";
 
 const defaultRoundScoreState: RoundScore = {
   id: 0,

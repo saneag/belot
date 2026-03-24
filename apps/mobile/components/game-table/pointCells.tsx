@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { BOLT_COUNT_LIMIT, BOLT_POINTS } from "@belot/constants";
 import { BaseScore, GameMode, RoundScore } from "@belot/types";
-import { roundToDecimal } from "@belot/utils";
+import { roundToDecimal } from "@belot/utils/src";
 
 import { Box } from "@/components/ui/box";
 import { TableData } from "@/components/ui/table";

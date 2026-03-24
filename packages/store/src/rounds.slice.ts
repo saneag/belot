@@ -5,7 +5,7 @@ import {
   recalculateScoreOnUndo,
   roundByLastDigit,
   setNextDealer,
-} from "@belot/utils";
+} from "@belot/utils/src";
 
 import { StateCreator } from "zustand";
 

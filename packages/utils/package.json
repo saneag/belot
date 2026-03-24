@@ -1,8 +1,8 @@
 {
   "name": "@belot/utils",
   "version": "1.0.0",
-  "main": "index.ts",
-  "types": "index.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "dependencies": {
     "@belot/types": "workspace:*",
     "@belot/constants": "workspace:*"

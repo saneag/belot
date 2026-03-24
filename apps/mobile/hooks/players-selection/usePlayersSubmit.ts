@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 
 import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
-import { isPlayerNameValid, validatePlayersNames } from "@belot/utils";
+import { isPlayerNameValid, validatePlayersNames } from "@belot/utils/src";
 
 import { usePlayersSelectionContext } from "@/components/players-selection/playersSelectionContext";
 

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import { Player, Team } from "@belot/types/game";
+import { Player, Team } from "@belot/types";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import ExtendedTooltip from "@/components/extendedTooltip";

@@ -1,4 +1,4 @@
-import { isPlayerNameValid } from "@belot/utils";
+import { isPlayerNameValid } from "@belot/utils/src";
 
 import { usePlayersSelectionContext } from "@/components/players-selection/playersSelectionContext";
 
