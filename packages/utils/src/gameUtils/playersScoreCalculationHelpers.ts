@@ -19,7 +19,8 @@ export const calculatePlayersScoresHelper = (
     roundPlayer,
     shouldRoundScore,
   });
-  const shouldApplyBolt = !!playerWithHighestScore && roundPlayerScore < playerWithHighestScore.score;
+  const shouldApplyBolt =
+    !!playerWithHighestScore && roundPlayerScore < playerWithHighestScore.score;
   const opponentsWithComparableScores = playersScores
     .filter((playerScore) => playerScore.playerId !== roundPlayer?.id)
     .map((playerScore) => ({

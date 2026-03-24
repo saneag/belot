@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useGameStore } from "@belot/store";
 import { GameMode } from "@belot/types";
-import { getPlayersNames, getTeamsNames } from "@belot/utils";
+import { getPlayersNames, getTeamsNames } from "@belot/utils/src";
 
 import { useLocalization } from "@/localizations/useLocalization";
 

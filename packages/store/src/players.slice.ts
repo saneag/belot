@@ -1,5 +1,5 @@
 import { GameMode, GameSlice, Player, PlayersSlice } from "@belot/types";
-import { prepareTeams } from "@belot/utils";
+import { prepareTeams } from "@belot/utils/src";
 
 import { StateCreator } from "zustand";
 

@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { View } from "react-native";
 
 import { useGameStore } from "@belot/store";
-import { getPlayersCount } from "@belot/utils";
+import { getPlayersCount } from "@belot/utils/src";
 
 import { getRotation } from "@/helpers/playerNamesHelpers";
 import { useGetInputPosition } from "@/hooks/players-selection/useGetInputPosition";

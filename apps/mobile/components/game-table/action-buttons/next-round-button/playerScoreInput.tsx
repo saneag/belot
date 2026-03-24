@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from "react";
 
 import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
-import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode } from "@belot/utils";
+import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode } from "@belot/utils/src";
 
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
