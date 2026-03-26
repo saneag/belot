@@ -79,8 +79,6 @@ export const preparePreviousRoundScoreRow = (
   previousRoundScore: RoundScore,
   undoneRoundScore: RoundScore,
 ): RoundScore => {
-  const previousRoundTotalRoundScore = previousRoundScore.totalRoundScore;
-
   return {
     id: undoneRoundScore.id,
     playersScores: previousRoundScore.playersScores.map((playerScore) => ({
@@ -91,10 +89,7 @@ export const preparePreviousRoundScoreRow = (
       ...teamScore,
       score: 0,
     })),
-    totalRoundScore:
-      previousRoundTotalRoundScore === DEFAULT_ROUND_POINTS
-        ? previousRoundTotalRoundScore
-        : Number(previousRoundTotalRoundScore.toString() + 2),
+    totalRoundScore: DEFAULT_ROUND_POINTS,
     roundPlayer: null,
   };
 };
