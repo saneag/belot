@@ -9,9 +9,6 @@ export type InitGameInput = {
   mode: GameMode;
   dealer?: Player | null;
   teams: Team[];
-  roundsScores?: RoundScore[];
-  undoneRoundsScores?: RoundScore[];
-  isFinished?: boolean;
 };
 
 export type UpdateGameInput = Partial<{
@@ -30,9 +27,6 @@ export const GameService = {
       mode: input.mode,
       dealer: input.dealer ?? null,
       teams: input.teams,
-      roundsScores: input.roundsScores ?? [],
-      undoneRoundsScores: input.undoneRoundsScores ?? [],
-      isFinished: input.isFinished ?? false,
     });
 
     return toPublicGame(doc);
