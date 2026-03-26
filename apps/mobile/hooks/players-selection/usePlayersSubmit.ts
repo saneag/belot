@@ -2,20 +2,27 @@ import { useCallback } from "react";
 
 import { useRouter } from "expo-router";
 
+import { useGameInit } from "@belot/api-client";
 import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
-import { isPlayerNameValid, validatePlayersNames } from "@belot/utils/src";
+import { GameMode } from "@belot/types";
+import { isPlayerNameValid, prepareTeams, validatePlayersNames } from "@belot/utils/src";
 
 import { usePlayersSelectionContext } from "@/components/players-selection/playersSelectionContext";
 
+import { getApiBaseUrl } from "@/constants/apiBaseUrl";
 import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 
 export default function usePlayersSubmit() {
   const router = useRouter();
   const { setValidations } = usePlayersSelectionContext();
 
+  const initGame = useGameInit(getApiBaseUrl());
+
   const players = useGameStore((state) => state.players);
+  const dealer = useGameStore((state) => state.dealer);
   const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
+  const setGameId = useGameStore((state) => state.setGameId);
 
   const handleOpenDialog = useCallback(
     (showDialog: VoidFunction) => {
@@ -46,10 +53,21 @@ export default function usePlayersSubmit() {
       [StorageKeys.hasPreviousGame]: true,
     });
 
+    const mode = players.length === 4 ? GameMode.teams : GameMode.classic;
+
+    const gameInitResponse = await initGame.mutateAsync({
+      players,
+      mode,
+      teams: prepareTeams(players, mode),
+      dealer: dealer || null,
+    });
+
+    setGameId(gameInitResponse.id);
+
     setEmptyRoundScore();
 
     router.navigate("/game-table");
-  }, [players, router, setEmptyRoundScore, setValidations]);
+  }, [dealer, initGame, players, router, setEmptyRoundScore, setGameId, setValidations]);
 
   return {
     handleOpenDialog,

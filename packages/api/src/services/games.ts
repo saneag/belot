@@ -1,29 +1,5 @@
+import { InitGameInput, ListGamesParams, ListGamesResponse } from "../types";
 import { apiFetch } from "./client";
-
-export type ListGamesParams = {
-  page?: number;
-  limit?: number;
-};
-
-export type ApiGame = {
-  id: string;
-  mode: string;
-  players: unknown[];
-  teams: unknown[];
-  dealer?: unknown;
-  roundsScores?: unknown[];
-  undoneRoundsScores?: unknown[];
-  isFinished?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-};
-
-export type ListGamesResponse = {
-  games: ApiGame[];
-  page: number;
-  limit: number;
-  total: number;
-};
 
 export function buildGamesListUrl(baseUrl: string, params?: ListGamesParams): string {
   const normalized = baseUrl.replace(/\/$/, "");
@@ -42,4 +18,14 @@ export async function getAllGames(
   params?: ListGamesParams,
 ): Promise<ListGamesResponse> {
   return apiFetch<ListGamesResponse>(buildGamesListUrl(baseUrl, params));
+}
+
+export async function initGame(baseUrl: string, input: InitGameInput): Promise<{ id: string }> {
+  return apiFetch<{ id: string }>(`${baseUrl}/games/init`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(input),
+  });
 }
