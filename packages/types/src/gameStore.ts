@@ -3,8 +3,10 @@ import { GameMode, Player, RoundScore, Team } from "./game";
 export interface GameSlice {
   mode: GameMode;
   hasPreviousGame: boolean;
+  gameId: string | null;
 
   setHasPreviousGame: (hasPreviousGame: boolean) => void;
+  setGameId: (gameId: string | null) => void;
 }
 
 export interface RoundSlice {

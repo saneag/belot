@@ -1,7 +1,8 @@
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-import { type ListGamesParams, type ListGamesResponse, getAllGames } from "../games";
-import { gameKeys } from "../query-keys";
+import { gameKeys } from "../constants";
+import { getAllGames } from "../services";
+import { ListGamesParams, ListGamesResponse } from "../types";
 
 export function useAllGames(
   baseUrl: string,
