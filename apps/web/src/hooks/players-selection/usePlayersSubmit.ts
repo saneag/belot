@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useRouter } from "expo-router";
+import { useNavigate } from "react-router-dom";
 
 import { useGameInit } from "@belot/api-client";
 import { StorageKeys } from "@belot/constants";
@@ -11,10 +11,11 @@ import { isPlayerNameValid, prepareTeams, validatePlayersNames } from "@belot/ut
 import { usePlayersSelectionContext } from "@/components/players-selection/playersSelectionContext";
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
-import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+
+import { toast } from "sonner";
 
 export default function usePlayersSubmit() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { setValidations } = usePlayersSelectionContext();
 
   const initGame = useGameInit(getApiBaseUrl());
@@ -48,26 +49,30 @@ export default function usePlayersSubmit() {
       return;
     }
 
-    await setMultipleItemsToStorage({
-      [StorageKeys.players]: players,
-      [StorageKeys.hasPreviousGame]: true,
-    });
+    localStorage.setItem(StorageKeys.players, JSON.stringify(players));
+    localStorage.setItem(StorageKeys.hasPreviousGame, "true");
 
     const mode = players.length === 4 ? GameMode.teams : GameMode.classic;
 
-    const gameInitResponse = await initGame.mutateAsync({
-      players,
-      mode,
-      teams: prepareTeams(players, mode),
-      dealer: dealer || null,
-    });
+    try {
+      const gameInitResponse = await initGame.mutateAsync({
+        players,
+        mode,
+        teams: prepareTeams(players, mode),
+        dealer: dealer || null,
+      });
 
-    setGameId(gameInitResponse.id);
+      setGameId(gameInitResponse.id);
+    } catch (error) {
+      toast.error(
+        "You're offline. When you're back online, your game will be saved automatically.",
+      );
+    }
 
     setEmptyRoundScore();
 
-    router.navigate("/game-table");
-  }, [dealer, initGame, players, router, setEmptyRoundScore, setGameId, setValidations]);
+    navigate("/game-table", { replace: true });
+  }, [dealer, initGame, players, setEmptyRoundScore, setGameId, setValidations]);
 
   return {
     handleOpenDialog,
