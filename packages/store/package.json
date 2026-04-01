@@ -1,6 +1,9 @@
 {
   "name": "@belot/store",
   "version": "1.0.0",
+  "scripts": {
+    "test": "vitest run"
+  },
   "main": "src/index.ts",
   "types": "src/index.ts",
   "dependencies": {
@@ -10,5 +13,9 @@
   },
   "peerDependencies": {
     "react": ">=18"
+  },
+  "devDependencies": {
+    "@belot/vitest-config": "workspace:*",
+    "vitest": "catalog:"
   }
 }

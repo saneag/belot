@@ -1,6 +1,9 @@
 {
   "name": "@belot/constants",
   "version": "1.0.0",
+  "scripts": {
+    "test": "vitest run"
+  },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -8,5 +11,9 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     }
+  },
+  "devDependencies": {
+    "@belot/vitest-config": "workspace:*",
+    "vitest": "catalog:"
   }
 }
