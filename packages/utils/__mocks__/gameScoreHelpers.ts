@@ -2,6 +2,34 @@ import { Player, PlayerScore, RoundScore, RoundSlice, Team, TeamScore } from "@b
 
 import { DEFAULT_ROUND_POINTS } from "./../../constants/src/gameConstants";
 
+export const basePlayerScore = (
+  partial: Partial<PlayerScore> & Pick<PlayerScore, "id" | "playerId">,
+): PlayerScore => ({
+  score: 0,
+  boltCount: 0,
+  totalScore: 0,
+  ...partial,
+});
+
+export const baseTeamScore = (
+  partial: Partial<TeamScore> & Pick<TeamScore, "id" | "teamId">,
+): TeamScore => ({
+  score: 0,
+  boltCount: 0,
+  totalScore: 0,
+  ...partial,
+});
+
+export const baseRoundScore = (
+  partial: Partial<RoundScore> & Pick<RoundScore, "id">,
+): RoundScore => ({
+  playersScores: [],
+  teamsScores: [],
+  totalRoundScore: 0,
+  roundPlayer: null,
+  ...partial,
+});
+
 export const mockPlayers: Player[] = [
   {
     id: 1,
@@ -41,61 +69,23 @@ export const mockTeams: Team[] = [
 export const mockDealer: Player = mockPlayers[0];
 
 export const mockPlayersScores: PlayerScore[] = [
-  {
-    id: 1,
-    playerId: 1,
-    score: 0,
-    boltCount: 0,
-    totalScore: 0,
-  },
-  {
-    id: 2,
-    playerId: 2,
-    score: 0,
-    boltCount: 0,
-    totalScore: 0,
-  },
-  {
-    id: 3,
-    playerId: 3,
-    score: 0,
-    boltCount: 0,
-    totalScore: 0,
-  },
-  {
-    id: 4,
-    playerId: 4,
-    score: 0,
-    boltCount: 0,
-    totalScore: 0,
-  },
+  basePlayerScore({ id: 1, playerId: 1, score: 72 }),
+  basePlayerScore({ id: 2, playerId: 2, score: 35 }),
+  basePlayerScore({ id: 3, playerId: 3, score: 55 }),
 ];
 
 export const mockTeamsScores: TeamScore[] = [
-  {
-    id: 1,
-    teamId: 1,
-    score: 0,
-    boltCount: 0,
-    totalScore: 0,
-  },
-  {
-    id: 2,
-    teamId: 2,
-    score: 0,
-    boltCount: 0,
-    totalScore: 0,
-  },
+  baseTeamScore({ id: 1, teamId: 1, score: 72 }),
+  baseTeamScore({ id: 2, teamId: 2, score: 35 }),
 ];
 
 export const mockRoundScores: RoundScore[] = [
-  {
+  baseRoundScore({
     id: 1,
     playersScores: mockPlayersScores,
     teamsScores: mockTeamsScores,
     totalRoundScore: DEFAULT_ROUND_POINTS,
-    roundPlayer: null,
-  },
+  }),
 ];
 
 export const mockRoundSlice: RoundSlice = {
