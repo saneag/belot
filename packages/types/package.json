@@ -1,9 +1,18 @@
 {
   "name": "@belot/types",
   "version": "1.0.0",
+  "scripts": {
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
   "main": "src/index.ts",
   "types": "src/index.ts",
   "dependencies": {
     "@belot/localizations": "workspace:*"
+  },
+  "devDependencies": {
+    "@belot/vitest-config": "workspace:*",
+    "@vitest/coverage-v8": "catalog:",
+    "vitest": "catalog:"
   }
 }

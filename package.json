@@ -7,13 +7,19 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "typecheck": "turbo run typecheck",
-    "check-types": "turbo run typecheck"
+    "check-types": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test -- --coverage",
+    "test:watch": "vitest watch"
   },
   "devDependencies": {
+    "@belot/vitest-config": "workspace:*",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@vitest/coverage-v8": "catalog:",
     "prettier": "^3.7.4",
     "turbo": "^2.8.3",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "vitest": "catalog:"
   },
   "packageManager": "pnpm@10.30.0",
   "engines": {
