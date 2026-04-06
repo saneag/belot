@@ -199,6 +199,27 @@ describe("playersScoreCalculationHelpers", () => {
         boltCount: 0,
       });
     });
+
+    it("should treat shared bolt split as zero when there are no opponents besides the round player", () => {
+      const playersScores: PlayerScore[] = [
+        basePlayerScore({ id: 1, playerId: 1, score: 80, totalScore: 40 }),
+      ];
+
+      const result = calculatePlayersScoresHelper(
+        playersScores,
+        mockPlayers[0],
+        DEFAULT_ROUND_POINTS,
+        true,
+      );
+
+      expect(result).toEqual([
+        {
+          ...playersScores[0],
+          score: 16,
+          totalScore: 56,
+        },
+      ]);
+    });
   });
 
   describe("calculatePlayersScores", () => {
