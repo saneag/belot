@@ -6,7 +6,8 @@
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -14,6 +15,7 @@
   },
   "devDependencies": {
     "@belot/vitest-config": "workspace:*",
+    "@vitest/coverage-v8": "catalog:",
     "@tanstack/react-query": "^5.66.0",
     "@types/react": "~19.1.17",
     "typescript": "~5.9.3",
