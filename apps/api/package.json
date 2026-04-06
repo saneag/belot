@@ -8,13 +8,15 @@
     "start": "tsx index.ts",
     "dev": "nodemon",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@belot/vitest-config": "workspace:*",
+    "@vitest/coverage-v8": "catalog:",
     "@types/express": "^5.0.6",
     "@types/node": "^24.10.1",
     "tsx": "^4.19.2",
