@@ -19,6 +19,12 @@ export default defineConfig({
       provider: "v8",
       include: ["**/*.{ts,tsx}"],
       exclude: [...coverageSourceExclude],
+      thresholds: {
+        lines: 90,
+        functions: 90,
+        branches: 90,
+        statements: 90,
+      },
     },
   },
 });
