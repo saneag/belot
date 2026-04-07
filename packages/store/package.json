@@ -10,6 +10,7 @@
   "dependencies": {
     "@belot/types": "workspace:*",
     "@belot/utils": "workspace:*",
+    "@belot/constants": "workspace:*",
     "zustand": "^5.0.11"
   },
   "peerDependencies": {
