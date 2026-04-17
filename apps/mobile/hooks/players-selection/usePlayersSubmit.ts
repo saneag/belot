@@ -10,7 +10,7 @@ import { isPlayerNameValid, prepareTeams, validatePlayersNames } from "@belot/ut
 
 import { usePlayersSelectionContext } from "@/components/players-selection/playersSelectionContext";
 
-import { getApiBaseUrl } from "@/constants/apiBaseUrl";
+import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
 import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 
 export default function usePlayersSubmit() {
