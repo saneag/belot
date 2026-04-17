@@ -46,6 +46,10 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --color-phone-screen-background: var(--phone-screen-background);
+  --color-input-field: var(--input-field);
+  --color-input-field-foreground: var(--input-field-foreground);
+  --color-success: var(--success);
 }
 
 :root {
@@ -81,6 +85,11 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --phone-screen-background: oklch(91.887% 0.0001 271.152);
+  --input-field: oklch(0 0 0);
+  --input-field-foreground: oklch(1 0 0);
+  --success: oklch(0.65 0.15 145);
+  --success-foreground: oklch(0.98 0 0);
 }
 
 .dark {
@@ -115,6 +124,11 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --phone-screen-background: oklch(25.197% 0.00003 271.152);
+  --input-field: oklch(1 0 0);
+  --input-field-foreground: oklch(0 0 0);
+  --success: oklch(0.75 0.14 145);
+  --success-foreground: oklch(0.15 0 0);
 }
 
 @layer base {
