@@ -1,7 +1,7 @@
-import { GameMode, GameSlice, Player, PlayersSlice } from "@belot/types";
+import { GameMode, type GameSlice, type Player, type PlayersSlice } from "@belot/types";
 import { prepareTeams } from "@belot/utils/src";
 
-import { StateCreator } from "zustand";
+import { type StateCreator } from "zustand";
 
 export const createPlayersSlice: StateCreator<PlayersSlice & Partial<GameSlice>> = (set) => ({
   players: [],
@@ -37,15 +37,22 @@ export const createPlayersSlice: StateCreator<PlayersSlice & Partial<GameSlice>>
     })),
   shufflePlayers: () =>
     set((state) => {
-      const shuffledPlayers = [...state.players];
+      const players = [...state.players];
 
-      for (let i = shuffledPlayers.length - 1; i > 0; i--) {
+      const names = players.map((player) => player.name);
+
+      for (let i = names.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffledPlayers[i], shuffledPlayers[j]] = [shuffledPlayers[j], shuffledPlayers[i]];
+        [names[i], names[j]] = [names[j], names[i]];
       }
 
+      const updatedPlayers = players.map((player, index) => ({
+        ...player,
+        name: names[index],
+      }));
+
       return {
-        players: shuffledPlayers,
+        players: updatedPlayers,
       };
     }),
 });
