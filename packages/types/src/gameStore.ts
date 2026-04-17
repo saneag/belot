@@ -1,4 +1,4 @@
-import { GameMode, Player, RoundScore, Team } from "./game";
+import { GameMode, type Player, type RoundScore, type Team } from "./game";
 
 export interface GameSlice {
   mode: GameMode;
