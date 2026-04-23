@@ -11,12 +11,18 @@
 
 **Local build:**
 
-1. Run `pnpm run prebuild:android` to prepare the android build
+1. Keep the same keystore in `android/app/my-release-key.keystore` for every release build
 2. Add your keystore file to the `android/app` directory
-3. Update the `android/app/build.gradle` file with your keystore information
-4. Update the `android/gradle.properties` file with your keystore passwords
-5. Run `pnpm run android:apk:release` to build the release APK
+3. Update the `android/gradle.properties` file with your keystore passwords
+4. Run `pnpm run android:apk:release` to build the release APK
+5. `android.versionCode` in `app.json` is auto-incremented before each release build
 6. The APK file will be in `android/app/build/outputs/apk/release/`
-7. You can now distribute the APK file
+7. Install it on your phone as an update (same package + same signing key + higher versionCode)
+
+If you install through `adb`, use replace mode:
+
+```bash
+adb install -r android/app/build/outputs/apk/release/app-release.apk
+```
 
 **EAS Build (expo.dev):** From `apps/mobile` run `eas build --platform android --profile preview` (or use the Expo dashboard). The project uses a minimal Metro config compatible with EAS cloud builds.
