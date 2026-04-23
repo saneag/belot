@@ -3,12 +3,19 @@
   "version": "1.0.0",
   "main": "src/index.tsx",
   "types": "src/index.tsx",
+  "scripts": {
+    "lint": "eslint ."
+  },
   "dependencies": {
     "@belot/hooks": "workspace:*",
     "@belot/types": "workspace:*"
   },
   "devDependencies": {
+    "@belot/eslint-config": "workspace:*",
     "@belot/vitest-config": "workspace:*",
+    "@types/react": "^19.2.14",
+    "eslint": "^9.39.1",
+    "typescript": "~5.9.3",
     "@vitest/coverage-v8": "catalog:",
     "vitest": "catalog:"
   }

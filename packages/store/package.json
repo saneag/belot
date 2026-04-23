@@ -2,6 +2,7 @@
   "name": "@belot/store",
   "version": "1.0.0",
   "scripts": {
+    "lint": "eslint .",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage"
   },
@@ -17,7 +18,11 @@
     "react": ">=18"
   },
   "devDependencies": {
+    "@belot/eslint-config": "workspace:*",
     "@belot/vitest-config": "workspace:*",
+    "@types/react": "^19.2.14",
+    "eslint": "^9.39.1",
+    "typescript": "~5.9.3",
     "@vitest/coverage-v8": "catalog:",
     "vitest": "catalog:"
   }
