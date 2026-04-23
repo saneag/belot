@@ -1,5 +1,7 @@
 import { useCallback } from "react";
 
+import { ToastAndroid } from "react-native";
+
 import { useRouter } from "expo-router";
 
 import { useGameInit } from "@belot/api-client";
@@ -12,9 +14,17 @@ import { usePlayersSelectionContext } from "@/components/players-selection/playe
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
 import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import { useLocalizations } from "@/localizations/useLocalization";
 
 export default function usePlayersSubmit() {
   const router = useRouter();
+
+  const messages = useLocalizations([
+    {
+      key: "server.offline",
+    },
+  ]);
+
   const { setValidations } = usePlayersSelectionContext();
 
   const initGame = useGameInit(getApiBaseUrl());
@@ -55,19 +65,24 @@ export default function usePlayersSubmit() {
 
     const mode = players.length === 4 ? GameMode.teams : GameMode.classic;
 
-    const gameInitResponse = await initGame.mutateAsync({
-      players,
-      mode,
-      teams: prepareTeams(players, mode),
-      dealer: dealer || null,
-    });
+    try {
+      const gameInitResponse = await initGame.mutateAsync({
+        players,
+        mode,
+        teams: prepareTeams(players, mode),
+        dealer: dealer || null,
+      });
 
-    setGameId(gameInitResponse.id);
+      setGameId(gameInitResponse.id);
+    } catch (error) {
+      console.error("Error in usePlayersSubmit", error);
+      ToastAndroid.show(messages.serverOffline, ToastAndroid.SHORT);
+    }
 
     setEmptyRoundScore();
 
     router.navigate("/game-table");
-  }, [dealer, initGame, players, router, setEmptyRoundScore, setGameId, setValidations]);
+  }, [dealer, initGame, messages, players, router, setEmptyRoundScore, setGameId, setValidations]);
 
   return {
     handleOpenDialog,
