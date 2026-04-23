@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App";
+import GameTableScreen from "@/pages/game-table";
 import PlayersSelectionPage from "@/pages/players-selection";
 
 export const router = createBrowserRouter([
@@ -14,7 +15,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/game-table",
-        element: <div>Not found</div>,
+        element: <GameTableScreen />,
       },
     ],
   },
