@@ -1,8 +1,7 @@
 import { isPlayerNameValid } from "@belot/utils/src";
 
-import { usePlayersSelectionContext } from "@/components/players-selection/playersSelectionContext";
-
 import { getRightPosition, getTopPosition } from "@/helpers/playerNamesHelpers";
+import { usePlayersSelectionContext } from "@/hooks/players-selection/usePlayersSelectionContext";
 
 export const useGetInputPosition = () => {
   const { validations } = usePlayersSelectionContext();

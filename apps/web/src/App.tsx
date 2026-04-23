@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import { Layout } from "@/components/_layout";
-import PhoneScreen from "@/components/phone-screen";
+import PhoneScreen from "@/components/phoneScreen";
 import { ThemeContextProvider } from "@/components/themeContext";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
