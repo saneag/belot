@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 
+import { usePlayersSelectionContext } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 import { getPlayersCount } from "@belot/utils/src";
 
@@ -9,8 +10,6 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 
 import { useLocalization } from "@/localizations/useLocalization";
-
-import { usePlayersSelectionContext } from "./playersSelectionContext";
 
 const PLAYERS_COUNT = [3, 4];
 

@@ -1,6 +1,8 @@
+import { usePlayersSelectionContext } from "@belot/hooks";
 import { isPlayerNameValid, isPlayersNamesEmpty, isPlayersNamesRepeating } from "@belot/utils/src";
 
-import { usePlayersSelectionContext } from "@/hooks/players-selection/usePlayersSelectionContext";
+import { FieldDescription } from "@/components/ui/field";
+
 import { useLocalization } from "@/localizations/useLocalization";
 
 import { type PlayersNamesInputProps } from "./playersNamesInput";
@@ -15,7 +17,11 @@ export function EmptyNameError({ player }: InputErrorsProps) {
   const isInvalid = !isPlayerNameValid(validations, player.id);
   const isNameEmpty = isInvalid && isPlayersNamesEmpty(validations, player.id);
 
-  return isNameEmpty && <span className="text-center text-sm text-red-500">{emptyError}</span>;
+  return (
+    isNameEmpty && (
+      <FieldDescription className="text-center text-sm text-red-500">{emptyError}</FieldDescription>
+    )
+  );
 }
 
 export function RepeatingNamesError({ player }: InputErrorsProps) {
@@ -27,6 +33,10 @@ export function RepeatingNamesError({ player }: InputErrorsProps) {
   const isRepeatingName = isInvalid && isPlayersNamesRepeating(validations, player.id);
 
   return (
-    isRepeatingName && <span className="text-center text-sm text-red-500">{duplicatedName}</span>
+    isRepeatingName && (
+      <FieldDescription className="text-center text-sm text-red-500">
+        {duplicatedName}
+      </FieldDescription>
+    )
   );
 }

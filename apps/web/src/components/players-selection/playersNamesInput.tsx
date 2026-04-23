@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 
+import { usePlayersSelectionContext } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 import { type Player } from "@belot/types";
 import { isPlayerNameValid } from "@belot/utils/src";
@@ -7,7 +8,6 @@ import { isPlayerNameValid } from "@belot/utils/src";
 import { Field } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 
-import { usePlayersSelectionContext } from "@/hooks/players-selection/usePlayersSelectionContext";
 import { useLocalization } from "@/localizations/useLocalization";
 
 import { X } from "lucide-react";
@@ -42,7 +42,7 @@ export default function PlayersNamesInput({ player }: PlayersNamesInputProps) {
   return (
     <div className="flex flex-col">
       <span className="ms-2 text-gray-400">{playerNameInputLabel}</span>
-      <Field data-invalid={isInvalid} className="w-34">
+      <Field data-invalid={isInvalid} className="w-34 gap-0">
         <InputGroup className="bg-input-field/90 rounded-2xl">
           <InputGroupInput
             aria-invalid={isInvalid}
@@ -61,11 +61,11 @@ export default function PlayersNamesInput({ player }: PlayersNamesInputProps) {
             <X />
           </InputGroupAddon>
         </InputGroup>
+        <div className="flex flex-col">
+          <EmptyNameError player={player} />
+          <RepeatingNamesError player={player} />
+        </div>
       </Field>
-      <div className="flex flex-col">
-        <EmptyNameError player={player} />
-        <RepeatingNamesError player={player} />
-      </div>
     </div>
   );
 }

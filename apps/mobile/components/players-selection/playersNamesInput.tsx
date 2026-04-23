@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 
+import { usePlayersSelectionContext } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 import { Player } from "@belot/types";
 import { isPlayerNameValid } from "@belot/utils/src";
@@ -12,7 +13,6 @@ import { VStack } from "@/components/ui/vstack";
 import { useLocalization } from "@/localizations/useLocalization";
 
 import { EmptyNameError, RepeatingNamesError } from "./inputErrors";
-import { usePlayersSelectionContext } from "./playersSelectionContext";
 
 export interface PlayersNamesInputProps {
   player: Player;

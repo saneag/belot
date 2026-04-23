@@ -1,11 +1,11 @@
-import { isPlayerNameValid, isPlayersNamesEmpty, isPlayersNamesRepeating } from "@belot/utils/src";
+import { usePlayersSelectionContext } from "@belot/hooks";
+import { isPlayerNameValid, isPlayersNamesEmpty, isPlayersNamesRepeating } from "@belot/utils";
 
 import { Text } from "@/components/ui/text";
 
 import { useLocalization } from "@/localizations/useLocalization";
 
 import { PlayersNamesInputProps } from "./playersNamesInput";
-import { usePlayersSelectionContext } from "./playersSelectionContext";
 
 type InputErrorsProps = PlayersNamesInputProps;
 
