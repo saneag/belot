@@ -6,6 +6,8 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="overflow-hidden} flex h-screen items-center justify-center">{children}</div>
+    <div className="flex h-dvh max-h-dvh items-center justify-center overflow-hidden">
+      {children}
+    </div>
   );
 };
