@@ -1,4 +1,3 @@
-import { TABLE_HEIGHT, TABLE_WIDTH } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 
 import { Button } from "@/components/ui/button";

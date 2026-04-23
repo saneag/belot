@@ -86,9 +86,9 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --phone-screen-background: oklch(91.887% 0.0001 271.152);
-  --input-field: oklch(0 0 0);
+  --input-field: oklch(55.208% 0.00006 271.152);
   --input-field-foreground: oklch(1 0 0);
-  --success: oklch(0.65 0.15 145);
+  --success: oklch(69.417% 0.18862 143.958);
   --success-foreground: oklch(0.98 0 0);
 }
 
@@ -127,7 +127,7 @@
   --phone-screen-background: oklch(25.197% 0.00003 271.152);
   --input-field: oklch(1 0 0);
   --input-field-foreground: oklch(0 0 0);
-  --success: oklch(0.75 0.14 145);
+  --success: oklch(69.417% 0.18862 143.958);
   --success-foreground: oklch(0.15 0 0);
 }
 
@@ -135,10 +135,18 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     @apply font-sans;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100dvh;
+    height: 100%;
+    overflow: hidden;
+  }
+  #root {
+    height: 100%;
   }
 }

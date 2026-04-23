@@ -1,4 +1,4 @@
-import { LocalizationKey } from "@belot/localizations";
+import type { LocalizationKey } from "@belot/localizations";
 
 export interface Localization {
   key: LocalizationKey;

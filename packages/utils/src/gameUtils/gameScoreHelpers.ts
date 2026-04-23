@@ -10,8 +10,8 @@ import {
   TeamScore,
 } from "@belot/types";
 
-export const setNextDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
-  if (state.roundsScores.length === 0) {
+export const setNextDealer = (state: Partial<RoundSlice> & Partial<PlayersSlice>) => {
+  if (state.roundsScores?.length === 0) {
     return {};
   }
 
@@ -30,8 +30,8 @@ export const setNextDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
   };
 };
 
-export const setPreviousDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
-  if (state.roundsScores.length === 0) {
+export const setPreviousDealer = (state: Partial<RoundSlice> & Partial<PlayersSlice>) => {
+  if (state.roundsScores?.length === 0) {
     return {};
   }
 

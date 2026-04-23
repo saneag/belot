@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
-import { LocalizationKey } from "@belot/localizations";
-import { Localization } from "@belot/types";
+import type { LocalizationKey } from "@belot/localizations";
+import type { Localization } from "@belot/types";
 
 import { i18nLocale } from "./i18nLocale";
 
