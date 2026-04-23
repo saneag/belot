@@ -12,10 +12,11 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "prebuild:android": "expo prebuild -p android",
+    "android:version:bump": "node ./scripts/bump-android-version.js",
     "android:clean": "node ./scripts/android-clean.js",
     "android:apk:debug": "pnpm run prebuild:android && node ./scripts/android-gradlew.js assembleDebug",
-    "android:apk:release": "pnpm run prebuild:android && node ./scripts/android-gradlew.js assembleRelease",
-    "android:aab:release": "pnpm run prebuild:android && node ./scripts/android-gradlew.js bundleRelease",
+    "android:apk:release": "pnpm run android:version:bump && pnpm run prebuild:android && node ./scripts/android-gradlew.js assembleRelease",
+    "android:aab:release": "pnpm run android:version:bump && pnpm run prebuild:android && node ./scripts/android-gradlew.js bundleRelease",
     "add-component": "node ./scripts/gluestack-add.js"
   },
   "dependencies": {
