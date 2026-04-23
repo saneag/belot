@@ -13,8 +13,8 @@ export default function LoadPreviousGameButton() {
   const hasPreviousGame = useGameStore((state) => state.hasPreviousGame);
   const loadPlayersNames = useLoadPlayersNames();
 
-  const handleLoadPreviousGame = useCallback(async () => {
-    await loadPlayersNames();
+  const handleLoadPreviousGame = useCallback(() => {
+    loadPlayersNames();
   }, [loadPlayersNames]);
 
   if (!hasPreviousGame) {

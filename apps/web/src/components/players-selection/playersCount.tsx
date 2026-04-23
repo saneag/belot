@@ -5,9 +5,8 @@ import { getPlayersCount } from "@belot/utils/src";
 
 import { Button } from "@/components/ui/button";
 
+import { usePlayersSelectionContext } from "@/hooks/players-selection/usePlayersSelectionContext";
 import { useLocalization } from "@/localizations/useLocalization";
-
-import { usePlayersSelectionContext } from "./playersSelectionContext";
 
 const PLAYERS_COUNT = [3, 4];
 
