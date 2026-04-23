@@ -6,10 +6,16 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {
+    "lint": "eslint ."
+  },
   "peerDependencies": {
     "vitest": "^4.0.0"
   },
   "devDependencies": {
+    "@belot/eslint-config": "workspace:*",
+    "eslint": "^9.39.1",
+    "typescript": "~5.9.3",
     "vitest": "catalog:"
   }
 }
