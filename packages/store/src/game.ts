@@ -1,4 +1,4 @@
-import { GameMode, GameSlice, PlayersSlice, RoundSlice } from "@belot/types";
+import { GameMode, type GameSlice, type PlayersSlice, type RoundSlice } from "@belot/types";
 
 import { create } from "zustand";
 

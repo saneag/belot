@@ -5,17 +5,29 @@ import { useNavigate } from "react-router-dom";
 import { useGameInit } from "@belot/api-client";
 import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
-import { GameMode } from "@belot/types";
-import { isPlayerNameValid, prepareTeams, validatePlayersNames } from "@belot/utils/src";
-
-import { usePlayersSelectionContext } from "@/components/players-selection/playersSelectionContext";
+import { GameMode, type RoundScore } from "@belot/types";
+import {
+  isPlayerNameValid,
+  prepareEmptyRoundScoreRow,
+  prepareTeams,
+  validatePlayersNames,
+} from "@belot/utils/src";
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
+import { usePlayersSelectionContext } from "@/hooks/players-selection/usePlayersSelectionContext";
+import { useLocalizations } from "@/localizations/useLocalization";
 
 import { toast } from "sonner";
 
 export default function usePlayersSubmit() {
   const navigate = useNavigate();
+
+  const messages = useLocalizations([
+    {
+      key: "server.offline",
+    },
+  ]);
+
   const { setValidations } = usePlayersSelectionContext();
 
   const initGame = useGameInit(getApiBaseUrl());
@@ -49,10 +61,14 @@ export default function usePlayersSubmit() {
       return;
     }
 
+    const mode = players.length === 4 ? GameMode.teams : GameMode.classic;
+
+    localStorage.removeItem(StorageKeys.timerStartTime);
+    localStorage.removeItem(StorageKeys.roundsScores);
+
     localStorage.setItem(StorageKeys.players, JSON.stringify(players));
     localStorage.setItem(StorageKeys.hasPreviousGame, "true");
-
-    const mode = players.length === 4 ? GameMode.teams : GameMode.classic;
+    localStorage.setItem(StorageKeys.dealer, JSON.stringify(dealer));
 
     try {
       const gameInitResponse = await initGame.mutateAsync({
@@ -64,15 +80,31 @@ export default function usePlayersSubmit() {
 
       setGameId(gameInitResponse.id);
     } catch (error) {
-      toast.error(
-        "You're offline. When you're back online, your game will be saved automatically.",
-      );
+      toast.error(messages.serverOffline, {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
     }
 
     setEmptyRoundScore();
 
-    navigate("/game-table", { replace: true });
-  }, [dealer, initGame, players, setEmptyRoundScore, setGameId, setValidations]);
+    const emptyRoundScore: RoundScore = prepareEmptyRoundScoreRow({
+      dealer,
+      mode,
+      players,
+    });
+    localStorage.setItem(StorageKeys.roundsScores, JSON.stringify([emptyRoundScore]));
+
+    void navigate("/game-table", { replace: true });
+  }, [
+    dealer,
+    initGame,
+    messages,
+    navigate,
+    players,
+    setEmptyRoundScore,
+    setGameId,
+    setValidations,
+  ]);
 
   return {
     handleOpenDialog,

@@ -3,10 +3,10 @@ import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@bel
 import { GameSlice, PlayersSlice, RoundSlice } from "@belot/types";
 
 const preparePlayersScores = (
-  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>,
+  state: Partial<RoundSlice> & Partial<PlayersSlice> & Partial<GameSlice>,
 ): PlayerScore[] => {
   const mode = state.mode;
-  const lastRoundScore = state.roundsScores.at(-1);
+  const lastRoundScore = state.roundsScores?.at(-1);
   const players = state.players;
 
   if (mode === GameMode.teams || !players) return [];
@@ -33,10 +33,10 @@ const preparePlayersScores = (
 };
 
 const prepareTeamsScores = (
-  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>,
+  state: Partial<RoundSlice> & Partial<PlayersSlice> & Partial<GameSlice>,
 ): TeamScore[] => {
   const { mode, teams, roundsScores } = state;
-  const lastRoundScore = roundsScores.at(-1);
+  const lastRoundScore = roundsScores?.at(-1);
 
   if (mode === GameMode.classic || !teams) return [];
 
@@ -62,9 +62,9 @@ const prepareTeamsScores = (
 };
 
 export const prepareEmptyRoundScoreRow = (
-  state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>,
+  state: Partial<RoundSlice> & Partial<PlayersSlice> & Partial<GameSlice>,
 ): RoundScore => {
-  const lastRoundScore = state.roundsScores.at(-1);
+  const lastRoundScore = state.roundsScores?.at(-1);
 
   return {
     id: lastRoundScore?.id !== undefined ? lastRoundScore.id + 1 : 0,

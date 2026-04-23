@@ -6,7 +6,7 @@ import { useGameStore } from "@belot/store";
 export const useLoadPreviousGame = () => {
   const setHasPreviousGame = useGameStore((state) => state.setHasPreviousGame);
 
-  const checkForPreviousGame = useCallback(async () => {
+  const checkForPreviousGame = useCallback(() => {
     try {
       const hasPreviousGame = localStorage.getItem(StorageKeys.hasPreviousGame);
 
@@ -16,9 +16,7 @@ export const useLoadPreviousGame = () => {
     }
   }, [setHasPreviousGame]);
 
-  useLayoutEffect(
-    useCallback(() => {
-      checkForPreviousGame();
-    }, [checkForPreviousGame]),
-  );
+  useLayoutEffect(() => {
+    void checkForPreviousGame();
+  }, [checkForPreviousGame]);
 };

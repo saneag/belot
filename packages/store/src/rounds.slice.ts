@@ -1,4 +1,4 @@
-import { GameSlice, PlayersSlice, RoundSlice } from "@belot/types";
+import { type GameSlice, type PlayersSlice, type RoundSlice } from "@belot/types";
 import {
   prepareEmptyRoundScoreRow,
   recalculateScoreOnRedo,
@@ -7,7 +7,7 @@ import {
   setNextDealer,
 } from "@belot/utils/src";
 
-import { StateCreator } from "zustand";
+import { type StateCreator } from "zustand";
 
 export const createRoundSlice: StateCreator<
   RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>

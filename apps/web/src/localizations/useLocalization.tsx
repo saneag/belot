@@ -6,7 +6,7 @@ import type { Localization } from "@belot/types";
 import { i18nLocale } from "./i18nLocale";
 
 export const formatLocalizationString = (localization: string, args: Localization["args"] = []) => {
-  return localization.replace(/{(\d+)}/g, (match, index) =>
+  return localization.replace(/{(\d+)}/g, (match, index: number) =>
     typeof args[index] !== "undefined" ? args[index].toString() : match,
   );
 };
