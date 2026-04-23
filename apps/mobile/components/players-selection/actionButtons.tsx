@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import { usePlayersSelectionContext } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
@@ -10,7 +11,6 @@ import usePlayersSubmit from "@/hooks/players-selection/usePlayersSubmit";
 import { useLocalization, useLocalizations } from "@/localizations/useLocalization";
 
 import DealerSelectDialogContent from "./dealerSelectDialogContent";
-import { usePlayersSelectionContext } from "./playersSelectionContext";
 
 function ResetButton() {
   const resetMsg = useLocalization("players.reset");

@@ -3,7 +3,7 @@ import { TABLE_HEIGHT, TABLE_WIDTH } from "@belot/constants";
 export const getTopPosition = (index: number, playersCount: number, isError: boolean) => {
   const topPosition = -45;
   const bottomPosition = TABLE_HEIGHT - 45;
-  const middlePosition = bottomPosition / 2 - 5 - (isError ? 15 : 5);
+  const middlePosition = bottomPosition / 2 - 10 - (isError ? 10 : 0);
 
   const layouts: Record<number, number[]> = {
     2: [topPosition, bottomPosition],
@@ -15,13 +15,13 @@ export const getTopPosition = (index: number, playersCount: number, isError: boo
 };
 
 export const getRightPosition = (index: number, playersCount: number, isError: boolean) => {
-  const defaultRightShift = 5;
-  const middlePosition = TABLE_WIDTH / 2 + defaultRightShift - (isError ? 0 : -10);
+  const defaultRightShift = 15;
+  const middlePosition = TABLE_WIDTH / 2 + defaultRightShift - (isError ? 10 : 0);
 
   const layouts: Record<number, number[]> = {
     2: [defaultRightShift, defaultRightShift],
     3: [0, -middlePosition, 0],
-    4: [0, -middlePosition, 0, middlePosition + defaultRightShift],
+    4: [0, -middlePosition, 0, middlePosition + 5],
   };
 
   return layouts[playersCount]?.[index] ?? "auto";

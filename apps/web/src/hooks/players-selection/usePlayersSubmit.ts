@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useGameInit } from "@belot/api-client";
 import { StorageKeys } from "@belot/constants";
+import { usePlayersSelectionContext } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 import { GameMode, type RoundScore } from "@belot/types";
 import {
@@ -14,7 +15,6 @@ import {
 } from "@belot/utils/src";
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
-import { usePlayersSelectionContext } from "@/hooks/players-selection/usePlayersSelectionContext";
 import { useLocalizations } from "@/localizations/useLocalization";
 
 import { toast } from "sonner";
