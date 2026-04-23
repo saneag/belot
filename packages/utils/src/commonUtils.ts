@@ -4,7 +4,7 @@ export const roundByLastDigit = (score: number) =>
 export const roundToDecimal = (totalRoundScore: number) =>
   Math.floor(totalRoundScore / 10);
 
-export const removeNthElementFromEnd = (array: any[], index: number) => {
+export const removeNthElementFromEnd = <T>(array: T[], index: number): T[] => {
   if (array.length < index) return array;
   return array.filter((_, i) => i !== array.length - index);
 };

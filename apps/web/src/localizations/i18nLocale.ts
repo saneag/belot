@@ -15,8 +15,7 @@ const getDeviceLanguage = (): string => {
   return getLocales() || "en";
 };
 
-// eslint-disable-next-line import/no-named-as-default-member
-i18n.use(initReactI18next).init({
+void i18n.use(initReactI18next).init({
   compatibilityJSON: "v4",
   resources: {
     en: {

@@ -5,10 +5,8 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "lib": ["ES2022"],
-    "noEmit": true
+    "noEmit": true,
+    "lib": ["ES2022"]
   },
   "include": ["src/**/*.ts", "vitest.config.ts"]
 }

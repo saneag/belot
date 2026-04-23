@@ -7,7 +7,7 @@ import { createPlayersSlice } from "./players.slice";
 import { createRoundSlice } from "./rounds.slice";
 
 export interface GameStore extends GameSlice, PlayersSlice, RoundSlice {
-  reset: VoidFunction;
+  reset: () => void;
 }
 
 export const createGameStore = () =>

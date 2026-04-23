@@ -30,7 +30,7 @@ describe("apiFetch", () => {
       ok: true,
       status: 200,
       statusText: "OK",
-      text: async () => '{"a":1}',
+      text: () => Promise.resolve('{"a":1}'),
     });
 
     await expect(apiFetch<{ a: number }>("https://api.example/x")).resolves.toEqual({ a: 1 });
@@ -44,7 +44,7 @@ describe("apiFetch", () => {
       ok: true,
       status: 200,
       statusText: "OK",
-      text: async () => "{}",
+      text: () => Promise.resolve("{}"),
     });
 
     await apiFetch("https://api.example/x", {
@@ -66,7 +66,7 @@ describe("apiFetch", () => {
       ok: true,
       status: 204,
       statusText: "No Content",
-      text: async () => "",
+      text: () => Promise.resolve(""),
     });
 
     await expect(apiFetch<null>("https://api.example/x")).resolves.toBeNull();
@@ -77,7 +77,7 @@ describe("apiFetch", () => {
       ok: true,
       status: 200,
       statusText: "OK",
-      text: async () => "not-json",
+      text: () => Promise.resolve("not-json"),
     });
 
     await expect(apiFetch<string>("https://api.example/x")).resolves.toBe("not-json");
@@ -88,7 +88,7 @@ describe("apiFetch", () => {
       ok: false,
       status: 400,
       statusText: "Bad Request",
-      text: async () => JSON.stringify({ message: "bad input" }),
+      text: () => Promise.resolve(JSON.stringify({ message: "bad input" })),
     });
 
     await expect(apiFetch("https://api.example/x")).rejects.toMatchObject({
@@ -103,7 +103,7 @@ describe("apiFetch", () => {
       ok: false,
       status: 502,
       statusText: "Bad Gateway",
-      text: async () => JSON.stringify({}),
+      text: () => Promise.resolve(JSON.stringify({})),
     });
 
     await expect(apiFetch("https://api.example/x")).rejects.toMatchObject({
@@ -118,7 +118,7 @@ describe("apiFetch", () => {
       ok: false,
       status: 500,
       statusText: "Server Error",
-      text: async () => '"plain"',
+      text: () => Promise.resolve('"plain"'),
     });
 
     await expect(apiFetch("https://api.example/x")).rejects.toMatchObject({
