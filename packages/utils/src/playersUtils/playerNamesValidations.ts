@@ -11,7 +11,7 @@ export const validatePlayersNames = (players: Player[]): PlayersNamesValidation 
   const playersNames = getPlayersNames(players);
   const playersCount = getPlayersCount(players);
 
-  for (let [key, value] of Object.entries(playersNames)) {
+  for (const [key, value] of Object.entries(playersNames)) {
     if (Number(key) >= playersCount) {
       continue;
     }
@@ -46,7 +46,10 @@ export const isPlayersNamesRepeating = (validations: PlayersNamesValidation, ind
 
 export const isPlayerNameValid = (validations: PlayersNamesValidation, index?: number) => {
   if (index === undefined) {
-    return Object.values(validations).every((validation) => validation.length === 0);
+    return (
+      validations.emptyNames.length === 0 &&
+      validations.repeatingNames.length === 0
+    );
   }
 
   return !(isPlayersNamesEmpty(validations, index) || isPlayersNamesRepeating(validations, index));

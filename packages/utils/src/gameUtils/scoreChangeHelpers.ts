@@ -24,7 +24,7 @@ const handlePlayersScoreChange = ({
     })),
   };
 
-  let roundPlayerScore = sumOpponentPlayersScores({
+  const roundPlayerScore = sumOpponentPlayersScores({
     roundScore: opponentsCalculatedRoundScore,
     roundPlayer,
   });
@@ -73,7 +73,7 @@ export const handleRoundScoreChange = <T extends PlayerScore | TeamScore>({
     currentOpponent: opponent,
   });
 
-  let scoreValue =
+  const scoreValue =
     gameMode === GameMode.teams
       ? Math.max(0, Math.min(newScoreValue, totalRoundScore))
       : Math.max(0, Math.min(newScoreValue, opponentsScores));

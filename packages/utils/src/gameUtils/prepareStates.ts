@@ -116,7 +116,7 @@ export const prepareRoundScoresBasedOnGameMode = (
   roundScore: RoundScore,
   opponent: PlayerScore | TeamScore,
 ) => {
-  return gameMode === "classic"
+  return gameMode === GameMode.classic
     ? roundScore.playersScores.find((playersScore) => playersScore.id === opponent.id)
     : roundScore.teamsScores.find((teamsScore) => teamsScore.id === opponent.id);
 };
