@@ -1,6 +1,5 @@
+import { usePlayersSelectionContext } from "@belot/hooks";
 import { isPlayerNameValid } from "@belot/utils/src";
-
-import { usePlayersSelectionContext } from "@/components/players-selection/playersSelectionContext";
 
 import { getRightPosition, getTopPosition } from "@/helpers/playerNamesHelpers";
 

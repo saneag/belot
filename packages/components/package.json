@@ -1,0 +1,15 @@
+{
+  "name": "@belot/components",
+  "version": "1.0.0",
+  "main": "src/index.tsx",
+  "types": "src/index.tsx",
+  "dependencies": {
+    "@belot/hooks": "workspace:*",
+    "@belot/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@belot/vitest-config": "workspace:*",
+    "@vitest/coverage-v8": "catalog:",
+    "vitest": "catalog:"
+  }
+}
