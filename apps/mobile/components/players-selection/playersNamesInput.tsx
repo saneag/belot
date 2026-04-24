@@ -21,7 +21,7 @@ export default function PlayersNamesInput({ player }: PlayersNamesInputProps) {
 
   return (
     <VStack>
-      <Text className="ms-2 text-typography-500">{playerNameInputLabel}</Text>
+      <Text className="ms-2">{playerNameInputLabel}</Text>
       <Input isInvalid={isInvalid} className="w-[136px] bg-secondary-50/90" variant="rounded">
         <InputField
           value={player.name}
