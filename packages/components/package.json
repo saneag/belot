@@ -9,6 +9,7 @@
   "dependencies": {
     "@belot/hooks": "workspace:*",
     "@belot/types": "workspace:*",
+    "@belot/constants": "workspace:*",
     "@belot/eslint-config": "workspace:*"
   },
   "devDependencies": {
