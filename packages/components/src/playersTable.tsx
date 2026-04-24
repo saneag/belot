@@ -18,7 +18,7 @@ export const PlayersTable = ({
       style={{
         height: 280,
         marginTop: 15,
-        marginBottom: 15,
+        marginBottom: 20,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
