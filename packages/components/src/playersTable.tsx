@@ -5,25 +5,24 @@ import { PLAYERS_TABLE_COLORS, TABLE_HEIGHT, TABLE_WIDTH } from "@belot/constant
 interface PlayersTableProps {
   children: React.ReactNode;
   blockWrapper: ElementType;
-  mainBlockClassName?: string;
   isDarkMode?: boolean;
 }
 
 export const PlayersTable = ({
   children,
   blockWrapper: BlockWrapper,
-  mainBlockClassName,
   isDarkMode = false,
 }: PlayersTableProps) => {
   return (
     <BlockWrapper
       style={{
-        alignItems: "center",
         height: 280,
         marginTop: 15,
         marginBottom: 15,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
-      className={mainBlockClassName}
     >
       <BlockWrapper
         style={{
@@ -36,7 +35,9 @@ export const PlayersTable = ({
           borderColor: isDarkMode
             ? PLAYERS_TABLE_COLORS.borderColorDarkMode
             : PLAYERS_TABLE_COLORS.borderColor,
-          backgroundColor: PLAYERS_TABLE_COLORS.backgroundColor,
+          backgroundColor: isDarkMode
+            ? PLAYERS_TABLE_COLORS.backgroundColorDarkMode
+            : PLAYERS_TABLE_COLORS.backgroundColor,
         }}
       >
         {children}

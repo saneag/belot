@@ -1,5 +1,6 @@
 export const PLAYERS_TABLE_COLORS = {
-  borderColor: "#3f3f3fff",
-  borderColorDarkMode: "#b5b5b5",
-  backgroundColor: "#348a1e",
+  borderColor: "#918e8e",
+  borderColorDarkMode: "#918e8e",
+  backgroundColor: "#41962a",
+  backgroundColorDarkMode: "#367825",
 };

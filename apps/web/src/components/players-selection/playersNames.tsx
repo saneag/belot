@@ -18,11 +18,7 @@ export default function PlayersNames() {
   const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
   return (
-    <PlayersTable
-      blockWrapper="div"
-      mainBlockClassName="flex items-center justify-center"
-      isDarkMode={theme === THEMES.dark}
-    >
+    <PlayersTable blockWrapper="div" isDarkMode={theme === THEMES.dark}>
       <PlayersRandomizer />
       {players.map((player, index) => (
         <PlayersNamesInputWrapper
