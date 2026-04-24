@@ -21,9 +21,9 @@ import { useLocalizations } from "@/localizations/useLocalization";
 interface ConfirmationModalProps {
   title: ReactNode;
   content: ReactNode;
-  renderShowDialog: (showDialog: VoidFunction) => ReactNode;
-  confirmationCallback?: VoidFunction;
-  cancelCallback?: VoidFunction;
+  renderShowDialog: (showDialog: () => void) => ReactNode;
+  confirmationCallback?: () => void;
+  cancelCallback?: () => void;
   primaryButton?: "confirm" | "cancel";
   visible?: boolean;
   setVisible?: Dispatch<SetStateAction<boolean>>;

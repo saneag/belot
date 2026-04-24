@@ -1,6 +1,6 @@
 import { useLayoutEffect } from "react";
 
-export const usePreventBackPress = (showConfirmationDialog?: VoidFunction) => {
+export const usePreventBackPress = (showConfirmationDialog?: () => void) => {
   useLayoutEffect(() => {
     const onBackPress = () => {
       showConfirmationDialog?.();

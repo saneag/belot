@@ -1,4 +1,4 @@
-import { Player, PlayersNamesValidation } from "@belot/types";
+import type { Player, PlayersNamesValidation } from "@belot/types";
 
 import { getPlayersCount, getPlayersNames } from "./playerNamesHelpers";
 

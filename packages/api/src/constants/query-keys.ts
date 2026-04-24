@@ -1,4 +1,4 @@
-import { InitGameInput, ListGamesParams } from "../types";
+import type { InitGameInput, ListGamesParams } from "../types";
 
 export const gameKeys = {
   all: ["games"] as const,

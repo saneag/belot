@@ -1,7 +1,7 @@
-/** @vitest-environment jsdom */
+import type { ReactNode } from "react";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
-import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import { getAllGames } from "../services";
@@ -39,10 +39,9 @@ describe("useAllGames", () => {
     getAllGamesMock.mockResolvedValue(data);
 
     const { Wrapper } = createWrapper();
-    const { result } = renderHook(
-      () => useAllGames("https://api.example", { page: 2, limit: 5 }),
-      { wrapper: Wrapper },
-    );
+    const { result } = renderHook(() => useAllGames("https://api.example", { page: 2, limit: 5 }), {
+      wrapper: Wrapper,
+    });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toEqual(data);

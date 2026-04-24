@@ -18,7 +18,7 @@ export default function usePlayersSubmit() {
   const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
 
   const handleOpenDialog = useCallback(
-    (showDialog: VoidFunction) => {
+    (showDialog: () => void) => {
       const validation = validatePlayersNames(players);
 
       setValidations(validation);

@@ -61,7 +61,7 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
   ]);
 
   const handleDialogOpen = useCallback(
-    (showDialog: VoidFunction) => {
+    (showDialog: () => void) => {
       const lastRoundScores = roundsScores.at(-1);
       if (lastRoundScores) {
         setRoundScore(lastRoundScores);
