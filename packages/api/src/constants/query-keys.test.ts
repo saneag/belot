@@ -1,4 +1,5 @@
-import { GameMode, Player, Team } from "@belot/types";
+import { GameMode, type Player, type Team } from "@belot/types";
+
 import { describe, expect, it } from "vitest";
 
 import { gameKeys } from "./query-keys";
@@ -11,7 +12,11 @@ describe("gameKeys", () => {
 
   it("list includes params in the key", () => {
     expect(gameKeys.list()).toEqual(["games", "list", undefined]);
-    expect(gameKeys.list({ page: 1, limit: 10 })).toEqual(["games", "list", { page: 1, limit: 10 }]);
+    expect(gameKeys.list({ page: 1, limit: 10 })).toEqual([
+      "games",
+      "list",
+      { page: 1, limit: 10 },
+    ]);
   });
 
   it("init includes input in the key", () => {

@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@belot/hooks": "workspace:*",
-    "@belot/types": "workspace:*"
+    "@belot/types": "workspace:*",
+    "@belot/eslint-config": "workspace:*"
   },
   "devDependencies": {
     "@belot/eslint-config": "workspace:*",

@@ -443,6 +443,9 @@ importers:
 
   packages/components:
     dependencies:
+      '@belot/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
       '@belot/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -450,9 +453,6 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@belot/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
       '@belot/vitest-config':
         specifier: workspace:*
         version: link:../vitest-config
@@ -504,13 +504,22 @@ importers:
 
   packages/hooks:
     dependencies:
-      '@belot/types':
+      '@belot/constants':
         specifier: workspace:*
-        version: link:../types
-    devDependencies:
+        version: link:../constants
       '@belot/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@belot/store':
+        specifier: workspace:*
+        version: link:../store
+      '@belot/types':
+        specifier: workspace:*
+        version: link:../types
+      '@belot/utils':
+        specifier: workspace:*
+        version: link:../utils
+    devDependencies:
       '@belot/vitest-config':
         specifier: workspace:*
         version: link:../vitest-config

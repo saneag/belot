@@ -5,7 +5,7 @@ import type { PlayersNamesValidation } from "@belot/types";
 export interface PlayersSelectionContextType {
   validations: PlayersNamesValidation;
   setValidations: Dispatch<SetStateAction<PlayersNamesValidation>>;
-  resetValidations: VoidFunction;
+  resetValidations: () => void;
 }
 
 export const PlayersSelectionContext = createContext<PlayersSelectionContextType>({

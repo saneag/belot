@@ -1,9 +1,9 @@
 import {
-  CalculateRoundScoreProps,
+  type CalculateRoundScoreProps,
   GameMode,
-  PlayerScore,
-  RoundScore,
-  TeamScore,
+  type PlayerScore,
+  type RoundScore,
+  type TeamScore,
 } from "@belot/types";
 
 import { sumOpponentPlayersScores } from "./playersScoreCalculationHelpers";

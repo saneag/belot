@@ -1,4 +1,4 @@
-import { GameMode, Player, RoundScore, Team } from "@belot/types";
+import { GameMode, type Player, type RoundScore, type Team } from "@belot/types";
 
 export type ApiGame = {
   id: string;

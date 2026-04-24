@@ -5,6 +5,7 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
+    "verbatimModuleSyntax": true,
     "noEmit": true,
     "lib": ["ES2022", "DOM"],
     "jsx": "react-jsx"

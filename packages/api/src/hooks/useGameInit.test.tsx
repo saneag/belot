@@ -1,10 +1,10 @@
-/** @vitest-environment jsdom */
+import type { ReactNode } from "react";
+
+import { GameMode, type Player, type Team } from "@belot/types";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
-import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
-
-import { GameMode, Player, Team } from "@belot/types";
 
 import { initGame } from "../services";
 import { useGameInit } from "./useGameInit";

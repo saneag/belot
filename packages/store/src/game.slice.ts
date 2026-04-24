@@ -1,6 +1,6 @@
-import { GameMode, GameSlice } from "@belot/types";
+import { GameMode, type GameSlice } from "@belot/types";
 
-import { StateCreator } from "zustand";
+import type { StateCreator } from "zustand";
 
 export const createGameSlice: StateCreator<GameSlice> = (set) => ({
   mode: GameMode.classic,
