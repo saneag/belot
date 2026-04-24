@@ -38,7 +38,7 @@ export default function usePlayersSubmit() {
   const setGameId = useGameStore((state) => state.setGameId);
 
   const handleOpenDialog = useCallback(
-    (showDialog: VoidFunction) => {
+    (showDialog: () => void) => {
       const validation = validatePlayersNames(players);
 
       setValidations(validation);

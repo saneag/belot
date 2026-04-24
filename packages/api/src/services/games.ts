@@ -1,5 +1,5 @@
-import { InitGameInput, ListGamesParams, ListGamesResponse } from "../types";
 import { apiFetch } from "./client";
+import type { InitGameInput, ListGamesParams, ListGamesResponse } from "../types";
 
 export function buildGamesListUrl(baseUrl: string, params?: ListGamesParams): string {
   const normalized = baseUrl.replace(/\/$/, "");

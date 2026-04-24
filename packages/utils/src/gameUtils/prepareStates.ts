@@ -1,6 +1,15 @@
 import { DEFAULT_ROUND_POINTS } from "@belot/constants";
-import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
-import { GameSlice, PlayersSlice, RoundSlice } from "@belot/types";
+import {
+  GameMode,
+  type GameSlice,
+  type Player,
+  type PlayerScore,
+  type PlayersSlice,
+  type RoundScore,
+  type RoundSlice,
+  type Team,
+  type TeamScore,
+} from "@belot/types";
 
 const preparePlayersScores = (
   state: Partial<RoundSlice> & Partial<PlayersSlice> & Partial<GameSlice>,

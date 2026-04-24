@@ -1,4 +1,4 @@
-import { Player, Team } from "@belot/types";
+import type { Player, Team } from "@belot/types";
 
 export const getPlayersCount = (players: Player[]) => players.length;
 

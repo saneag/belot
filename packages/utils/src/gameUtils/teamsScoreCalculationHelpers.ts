@@ -1,5 +1,5 @@
 import { BOLT_COUNT_LIMIT, BOLT_POINTS } from "@belot/constants";
-import { Player, TeamScore } from "@belot/types";
+import type { Player, TeamScore } from "@belot/types";
 
 import { roundByLastDigit } from "../commonUtils";
 

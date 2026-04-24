@@ -1,4 +1,4 @@
-import { BaseEntity } from "./common";
+import type { BaseEntity } from "./common";
 
 export enum GameMode {
   classic = "classic",

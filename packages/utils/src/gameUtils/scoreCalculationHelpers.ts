@@ -1,5 +1,12 @@
 import { LIMIT_OF_ROUND_POINTS } from "@belot/constants";
-import { GameMode, GameSlice, Player, PlayersSlice, RoundScore, RoundSlice } from "@belot/types";
+import {
+  GameMode,
+  type GameSlice,
+  type Player,
+  type PlayersSlice,
+  type RoundScore,
+  type RoundSlice,
+} from "@belot/types";
 
 import { removeNthElementFromEnd, roundToDecimal } from "../commonUtils";
 import { setNextDealer, setPreviousDealer } from "./gameScoreHelpers";
