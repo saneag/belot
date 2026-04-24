@@ -25,11 +25,10 @@ export default function PlayersSelectionScreen() {
             {playersSetupMsg}
           </Heading>
 
-          <VStack className="gap-5">
+          <VStack className="gap-3">
             <PlayersSelectionContextProvider>
               <PlayersCount />
               <PlayersNames />
-
               <ActionButtons />
             </PlayersSelectionContextProvider>
             <LoadPreviousGameButton />

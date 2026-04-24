@@ -1,24 +1,31 @@
 import { useMemo } from "react";
 
+import { PlayersTable } from "@belot/components";
+import { THEMES } from "@belot/constants";
+import { useGetInputPosition } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 import { getPlayersCount } from "@belot/utils/src";
 
-import { getRotation } from "@/helpers/playerNamesHelpers";
-import { useGetInputPosition } from "@/hooks/players-selection/useGetInputPosition";
+import { useThemeContext } from "@/components/themeContext";
 
 import PlayersNamesInput from "./playersNamesInput";
 import PlayersRandomizer from "./playersRandomizer";
-import PlayersTable from "./playersTable";
 
 export default function PlayersNames() {
+  const { theme } = useThemeContext();
+
   const players = useGameStore((state) => state.players);
 
   const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
-  const { getRightPosition, getTopPosition } = useGetInputPosition();
+  const { getRightPosition, getTopPosition, getRotation } = useGetInputPosition();
 
   return (
-    <PlayersTable>
+    <PlayersTable
+      blockWrapper="div"
+      mainBlockClassName="flex items-center justify-center"
+      isDarkMode={theme === THEMES.dark}
+    >
       <PlayersRandomizer />
       {players.map((player, index) => (
         <div
@@ -27,7 +34,7 @@ export default function PlayersNames() {
           style={{
             top: getTopPosition(index, playersCount),
             right: getRightPosition(index, playersCount),
-            transform: getRotation(index, playersCount),
+            transform: getRotation(index, playersCount) as string,
           }}
         >
           <PlayersNamesInput player={player} />
