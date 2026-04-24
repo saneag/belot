@@ -4,7 +4,7 @@ import { BackHandler } from "react-native";
 
 import { useFocusEffect } from "expo-router";
 
-export const usePreventBackPress = (showConfirmationDialog?: VoidFunction) => {
+export const usePreventBackPress = (showConfirmationDialog?: () => void) => {
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
