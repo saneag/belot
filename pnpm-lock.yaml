@@ -504,6 +504,9 @@ importers:
 
   packages/hooks:
     dependencies:
+      '@belot/constants':
+        specifier: workspace:*
+        version: link:../constants
       '@belot/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config

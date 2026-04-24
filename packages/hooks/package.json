@@ -12,6 +12,7 @@
     "@belot/types": "workspace:*",
     "@belot/store": "workspace:*",
     "@belot/utils": "workspace:*",
+    "@belot/constants": "workspace:*",
     "@belot/eslint-config": "workspace:*"
   },
   "devDependencies": {
