@@ -1,7 +1,4 @@
-import { useCallback } from "react";
-
-import { usePlayersSelectionContext } from "@belot/hooks";
-import { useGameStore } from "@belot/store";
+import { useHandlePlayersSelectionResetButton } from "@belot/hooks";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
@@ -14,14 +11,7 @@ import DealerSelectDialogContent from "./dealerSelectDialogContent";
 function ResetButton() {
   const resetMsg = useLocalization("players.reset");
 
-  const { resetValidations } = usePlayersSelectionContext();
-
-  const resetGameStore = useGameStore((state) => state.reset);
-
-  const handleReset = useCallback(() => {
-    resetGameStore();
-    resetValidations();
-  }, [resetGameStore, resetValidations]);
+  const handleReset = useHandlePlayersSelectionResetButton();
 
   return (
     <Button variant="outline" onClick={handleReset}>
