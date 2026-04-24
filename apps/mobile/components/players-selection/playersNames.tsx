@@ -1,26 +1,28 @@
 import { useMemo } from "react";
 
-import { View } from "react-native";
+import { TransformsStyle, View } from "react-native";
 
+import { PlayersTable } from "@belot/components";
+import { useGetInputPosition } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 import { getPlayersCount } from "@belot/utils/src";
 
-import { getRotation } from "@/helpers/playerNamesHelpers";
-import { useGetInputPosition } from "@/hooks/players-selection/useGetInputPosition";
+import { useColorModeContext } from "@/components/colorModeContext";
 
 import PlayersNamesInput from "./playersNamesInput";
 import PlayersRandomizer from "./playersRandomizer";
-import PlayersTable from "./playersTable";
 
 export default function PlayersNames() {
+  const { colorMode } = useColorModeContext();
+
   const players = useGameStore((state) => state.players);
 
   const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
-  const { getRightPosition, getTopPosition } = useGetInputPosition();
+  const { getRightPosition, getTopPosition, getRotation } = useGetInputPosition();
 
   return (
-    <PlayersTable>
+    <PlayersTable blockWrapper={View} isDarkMode={colorMode === "dark"}>
       <PlayersRandomizer />
       {players.map((player, index) => (
         <View
@@ -29,7 +31,7 @@ export default function PlayersNames() {
           style={{
             top: getTopPosition(index, playersCount),
             right: getRightPosition(index, playersCount),
-            transform: getRotation(index, playersCount),
+            transform: getRotation(index, playersCount) as TransformsStyle["transform"],
           }}
         >
           <PlayersNamesInput player={player} />
