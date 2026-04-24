@@ -17,7 +17,7 @@ export default function PlayersSelectionPage() {
     <div className="flex h-full flex-1 items-center justify-center px-2.5">
       <div className="flex flex-col gap-5">
         <h1 className="text-center text-4xl font-normal">{playersSetupMsg}</h1>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-3">
           <PlayersSelectionContextProvider>
             <PlayersCount />
             <PlayersNames />
