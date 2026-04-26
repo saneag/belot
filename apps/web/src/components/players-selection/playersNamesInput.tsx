@@ -1,11 +1,7 @@
-import { useCallback, useMemo } from "react";
-
-import { usePlayersSelectionContext } from "@belot/hooks";
-import { useGameStore } from "@belot/store";
+import { useHandlePlayersNames } from "@belot/hooks";
 import { type Player } from "@belot/types";
-import { isPlayerNameValid } from "@belot/utils/src";
 
-import { Field } from "@/components/ui/field";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 
 import { useLocalization } from "@/localizations/useLocalization";
@@ -21,28 +17,12 @@ export interface PlayersNamesInputProps {
 export default function PlayersNamesInput({ player }: PlayersNamesInputProps) {
   const playerNameInputLabel = useLocalization("players.names.input.label", [player.id + 1]);
 
-  const { validations, resetValidations } = usePlayersSelectionContext();
-  const updatePlayer = useGameStore((state) => state.updatePlayer);
-
-  const isInvalid = useMemo(
-    () => !isPlayerNameValid(validations, player.id),
-    [player.id, validations],
-  );
-
-  const handlePlayerNameChange = useCallback(
-    (value: string) => {
-      updatePlayer(player.id, {
-        name: value,
-      });
-      resetValidations();
-    },
-    [player.id, resetValidations, updatePlayer],
-  );
+  const { isInvalid, handlePlayerNameChange } = useHandlePlayersNames({ player });
 
   return (
     <div className="flex flex-col">
-      <span className="ms-2 text-gray-400">{playerNameInputLabel}</span>
       <Field data-invalid={isInvalid} className="w-34 gap-0">
+        <FieldLabel className="ms-2 mb-0.5">{playerNameInputLabel}</FieldLabel>
         <InputGroup className="bg-input-field/90 rounded-2xl">
           <InputGroupInput
             aria-invalid={isInvalid}

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ApiError, apiFetch } from "./client";
+import { ApiError, apiFetch, DEFAULT_API_TIMEOUT_MS } from "./client";
 
 describe("ApiError", () => {
   it("sets name, status, message, and optional body", () => {
@@ -21,6 +21,7 @@ describe("apiFetch", () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     vi.unstubAllGlobals();
     fetchMock.mockReset();
   });
@@ -34,9 +35,13 @@ describe("apiFetch", () => {
     });
 
     await expect(apiFetch<{ a: number }>("https://api.example/x")).resolves.toEqual({ a: 1 });
-    expect(fetchMock).toHaveBeenCalledWith("https://api.example/x", {
-      headers: { Accept: "application/json" },
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://api.example/x",
+      expect.objectContaining({
+        headers: { Accept: "application/json" },
+        signal: expect.any(AbortSignal),
+      }),
+    );
   });
 
   it("merges init headers with Accept", async () => {
@@ -52,13 +57,17 @@ describe("apiFetch", () => {
       headers: { "X-Custom": "1" },
     });
 
-    expect(fetchMock).toHaveBeenCalledWith("https://api.example/x", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "X-Custom": "1",
-      },
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://api.example/x",
+      expect.objectContaining({
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "X-Custom": "1",
+        },
+        signal: expect.any(AbortSignal),
+      }),
+    );
   });
 
   it("returns null when body is empty", async () => {
@@ -126,5 +135,31 @@ describe("apiFetch", () => {
       status: 500,
       message: "Server Error",
     });
+  });
+
+  it("throws a timeout ApiError when fetch does not resolve in time", async () => {
+    vi.useFakeTimers();
+
+    fetchMock.mockImplementation((_url, init) => {
+      const signal = (init as RequestInit).signal;
+
+      return new Promise((_resolve, reject) => {
+        signal?.addEventListener("abort", () => {
+          const abortError = new Error("The operation was aborted.");
+          abortError.name = "AbortError";
+          reject(abortError);
+        });
+      });
+    });
+
+    const request = apiFetch("https://api.example/x");
+    const requestExpectation = expect(request).rejects.toMatchObject({
+      name: "ApiError",
+      status: 408,
+      message: `Request timed out after ${DEFAULT_API_TIMEOUT_MS}ms`,
+    });
+
+    await vi.advanceTimersByTimeAsync(DEFAULT_API_TIMEOUT_MS);
+    await requestExpectation;
   });
 });

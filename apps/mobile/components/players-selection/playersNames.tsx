@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 
-import { TransformsStyle, View } from "react-native";
+import { View } from "react-native";
 
-import { PlayersTable } from "@belot/components";
-import { useGetInputPosition } from "@belot/hooks";
+import { PlayersNamesInputWrapper, PlayersTable } from "@belot/components";
 import { useGameStore } from "@belot/store";
 import { getPlayersCount } from "@belot/utils/src";
 
@@ -19,23 +18,18 @@ export default function PlayersNames() {
 
   const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
-  const { getRightPosition, getTopPosition, getRotation } = useGetInputPosition();
-
   return (
     <PlayersTable blockWrapper={View} isDarkMode={colorMode === "dark"}>
       <PlayersRandomizer />
       {players.map((player, index) => (
-        <View
+        <PlayersNamesInputWrapper
           key={player.id}
-          className="absolute"
-          style={{
-            top: getTopPosition(index, playersCount),
-            right: getRightPosition(index, playersCount),
-            transform: getRotation(index, playersCount) as TransformsStyle["transform"],
-          }}
+          blockWrapper={View}
+          index={index}
+          playersCount={playersCount}
         >
           <PlayersNamesInput player={player} />
-        </View>
+        </PlayersNamesInputWrapper>
       ))}
     </PlayersTable>
   );

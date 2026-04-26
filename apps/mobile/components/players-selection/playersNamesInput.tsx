@@ -1,9 +1,5 @@
-import { useCallback, useMemo } from "react";
-
-import { usePlayersSelectionContext } from "@belot/hooks";
-import { useGameStore } from "@belot/store";
+import { useHandlePlayersNames } from "@belot/hooks";
 import { Player } from "@belot/types";
-import { isPlayerNameValid } from "@belot/utils/src";
 
 import { CloseIcon } from "@/components/ui/icon";
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
@@ -21,28 +17,12 @@ export interface PlayersNamesInputProps {
 export default function PlayersNamesInput({ player }: PlayersNamesInputProps) {
   const playerNameInputLabel = useLocalization("players.names.input.label", [player.id + 1]);
 
-  const { validations, resetValidations } = usePlayersSelectionContext();
-  const updatePlayer = useGameStore((state) => state.updatePlayer);
-
-  const isInvalid = useMemo(
-    () => !isPlayerNameValid(validations, player.id),
-    [player.id, validations],
-  );
-
-  const handlePlayerNameChange = useCallback(
-    (value: string) => {
-      updatePlayer(player.id, {
-        name: value,
-      });
-      resetValidations();
-    },
-    [player.id, resetValidations, updatePlayer],
-  );
+  const { isInvalid, handlePlayerNameChange } = useHandlePlayersNames({ player });
 
   return (
     <VStack>
-      <Text className="ms-2 text-typography-500">{playerNameInputLabel}</Text>
-      <Input isInvalid={isInvalid} className="w-[130px] bg-secondary-50/90" variant="rounded">
+      <Text className="ms-2">{playerNameInputLabel}</Text>
+      <Input isInvalid={isInvalid} className="w-[136px] bg-secondary-50/90" variant="rounded">
         <InputField
           value={player.name}
           onChangeText={handlePlayerNameChange}
