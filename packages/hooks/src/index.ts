@@ -5,3 +5,4 @@ export * from "./usePlayersCount";
 export * from "./useGetInputPosition";
 export * from "./useHandlePlayersNames";
 export * from "./useHandlePlayersSelectionReset";
+export * from "./usePlayersSubmit";

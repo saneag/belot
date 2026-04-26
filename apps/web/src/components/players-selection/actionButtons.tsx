@@ -1,10 +1,15 @@
+import { useNavigate } from "react-router-dom";
+
 import { useHandlePlayersSelectionResetButton } from "@belot/hooks";
+import { usePlayersSubmit } from "@belot/hooks";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
-import usePlayersSubmit from "@/hooks/players-selection/usePlayersSubmit";
+import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
 import { useLocalization, useLocalizations } from "@/localizations/useLocalization";
+
+import { toast } from "sonner";
 
 import DealerSelectDialogContent from "./dealerSelectDialogContent";
 
@@ -21,12 +26,26 @@ function ResetButton() {
 }
 
 function SubmitButton() {
+  const navigate = useNavigate();
+
   const messages = useLocalizations([
     { key: "players.submit.dialog.title" },
     { key: "players.submit.dialog.button" },
+    { key: "server.offline" },
   ]);
 
-  const { handleOpenDialog, handleSubmit } = usePlayersSubmit();
+  const { handleOpenDialog, handleSubmit } = usePlayersSubmit({
+    navigateFunction: () => void navigate("/game-table", { replace: true }),
+    setItemsToStorage: (items) => {
+      Object.entries(items).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
+    },
+    getApiBaseUrl,
+    handleCatchError: () => {
+      toast.error(messages.serverOffline);
+    },
+  });
 
   return (
     <ConfirmationDialog
