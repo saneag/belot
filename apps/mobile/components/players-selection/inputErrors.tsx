@@ -19,7 +19,7 @@ export function EmptyNameError({ player }: InputErrorsProps) {
 
   return (
     isNameEmpty && (
-      <Text bold className="text-center text-error-400" size="sm">
+      <Text bold className="text-center text-error-400">
         {emptyError}
       </Text>
     )
@@ -36,7 +36,7 @@ export function RepeatingNamesError({ player }: InputErrorsProps) {
 
   return (
     isRepeatingName && (
-      <Text bold className="text-center text-error-400" size="sm">
+      <Text bold className="text-center text-error-400">
         {duplicatedName}
       </Text>
     )
