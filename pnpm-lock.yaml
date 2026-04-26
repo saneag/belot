@@ -507,6 +507,9 @@ importers:
 
   packages/hooks:
     dependencies:
+      '@belot/api-client':
+        specifier: workspace:*
+        version: link:../api
       '@belot/constants':
         specifier: workspace:*
         version: link:../constants
