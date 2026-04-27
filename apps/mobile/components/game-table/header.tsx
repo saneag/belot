@@ -21,6 +21,7 @@ import TimeTracker from "./timeTracker";
 
 export default function Header() {
   const router = useRouter();
+
   const messages = useLocalizations([
     {
       key: "game.reset.title",
@@ -34,7 +35,7 @@ export default function Header() {
   ]);
 
   const { showDialog, setShowDialog, handleReset } = useHandleGameReset({
-    navigateFunction: () => router.navigate("/"),
+    navigateFunction: () => router.navigate("/players-selection"),
     setItemsToStorage: setMultipleItemsToStorage,
   });
 
