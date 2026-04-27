@@ -1,13 +1,12 @@
 import { useCallback } from "react";
 
+import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import ExtendedTooltip from "@/components/extendedTooltip";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
-
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { ChevronsRight } from "lucide-react-native";
 

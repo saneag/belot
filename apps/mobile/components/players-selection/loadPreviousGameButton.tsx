@@ -1,11 +1,11 @@
 import { useCallback } from "react";
 
+import { useLocalization } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 
 import { Button, ButtonText } from "@/components/ui/button";
 
 import { useLoadPlayersNames } from "@/hooks/players-selection/useLoadPlayersNames";
-import { useLocalization } from "@/localizations/useLocalization";
 
 export default function LoadPreviousGameButton() {
   const buttonMsg = useLocalization("load.previous.game.button");

@@ -1,12 +1,11 @@
 import { TABLE_HEIGHT, TABLE_WIDTH } from "@belot/constants";
+import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 
 import ExtendedTooltip from "@/components/extendedTooltip";
 import { Button } from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
 import { Icon } from "@/components/ui/icon";
-
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { Shuffle } from "lucide-react-native";
 

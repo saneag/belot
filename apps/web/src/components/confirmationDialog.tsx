@@ -7,6 +7,8 @@ import React, {
   useState,
 } from "react";
 
+import { useLocalizations } from "@belot/localizations";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,8 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import { useLocalizations } from "@/localizations/useLocalization";
 
 interface ConfirmationModalProps {
   title: ReactNode;

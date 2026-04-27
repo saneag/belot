@@ -1,9 +1,8 @@
+import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { Shuffle } from "lucide-react";
 

@@ -1,12 +1,11 @@
 import { useHandlePlayersNames } from "@belot/hooks";
+import { useLocalization } from "@belot/localizations";
 import { Player } from "@belot/types";
 
 import { CloseIcon } from "@/components/ui/icon";
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 import { EmptyNameError, RepeatingNamesError } from "./inputErrors";
 

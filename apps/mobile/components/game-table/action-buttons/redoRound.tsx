@@ -1,12 +1,11 @@
 import { useMemo } from "react";
 
+import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 
 import ExtendedTooltip from "@/components/extendedTooltip";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
-
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { Redo } from "lucide-react-native";
 

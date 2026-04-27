@@ -2,12 +2,11 @@ import { Dispatch, SetStateAction, useCallback } from "react";
 
 import { useRouter } from "expo-router";
 
+import { useLocalization } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import { Player, Team } from "@belot/types";
 
 import { Button, ButtonText } from "@/components/ui/button";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 interface ResetGameButtonProps {
   setWinner: Dispatch<SetStateAction<Player | Team | null>>;

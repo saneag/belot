@@ -6,6 +6,10 @@
   "scripts": {
     "lint": "eslint ."
   },
+  "dependencies": {
+    "@belot/types": "workspace:*",
+    "i18next": "^25.8.11"
+  },
   "devDependencies": {
     "@belot/eslint-config": "workspace:*",
     "eslint": "^9.39.1"

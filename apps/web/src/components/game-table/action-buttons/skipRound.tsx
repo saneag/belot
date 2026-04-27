@@ -1,13 +1,12 @@
 import { useCallback } from "react";
 
 import { StorageKeys } from "@belot/constants";
+import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import { prepareEmptyRoundScoreRow, roundByLastDigit, setNextDealer } from "@belot/utils";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { ChevronsRight } from "lucide-react";
 
