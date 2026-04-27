@@ -13,6 +13,8 @@
     "@belot/hooks": "workspace:*",
     "@belot/types": "workspace:*",
     "@belot/constants": "workspace:*",
+    "@belot/localizations": "workspace:*",
+    "@belot/store": "workspace:*",
     "@belot/eslint-config": "workspace:*"
   },
   "devDependencies": {

@@ -1,7 +1,10 @@
 import React from "react";
 
+import { View } from "react-native";
+
 import { useRouter } from "expo-router";
 
+import { CurrentDealer } from "@belot/components";
 import { useHandleGameReset } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
 
@@ -9,11 +12,11 @@ import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { ArrowLeftIcon, Icon } from "@/components/ui/icon";
+import { Text } from "@/components/ui/text";
 
 import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
 
-import CurrentDealer from "./currentDealer";
 import TimeTracker from "./timeTracker";
 
 export default function Header() {
@@ -24,6 +27,9 @@ export default function Header() {
     },
     {
       key: "game.reset.content",
+    },
+    {
+      key: "dealer",
     },
   ]);
 
@@ -50,7 +56,7 @@ export default function Header() {
         visible={showDialog}
         setVisible={setShowDialog}
       />
-      <CurrentDealer />
+      <CurrentDealer blockWrapper={View} textWrapper={Text} dealerMessage={messages.dealer} />
       <TimeTracker />
     </HStack>
   );

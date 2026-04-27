@@ -452,6 +452,12 @@ importers:
       '@belot/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@belot/localizations':
+        specifier: workspace:*
+        version: link:../localizations
+      '@belot/store':
+        specifier: workspace:*
+        version: link:../store
       '@belot/types':
         specifier: workspace:*
         version: link:../types
