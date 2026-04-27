@@ -1,5 +1,11 @@
 import { DEFAULT_ROUND_POINTS, NEXT_WINNING_STEP, WIN_POINTS } from "@belot/constants";
-import { GameMode, Player, PlayersSlice, RoundScore, RoundSlice } from "@belot/types";
+import {
+  GameMode,
+  type Player,
+  type PlayersSlice,
+  type RoundScore,
+  type RoundSlice,
+} from "@belot/types";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
