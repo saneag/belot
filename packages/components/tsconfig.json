@@ -10,5 +10,5 @@
     "lib": ["ES2022", "DOM"],
     "jsx": "react-jsx"
   },
-  "include": ["src/**/*.tsx"]
+  "include": ["src/**/*.tsx", "src/**/*.ts", "vitest.config.ts"]
 }

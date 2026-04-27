@@ -1,4 +1,5 @@
 import { PlayersSelectionContextProvider } from "@belot/components";
+import { useLocalization } from "@belot/localizations";
 
 import ActionButtons from "@/components/players-selection/actionButtons";
 import LoadPreviousGameButton from "@/components/players-selection/loadPreviousGameButton";
@@ -6,7 +7,6 @@ import PlayersCount from "@/components/players-selection/playersCount";
 import PlayersNames from "@/components/players-selection/playersNames";
 
 import { useLoadPreviousGame } from "@/hooks/players-selection/useLoadPreviousGame";
-import { useLocalization } from "@/localizations/useLocalization";
 
 export default function PlayersSelectionPage() {
   const playersSetupMsg = useLocalization("players.setup");

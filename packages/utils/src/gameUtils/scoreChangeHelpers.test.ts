@@ -1,9 +1,13 @@
-import { GameMode, PlayerScore, TeamScore } from "@belot/types";
+import { GameMode, type PlayerScore, type TeamScore } from "@belot/types";
 
 import { describe, expect, it } from "vitest";
 
-import { basePlayerScore, baseRoundScore, baseTeamScore, mockPlayers } from "../../__mocks__/gameScoreHelpers";
-
+import {
+  basePlayerScore,
+  baseRoundScore,
+  baseTeamScore,
+  mockPlayers,
+} from "../../__mocks__/gameScoreHelpers";
 import { handleRoundScoreChange } from "./scoreChangeHelpers";
 
 describe("scoreChangeHelpers", () => {
@@ -110,9 +114,9 @@ describe("scoreChangeHelpers", () => {
           roundPlayer: mockPlayers[1],
         });
 
-        expect(result.playersScores.filter((p) => p.playerId === 1).every((p) => p.score === 5)).toBe(
-          true,
-        );
+        expect(
+          result.playersScores.filter((p) => p.playerId === 1).every((p) => p.score === 5),
+        ).toBe(true);
         expect(result.playersScores.find((p) => p.playerId === 2)).toMatchObject({ score: 40 });
       });
 

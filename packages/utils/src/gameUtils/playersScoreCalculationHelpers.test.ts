@@ -1,5 +1,5 @@
 import { BOLT_COUNT_LIMIT, BOLT_POINTS, DEFAULT_ROUND_POINTS } from "@belot/constants";
-import { Player, PlayerScore } from "@belot/types";
+import type { Player, PlayerScore } from "@belot/types";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

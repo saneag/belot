@@ -1,5 +1,5 @@
 import { BOLT_COUNT_LIMIT, BOLT_POINTS } from "@belot/constants";
-import { TeamScore } from "@belot/types";
+import type { TeamScore } from "@belot/types";
 
 import { describe, expect, it } from "vitest";
 

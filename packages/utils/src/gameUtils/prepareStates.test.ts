@@ -1,5 +1,5 @@
 import { DEFAULT_ROUND_POINTS } from "@belot/constants";
-import { GameMode, PlayerScore, RoundScore, TeamScore } from "@belot/types";
+import { GameMode, type PlayerScore, type RoundScore, type TeamScore } from "@belot/types";
 
 import { describe, expect, it } from "vitest";
 
@@ -194,9 +194,7 @@ describe("prepareStates", () => {
 
       expect(row).toEqual({
         id: 7,
-        playersScores: [
-          { id: 0, playerId: 1, score: 0, boltCount: 1, totalScore: 100 },
-        ],
+        playersScores: [{ id: 0, playerId: 1, score: 0, boltCount: 1, totalScore: 100 }],
         teamsScores: [{ id: 0, teamId: 1, score: 0, boltCount: 0, totalScore: 200 }],
         totalRoundScore: DEFAULT_ROUND_POINTS,
         roundPlayer: null,

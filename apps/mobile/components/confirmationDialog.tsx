@@ -2,6 +2,8 @@ import React, { Dispatch, ReactNode, SetStateAction, useCallback, useMemo, useSt
 
 import { Keyboard, View } from "react-native";
 
+import { useLocalizations } from "@belot/localizations";
+
 import { Button, ButtonText } from "@/components/ui/button";
 import {
   Modal,
@@ -13,7 +15,6 @@ import {
 } from "@/components/ui/modal";
 
 import { useKeyboardAvoidView } from "@/hooks/useKeyboardAvoidView";
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { Heading } from "./ui/heading";
 import { Text } from "./ui/text";

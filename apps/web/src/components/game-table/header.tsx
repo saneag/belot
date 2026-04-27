@@ -1,19 +1,17 @@
-import { useCallback, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 
-import { StorageKeys } from "@belot/constants";
-import { useGameStore } from "@belot/store";
+import { CurrentDealer } from "@belot/components";
+import { useHandleGameReset } from "@belot/hooks";
+import { useLocalizations } from "@belot/localizations";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
+import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { ArrowLeft } from "lucide-react";
 
-import CurrentDealer from "./currentDealer";
 import TimeTracker from "./timeTracker";
 
 export default function Header() {
@@ -26,22 +24,19 @@ export default function Header() {
     {
       key: "game.reset.content",
     },
+    {
+      key: "dealer",
+    },
   ]);
 
-  const [showDialog, setShowDialog] = useState(false);
+  const { showDialog, setShowDialog, handleReset } = useHandleGameReset({
+    navigateFunction: () => void navigate("/"),
+    setItemsToStorage: setMultipleItemsToStorage,
+  });
 
-  const resetGame = useGameStore((state) => state.reset);
-
-  usePreventBackPress(() => setShowDialog(true));
-
-  const handleReset = useCallback(() => {
-    void navigate("/");
-    localStorage.removeItem(StorageKeys.dealer);
-    localStorage.removeItem(StorageKeys.roundsScores);
-    localStorage.removeItem(StorageKeys.timerStartTime);
-    localStorage.removeItem(StorageKeys.roundsScores);
-    resetGame();
-  }, [navigate, resetGame]);
+  usePreventBackPress(() => {
+    setShowDialog(true);
+  });
 
   return (
     <div
@@ -61,11 +56,13 @@ export default function Header() {
             <ArrowLeft />
           </Button>
         )}
-        confirmationCallback={handleReset}
+        confirmationCallback={() => {
+          void handleReset();
+        }}
         visible={showDialog}
         setVisible={setShowDialog}
       />
-      <CurrentDealer />
+      <CurrentDealer blockWrapper="div" textWrapper="span" dealerMessage={messages.dealer} />
       <TimeTracker />
     </div>
   );
