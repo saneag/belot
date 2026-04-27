@@ -6,12 +6,8 @@ import LoadPreviousGameButton from "@/components/players-selection/loadPreviousG
 import PlayersCount from "@/components/players-selection/playersCount";
 import PlayersNames from "@/components/players-selection/playersNames";
 
-import { useLoadPreviousGame } from "@/hooks/players-selection/useLoadPreviousGame";
-
 export default function PlayersSelectionPage() {
   const playersSetupMsg = useLocalization("players.setup");
-
-  useLoadPreviousGame();
 
   return (
     <div className="flex h-full flex-1 items-center justify-center px-2.5">

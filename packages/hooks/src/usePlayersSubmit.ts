@@ -72,7 +72,6 @@ export function usePlayersSubmit({
       [StorageKeys.timerStartTime]: "",
       [StorageKeys.roundsScores]: JSON.stringify([emptyRoundScore]),
       [StorageKeys.players]: JSON.stringify(players),
-      [StorageKeys.hasPreviousGame]: "true",
       [StorageKeys.dealer]: JSON.stringify(dealer),
     });
 
