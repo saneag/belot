@@ -1,5 +1,5 @@
 import { DEFAULT_ROUND_POINTS } from "@belot/constants";
-import { GameMode, Player, PlayerScore, RoundScore } from "@belot/types";
+import { GameMode, type Player, type PlayerScore, type RoundScore } from "@belot/types";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
