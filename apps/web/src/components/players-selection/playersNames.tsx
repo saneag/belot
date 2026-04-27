@@ -2,10 +2,9 @@ import { useMemo } from "react";
 
 import { PlayersNamesInputWrapper, PlayersTable } from "@belot/components";
 import { THEMES } from "@belot/constants";
+import { useThemeContext } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 import { getPlayersCount } from "@belot/utils/src";
-
-import { useThemeContext } from "@/components/themeContext";
 
 import PlayersNamesInput from "./playersNamesInput";
 import PlayersRandomizer from "./playersRandomizer";
