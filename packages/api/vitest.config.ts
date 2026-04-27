@@ -5,6 +5,7 @@ export default mergeConfig(
   shared,
   defineProject({
     test: {
+      environment: "jsdom",
       name: "@belot/api-client",
     },
   }),
