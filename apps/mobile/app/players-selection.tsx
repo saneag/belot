@@ -10,12 +10,8 @@ import { Center } from "@/components/ui/center";
 import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
 
-import { useLoadPreviousGame } from "@/hooks/players-selection/useLoadPreviousGame";
-
 export default function PlayersSelectionScreen() {
   const playersSetupMsg = useLocalization("players.setup");
-
-  useLoadPreviousGame();
 
   return (
     <Center className="flex-1 bg-background-0 px-2.5">

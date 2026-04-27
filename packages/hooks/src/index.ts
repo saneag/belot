@@ -1,6 +1,5 @@
 export * from "./useValidations";
 export * from "./usePlayersSelectionContext";
-export * from "./useCheckForPreviousGame";
 export * from "./usePlayersCount";
 export * from "./useGetInputPosition";
 export * from "./useHandlePlayersNames";
@@ -9,3 +8,5 @@ export * from "./usePlayersSubmit";
 export * from "./useLoadGameData";
 export * from "./useHandleGameReset";
 export * from "./useThemeContext";
+export * from "./useHandleDealerChange";
+export * from "./useLoadPreviousPlayers";
