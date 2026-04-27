@@ -1,4 +1,5 @@
 import { createBelotTsConfig } from "@belot/eslint-config";
+
 import reactRefresh from "eslint-plugin-react-refresh";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,7 +20,7 @@ export default createBelotTsConfig({
           "error",
           {
             allowConstantExport: true,
-            allowExportNames: ["useThemeContext", "buttonVariants"],
+            allowExportNames: ["buttonVariants"],
           },
         ],
       },

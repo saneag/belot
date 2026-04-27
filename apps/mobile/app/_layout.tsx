@@ -1,17 +1,14 @@
-import { useState } from "react";
-
-import { useColorScheme } from "react-native";
-
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
+import { ThemeContextProvider } from "@belot/components";
 import { LocalizationContextProvider } from "@belot/localizations";
 
-import { ColorModeContextProvider, ColorModeContextType } from "@/components/colorModeContext";
 import Navigation from "@/components/navigation";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 
 import { getDeviceLanguage } from "@/helpers/localization";
+import { useReadInitialTheme } from "@/hooks/useReadInitialTheme";
 import "@/styles/global.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -19,16 +16,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  const systemColorScheme = useColorScheme();
-  const [colorMode, setColorMode] = useState<ColorModeContextType["colorMode"]>(
-    systemColorScheme === "dark" ? "dark" : "light",
-  );
+  const { theme } = useReadInitialTheme();
 
   return (
     <QueryClientProvider client={queryClient}>
       <LocalizationContextProvider getDeviceLanguage={getDeviceLanguage}>
         <SafeAreaProvider>
-          <ColorModeContextProvider colorMode={colorMode} setColorMode={setColorMode}>
+          <ThemeContextProvider initialTheme={theme}>
             <GluestackUIProvider mode="system">
               <SafeAreaView className="flex-1">
                 <KeyboardAwareScrollView
@@ -40,7 +34,7 @@ export default function RootLayout() {
                 </KeyboardAwareScrollView>
               </SafeAreaView>
             </GluestackUIProvider>
-          </ColorModeContextProvider>
+          </ThemeContextProvider>
         </SafeAreaProvider>
       </LocalizationContextProvider>
     </QueryClientProvider>

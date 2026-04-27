@@ -8,3 +8,4 @@ export * from "./useHandlePlayersSelectionReset";
 export * from "./usePlayersSubmit";
 export * from "./useLoadGameData";
 export * from "./useHandleGameReset";
+export * from "./useThemeContext";
