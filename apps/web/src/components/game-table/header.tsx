@@ -3,13 +3,13 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { StorageKeys } from "@belot/constants";
+import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { ArrowLeft } from "lucide-react";
 

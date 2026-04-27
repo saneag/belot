@@ -1,12 +1,12 @@
 import { type Dispatch, type SetStateAction } from "react";
 
+import { useLocalizations } from "@belot/localizations";
 import { type Player, type Team } from "@belot/types";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 import { useHandleNextRound } from "@/hooks/game-table/useHandleNextRound";
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { ArrowRight } from "lucide-react";
 

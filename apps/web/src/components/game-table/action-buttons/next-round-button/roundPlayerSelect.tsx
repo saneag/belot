@@ -1,12 +1,11 @@
 import { useCallback } from "react";
 
+import { useLocalization } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import type { Player } from "@belot/types";
 
 import { type RoundPlayerDisplayProps } from "@/components/game-table/action-buttons/next-round-button/roundPlayerDisplay";
 import { Button } from "@/components/ui/button";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 export default function RoundPlayerSelect({
   setRoundPlayer,

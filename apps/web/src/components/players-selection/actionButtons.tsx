@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 
 import { useHandlePlayersSelectionResetButton } from "@belot/hooks";
 import { usePlayersSubmit } from "@belot/hooks";
+import { useLocalization, useLocalizations } from "@belot/localizations";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
-import { useLocalization, useLocalizations } from "@/localizations/useLocalization";
 
 import { toast } from "sonner";
 

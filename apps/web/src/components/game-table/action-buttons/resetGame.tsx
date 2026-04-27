@@ -3,12 +3,11 @@ import { type Dispatch, type SetStateAction, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { StorageKeys } from "@belot/constants";
+import { useLocalization } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import { type Player, type Team } from "@belot/types";
 
 import { Button } from "@/components/ui/button";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 interface ResetGameButtonProps {
   setWinner: Dispatch<SetStateAction<Player | Team | null>>;

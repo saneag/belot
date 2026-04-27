@@ -1,12 +1,11 @@
 import { type Dispatch, type SetStateAction, useCallback, useState } from "react";
 
 import { ROUND_POINTS } from "@belot/constants";
+import { useLocalization } from "@belot/localizations";
 import { type RoundScore } from "@belot/types";
 import { calculateTotalRoundScore, roundToDecimal } from "@belot/utils/src";
 
 import { Button } from "@/components/ui/button";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 export interface RoundScoreSelectProps {
   roundScore: RoundScore;

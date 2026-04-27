@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 
 import { useRouter } from "expo-router";
 
+import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
@@ -10,7 +11,6 @@ import { HStack } from "@/components/ui/hstack";
 import { ArrowLeftIcon, Icon } from "@/components/ui/icon";
 
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import CurrentDealer from "./currentDealer";
 import TimeTracker from "./timeTracker";

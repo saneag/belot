@@ -1,10 +1,9 @@
 import { useHandlePlayersNames } from "@belot/hooks";
+import { useLocalization } from "@belot/localizations";
 import { type Player } from "@belot/types";
 
 import { Field, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 import { X } from "lucide-react";
 

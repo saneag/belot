@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { AppState } from "react-native";
 
-import { Text } from "@/components/ui/text";
+import { useLocalization } from "@belot/localizations";
 
-import { useLocalization } from "@/localizations/useLocalization";
+import { Text } from "@/components/ui/text";
 
 export default function TimeTracker() {
   const timeMsg = useLocalization("time");
