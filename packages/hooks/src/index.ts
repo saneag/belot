@@ -9,3 +9,4 @@ export * from "./usePlayersSubmit";
 export * from "./useLoadGameData";
 export * from "./useHandleGameReset";
 export * from "./useThemeContext";
+export * from "./useHandleDealerChange";
