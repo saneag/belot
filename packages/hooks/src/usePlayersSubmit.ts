@@ -15,7 +15,7 @@ import { usePlayersSelectionContext } from "./usePlayersSelectionContext";
 
 interface UsePlayersSubmitProps {
   navigateFunction: () => void;
-  setItemsToStorage: (items: Record<Partial<StorageKeys>, string>) => Promise<void> | void;
+  setItemsToStorage: (items: Partial<Record<StorageKeys, string>>) => Promise<void> | void;
   getApiBaseUrl: () => string;
   handleCatchError: (error: unknown) => void;
 }

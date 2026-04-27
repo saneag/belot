@@ -1,18 +1,22 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
+
+import { View } from "react-native";
 
 import { useRouter } from "expo-router";
 
-import { useGameStore } from "@belot/store";
+import { CurrentDealer } from "@belot/components";
+import { useHandleGameReset } from "@belot/hooks";
+import { useLocalizations } from "@belot/localizations";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { ArrowLeftIcon, Icon } from "@/components/ui/icon";
+import { Text } from "@/components/ui/text";
 
+import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
-import { useLocalizations } from "@/localizations/useLocalization";
 
-import CurrentDealer from "./currentDealer";
 import TimeTracker from "./timeTracker";
 
 export default function Header() {
@@ -24,18 +28,19 @@ export default function Header() {
     {
       key: "game.reset.content",
     },
+    {
+      key: "dealer",
+    },
   ]);
 
-  const [showDialog, setShowDialog] = useState(false);
+  const { showDialog, setShowDialog, handleReset } = useHandleGameReset({
+    navigateFunction: () => router.navigate("/"),
+    setItemsToStorage: setMultipleItemsToStorage,
+  });
 
-  const resetGame = useGameStore((state) => state.reset);
-
-  usePreventBackPress(() => setShowDialog(true));
-
-  const handleReset = useCallback(() => {
-    router.back();
-    resetGame();
-  }, [resetGame, router]);
+  usePreventBackPress(() => {
+    setShowDialog(true);
+  });
 
   return (
     <HStack className="items-center justify-between px-2.5">
@@ -51,7 +56,7 @@ export default function Header() {
         visible={showDialog}
         setVisible={setShowDialog}
       />
-      <CurrentDealer />
+      <CurrentDealer blockWrapper={View} textWrapper={Text} dealerMessage={messages.dealer} />
       <TimeTracker />
     </HStack>
   );

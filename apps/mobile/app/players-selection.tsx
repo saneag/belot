@@ -1,4 +1,5 @@
 import { PlayersSelectionContextProvider } from "@belot/components";
+import { useLocalization } from "@belot/localizations";
 
 import DismissKeyboardView from "@/components/dismissKeyboardView";
 import ActionButtons from "@/components/players-selection/actionButtons";
@@ -10,7 +11,6 @@ import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
 
 import { useLoadPreviousGame } from "@/hooks/players-selection/useLoadPreviousGame";
-import { useLocalization } from "@/localizations/useLocalization";
 
 export default function PlayersSelectionScreen() {
   const playersSetupMsg = useLocalization("players.setup");

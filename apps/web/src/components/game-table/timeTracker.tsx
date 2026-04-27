@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { StorageKeys } from "@belot/constants";
-
-import { useLocalization } from "@/localizations/useLocalization";
+import { useLocalization } from "@belot/localizations";
 
 export default function TimeTracker() {
   const timeMsg = useLocalization("time");
@@ -24,7 +23,8 @@ export default function TimeTracker() {
 
     const storageStartTime = localStorage.getItem(StorageKeys.timerStartTime);
     const parsedStorageStartTime = storageStartTime ? Number(storageStartTime) : NaN;
-    const hasValidStorageStartTime = Number.isFinite(parsedStorageStartTime) && parsedStorageStartTime > 0;
+    const hasValidStorageStartTime =
+      Number.isFinite(parsedStorageStartTime) && parsedStorageStartTime > 0;
     const startTime = hasValidStorageStartTime ? parsedStorageStartTime : Date.now();
 
     if (!hasValidStorageStartTime) {

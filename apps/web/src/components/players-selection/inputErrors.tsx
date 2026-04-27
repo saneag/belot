@@ -1,9 +1,8 @@
 import { usePlayersSelectionContext } from "@belot/hooks";
+import { useLocalization } from "@belot/localizations";
 import { isPlayerNameValid, isPlayersNamesEmpty, isPlayersNamesRepeating } from "@belot/utils/src";
 
 import { FieldDescription } from "@/components/ui/field";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 import { type PlayersNamesInputProps } from "./playersNamesInput";
 

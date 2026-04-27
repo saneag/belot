@@ -1,5 +1,5 @@
 import { LIMIT_OF_ROUND_POINTS } from "@belot/constants";
-import { GameMode, Player, RoundScore } from "@belot/types";
+import { GameMode, type Player, type RoundScore } from "@belot/types";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -221,9 +221,7 @@ describe("scoreCalculationHelpers", () => {
         currentLast,
       ];
 
-      const result = recalculateScoreOnRedo(
-        buildState(roundsScores, [restored]),
-      );
+      const result = recalculateScoreOnRedo(buildState(roundsScores, [restored]));
 
       expect(result.undoneRoundsScores).toEqual([]);
       expect(result.roundsScores).toHaveLength(4);

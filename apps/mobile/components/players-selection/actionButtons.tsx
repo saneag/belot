@@ -3,6 +3,7 @@ import { ToastAndroid } from "react-native";
 import { useRouter } from "expo-router";
 
 import { useHandlePlayersSelectionResetButton, usePlayersSubmit } from "@belot/hooks";
+import { useLocalization, useLocalizations } from "@belot/localizations";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button, ButtonText } from "@/components/ui/button";
@@ -10,7 +11,6 @@ import { HStack } from "@/components/ui/hstack";
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
 import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
-import { useLocalization, useLocalizations } from "@/localizations/useLocalization";
 
 import DealerSelectDialogContent from "./dealerSelectDialogContent";
 
@@ -37,9 +37,7 @@ function SubmitButton() {
 
   const { handleOpenDialog, handleSubmit } = usePlayersSubmit({
     navigateFunction: () => router.navigate("/game-table"),
-    setItemsToStorage: async (items) => {
-      await setMultipleItemsToStorage(items);
-    },
+    setItemsToStorage: setMultipleItemsToStorage,
     getApiBaseUrl,
     handleCatchError: () => {
       ToastAndroid.showWithGravity(messages.serverOffline, ToastAndroid.SHORT, ToastAndroid.CENTER);

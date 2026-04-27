@@ -2,18 +2,19 @@ import { useState } from "react";
 
 import { useColorScheme } from "react-native";
 
-import { I18nextProvider } from "react-i18next";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
+import { LocalizationContextProvider } from "@belot/localizations";
 
 import { ColorModeContextProvider, ColorModeContextType } from "@/components/colorModeContext";
 import Navigation from "@/components/navigation";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 
+import { getDeviceLanguage } from "@/helpers/localization";
 import "@/styles/global.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import i18n from "i18next";
 
 const queryClient = new QueryClient();
 
@@ -25,9 +26,9 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <ColorModeContextProvider colorMode={colorMode} setColorMode={setColorMode}>
-          <I18nextProvider i18n={i18n}>
+      <LocalizationContextProvider getDeviceLanguage={getDeviceLanguage}>
+        <SafeAreaProvider>
+          <ColorModeContextProvider colorMode={colorMode} setColorMode={setColorMode}>
             <GluestackUIProvider mode="system">
               <SafeAreaView className="flex-1">
                 <KeyboardAwareScrollView
@@ -39,9 +40,9 @@ export default function RootLayout() {
                 </KeyboardAwareScrollView>
               </SafeAreaView>
             </GluestackUIProvider>
-          </I18nextProvider>
-        </ColorModeContextProvider>
-      </SafeAreaProvider>
+          </ColorModeContextProvider>
+        </SafeAreaProvider>
+      </LocalizationContextProvider>
     </QueryClientProvider>
   );
 }

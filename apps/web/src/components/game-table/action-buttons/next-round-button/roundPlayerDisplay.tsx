@@ -1,10 +1,9 @@
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 
+import { useLocalization } from "@belot/localizations";
 import { type Player } from "@belot/types";
 
 import { Button } from "@/components/ui/button";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 import { Pencil } from "lucide-react";
 

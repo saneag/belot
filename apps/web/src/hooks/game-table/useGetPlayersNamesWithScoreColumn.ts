@@ -1,10 +1,9 @@
 import { useMemo } from "react";
 
+import { useLocalization } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import { GameMode } from "@belot/types";
 import { getPlayersNames, getTeamsNames } from "@belot/utils/src";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 export default function useGetPlayersNamesWithScoreColumn() {
   const scoreMsg = useLocalization("score");

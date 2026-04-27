@@ -1,4 +1,4 @@
-import { useLocalizations } from "@/localizations/useLocalization";
+import { useLocalizations } from "@belot/localizations";
 
 import PlayerScoreInputWrapper from "./playerScoreInputWrapper";
 import RoundPlayerDisplay, { type RoundPlayerDisplayProps } from "./roundPlayerDisplay";

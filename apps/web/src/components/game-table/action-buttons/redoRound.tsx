@@ -1,10 +1,9 @@
 import { useMemo } from "react";
 
+import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { Redo } from "lucide-react";
 

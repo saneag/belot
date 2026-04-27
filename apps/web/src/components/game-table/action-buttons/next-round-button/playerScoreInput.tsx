@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo } from "react";
 
+import { formatLocalizationString, useLocalizations } from "@belot/localizations";
 import {
   GameMode,
   type Player,
@@ -12,8 +13,6 @@ import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode } from "@belo
 
 import { Field, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
-
-import { formatLocalizationString, useLocalizations } from "@/localizations/useLocalization";
 
 interface PlayerScoreInputProps {
   opponent: PlayerScore | TeamScore;

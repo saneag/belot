@@ -1,9 +1,8 @@
 import { PLAYERS_COUNT } from "@belot/constants";
 import { usePlayersCount } from "@belot/hooks";
+import { useLocalization } from "@belot/localizations";
 
 import { Button } from "@/components/ui/button";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 export default function PlayersCount() {
   const numberOfPlayersMsg = useLocalization("players.count.number.of.players");

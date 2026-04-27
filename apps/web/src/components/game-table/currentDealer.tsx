@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 
+import { useLocalization } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 const MAX_NAME_LENGTH = 10;
 
