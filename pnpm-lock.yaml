@@ -547,9 +547,6 @@ importers:
 
   packages/localizations:
     dependencies:
-      '@belot/types':
-        specifier: workspace:*
-        version: link:../types
       i18next:
         specifier: ^25.8.11
         version: 25.8.11(typescript@5.9.3)
@@ -557,9 +554,21 @@ importers:
       '@belot/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@belot/vitest-config':
+        specifier: workspace:*
+        version: link:../vitest-config
+      '@vitest/coverage-v8':
+        specifier: 'catalog:'
+        version: 4.1.3(vitest@4.1.3)
       eslint:
         specifier: ^9.39.1
         version: 9.39.2(jiti@2.6.1)
+      typescript:
+        specifier: ~5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: 'catalog:'
+        version: 4.1.3(@types/node@24.10.10)(@vitest/coverage-v8@4.1.3)(jsdom@26.1.0)(msw@2.12.14(@types/node@24.10.10)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.10)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
 
   packages/store:
     dependencies:
@@ -602,10 +611,6 @@ importers:
         version: 4.1.3(@types/node@24.10.10)(@vitest/coverage-v8@4.1.3)(jsdom@26.1.0)(msw@2.12.14(@types/node@24.10.10)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.10)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
 
   packages/types:
-    dependencies:
-      '@belot/localizations':
-        specifier: workspace:*
-        version: link:../localizations
     devDependencies:
       '@belot/eslint-config':
         specifier: workspace:*
