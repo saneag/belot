@@ -79,7 +79,6 @@ gameSchema.set("toJSON", {
     const mongoId = ret._id;
     ret.id = typeof mongoId === "object" && mongoId !== null ? mongoId.toString() : mongoId;
     delete ret._id;
-    delete ret.hasPreviousGame;
     ret.isFinished = ret.isFinished === true;
     return ret;
   },
