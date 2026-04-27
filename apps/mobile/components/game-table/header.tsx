@@ -1,15 +1,16 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 
 import { useRouter } from "expo-router";
 
+import { useHandleGameReset } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
-import { useGameStore } from "@belot/store";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { ArrowLeftIcon, Icon } from "@/components/ui/icon";
 
+import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
 
 import CurrentDealer from "./currentDealer";
@@ -26,16 +27,14 @@ export default function Header() {
     },
   ]);
 
-  const [showDialog, setShowDialog] = useState(false);
+  const { showDialog, setShowDialog, handleReset } = useHandleGameReset({
+    navigateFunction: () => router.navigate("/"),
+    setItemsToStorage: setMultipleItemsToStorage,
+  });
 
-  const resetGame = useGameStore((state) => state.reset);
-
-  usePreventBackPress(() => setShowDialog(true));
-
-  const handleReset = useCallback(() => {
-    router.back();
-    resetGame();
-  }, [resetGame, router]);
+  usePreventBackPress(() => {
+    setShowDialog(true);
+  });
 
   return (
     <HStack className="items-center justify-between px-2.5">

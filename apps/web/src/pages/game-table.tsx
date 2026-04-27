@@ -5,7 +5,7 @@ import Header from "@/components/game-table/header";
 import { Separator } from "@/components/ui/separator";
 
 export default function GameTableScreen() {
-  useLoadGameData();
+  useLoadGameData({ getFromStorage: (key) => localStorage.getItem(key) });
 
   return (
     <div className="relative flex h-full flex-col">

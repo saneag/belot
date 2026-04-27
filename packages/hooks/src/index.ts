@@ -7,3 +7,4 @@ export * from "./useHandlePlayersNames";
 export * from "./useHandlePlayersSelectionReset";
 export * from "./usePlayersSubmit";
 export * from "./useLoadGameData";
+export * from "./useHandleGameReset";

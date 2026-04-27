@@ -1,16 +1,11 @@
 import { useLayoutEffect } from "react";
 
-export const usePreventBackPress = (showConfirmationDialog?: () => void) => {
+export const usePreventBackPress = (onBackPressCallback: () => undefined) => {
   useLayoutEffect(() => {
-    const onBackPress = () => {
-      showConfirmationDialog?.();
-      return true;
-    };
-
-    window.addEventListener("popstate", onBackPress);
+    window.addEventListener("popstate", onBackPressCallback);
 
     return () => {
-      window.removeEventListener("popstate", onBackPress);
+      window.removeEventListener("popstate", onBackPressCallback);
     };
-  }, [showConfirmationDialog]);
+  }, [onBackPressCallback]);
 };

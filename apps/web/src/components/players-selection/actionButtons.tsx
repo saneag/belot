@@ -8,6 +8,7 @@ import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
+import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 
 import { toast } from "sonner";
 
@@ -36,11 +37,7 @@ function SubmitButton() {
 
   const { handleOpenDialog, handleSubmit } = usePlayersSubmit({
     navigateFunction: () => void navigate("/game-table", { replace: true }),
-    setItemsToStorage: (items) => {
-      Object.entries(items).forEach(([key, value]) => {
-        localStorage.setItem(key, value);
-      });
-    },
+    setItemsToStorage: setMultipleItemsToStorage,
     getApiBaseUrl,
     handleCatchError: () => {
       toast.error(messages.serverOffline);

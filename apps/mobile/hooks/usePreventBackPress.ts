@@ -4,17 +4,17 @@ import { BackHandler } from "react-native";
 
 import { useFocusEffect } from "expo-router";
 
-export const usePreventBackPress = (showConfirmationDialog?: () => void) => {
+export const usePreventBackPress = (onBackPressCallback: () => undefined) => {
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
-        showConfirmationDialog?.();
+        onBackPressCallback();
         return true;
       };
 
       const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
       return () => subscription.remove();
-    }, [showConfirmationDialog]),
+    }, [onBackPressCallback]),
   );
 };
