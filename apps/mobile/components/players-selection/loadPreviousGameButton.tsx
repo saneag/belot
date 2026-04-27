@@ -1,28 +1,34 @@
 import { useCallback } from "react";
 
+import { useFocusEffect } from "expo-router";
+
+import { useLoadPreviousPlayers } from "@belot/hooks";
 import { useLocalization } from "@belot/localizations";
-import { useGameStore } from "@belot/store";
 
 import { Button, ButtonText } from "@/components/ui/button";
 
-import { useLoadPlayersNames } from "@/hooks/players-selection/useLoadPlayersNames";
+import { getFromStorage } from "@/helpers/storageHelpers";
 
 export default function LoadPreviousGameButton() {
   const buttonMsg = useLocalization("load.previous.game.button");
 
-  const hasPreviousGame = useGameStore((state) => state.hasPreviousGame);
-  const loadPlayersNames = useLoadPlayersNames();
+  const { storagePlayers, fetchPreviousPlayers, loadPlayersNamesFromStorage } =
+    useLoadPreviousPlayers({
+      getFromStorage,
+    });
 
-  const handleLoadPreviousGame = useCallback(async () => {
-    await loadPlayersNames();
-  }, [loadPlayersNames]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchPreviousPlayers();
+    }, [fetchPreviousPlayers]),
+  );
 
-  if (!hasPreviousGame) {
+  if (!storagePlayers) {
     return null;
   }
 
   return (
-    <Button variant="outline" onPress={handleLoadPreviousGame}>
+    <Button variant="outline" onPress={loadPlayersNamesFromStorage}>
       <ButtonText>{buttonMsg}</ButtonText>
     </Button>
   );

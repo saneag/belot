@@ -29,13 +29,6 @@ describe("gameStore", () => {
     });
 
     describe("game slice", () => {
-      it("setHasPreviousGame updates the flag", () => {
-        store.getState().setHasPreviousGame(true);
-        expect(store.getState().hasPreviousGame).toBe(true);
-        store.getState().setHasPreviousGame(false);
-        expect(store.getState().hasPreviousGame).toBe(false);
-      });
-
       it("setGameId updates the id", () => {
         store.getState().setGameId("game-1");
         expect(store.getState().gameId).toBe("game-1");
@@ -313,7 +306,6 @@ describe("gameStore", () => {
     describe("reset", () => {
       it("clears players, rounds, dealer, and teams but keeps game slice fields", () => {
         store.getState().setGameId("keep-me");
-        store.getState().setHasPreviousGame(true);
         store.getState().setEmptyPlayersNames(3);
         store.getState().setDealer(store.getState().players[0]);
         store.getState().setEmptyRoundScore();
@@ -325,7 +317,6 @@ describe("gameStore", () => {
         expect(store.getState().roundsScores).toEqual([]);
         expect(store.getState().undoneRoundsScores).toEqual([]);
         expect(store.getState().gameId).toBe("keep-me");
-        expect(store.getState().hasPreviousGame).toBe(true);
       });
     });
   });
@@ -333,9 +324,6 @@ describe("gameStore", () => {
   describe("useGameStore singleton", () => {
     it("exposes a working store", () => {
       expect(useGameStore.getState().mode).toBe(GameMode.classic);
-      useGameStore.getState().setHasPreviousGame(true);
-      expect(useGameStore.getState().hasPreviousGame).toBe(true);
-      useGameStore.getState().setHasPreviousGame(false);
     });
   });
 });
