@@ -37,9 +37,7 @@ function SubmitButton() {
 
   const { handleOpenDialog, handleSubmit } = usePlayersSubmit({
     navigateFunction: () => router.navigate("/game-table"),
-    setItemsToStorage: async (items) => {
-      await setMultipleItemsToStorage(items);
-    },
+    setItemsToStorage: setMultipleItemsToStorage,
     getApiBaseUrl,
     handleCatchError: () => {
       ToastAndroid.showWithGravity(messages.serverOffline, ToastAndroid.SHORT, ToastAndroid.CENTER);

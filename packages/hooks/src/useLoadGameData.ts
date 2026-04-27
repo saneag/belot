@@ -4,7 +4,11 @@ import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import type { Player, RoundScore } from "@belot/types";
 
-export const useLoadGameData = () => {
+interface UseLoadGameDataProps {
+  getFromStorage: (key: StorageKeys) => Promise<string | null> | string | null;
+}
+
+export const useLoadGameData = ({ getFromStorage }: UseLoadGameDataProps) => {
   const hasFetchedData = useRef(false);
 
   const players = useGameStore((state) => state.players);
@@ -20,17 +24,29 @@ export const useLoadGameData = () => {
       !hasFetchedData.current &&
       (players?.length === 0 || dealer === null || roundsScores?.length === 0)
     ) {
-      const storagePlayers = localStorage.getItem(StorageKeys.players);
-      const storageDealer = localStorage.getItem(StorageKeys.dealer);
-      const storageRoundsScores = localStorage.getItem(StorageKeys.roundsScores);
+      const fetchData = async () => {
+        const storagePlayers = await getFromStorage(StorageKeys.players);
+        const storageDealer = await getFromStorage(StorageKeys.dealer);
+        const storageRoundsScores = await getFromStorage(StorageKeys.roundsScores);
 
-      if (storagePlayers && storageDealer && storageRoundsScores) {
-        setPlayers(JSON.parse(storagePlayers) as Player[]);
-        setDealer(JSON.parse(storageDealer) as Player);
-        setRoundsScores(JSON.parse(storageRoundsScores) as RoundScore[]);
-      }
+        if (storagePlayers && storageDealer && storageRoundsScores) {
+          setPlayers(JSON.parse(storagePlayers) as Player[]);
+          setDealer(JSON.parse(storageDealer) as Player);
+          setRoundsScores(JSON.parse(storageRoundsScores) as RoundScore[]);
+        }
+      };
+
+      void fetchData();
 
       hasFetchedData.current = true;
     }
-  }, [dealer, players?.length, roundsScores?.length, setDealer, setPlayers, setRoundsScores]);
+  }, [
+    dealer,
+    getFromStorage,
+    players?.length,
+    roundsScores?.length,
+    setDealer,
+    setPlayers,
+    setRoundsScores,
+  ]);
 };
