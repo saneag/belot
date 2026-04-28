@@ -1,10 +1,10 @@
 import React from "react";
 
-import { View } from "react-native";
+import { AppState, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
-import { CurrentDealer } from "@belot/components";
+import { CurrentDealer, TimeTracker } from "@belot/components";
 import { useHandleGameReset } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
 
@@ -14,10 +14,8 @@ import { HStack } from "@/components/ui/hstack";
 import { ArrowLeftIcon, Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 
-import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import { getFromStorage, setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
-
-import TimeTracker from "./timeTracker";
 
 export default function Header() {
   const router = useRouter();
@@ -58,7 +56,23 @@ export default function Header() {
         setVisible={setShowDialog}
       />
       <CurrentDealer blockWrapper={View} textWrapper={Text} dealerMessage={messages.dealer} />
-      <TimeTracker />
+      <TimeTracker
+        textWrapper={Text}
+        getItemFromStorage={getFromStorage}
+        setItemsToStorage={setMultipleItemsToStorage}
+        isVisible={() => AppState.currentState === "active"}
+        subscribeToVisibilityChange={(handleVisibilityChange) => {
+          const subscription = AppState.addEventListener("change", (state) => {
+            if (state === "active") {
+              handleVisibilityChange();
+            }
+          });
+
+          return () => {
+            subscription.remove();
+          };
+        }}
+      />
     </HStack>
   );
 }

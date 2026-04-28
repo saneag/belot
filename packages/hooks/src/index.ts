@@ -10,3 +10,4 @@ export * from "./useHandleGameReset";
 export * from "./useThemeContext";
 export * from "./useHandleDealerChange";
 export * from "./useLoadPreviousPlayers";
+export * from "./useTimeTracker";

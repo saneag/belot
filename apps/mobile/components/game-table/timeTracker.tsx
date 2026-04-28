@@ -26,11 +26,13 @@ export default function TimeTracker() {
 
     const intervalId = setInterval(updateTime, 1000);
 
-    const subscription = AppState.addEventListener("change", (state) => {
+    const handleVisibilityChange = (state: string) => {
       if (state === "active") {
         updateTime();
       }
-    });
+    };
+
+    const subscription = AppState.addEventListener("change", handleVisibilityChange);
 
     return () => {
       clearInterval(intervalId);

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import { CurrentDealer } from "@belot/components";
+import { TimeTracker } from "@belot/components";
 import { useHandleGameReset } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
 
@@ -11,8 +12,6 @@ import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
 
 import { ArrowLeft } from "lucide-react";
-
-import TimeTracker from "./timeTracker";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -63,7 +62,20 @@ export default function Header() {
         setVisible={setShowDialog}
       />
       <CurrentDealer blockWrapper="div" textWrapper="span" dealerMessage={messages.dealer} />
-      <TimeTracker />
+      <TimeTracker
+        textWrapper="span"
+        textWrapperClassName="justify-self-end"
+        getItemFromStorage={(key) => localStorage.getItem(key)}
+        setItemsToStorage={setMultipleItemsToStorage}
+        isVisible={() => document.visibilityState === "visible"}
+        subscribeToVisibilityChange={(handleVisibilityChange) => {
+          document.addEventListener("visibilitychange", handleVisibilityChange);
+
+          return () => {
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+          };
+        }}
+      />
     </div>
   );
 }
