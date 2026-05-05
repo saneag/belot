@@ -15,6 +15,7 @@
     "@belot/utils": "workspace:*",
     "@belot/constants": "workspace:*",
     "@belot/api-client": "workspace:*",
+    "@belot/localizations": "workspace:*",
     "@belot/eslint-config": "workspace:*"
   },
   "devDependencies": {
