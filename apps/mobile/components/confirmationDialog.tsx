@@ -1,8 +1,8 @@
-import React, { Dispatch, ReactNode, SetStateAction, useCallback, useMemo, useState } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, useMemo } from "react";
 
 import { Keyboard, View } from "react-native";
 
-import { useLocalizations } from "@belot/localizations";
+import { useHandleConfirmationDialog } from "@belot/hooks";
 
 import { Button, ButtonText } from "@/components/ui/button";
 import {
@@ -37,42 +37,22 @@ export default function ConfirmationDialog({
   title,
   content,
   renderShowDialog,
-  confirmationCallback,
-  cancelCallback,
   primaryButton = "cancel",
-  visible,
-  setVisible,
   asChild = false,
   isConfirmButtonDisabled = false,
   isConfirmationButtonVisible = true,
+  ...rest
 }: ConfirmationModalProps) {
-  const [internalIsVisible, setInternalIsVisible] = useState(false);
+  const {
+    isVisible,
+    messages,
+    showDialog,
+    hideDialog,
+    handleDialogCancel,
+    handleDialogConfirmation,
+  } = useHandleConfirmationDialog(rest);
+
   const bottom = useKeyboardAvoidView();
-
-  const messages = useLocalizations([
-    { key: "confirmation.dialog.confirm.button" },
-    { key: "confirmation.dialog.cancel.button" },
-  ]);
-
-  const isVisible = visible ?? internalIsVisible;
-  const setIsVisible = setVisible ?? setInternalIsVisible;
-
-  const showDialog = useCallback(() => {
-    Keyboard.dismiss();
-    setIsVisible(true);
-  }, [setIsVisible]);
-
-  const hideDialog = useCallback(() => setIsVisible(false), [setIsVisible]);
-
-  const handleDialogConfirmation = useCallback(() => {
-    confirmationCallback?.();
-    hideDialog();
-  }, [confirmationCallback, hideDialog]);
-
-  const handleDialogCancel = useCallback(() => {
-    cancelCallback?.();
-    hideDialog();
-  }, [cancelCallback, hideDialog]);
 
   const buttonMode: Record<string, "primary" | "secondary"> =
     primaryButton === "confirm"
@@ -90,7 +70,11 @@ export default function ConfirmationDialog({
 
   return (
     <Container {...containerStyle}>
-      {renderShowDialog(showDialog)}
+      {renderShowDialog(() =>
+        showDialog(() => {
+          Keyboard.dismiss();
+        }),
+      )}
 
       <Modal isOpen={isVisible} onClose={hideDialog} style={{ bottom }}>
         <ModalBackdrop />

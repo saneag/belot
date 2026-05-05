@@ -1,13 +1,6 @@
-import React, {
-  type Dispatch,
-  type ReactNode,
-  type SetStateAction,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import React, { type Dispatch, type ReactNode, type SetStateAction, useMemo } from "react";
 
-import { useLocalizations } from "@belot/localizations";
+import { useHandleConfirmationDialog } from "@belot/hooks";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -36,40 +29,20 @@ export default function ConfirmationDialog({
   title,
   content,
   renderShowDialog,
-  confirmationCallback,
-  cancelCallback,
   primaryButton = "cancel",
-  visible,
-  setVisible,
   asChild = false,
   isConfirmButtonDisabled = false,
   isConfirmationButtonVisible = true,
+  ...rest
 }: ConfirmationModalProps) {
-  const [internalIsVisible, setInternalIsVisible] = useState(false);
-
-  const messages = useLocalizations([
-    { key: "confirmation.dialog.confirm.button" },
-    { key: "confirmation.dialog.cancel.button" },
-  ]);
-
-  const isVisible = visible ?? internalIsVisible;
-  const setIsVisible = setVisible ?? setInternalIsVisible;
-
-  const showDialog = useCallback(() => {
-    setIsVisible(true);
-  }, [setIsVisible]);
-
-  const hideDialog = useCallback(() => setIsVisible(false), [setIsVisible]);
-
-  const handleDialogConfirmation = useCallback(() => {
-    confirmationCallback?.();
-    hideDialog();
-  }, [confirmationCallback, hideDialog]);
-
-  const handleDialogCancel = useCallback(() => {
-    cancelCallback?.();
-    hideDialog();
-  }, [cancelCallback, hideDialog]);
+  const {
+    isVisible,
+    messages,
+    showDialog,
+    handleDialogCancel,
+    handleDialogConfirmation,
+    setIsVisible,
+  } = useHandleConfirmationDialog(rest);
 
   const Container = useMemo<React.ElementType>(() => (asChild ? React.Fragment : "div"), [asChild]);
   const containerProps = asChild ? {} : { className: "relative z-10" };
