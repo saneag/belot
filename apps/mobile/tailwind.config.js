@@ -168,6 +168,10 @@ module.exports = {
           light: "#FBFBFB",
           dark: "#181719",
         },
+        "phone-screen-background": "rgb(var(--color-phone-screen-background)/<alpha-value>)",
+        "input-field": "rgb(var(--color-input-field)/<alpha-value>)",
+        "input-field-foreground": "rgb(var(--color-input-field-foreground)/<alpha-value>)",
+        "success-foreground": "rgb(var(--color-success-foreground)/<alpha-value>)",
         indicator: {
           primary: "rgb(var(--color-indicator-primary)/<alpha-value>)",
           info: "rgb(var(--color-indicator-info)/<alpha-value>)",
