@@ -16,10 +16,10 @@ export default function TableHeaderWrapper() {
   const getDealerBackground = useCallback(
     (index: number) => {
       if (index === (dealer?.id || 0) % columnsCount) {
-        return "bg-green-300 dark:bg-green-600";
+        return "bg-success-500";
       }
 
-      return "bg-secondary-400";
+      return "";
     },
     [dealer, columnsCount],
   );

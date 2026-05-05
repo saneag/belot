@@ -1,10 +1,10 @@
 import React from "react";
 
-import { View } from "react-native";
+import { AppState, View } from "react-native";
 
 import { useRouter } from "expo-router";
 
-import { CurrentDealer } from "@belot/components";
+import { CurrentDealer, TimeTracker } from "@belot/components";
 import { useHandleGameReset } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
 
@@ -14,10 +14,9 @@ import { HStack } from "@/components/ui/hstack";
 import { ArrowLeftIcon, Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 
-import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import { getFromStorage, setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import { subscribeToVisibilityChange } from "@/helpers/subscribeToVisibilityChange";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
-
-import TimeTracker from "./timeTracker";
 
 export default function Header() {
   const router = useRouter();
@@ -44,21 +43,39 @@ export default function Header() {
   });
 
   return (
-    <HStack className="items-center justify-between px-2.5">
-      <ConfirmationDialog
-        title={messages.gameResetTitle}
-        content={messages.gameResetContent}
-        renderShowDialog={(showModal) => (
-          <Button variant="link" onPress={showModal}>
-            <Icon as={ArrowLeftIcon} />
-          </Button>
-        )}
-        confirmationCallback={handleReset}
-        visible={showDialog}
-        setVisible={setShowDialog}
-      />
-      <CurrentDealer blockWrapper={View} textWrapper={Text} dealerMessage={messages.dealer} />
-      <TimeTracker />
+    <HStack className="h-12 w-full items-center px-2.5">
+      <View className="flex-1 items-start">
+        <ConfirmationDialog
+          title={messages.gameResetTitle}
+          content={messages.gameResetContent}
+          renderShowDialog={(showModal) => (
+            <Button variant="link" onPress={showModal}>
+              <Icon as={ArrowLeftIcon} />
+            </Button>
+          )}
+          confirmationCallback={handleReset}
+          visible={showDialog}
+          setVisible={setShowDialog}
+        />
+      </View>
+      <View className="flex-1 items-center">
+        <CurrentDealer
+          blockWrapper={View}
+          textWrapper={Text}
+          textWrapperClassName="text-center"
+          dealerMessage={messages.dealer}
+        />
+      </View>
+      <View className="flex-1 items-end">
+        <TimeTracker
+          textWrapper={Text}
+          textWrapperClassName="text-right"
+          getItemFromStorage={getFromStorage}
+          setItemsToStorage={setMultipleItemsToStorage}
+          isVisible={() => AppState.currentState === "active"}
+          subscribeToVisibilityChange={subscribeToVisibilityChange}
+        />
+      </View>
     </HStack>
   );
 }
