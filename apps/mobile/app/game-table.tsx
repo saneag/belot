@@ -12,7 +12,7 @@ export default function GameTableScreen() {
   useLoadGameData({ getFromStorage });
 
   return (
-    <View className="flex-1 content-center bg-background-0">
+    <View className="flex-1 content-center bg-phone-screen-background">
       <Header />
       <Divider />
       <GameTable />
