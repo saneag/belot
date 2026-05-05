@@ -14,7 +14,7 @@ export default function PlayersSelectionScreen() {
   const playersSetupMsg = useLocalization("players.setup");
 
   return (
-    <Center className="flex-1 bg-background-0 px-2.5">
+    <Center className="flex-1 bg-phone-screen-background px-2.5">
       <DismissKeyboardView>
         <VStack className="gap-5">
           <Heading size="4xl" className="text-center font-normal">
