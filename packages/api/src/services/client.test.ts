@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ApiError, apiFetch, DEFAULT_API_TIMEOUT_MS } from "./client";
+import { ApiError, DEFAULT_API_TIMEOUT_MS, apiFetch } from "./client";
 
 describe("ApiError", () => {
   it("sets name, status, message, and optional body", () => {

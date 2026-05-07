@@ -1,4 +1,5 @@
 import type { Player, Team } from "@belot/types";
+
 import { describe, expect, it } from "vitest";
 
 import { getPlayersCount, getPlayersNames, getTeamsNames } from "./playerNamesHelpers";

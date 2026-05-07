@@ -1,4 +1,5 @@
 import { coverageSourceExclude } from "@belot/vitest-config";
+
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -8,9 +9,6 @@ export default defineConfig({
       provider: "v8",
       exclude: [...coverageSourceExclude],
     },
-    projects: [
-      "packages/*/vitest.config.ts",
-      "apps/*/vitest.config.ts",
-    ],
+    projects: ["packages/*/vitest.config.ts", "apps/*/vitest.config.ts"],
   },
 });
