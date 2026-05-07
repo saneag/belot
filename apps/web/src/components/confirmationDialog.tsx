@@ -50,7 +50,7 @@ export default function ConfirmationDialog({
   return (
     <Container {...containerProps}>
       <Dialog open={isVisible} onOpenChange={(isOpen) => setIsVisible(isOpen)}>
-        {renderShowDialog(showDialog)}
+        {renderShowDialog(() => showDialog())}
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
