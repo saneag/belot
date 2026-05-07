@@ -1,5 +1,6 @@
-import { defineProject, mergeConfig } from "vitest/config";
 import shared from "@belot/vitest-config";
+
+import { defineProject, mergeConfig } from "vitest/config";
 
 export default mergeConfig(
   shared,
