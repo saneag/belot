@@ -20,7 +20,7 @@ export default function TableBodyWrapper() {
           index !== roundsScoresCount - 1 && (
             <TableRow
               key={roundScore.id}
-              className={`${index % playersCount === 0 ? "border-t-2!" : ""} border-primary flex flex-row border-b`}
+              className={`${index > 0 && index % playersCount === 0 ? "border-t-2!" : ""} border-primary flex flex-row border-b`}
             >
               <PointCells roundScore={roundScore} gameMode={gameMode} />
             </TableRow>

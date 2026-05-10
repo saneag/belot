@@ -20,7 +20,12 @@ export default function TableHeaderWrapper() {
 
   return (
     <TableHeader>
-      <TableRow className={`${roundsCount > 1 ? "border-b border-primary-500" : ""}`} style={{}}>
+      <TableRow
+        className={`${roundsCount > 1 ? "border-primary-500" : ""}`}
+        style={{
+          borderBottomWidth: roundsCount > 1 ? 2 : 1,
+        }}
+      >
         {playersNamesWithScoreColumn.map((playerName, index) => (
           <TableHead
             key={index}
