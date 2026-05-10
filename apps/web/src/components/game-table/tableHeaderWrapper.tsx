@@ -20,7 +20,9 @@ export default function TableHeaderWrapper() {
 
   return (
     <TableHeader>
-      <TableRow className={`${roundsCount > 1 ? "border-primary border-b" : ""} flex flex-row`}>
+      <TableRow
+        className={`${roundsCount > 1 ? "border-primary border-b-[3px]!" : ""} flex flex-row`}
+      >
         {playersNamesWithScoreColumn.map((playerName, index) => (
           <TableHead
             key={index}

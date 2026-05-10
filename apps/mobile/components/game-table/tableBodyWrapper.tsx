@@ -30,7 +30,7 @@ export default function TableBodyWrapper() {
                 key={roundScore.id}
                 className="flex flex-row border-b border-primary-500"
                 style={{
-                  borderTopWidth: index % playersCount === 0 ? 2 : 1,
+                  borderTopWidth: index > 0 && index % playersCount === 0 ? 2 : 1,
                 }}
               >
                 <PointCells roundScore={roundScore} gameMode={gameMode} />
