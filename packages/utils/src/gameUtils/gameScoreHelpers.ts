@@ -1,17 +1,17 @@
 import { NEXT_WINNING_STEP, WIN_POINTS } from "@belot/constants";
 import {
   GameMode,
-  Player,
-  PlayerScore,
-  PlayersSlice,
-  RoundScore,
-  RoundSlice,
-  Team,
-  TeamScore,
+  type Player,
+  type PlayerScore,
+  type PlayersSlice,
+  type RoundScore,
+  type RoundSlice,
+  type Team,
+  type TeamScore,
 } from "@belot/types";
 
-export const setNextDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
-  if (state.roundsScores.length === 0) {
+export const setNextDealer = (state: Partial<RoundSlice> & Partial<PlayersSlice>) => {
+  if (state.roundsScores?.length === 0) {
     return {};
   }
 
@@ -30,8 +30,8 @@ export const setNextDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
   };
 };
 
-export const setPreviousDealer = (state: RoundSlice & Partial<PlayersSlice>) => {
-  if (state.roundsScores.length === 0) {
+export const setPreviousDealer = (state: Partial<RoundSlice> & Partial<PlayersSlice>) => {
+  if (state.roundsScores?.length === 0) {
     return {};
   }
 

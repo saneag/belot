@@ -1,13 +1,13 @@
 import { Router } from "express";
 
-import { GameService } from "../services/game-service";
+import { GameService, type InitGameInput, type UpdateGameInput } from "../services/game-service";
 import { GameValidators } from "../validators/game-validators";
 
 const router = Router();
 
 router.post("/init", ...GameValidators.initGame, async (req, res) => {
   try {
-    const game = await GameService.initGame(req.body);
+    const game = await GameService.initGame(req.body as InitGameInput);
     res.status(201).json({ id: game.id });
   } catch (error) {
     console.error(error);
@@ -46,7 +46,10 @@ router.get("/:id", ...GameValidators.gameIdParam, async (req, res) => {
 
 router.patch("/:id", ...GameValidators.updateGame, async (req, res) => {
   try {
-    const game = await GameService.updateGameById(req.params.id as string, req.body);
+    const game = await GameService.updateGameById(
+      req.params.id as string,
+      req.body as UpdateGameInput,
+    );
 
     if (!game) {
       res.status(404).json({ message: "Game not found" });

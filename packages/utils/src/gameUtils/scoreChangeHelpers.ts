@@ -1,9 +1,9 @@
 import {
-  CalculateRoundScoreProps,
+  type CalculateRoundScoreProps,
   GameMode,
-  PlayerScore,
-  RoundScore,
-  TeamScore,
+  type PlayerScore,
+  type RoundScore,
+  type TeamScore,
 } from "@belot/types";
 
 import { sumOpponentPlayersScores } from "./playersScoreCalculationHelpers";
@@ -24,7 +24,7 @@ const handlePlayersScoreChange = ({
     })),
   };
 
-  let roundPlayerScore = sumOpponentPlayersScores({
+  const roundPlayerScore = sumOpponentPlayersScores({
     roundScore: opponentsCalculatedRoundScore,
     roundPlayer,
   });
@@ -73,7 +73,7 @@ export const handleRoundScoreChange = <T extends PlayerScore | TeamScore>({
     currentOpponent: opponent,
   });
 
-  let scoreValue =
+  const scoreValue =
     gameMode === GameMode.teams
       ? Math.max(0, Math.min(newScoreValue, totalRoundScore))
       : Math.max(0, Math.min(newScoreValue, opponentsScores));

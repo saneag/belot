@@ -1,13 +1,12 @@
 import { Dispatch, SetStateAction, useCallback } from "react";
 
+import { useLocalization } from "@belot/localizations";
 import { Player } from "@belot/types";
 
 import { Button } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 import { Pencil } from "lucide-react-native";
 

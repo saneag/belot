@@ -1,7 +1,7 @@
+import { useLocalizations } from "@belot/localizations";
+
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
-
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import PlayerScoreInputWrapper from "./playerScoreInputWrapper";
 import RoundPlayerDisplay, { RoundPlayerDisplayProps } from "./roundPlayerDisplay";

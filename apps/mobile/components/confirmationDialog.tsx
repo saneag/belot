@@ -1,6 +1,8 @@
-import React, { Dispatch, ReactNode, SetStateAction, useCallback, useMemo, useState } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, useMemo } from "react";
 
 import { Keyboard, View } from "react-native";
+
+import { useHandleConfirmationDialog } from "@belot/hooks";
 
 import { Button, ButtonText } from "@/components/ui/button";
 import {
@@ -13,7 +15,6 @@ import {
 } from "@/components/ui/modal";
 
 import { useKeyboardAvoidView } from "@/hooks/useKeyboardAvoidView";
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { Heading } from "./ui/heading";
 import { Text } from "./ui/text";
@@ -21,9 +22,9 @@ import { Text } from "./ui/text";
 interface ConfirmationModalProps {
   title: ReactNode;
   content: ReactNode;
-  renderShowDialog: (showDialog: VoidFunction) => ReactNode;
-  confirmationCallback?: VoidFunction;
-  cancelCallback?: VoidFunction;
+  renderShowDialog: (showDialog: () => void) => ReactNode;
+  confirmationCallback?: () => void;
+  cancelCallback?: () => void;
   primaryButton?: "confirm" | "cancel";
   visible?: boolean;
   setVisible?: Dispatch<SetStateAction<boolean>>;
@@ -36,42 +37,22 @@ export default function ConfirmationDialog({
   title,
   content,
   renderShowDialog,
-  confirmationCallback,
-  cancelCallback,
   primaryButton = "cancel",
-  visible,
-  setVisible,
   asChild = false,
   isConfirmButtonDisabled = false,
   isConfirmationButtonVisible = true,
+  ...rest
 }: ConfirmationModalProps) {
-  const [internalIsVisible, setInternalIsVisible] = useState(false);
+  const {
+    isVisible,
+    messages,
+    showDialog,
+    hideDialog,
+    handleDialogCancel,
+    handleDialogConfirmation,
+  } = useHandleConfirmationDialog(rest);
+
   const bottom = useKeyboardAvoidView();
-
-  const messages = useLocalizations([
-    { key: "confirmation.dialog.confirm.button" },
-    { key: "confirmation.dialog.cancel.button" },
-  ]);
-
-  const isVisible = visible ?? internalIsVisible;
-  const setIsVisible = setVisible ?? setInternalIsVisible;
-
-  const showDialog = useCallback(() => {
-    Keyboard.dismiss();
-    setIsVisible(true);
-  }, [setIsVisible]);
-
-  const hideDialog = useCallback(() => setIsVisible(false), [setIsVisible]);
-
-  const handleDialogConfirmation = useCallback(() => {
-    confirmationCallback?.();
-    hideDialog();
-  }, [confirmationCallback, hideDialog]);
-
-  const handleDialogCancel = useCallback(() => {
-    cancelCallback?.();
-    hideDialog();
-  }, [cancelCallback, hideDialog]);
 
   const buttonMode: Record<string, "primary" | "secondary"> =
     primaryButton === "confirm"
@@ -89,7 +70,11 @@ export default function ConfirmationDialog({
 
   return (
     <Container {...containerStyle}>
-      {renderShowDialog(showDialog)}
+      {renderShowDialog(() =>
+        showDialog(() => {
+          Keyboard.dismiss();
+        }),
+      )}
 
       <Modal isOpen={isVisible} onClose={hideDialog} style={{ bottom }}>
         <ModalBackdrop />

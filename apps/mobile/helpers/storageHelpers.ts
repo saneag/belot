@@ -7,12 +7,11 @@ export const setToStorage = async <T>(key: StorageKeys, value: T): Promise<void>
 };
 
 export const setMultipleItemsToStorage = async (
-  items: Record<string, number | string | boolean | unknown[]>,
+  items: Partial<Record<StorageKeys, string>>,
 ): Promise<void> => {
-  const arrayItems: [string, string][] = Object.entries(items).map(([key, value]) => [
-    key,
-    JSON.stringify(value),
-  ]);
+  const arrayItems: [string, string][] = Object.entries(items).flatMap(([key, value]) =>
+    value === undefined ? [] : [[key, value]],
+  );
 
   await AsyncStorage.multiSet(arrayItems);
 };
