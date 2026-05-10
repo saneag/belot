@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import type { Player, Team } from "@belot/types";
 
@@ -18,6 +18,7 @@ const CONTAINER_MARGIN_BOTTOM = 20;
 
 export default function GameTable() {
   const height = window.innerHeight;
+  const tableBodyScrollRef = useRef<HTMLDivElement>(null);
 
   const [winner, setWinner] = useState<Player | Team | null>(null);
 
@@ -34,10 +35,12 @@ export default function GameTable() {
           maxHeight: height / (isMobile() ? 1.17 : 1.5) - CONTAINER_MARGIN_BOTTOM,
         }}
       >
-        <Table className="w-full">
-          <TableHeaderWrapper />
-          <TableBodyWrapper />
-        </Table>
+        <div ref={tableBodyScrollRef} className="min-h-0 flex-1 overflow-y-auto">
+          <Table className="w-full" containerClassName="overflow-visible">
+            <TableHeaderWrapper />
+            <TableBodyWrapper scrollContainerRef={tableBodyScrollRef} />
+          </Table>
+        </div>
       </div>
 
       {winner ? (
