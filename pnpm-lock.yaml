@@ -522,6 +522,9 @@ importers:
       '@belot/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@belot/localizations':
+        specifier: workspace:*
+        version: link:../localizations
       '@belot/store':
         specifier: workspace:*
         version: link:../store

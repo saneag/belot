@@ -18,6 +18,7 @@ const CONTAINER_MARGIN_BOTTOM = 20;
 
 export default function GameTable() {
   const height = window.innerHeight;
+
   const [winner, setWinner] = useState<Player | Team | null>(null);
 
   return (

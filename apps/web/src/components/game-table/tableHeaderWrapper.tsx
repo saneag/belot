@@ -1,5 +1,6 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
+import { useGetTableHeaderDealerBackground } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,24 +10,19 @@ import useGetPlayersNamesWithScoreColumn from "@/hooks/game-table/useGetPlayersN
 export default function TableHeaderWrapper() {
   const { playersNamesWithScoreColumn, columnsCount } = useGetPlayersNamesWithScoreColumn();
 
-  const dealer = useGameStore((state) => state.dealer);
+  const { getDealerBackground } = useGetTableHeaderDealerBackground({
+    columnsCount,
+    color: "bg-success",
+  });
+
   const roundScores = useGameStore((state) => state.roundsScores);
   const roundsCount = useMemo(() => roundScores.length, [roundScores.length]);
 
-  const getDealerBackground = useCallback(
-    (index: number) => {
-      if (index === (dealer?.id || 0) % columnsCount) {
-        return "bg-success";
-      }
-
-      return "";
-    },
-    [dealer, columnsCount],
-  );
-
   return (
     <TableHeader>
-      <TableRow className={`${roundsCount > 1 ? "border-primary border-b" : ""} flex flex-row`}>
+      <TableRow
+        className={`${roundsCount > 1 ? "border-primary border-b-[3px]!" : ""} flex flex-row`}
+      >
         {playersNamesWithScoreColumn.map((playerName, index) => (
           <TableHead
             key={index}

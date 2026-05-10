@@ -46,10 +46,7 @@ export const isPlayersNamesRepeating = (validations: PlayersNamesValidation, ind
 
 export const isPlayerNameValid = (validations: PlayersNamesValidation, index?: number) => {
   if (index === undefined) {
-    return (
-      validations.emptyNames.length === 0 &&
-      validations.repeatingNames.length === 0
-    );
+    return validations.emptyNames.length === 0 && validations.repeatingNames.length === 0;
   }
 
   return !(isPlayersNamesEmpty(validations, index) || isPlayersNamesRepeating(validations, index));

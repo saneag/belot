@@ -13,8 +13,6 @@ export default function TableBodyWrapper() {
   const gameMode = useGameStore((state) => state.mode);
   const roundsScoresCount = useMemo(() => roundsScores.length, [roundsScores.length]);
 
-  // Add table body scroll when rounds scores count is more than 5
-
   return (
     <TableBody className="overflow-y-scroll">
       {roundsScores.map(
@@ -22,7 +20,7 @@ export default function TableBodyWrapper() {
           index !== roundsScoresCount - 1 && (
             <TableRow
               key={roundScore.id}
-              className={`${index % playersCount === 0 ? "border-t!" : ""} border-primary flex flex-row border-b`}
+              className={`${index > 0 && index % playersCount === 0 ? "border-t-2!" : ""} border-primary flex flex-row border-b`}
             >
               <PointCells roundScore={roundScore} gameMode={gameMode} />
             </TableRow>

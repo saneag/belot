@@ -11,3 +11,5 @@ export * from "./useThemeContext";
 export * from "./useHandleDealerChange";
 export * from "./useLoadPreviousPlayers";
 export * from "./useTimeTracker";
+export * from "./useHandleConfirmationDialog";
+export * from "./useGetTableHeaderDealerBackground";
