@@ -19,9 +19,9 @@ export default function TableHeaderWrapper() {
   const roundsCount = useMemo(() => roundScores.length, [roundScores.length]);
 
   return (
-    <TableHeader>
+    <TableHeader className="bg-background sticky top-0 z-20">
       <TableRow
-        className={`${roundsCount > 1 ? "border-primary border-b-[3px]!" : ""} flex flex-row`}
+        className={`${roundsCount > 1 ? "border-primary border-b-[3px]!" : ""} bg-background flex flex-row`}
       >
         {playersNamesWithScoreColumn.map((playerName, index) => (
           <TableHead
