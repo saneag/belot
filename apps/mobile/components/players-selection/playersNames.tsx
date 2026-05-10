@@ -2,38 +2,33 @@ import { useMemo } from "react";
 
 import { View } from "react-native";
 
+import { PlayersNamesInputWrapper, PlayersTable } from "@belot/components";
+import { useThemeContext } from "@belot/hooks";
 import { useGameStore } from "@belot/store";
 import { getPlayersCount } from "@belot/utils/src";
 
-import { getRotation } from "@/helpers/playerNamesHelpers";
-import { useGetInputPosition } from "@/hooks/players-selection/useGetInputPosition";
-
 import PlayersNamesInput from "./playersNamesInput";
 import PlayersRandomizer from "./playersRandomizer";
-import PlayersTable from "./playersTable";
 
 export default function PlayersNames() {
+  const { theme } = useThemeContext();
+
   const players = useGameStore((state) => state.players);
 
   const playersCount = useMemo(() => getPlayersCount(players), [players]);
 
-  const { getRightPosition, getTopPosition } = useGetInputPosition();
-
   return (
-    <PlayersTable>
+    <PlayersTable blockWrapper={View} isDarkMode={theme === "dark"}>
       <PlayersRandomizer />
       {players.map((player, index) => (
-        <View
+        <PlayersNamesInputWrapper
           key={player.id}
-          className="absolute"
-          style={{
-            top: getTopPosition(index, playersCount),
-            right: getRightPosition(index, playersCount),
-            transform: getRotation(index, playersCount),
-          }}
+          blockWrapper={View}
+          index={index}
+          playersCount={playersCount}
         >
           <PlayersNamesInput player={player} />
-        </View>
+        </PlayersNamesInputWrapper>
       ))}
     </PlayersTable>
   );

@@ -35,10 +35,10 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
       const currentScore = getCurrentScore(score);
 
       if (Number(currentScore) === -10 || currentScore.toString().includes("BT-")) {
-        return "text-red-500";
+        return "text-error-500";
       }
 
-      return currentScore.toString().startsWith("+") ? "text-green-500" : "";
+      return currentScore.toString().startsWith("+") ? "text-success-500" : "";
     },
     [getCurrentScore],
   );

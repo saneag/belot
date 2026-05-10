@@ -21,7 +21,7 @@ const getColorSchemeName = (colorScheme: ColorSchemeName, mode: ModeType): "ligh
 
 const ROOT_BACKGROUND = {
   light: "#ffffff",
-  dark: "#121212",
+  dark: "#0a0a0a",
 } as const;
 
 export function GluestackUIProvider({

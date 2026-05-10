@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction, useCallback } from "react";
+import { useCallback } from "react";
 
 import { View } from "react-native";
 
+import { useLocalization } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import { Player } from "@belot/types";
 
@@ -9,8 +10,6 @@ import { RoundPlayerDisplayProps } from "@/components/game-table/action-buttons/
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
-
-import { useLocalization } from "@/localizations/useLocalization";
 
 export default function RoundPlayerSelect({
   setRoundPlayer,

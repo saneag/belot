@@ -1,4 +1,4 @@
-import { InitGameInput, ListGamesParams, ListGamesResponse } from "../types";
+import type { InitGameInput, ListGamesParams, ListGamesResponse } from "../types";
 import { apiFetch } from "./client";
 
 export function buildGamesListUrl(baseUrl: string, params?: ListGamesParams): string {

@@ -1,13 +1,12 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from "react";
 
+import { formatLocalizationString, useLocalizations } from "@belot/localizations";
 import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
 import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode } from "@belot/utils/src";
 
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
-
-import { formatLocalizationString, useLocalizations } from "@/localizations/useLocalization";
 
 interface PlayerScoreInputProps {
   opponent: PlayerScore | TeamScore;

@@ -1,0 +1,30 @@
+{
+  "name": "@belot/hooks",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@belot/types": "workspace:*",
+    "@belot/store": "workspace:*",
+    "@belot/utils": "workspace:*",
+    "@belot/constants": "workspace:*",
+    "@belot/api-client": "workspace:*",
+    "@belot/localizations": "workspace:*",
+    "@belot/eslint-config": "workspace:*"
+  },
+  "devDependencies": {
+    "@belot/eslint-config": "workspace:*",
+    "@belot/vitest-config": "workspace:*",
+    "@types/react": "^19.2.14",
+    "eslint": "^9.39.1",
+    "typescript": "~5.9.3",
+    "@vitest/coverage-v8": "catalog:",
+    "vitest": "catalog:"
+  }
+}

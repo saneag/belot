@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
+import { useLocalizations } from "@belot/localizations";
 import { Player, Team } from "@belot/types";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
@@ -8,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 
 import { useHandleNextRound } from "@/hooks/game-table/useHandleNextRound";
-import { useLocalizations } from "@/localizations/useLocalization";
 
 import { ArrowRight } from "lucide-react-native";
 

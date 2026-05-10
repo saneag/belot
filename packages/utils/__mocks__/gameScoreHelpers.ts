@@ -1,4 +1,4 @@
-import { Player, PlayerScore, RoundScore, RoundSlice, Team, TeamScore } from "@belot/types";
+import type { Player, PlayerScore, RoundScore, RoundSlice, Team, TeamScore } from "@belot/types";
 
 import { DEFAULT_ROUND_POINTS } from "./../../constants/src/gameConstants";
 

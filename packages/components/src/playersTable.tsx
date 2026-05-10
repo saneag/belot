@@ -1,0 +1,47 @@
+import { type ElementType } from "react";
+
+import { PLAYERS_TABLE_COLORS, TABLE_HEIGHT, TABLE_WIDTH } from "@belot/constants";
+
+interface PlayersTableProps {
+  children: React.ReactNode;
+  blockWrapper: ElementType;
+  isDarkMode?: boolean;
+}
+
+export const PlayersTable = ({
+  children,
+  blockWrapper: BlockWrapper,
+  isDarkMode = false,
+}: PlayersTableProps) => {
+  return (
+    <BlockWrapper
+      style={{
+        height: 280,
+        marginTop: 15,
+        marginBottom: 20,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <BlockWrapper
+        style={{
+          position: "relative",
+          width: TABLE_WIDTH,
+          height: TABLE_HEIGHT,
+          marginTop: 15,
+          borderRadius: 1200,
+          borderWidth: 5,
+          borderColor: isDarkMode
+            ? PLAYERS_TABLE_COLORS.borderColorDarkMode
+            : PLAYERS_TABLE_COLORS.borderColor,
+          backgroundColor: isDarkMode
+            ? PLAYERS_TABLE_COLORS.backgroundColorDarkMode
+            : PLAYERS_TABLE_COLORS.backgroundColor,
+        }}
+      >
+        {children}
+      </BlockWrapper>
+    </BlockWrapper>
+  );
+};

@@ -1,5 +1,5 @@
 import { BOLT_COUNT_LIMIT, BOLT_POINTS } from "@belot/constants";
-import { Player, PlayerScore, SumOpponentPlayersScoresProps } from "@belot/types";
+import type { Player, PlayerScore, SumOpponentPlayersScoresProps } from "@belot/types";
 
 import { roundByLastDigit } from "../commonUtils";
 
@@ -90,7 +90,7 @@ export const calculatePlayersScoresHelper = (
         ...playerScore,
         score: -10,
         totalScore: totalScore - 10,
-        boltCount: playerId === roundPlayer?.id ? boltCount + 1 : boltCount,
+        boltCount,
       };
     }
 
