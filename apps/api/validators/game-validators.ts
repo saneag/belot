@@ -120,13 +120,15 @@ export const GameValidators = {
       .isString()
       .isIn(["classic", "teams"])
       .withMessage("mode must be either 'classic' or 'teams'"),
-    body("dealer").optional({ values: "null" }).custom((v: unknown) => {
-      if (v === null || v === undefined) {
+    body("dealer")
+      .optional({ values: "null" })
+      .custom((v: unknown) => {
+        if (v === null || v === undefined) {
+          return true;
+        }
+        validatePlayer(v, "dealer");
         return true;
-      }
-      validatePlayer(v, "dealer");
-      return true;
-    }),
+      }),
     body("teams")
       .isArray()
       .withMessage("teams must be an array")
@@ -182,13 +184,15 @@ export const GameValidators = {
       }
       return true;
     }),
-    body("dealer").optional({ values: "null" }).custom((v: unknown) => {
-      if (v === null || v === undefined) {
+    body("dealer")
+      .optional({ values: "null" })
+      .custom((v: unknown) => {
+        if (v === null || v === undefined) {
+          return true;
+        }
+        validatePlayer(v, "dealer");
         return true;
-      }
-      validatePlayer(v, "dealer");
-      return true;
-    }),
+      }),
     body("roundsScores")
       .optional()
       .isArray()

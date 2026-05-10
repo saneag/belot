@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { ScrollView } from "react-native";
 
@@ -16,23 +16,6 @@ export default function TableBodyWrapper() {
   const scrollViewRef = useRef<ScrollView>(null);
   const roundsScoresCount = useMemo(() => roundsScores.length, [roundsScores.length]);
 
-  const getTableRowClassName = useCallback(
-    (index: number) => {
-      if (index === 0) {
-        return "";
-      }
-
-      const classNames = ["border-t border-primary-500"];
-
-      if (index % playersCount === 0) {
-        classNames.push("border-t-[3px]");
-      }
-
-      return classNames.join(" ");
-    },
-    [playersCount],
-  );
-
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   }, [roundsScores]);
@@ -43,7 +26,13 @@ export default function TableBodyWrapper() {
         {roundsScores.map(
           (roundScore, index) =>
             index !== roundsScoresCount - 1 && (
-              <TableRow key={roundScore.id} className={`${getTableRowClassName(index)} border-b-0`}>
+              <TableRow
+                key={roundScore.id}
+                className="flex flex-row border-b border-primary-500"
+                style={{
+                  borderTopWidth: index > 0 && index % playersCount === 0 ? 2 : 1,
+                }}
+              >
                 <PointCells roundScore={roundScore} gameMode={gameMode} />
               </TableRow>
             ),
