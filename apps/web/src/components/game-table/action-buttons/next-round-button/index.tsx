@@ -1,12 +1,11 @@
 import { type Dispatch, type SetStateAction } from "react";
 
+import { useHandleNextRound } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
 import { type Player, type Team } from "@belot/types";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
-import { useHandleNextRound } from "@/hooks/game-table/useHandleNextRound";
 
 import { ArrowRight } from "lucide-react";
 
@@ -21,6 +20,7 @@ export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
 
   const { handleNextRound, handleCancel, handleDialogOpen, ...rest } = useHandleNextRound({
     setWinner,
+    setToLocalStorage: (key, value) => localStorage.setItem(key, value),
   });
 
   return (

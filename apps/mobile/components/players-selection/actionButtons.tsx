@@ -36,7 +36,7 @@ function SubmitButton() {
   ]);
 
   const { handleOpenDialog, handleSubmit } = usePlayersSubmit({
-    navigateFunction: () => router.navigate("/game-table"),
+    navigateFunction: () => router.replace("/game-table"),
     setItemsToStorage: setMultipleItemsToStorage,
     getApiBaseUrl,
     handleCatchError: () => {

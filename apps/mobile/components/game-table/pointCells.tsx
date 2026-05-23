@@ -1,8 +1,5 @@
-import { useCallback } from "react";
-
-import { BOLT_COUNT_LIMIT, BOLT_POINTS } from "@belot/constants";
-import { BaseScore, GameMode, RoundScore } from "@belot/types";
-import { roundToDecimal } from "@belot/utils/src";
+import { GameMode, RoundScore } from "@belot/types";
+import { getCurrentScore, getCurrentScoreColor, getScore, roundToDecimal } from "@belot/utils";
 
 import { Box } from "@/components/ui/box";
 import { TableData } from "@/components/ui/table";
@@ -19,30 +16,6 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
   const scoreArray =
     gameMode === GameMode.classic ? roundScore.playersScores : roundScore.teamsScores;
 
-  const getScore = useCallback((score: BaseScore) => {
-    if (score.score === BOLT_POINTS) return `BT-${score.boltCount}`;
-    return score.totalScore;
-  }, []);
-
-  const getCurrentScore = useCallback((score: BaseScore) => {
-    if (score.score === BOLT_POINTS) return score.boltCount === BOLT_COUNT_LIMIT ? "-10" : "";
-    if (score.score > 0) return `+${score.score}`;
-    return score.score;
-  }, []);
-
-  const getCurrentScoreColor = useCallback(
-    (score: BaseScore) => {
-      const currentScore = getCurrentScore(score);
-
-      if (Number(currentScore) === -10 || currentScore.toString().includes("BT-")) {
-        return "text-error-500";
-      }
-
-      return currentScore.toString().startsWith("+") ? "text-success-500" : "";
-    },
-    [getCurrentScore],
-  );
-
   return (
     <>
       {scoreArray.map((score, index) => (
@@ -55,7 +28,7 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
               {getScore(score)}
             </Text>
             {score.score ? (
-              <Text className={`absolute right-0.5 top-0 ${getCurrentScoreColor(score)}`}>
+              <Text className={`absolute right-0.5 top-0 ${getCurrentScoreColor(score, true)}`}>
                 {getCurrentScore(score)}
               </Text>
             ) : null}
