@@ -2,11 +2,14 @@ import { Dispatch, SetStateAction, useCallback } from "react";
 
 import { useRouter } from "expo-router";
 
+import { StorageKeys } from "@belot/constants";
 import { useLocalization } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import { Player, Team } from "@belot/types";
 
 import { Button, ButtonText } from "@/components/ui/button";
+
+import { removeFromStorage } from "@/helpers/storageHelpers";
 
 interface ResetGameButtonProps {
   setWinner: Dispatch<SetStateAction<Player | Team | null>>;
@@ -22,7 +25,11 @@ export default function ResetGameButton({ setWinner }: ResetGameButtonProps) {
   const handleReset = useCallback(() => {
     reset();
     setWinner(null);
-    router.back();
+    removeFromStorage(StorageKeys.dealer);
+    removeFromStorage(StorageKeys.roundsScores);
+    removeFromStorage(StorageKeys.timerStartTime);
+    removeFromStorage(StorageKeys.roundsScores);
+    router.replace("/players-selection");
   }, [reset, router, setWinner]);
 
   return (
