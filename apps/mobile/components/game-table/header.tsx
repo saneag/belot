@@ -34,7 +34,7 @@ export default function Header() {
   ]);
 
   const { showDialog, setShowDialog, handleReset } = useHandleGameReset({
-    navigateFunction: () => router.navigate("/players-selection"),
+    navigateFunction: () => router.replace("/players-selection"),
     setItemsToStorage: setMultipleItemsToStorage,
   });
 

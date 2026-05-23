@@ -2,13 +2,18 @@ import { type Dispatch, type SetStateAction, useCallback, useState } from "react
 
 import { DEFAULT_ROUND_POINTS, StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
-import { type Player, type RoundScore, type Team } from "@belot/types";
+import type { Player, RoundScore, Team } from "@belot/types";
 import {
   calculateRoundScore,
   checkForGameWinner,
   prepareEmptyRoundScoreRow,
   setNextDealer,
-} from "@belot/utils/src";
+} from "@belot/utils";
+
+interface UseHandleNextRoundProps {
+  setWinner: Dispatch<SetStateAction<Player | Team | null>>;
+  setToLocalStorage: (key: StorageKeys, value: string) => void;
+}
 
 const defaultRoundScoreState: RoundScore = {
   id: 0,
@@ -18,11 +23,7 @@ const defaultRoundScoreState: RoundScore = {
   roundPlayer: null,
 };
 
-interface UseHandleNextRoundProps {
-  setWinner: Dispatch<SetStateAction<Player | Team | null>>;
-}
-
-export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
+export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNextRoundProps) => {
   const [roundPlayer, setRoundPlayer] = useState<Player | null>(null);
   const [roundScore, setRoundScore] = useState<RoundScore>(defaultRoundScoreState);
   const [gameOverflowCount, setGameOverflowCount] = useState(0);
@@ -76,7 +77,7 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
       roundsScores: updatedRoundsScores,
     });
 
-    localStorage.setItem(
+    setToLocalStorage(
       StorageKeys.roundsScores,
       JSON.stringify([...updatedRoundsScores, newEmptyRow]),
     );
@@ -87,7 +88,7 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
       dealer,
     });
 
-    localStorage.setItem(StorageKeys.dealer, JSON.stringify(nextDealer));
+    setToLocalStorage(StorageKeys.dealer, JSON.stringify(nextDealer));
   }, [
     dealer,
     gameMode,
@@ -96,6 +97,7 @@ export const useHandleNextRound = ({ setWinner }: UseHandleNextRoundProps) => {
     roundPlayer,
     roundScore,
     roundsScores,
+    setToLocalStorage,
     setWinner,
     teams,
     updateRoundScore,
