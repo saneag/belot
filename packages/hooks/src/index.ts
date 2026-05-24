@@ -13,3 +13,4 @@ export * from "./useLoadPreviousPlayers";
 export * from "./useTimeTracker";
 export * from "./useHandleConfirmationDialog";
 export * from "./useGetTableHeaderDealerBackground";
+export * from "./useHandleNextRound";

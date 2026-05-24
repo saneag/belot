@@ -30,7 +30,10 @@ export default function Header() {
   ]);
 
   const { showDialog, setShowDialog, handleReset } = useHandleGameReset({
-    navigateFunction: () => void navigate("/"),
+    navigateFunction: () =>
+      void navigate("/", {
+        replace: true,
+      }),
     setItemsToStorage: setMultipleItemsToStorage,
   });
 
