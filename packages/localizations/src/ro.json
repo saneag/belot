@@ -29,6 +29,8 @@
   "dealer": "Dealer: {0}",
   "time": "Timp",
   "undo.round.title": "Anulează ultima rundă",
-  "redo.round.title": "Intoarce runda",
-  "shuffle.players": "Amestecă jucătorii"
+  "redo.round.title": "Intoarce ultima runda",
+  "shuffle.players": "Amestecă jucătorii",
+  "continue.last.game": "Continuă ultimul joc",
+  "new.game": "Joc nou"
 }
