@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { StorageKeys } from "@belot/constants";
+import { useLoadGameData } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 
@@ -15,6 +16,8 @@ interface StartingScreenAction {
 
 export const useStartingScreenActions = (): StartingScreenAction[] => {
   const navigate = useNavigate();
+
+  useLoadGameData({ getFromStorage: (key) => localStorage.getItem(key) });
 
   const players = useGameStore((state) => state.players);
   const dealer = useGameStore((state) => state.dealer);
