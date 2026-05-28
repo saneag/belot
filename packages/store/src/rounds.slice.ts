@@ -9,6 +9,9 @@ import {
 
 import { type StateCreator } from "zustand";
 
+const normalizeRoundsScores = (roundsScores: RoundSlice["roundsScores"]) =>
+  Array.isArray(roundsScores) ? roundsScores : [];
+
 export const createRoundSlice: StateCreator<
   RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>
 > = (set) => ({
@@ -23,7 +26,15 @@ export const createRoundSlice: StateCreator<
       ...setNextDealer(state),
       undoneRoundsScores: [],
     })),
-  setRoundsScores: (roundsScores) => set((state) => ({ roundsScores, ...setNextDealer(state) })),
+  setRoundsScores: (roundsScores) =>
+    set((state) => {
+      const normalizedRoundsScores = normalizeRoundsScores(roundsScores);
+
+      return {
+        roundsScores: normalizedRoundsScores,
+        ...setNextDealer({ ...state, roundsScores: normalizedRoundsScores }),
+      };
+    }),
   updateRoundScore: (roundScore) =>
     set((state) => {
       const { id: roundScoreId, ...restRoundScore } = roundScore;

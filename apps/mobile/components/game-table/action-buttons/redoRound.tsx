@@ -16,7 +16,9 @@ export default function RedoRoundButton() {
     },
   ]);
 
-  const undoneRoundsScores = useGameStore((state) => state.undoneRoundsScores);
+  const undoneRoundsScores = useGameStore((state) =>
+    Array.isArray(state.undoneRoundsScores) ? state.undoneRoundsScores : [],
+  );
   const redoRoundScore = useGameStore((state) => state.redoRoundScore);
 
   const undoneRoundsScoresCount = useMemo(

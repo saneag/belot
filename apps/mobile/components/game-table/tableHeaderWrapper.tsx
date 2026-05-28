@@ -15,7 +15,9 @@ export default function TableHeaderWrapper() {
     color: "bg-success-500",
   });
 
-  const roundScores = useGameStore((state) => state.roundsScores);
+  const roundScores = useGameStore((state) =>
+    Array.isArray(state.roundsScores) ? state.roundsScores : [],
+  );
   const roundsCount = useMemo(() => roundScores.length, [roundScores.length]);
 
   return (

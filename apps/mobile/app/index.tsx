@@ -1,1 +1,1 @@
-export { default } from "./players-selection";
+export { default } from "./starting-screen";

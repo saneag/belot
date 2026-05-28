@@ -16,7 +16,9 @@ export default function UndoRoundButton() {
     },
   ]);
 
-  const roundsScores = useGameStore((state) => state.roundsScores);
+  const roundsScores = useGameStore((state) =>
+    Array.isArray(state.roundsScores) ? state.roundsScores : [],
+  );
   const undoRoundScore = useGameStore((state) => state.undoRoundScore);
 
   const roundsScoresCount = useMemo(() => roundsScores.length, [roundsScores.length]);

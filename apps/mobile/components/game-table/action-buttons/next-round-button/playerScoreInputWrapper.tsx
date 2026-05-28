@@ -19,7 +19,9 @@ export default function PlayerScoreInputWrapper({
 }: PlayerScoreInputWrapperProps) {
   const players = useGameStore((state) => state.players);
   const teams = useGameStore((state) => state.teams);
-  const roundsScores = useGameStore((state) => state.roundsScores);
+  const roundsScores = useGameStore((state) =>
+    Array.isArray(state.roundsScores) ? state.roundsScores : [],
+  );
   const gameMode = useGameStore((state) => state.mode);
 
   const lastRoundScore = useMemo(() => roundsScores.at(-1), [roundsScores]);

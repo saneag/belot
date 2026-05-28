@@ -23,12 +23,14 @@
   "players.reset": "Сбросить",
   "players.submit.dialog.title": "Выберите раздающего",
   "players.submit.dialog.button": "Подтвердить",
-  "load.previous.game.button": "Загрузить предыдущую игру",
+  "load.previous.game.button": "Загрузить предыдущих игроков",
   "confirmation.dialog.confirm.button": "Подтвердить",
   "confirmation.dialog.cancel.button": "Отменить",
   "dealer": "Дилер: {0}",
   "time": "Время",
   "undo.round.title": "Отменить последний раунд",
-  "redo.round.title": "Вернуть раунд",
-  "shuffle.players": "Перемешать игроков"
+  "redo.round.title": "Вернуть последний раунд",
+  "shuffle.players": "Перемешать игроков",
+  "continue.last.game": "Продолжить последнюю игру",
+  "new.game": "Новая игра"
 }
