@@ -1,13 +1,10 @@
 import { useMemo } from "react";
 
-import { useRouter } from "expo-router";
+import { useNavigate } from "react-router-dom";
 
 import { StorageKeys } from "@belot/constants";
-import { useLoadGameData } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
-
-import { getFromStorage, removeFromStorage } from "@/helpers/storageHelpers";
 
 interface StartingScreenAction {
   index: number;
@@ -17,9 +14,7 @@ interface StartingScreenAction {
 }
 
 export const useStartingScreenActions = (): StartingScreenAction[] => {
-  const router = useRouter();
-
-  useLoadGameData({ getFromStorage });
+  const navigate = useNavigate();
 
   const players = useGameStore((state) => state.players);
   const dealer = useGameStore((state) => state.dealer);
@@ -42,9 +37,9 @@ export const useStartingScreenActions = (): StartingScreenAction[] => {
       index: 0,
       label: messages.continueLastGame,
       isActive: hasUnfinishedGame,
-      onPress: () => router.push("/game-table"),
+      onPress: () => void navigate("/game-table"),
     }),
-    [messages.continueLastGame, router, hasUnfinishedGame],
+    [messages.continueLastGame, navigate, hasUnfinishedGame],
   );
 
   const newGameAction = useMemo<StartingScreenAction>(
@@ -54,13 +49,13 @@ export const useStartingScreenActions = (): StartingScreenAction[] => {
       isActive: true,
       onPress: () => {
         [StorageKeys.timerStartTime, StorageKeys.dealer, StorageKeys.roundsScores].forEach((key) =>
-          removeFromStorage(key),
+          localStorage.removeItem(key),
         );
         reset();
-        router.push("/players-selection");
+        void navigate("/players-selection");
       },
     }),
-    [messages.newGame, router, reset],
+    [messages.newGame, navigate, reset],
   );
 
   return [continueGameAction, newGameAction]

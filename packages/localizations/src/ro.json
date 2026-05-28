@@ -23,7 +23,7 @@
   "players.reset": "Resetează",
   "players.submit.dialog.title": "Selectează dealerul",
   "players.submit.dialog.button": "Confirmă",
-  "load.previous.game.button": "Încarcă jocul anterior",
+  "load.previous.game.button": "Încarcă jucătorii anteriori",
   "confirmation.dialog.confirm.button": "Continuă",
   "confirmation.dialog.cancel.button": "Anulează",
   "dealer": "Dealer: {0}",

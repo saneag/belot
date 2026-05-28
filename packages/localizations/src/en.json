@@ -23,7 +23,7 @@
   "players.reset": "Reset",
   "players.submit.dialog.title": "Select the dealer",
   "players.submit.dialog.button": "Submit",
-  "load.previous.game.button": "Load previous game",
+  "load.previous.game.button": "Load previous players",
   "confirmation.dialog.confirm.button": "Confirm",
   "confirmation.dialog.cancel.button": "Cancel",
   "dealer": "Dealer: {0}",
