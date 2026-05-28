@@ -2,8 +2,8 @@ import { StorageKeys } from "@belot/constants";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const setToStorage = async <T>(key: StorageKeys, value: T): Promise<void> => {
-  await AsyncStorage.setItem(key, JSON.stringify(value));
+export const setToStorage = async (key: StorageKeys, value: string): Promise<void> => {
+  await AsyncStorage.setItem(key, value);
 };
 
 export const setMultipleItemsToStorage = async (

@@ -23,12 +23,14 @@
   "players.reset": "Reset",
   "players.submit.dialog.title": "Select the dealer",
   "players.submit.dialog.button": "Submit",
-  "load.previous.game.button": "Load previous game",
+  "load.previous.game.button": "Load previous players",
   "confirmation.dialog.confirm.button": "Confirm",
   "confirmation.dialog.cancel.button": "Cancel",
   "dealer": "Dealer: {0}",
   "time": "Time",
   "undo.round.title": "Undo last round",
-  "redo.round.title": "Redo round",
-  "shuffle.players": "Shuffle players"
+  "redo.round.title": "Redo last round",
+  "shuffle.players": "Shuffle players",
+  "continue.last.game": "Continue last game",
+  "new.game": "New game"
 }

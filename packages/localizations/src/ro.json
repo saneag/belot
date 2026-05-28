@@ -23,12 +23,14 @@
   "players.reset": "Resetează",
   "players.submit.dialog.title": "Selectează dealerul",
   "players.submit.dialog.button": "Confirmă",
-  "load.previous.game.button": "Încarcă jocul anterior",
+  "load.previous.game.button": "Încarcă jucătorii anteriori",
   "confirmation.dialog.confirm.button": "Continuă",
   "confirmation.dialog.cancel.button": "Anulează",
   "dealer": "Dealer: {0}",
   "time": "Timp",
   "undo.round.title": "Anulează ultima rundă",
-  "redo.round.title": "Intoarce runda",
-  "shuffle.players": "Amestecă jucătorii"
+  "redo.round.title": "Intoarce ultima runda",
+  "shuffle.players": "Amestecă jucătorii",
+  "continue.last.game": "Continuă ultimul joc",
+  "new.game": "Joc nou"
 }
