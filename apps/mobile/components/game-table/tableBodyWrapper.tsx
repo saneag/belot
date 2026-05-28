@@ -11,7 +11,9 @@ import PointCells from "./pointCells";
 export default function TableBodyWrapper() {
   const players = useGameStore((state) => state.players);
   const playersCount = useMemo(() => players.length, [players.length]);
-  const roundsScores = useGameStore((state) => state.roundsScores);
+  const roundsScores = useGameStore((state) =>
+    Array.isArray(state.roundsScores) ? state.roundsScores : [],
+  );
   const gameMode = useGameStore((state) => state.mode);
   const scrollViewRef = useRef<ScrollView>(null);
   const roundsScoresCount = useMemo(() => roundsScores.length, [roundsScores.length]);

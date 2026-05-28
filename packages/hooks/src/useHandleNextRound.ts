@@ -31,7 +31,9 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
   const players = useGameStore((state) => state.players);
   const teams = useGameStore((state) => state.teams);
   const gameMode = useGameStore((state) => state.mode);
-  const roundsScores = useGameStore((state) => state.roundsScores);
+  const roundsScores = useGameStore((state) =>
+    Array.isArray(state.roundsScores) ? state.roundsScores : [],
+  );
   const updateRoundScore = useGameStore((state) => state.updateRoundScore);
   const dealer = useGameStore((state) => state.dealer);
 
