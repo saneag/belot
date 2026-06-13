@@ -19,6 +19,7 @@
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@vitest/coverage-v8": "catalog:",
     "prettier": "^3.7.4",
+    "react": "19.1.0",
     "turbo": "^2.9.18",
     "typescript": "5.9.2",
     "vitest": "catalog:"

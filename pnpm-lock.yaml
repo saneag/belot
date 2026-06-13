@@ -37,6 +37,9 @@ importers:
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
+      react:
+        specifier: 19.1.0
+        version: 19.1.0
       turbo:
         specifier: ^2.9.18
         version: 2.9.18
@@ -461,6 +464,9 @@ importers:
       '@belot/types':
         specifier: workspace:*
         version: link:../types
+      react:
+        specifier: 19.1.0
+        version: 19.1.0
     devDependencies:
       '@belot/vitest-config':
         specifier: workspace:*
@@ -534,6 +540,9 @@ importers:
       '@belot/utils':
         specifier: workspace:*
         version: link:../utils
+      react:
+        specifier: 19.1.0
+        version: 19.1.0
     devDependencies:
       '@belot/vitest-config':
         specifier: workspace:*
@@ -559,6 +568,9 @@ importers:
       i18next:
         specifier: ^25.8.11
         version: 25.8.11(typescript@5.9.3)
+      react:
+        specifier: 19.1.0
+        version: 19.1.0
       react-i18next:
         specifier: ^16.5.4
         version: 16.5.4(i18next@25.8.11(typescript@5.9.3))(react-dom@19.2.0(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.0)(@types/react@19.1.17)(react@19.1.0)(supports-color@5.5.0))(react@19.1.0)(typescript@5.9.3)
@@ -578,9 +590,6 @@ importers:
       eslint:
         specifier: ^9.39.1
         version: 9.39.2(jiti@2.6.1)
-      react:
-        specifier: 19.1.0
-        version: 19.1.0
       typescript:
         specifier: ~5.9.3
         version: 5.9.3

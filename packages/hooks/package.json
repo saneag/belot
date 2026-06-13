@@ -18,6 +18,9 @@
     "@belot/localizations": "workspace:*",
     "@belot/eslint-config": "workspace:*"
   },
+  "peerDependencies": {
+    "react": ">=19.0.0"
+  },
   "devDependencies": {
     "@belot/eslint-config": "workspace:*",
     "@belot/vitest-config": "workspace:*",
