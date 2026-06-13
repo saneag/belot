@@ -1,10 +1,12 @@
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App";
-import GameTablePage from "@/pages/game-table";
-import PlayersSelectionPage from "@/pages/players-selection";
-import SettingsPage from "@/pages/settings";
-import StartingPage from "@/pages/starting-page";
+
+const GameTablePage = lazy(() => import("@/pages/game-table"));
+const PlayersSelectionPage = lazy(() => import("@/pages/players-selection"));
+const SettingsPage = lazy(() => import("@/pages/settings"));
+const StartingPage = lazy(() => import("@/pages/starting-page"));
 
 export const router = createBrowserRouter([
   {

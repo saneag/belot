@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
 import { ThemeContextProvider } from "@belot/components";
@@ -23,7 +24,9 @@ function App() {
           <Layout>
             <TooltipProvider>
               <PhoneScreen>
-                <Outlet />
+                <Suspense>
+                  <Outlet />
+                </Suspense>
                 <Toaster />
               </PhoneScreen>
             </TooltipProvider>
