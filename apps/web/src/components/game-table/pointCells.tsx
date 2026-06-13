@@ -8,6 +8,15 @@ interface PointCellsProps {
   gameMode: GameMode;
 }
 
+const getWebCurrentScoreColor = (score: Parameters<typeof getCurrentScoreColor>[0]) => {
+  const color = getCurrentScoreColor(score);
+
+  if (color === "text-success") return "text-success";
+  if (color === "text-destructive") return "text-destructive";
+
+  return "";
+};
+
 export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
   const scoreArray =
     gameMode === GameMode.classic ? roundScore.playersScores : roundScore.teamsScores;
@@ -23,7 +32,7 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
             <span className="text-xl">{getScore(score)}</span>
           </div>
           {score.score ? (
-            <span className={`absolute top-0 right-0.5 text-xs ${getCurrentScoreColor(score)}`}>
+            <span className={`absolute top-0 right-0.5 text-xs ${getWebCurrentScoreColor(score)}`}>
               {getCurrentScore(score)}
             </span>
           ) : null}
