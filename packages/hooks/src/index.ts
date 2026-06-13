@@ -14,4 +14,5 @@ export * from "./useTimeTracker";
 export * from "./useHandleConfirmationDialog";
 export * from "./useGetTableHeaderDealerBackground";
 export * from "./useHandleNextRound";
+export * from "./useHandleSkipRound";
 export * from "./useStartingScreenActions";
