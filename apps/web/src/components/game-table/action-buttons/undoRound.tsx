@@ -21,7 +21,11 @@ export default function UndoRoundButton() {
 
   return (
     <Tooltip>
-      <TooltipTrigger onClick={undoRoundScore} disabled={roundsScoresCount === 1}>
+      <TooltipTrigger
+        onClick={undoRoundScore}
+        disabled={roundsScoresCount === 1}
+        className="rounded-lg px-4 py-1"
+      >
         <Undo />
       </TooltipTrigger>
       <TooltipContent>

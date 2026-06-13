@@ -26,6 +26,8 @@ export default function RedoRoundButton() {
     [undoneRoundsScores.length],
   );
 
+  const isRedoDisabled = undoneRoundsScoresCount === 0;
+
   return (
     <ExtendedTooltip
       tooltipText={messages.redoRoundTitle}
@@ -34,7 +36,8 @@ export default function RedoRoundButton() {
           variant="solid"
           action="secondary"
           onPress={redoRoundScore}
-          disabled={undoneRoundsScoresCount === 0}
+          disabled={isRedoDisabled}
+          className={isRedoDisabled ? "cursor-not-allowed opacity-50" : ""}
         >
           <Icon as={Redo} />
         </Button>
