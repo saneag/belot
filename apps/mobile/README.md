@@ -11,13 +11,30 @@
 
 **Local build:**
 
-1. Keep the same keystore in `android/app/my-release-key.keystore` for every release build
-2. Add your keystore file to the `android/app` directory
-3. Update the `android/gradle.properties` file with your keystore passwords
+1. Go to `apps/mobile` and run `pnpm run prebuild:android`. It will generate the `android` directory with native code and configuration.
+2. Add your keystore file to the `android/app` directory.
+3. Update the `android/gradle.properties` file with your keystore passwords (just put at the end of the file).
+
+   Replace the `*` values with your actual keystore information:
+
+```
+MYAPP_UPLOAD_STORE_FILE=*
+MYAPP_UPLOAD_KEY_ALIAS=*
+MYAPP_UPLOAD_STORE_PASSWORD=*
+MYAPP_UPLOAD_KEY_PASSWORD=*
+```
+
+`MYAPP_UPLOAD_STORE_FILE` - name of your keystore file (e.g., `my-release-key.keystore`)
+
+`MYAPP_UPLOAD_KEY_ALIAS` - alias for your signing key. This is the name you specified when you created the key in the keystore.
+
+`MYAPP_UPLOAD_STORE_PASSWORD` - password for your keystore. You set this password when you created the keystore file.
+
+`MYAPP_UPLOAD_KEY_PASSWORD` - password for your signing key. This is often the same as the keystore password, but it can be different if you specified a separate password for the key when you created it.
+
 4. Run `pnpm run android:apk:release` to build the release APK
-5. `android.versionCode` in `app.json` is auto-incremented before each release build
-6. The APK file will be in `android/app/build/outputs/apk/release/`
-7. Install it on your phone as an update (same package + same signing key + higher versionCode)
+5. The APK file will be in `android/app/build/outputs/apk/release/`
+6. Install it on your phone as an update
 
 If you install through `adb`, use replace mode:
 
