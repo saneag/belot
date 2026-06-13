@@ -1,6 +1,7 @@
-import { View } from "react-native";
+import { Image, View } from "react-native";
 
 import { Button, ButtonText } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
 
 import { useStartingScreenActions } from "@/hooks/starting-screen/useStartingScreenActions";
@@ -10,6 +11,13 @@ export default function StartingScreen() {
 
   return (
     <View className="flex-1 items-center justify-center bg-phone-screen-background">
+      <VStack className="absolute top-20 items-center justify-center gap-3">
+        <Image
+          source={require("../assets/images/ic_launcher_no_bg.png")}
+          style={{ width: 100, height: 100 }}
+        />
+        <Heading className="text-center text-4xl font-normal">Belot-score</Heading>
+      </VStack>
       <VStack className="gap-3">
         {actions.map((action) => (
           <Button key={action.index} onPress={action.onPress} action="primary" variant="solid">
