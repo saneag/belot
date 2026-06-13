@@ -64,7 +64,10 @@ export default function SkipRoundButton() {
       content={messages.skipRoundContent}
       renderShowDialog={(showDialog) => (
         <Tooltip>
-          <TooltipTrigger onClick={showDialog}>
+          <TooltipTrigger
+            onClick={showDialog}
+            className="bg-primary text-primary-foreground rounded-lg px-4 py-1"
+          >
             <ChevronsRight />
           </TooltipTrigger>
           <TooltipContent>

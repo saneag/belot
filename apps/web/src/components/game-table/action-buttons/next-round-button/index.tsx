@@ -29,7 +29,10 @@ export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
       content={<ScoreDialogContent {...rest} />}
       renderShowDialog={(showDialog) => (
         <Tooltip>
-          <TooltipTrigger onClick={() => handleDialogOpen(showDialog)}>
+          <TooltipTrigger
+            onClick={() => handleDialogOpen(showDialog)}
+            className="bg-primary text-primary-foreground rounded-lg px-4 py-1"
+          >
             <ArrowRight />
           </TooltipTrigger>
           <TooltipContent>

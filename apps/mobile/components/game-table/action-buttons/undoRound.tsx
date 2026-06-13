@@ -23,6 +23,8 @@ export default function UndoRoundButton() {
 
   const roundsScoresCount = useMemo(() => roundsScores.length, [roundsScores.length]);
 
+  const isUndoDisabled = roundsScoresCount === 1;
+
   return (
     <ExtendedTooltip
       tooltipText={messages.undoRoundTitle}
@@ -31,7 +33,8 @@ export default function UndoRoundButton() {
           variant="solid"
           action="secondary"
           onPress={undoRoundScore}
-          disabled={roundsScoresCount === 1}
+          disabled={isUndoDisabled}
+          className={isUndoDisabled ? "cursor-not-allowed opacity-50" : ""}
         >
           <Icon as={Undo} />
         </Button>
