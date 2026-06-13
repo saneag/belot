@@ -31,7 +31,7 @@ export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
         <Tooltip>
           <TooltipTrigger
             onClick={() => handleDialogOpen(showDialog)}
-            className="bg-primary text-primary-foreground rounded-lg px-4 py-1"
+            className="rounded-lg px-4 py-1"
           >
             <ArrowRight />
           </TooltipTrigger>
