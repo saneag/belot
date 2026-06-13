@@ -11,7 +11,8 @@
     "test": "turbo run test",
     "test:coverage": "turbo run test -- --coverage",
     "test:watch": "vitest watch",
-    "dev:ui": "turbo run dev --filter=@belot/mobile --filter=@belot/web"
+    "dev:ui": "turbo run dev --filter=@belot/mobile --filter=@belot/web",
+    "nuke": "node nuke.js"
   },
   "devDependencies": {
     "@belot/vitest-config": "workspace:*",
@@ -25,17 +26,6 @@
   "packageManager": "pnpm@11.6.0",
   "engines": {
     "node": ">=18"
-  },
-  "pnpm": {
-    "overrides": {
-      "react": "19.1.0",
-      "react-native": "0.81.5"
-    },
-    "ignoredBuiltDependencies": [
-      "esbuild",
-      "msw",
-      "unrs-resolver"
-    ]
   },
   "dependencies": {
     "prettier-plugin-tailwindcss": "^0.7.2"
