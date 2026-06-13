@@ -9,7 +9,7 @@ export default function StartingScreen() {
   const actions = useStartingScreenActions();
 
   return (
-    <View className="flex-1 items-center justify-center">
+    <View className="flex-1 items-center justify-center bg-phone-screen-background">
       <VStack className="gap-3">
         {actions.map((action) => (
           <Button key={action.index} onPress={action.onPress} action="primary" variant="solid">
