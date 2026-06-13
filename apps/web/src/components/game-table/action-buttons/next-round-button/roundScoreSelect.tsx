@@ -33,11 +33,17 @@ export default function RoundScoreSelect({ roundScore, setRoundScore }: RoundSco
       <span className="text-center text-xl">{roundScoreMsg}</span>
       <div className="flex flex-wrap items-center justify-center gap-2.5">
         {ROUND_POINTS.map((roundPoint) => (
-          <Button key={roundPoint} onClick={() => handleRoundPointsChange(roundPoint)}>
+          <Button
+            key={roundPoint}
+            variant="secondary"
+            onClick={() => handleRoundPointsChange(roundPoint)}
+          >
             {operationSign} {roundToDecimal(roundPoint)}
           </Button>
         ))}
-        <Button onClick={() => setIsPositive(!isPositive)}>{operationSign}</Button>
+        <Button variant="outline" onClick={() => setIsPositive(!isPositive)}>
+          {operationSign}
+        </Button>
       </div>
     </div>
   );

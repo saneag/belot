@@ -26,7 +26,12 @@ export default function RoundPlayerSelect({
       <span>{nextRoundPlayerMsg}</span>
       <div className="flex flex-wrap justify-center gap-2.5">
         {players.map((player) => (
-          <Button key={player.id} className="px-4" onClick={() => handleRoundPlayerChange(player)}>
+          <Button
+            key={player.id}
+            variant="outline"
+            className="px-4"
+            onClick={() => handleRoundPlayerChange(player)}
+          >
             {player.name}
           </Button>
         ))}
