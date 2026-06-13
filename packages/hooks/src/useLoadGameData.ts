@@ -57,17 +57,21 @@ export function useLoadGameData({
         const storageRoundsScores = await getFromStorage(StorageKeys.roundsScores);
 
         if (storagePlayers && storageDealer && storageRoundsScores) {
+          const parsedPlayers = JSON.parse(storagePlayers) as Player[];
+          const parsedDealer = JSON.parse(storageDealer) as Player;
+          const parsedRoundsScores = JSON.parse(storageRoundsScores) as RoundScore[];
+
           if (shouldSetData) {
-            setPlayers(JSON.parse(storagePlayers) as Player[]);
-            setDealer(JSON.parse(storageDealer) as Player);
-            setRoundsScores(JSON.parse(storageRoundsScores) as RoundScore[]);
+            setPlayers(parsedPlayers);
+            setRoundsScores(parsedRoundsScores);
+            setDealer(parsedDealer);
 
             return;
           }
 
-          setStoragePlayers(JSON.parse(storagePlayers) as Player[]);
-          setStorageDealer(JSON.parse(storageDealer) as Player);
-          setStorageRoundsScores(JSON.parse(storageRoundsScores) as RoundScore[]);
+          setStoragePlayers(parsedPlayers);
+          setStorageDealer(parsedDealer);
+          setStorageRoundsScores(parsedRoundsScores);
         }
       };
 

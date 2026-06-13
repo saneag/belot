@@ -32,7 +32,7 @@ export const createRoundSlice: StateCreator<
 
       return {
         roundsScores: normalizedRoundsScores,
-        ...setNextDealer({ ...state, roundsScores: normalizedRoundsScores }),
+        ...setNextDealer(state),
       };
     }),
   updateRoundScore: (roundScore) =>
