@@ -19,11 +19,11 @@ interface StartingScreenAction {
 export const useStartingScreenActions = (): StartingScreenAction[] => {
   const router = useRouter();
 
-  useLoadGameData({ getFromStorage });
+  const { storagePlayers, storageDealer, storageRoundsScores } = useLoadGameData({
+    getFromStorage,
+    shouldSetData: false,
+  });
 
-  const players = useGameStore((state) => state.players);
-  const dealer = useGameStore((state) => state.dealer);
-  const roundsScores = useGameStore((state) => state.roundsScores);
   const reset = useGameStore((state) => state.reset);
 
   const messages = useLocalizations([
@@ -33,9 +33,14 @@ export const useStartingScreenActions = (): StartingScreenAction[] => {
     {
       key: "new.game",
     },
+    {
+      key: "settings",
+    },
   ]);
 
-  const hasUnfinishedGame = Boolean(players?.length && dealer && roundsScores?.length);
+  const hasUnfinishedGame = Boolean(
+    storagePlayers?.length && storageDealer && storageRoundsScores?.length,
+  );
 
   const continueGameAction = useMemo<StartingScreenAction>(
     () => ({
@@ -63,7 +68,17 @@ export const useStartingScreenActions = (): StartingScreenAction[] => {
     [messages.newGame, router, reset],
   );
 
-  return [continueGameAction, newGameAction]
+  const settingsAction = useMemo<StartingScreenAction>(
+    () => ({
+      index: 2,
+      label: messages.settings,
+      isActive: true,
+      onPress: () => router.push("/settings-screen"),
+    }),
+    [messages.settings, router],
+  );
+
+  return [continueGameAction, newGameAction, settingsAction]
     .filter((action) => action.isActive)
     .sort((a, b) => a.index - b.index);
 };
