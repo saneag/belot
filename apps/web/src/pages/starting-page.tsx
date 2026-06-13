@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 import { useStartingScreenActions } from "@/hooks/starting-screen/useStartingScreenActions";
 
-export default function StartingScreen() {
+export default function StartingPage() {
   const actions = useStartingScreenActions();
 
   return (

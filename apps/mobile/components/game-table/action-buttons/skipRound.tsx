@@ -1,23 +1,21 @@
-import { useCallback } from "react";
-
+import { useHandleSkipRound } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
-import { useGameStore } from "@belot/store";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import ExtendedTooltip from "@/components/extendedTooltip";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 
+import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+
 import { ChevronsRight } from "lucide-react-native";
 
 export default function SkipRoundButton() {
   const messages = useLocalizations([{ key: "skip.round.title" }, { key: "skip.round.content" }]);
 
-  const skipRound = useGameStore((state) => state.skipRound);
-
-  const handleAddEmptyRow = useCallback(() => {
-    skipRound();
-  }, [skipRound]);
+  const handleAddEmptyRow = useHandleSkipRound({
+    setItemsToStorage: setMultipleItemsToStorage,
+  });
 
   return (
     <ConfirmationDialog

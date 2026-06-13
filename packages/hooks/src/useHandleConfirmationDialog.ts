@@ -5,8 +5,8 @@ import { useLocalizations } from "@belot/localizations";
 interface UseHandleConfirmationDialogProps {
   visible?: boolean;
   setVisible?: Dispatch<SetStateAction<boolean>>;
-  confirmationCallback?: () => void;
-  cancelCallback?: () => void;
+  confirmationCallback?: () => Promise<void> | void;
+  cancelCallback?: () => Promise<void> | void;
 }
 
 export const useHandleConfirmationDialog = ({
@@ -35,13 +35,13 @@ export const useHandleConfirmationDialog = ({
 
   const hideDialog = useCallback(() => setIsVisible(false), [setIsVisible]);
 
-  const handleDialogConfirmation = useCallback(() => {
-    confirmationCallback?.();
+  const handleDialogConfirmation = useCallback(async () => {
+    await confirmationCallback?.();
     hideDialog();
   }, [confirmationCallback, hideDialog]);
 
-  const handleDialogCancel = useCallback(() => {
-    cancelCallback?.();
+  const handleDialogCancel = useCallback(async () => {
+    await cancelCallback?.();
     hideDialog();
   }, [cancelCallback, hideDialog]);
 

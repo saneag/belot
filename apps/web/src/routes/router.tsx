@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App";
-import GameTableScreen from "@/pages/game-table";
+import GameTablePage from "@/pages/game-table";
 import PlayersSelectionPage from "@/pages/players-selection";
-import StartingScreen from "@/pages/starting-screen";
+import SettingsPage from "@/pages/settings";
+import StartingPage from "@/pages/starting-page";
 
 export const router = createBrowserRouter([
   {
@@ -12,7 +13,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <StartingScreen />,
+        element: <StartingPage />,
       },
       {
         path: "/players-selection",
@@ -20,7 +21,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/game-table",
-        element: <GameTableScreen />,
+        element: <GameTablePage />,
+      },
+      {
+        path: "/settings",
+        element: <SettingsPage />,
       },
     ],
   },
