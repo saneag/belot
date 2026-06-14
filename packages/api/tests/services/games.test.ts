@@ -2,10 +2,10 @@ import { GameMode, type Player, type Team } from "@belot/types";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { apiFetch } from "./client";
-import { buildGamesListUrl, getAllGames, initGame } from "./games";
+import { apiFetch } from "../../src/services/client";
+import { buildGamesListUrl, getAllGames, initGame } from "../../src/services/games";
 
-vi.mock("./client", () => ({
+vi.mock("../../src/services/client", () => ({
   apiFetch: vi.fn(),
 }));
 

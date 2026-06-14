@@ -6,10 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { initGame } from "../services";
-import { useGameInit } from "./useGameInit";
+import { initGame } from "../../src/services";
+import { useGameInit } from "../../src/hooks/useGameInit";
 
-vi.mock("../services", () => ({
+vi.mock("../../src/services", () => ({
   initGame: vi.fn(),
 }));
 
