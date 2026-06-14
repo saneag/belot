@@ -16,7 +16,9 @@ export default function StartingScreen() {
           source={require("../assets/images/ic_launcher_no_bg.png")}
           style={{ width: 100, height: 100 }}
         />
-        <Heading className="text-center text-4xl font-normal">Belot-score</Heading>
+        <Heading size="4xl" className="text-center font-normal">
+          Belot-score
+        </Heading>
       </VStack>
       <VStack className="gap-3">
         {actions.map((action) => (
