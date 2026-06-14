@@ -33,5 +33,9 @@
   "shuffle.players": "Shuffle players",
   "continue.last.game": "Continue last game",
   "new.game": "New game",
-  "settings": "Settings"
+  "settings": "Settings",
+  "settings.points.type": "Points type",
+  "settings.points.type.hint": "When using micropoints, the default game is 162 micropoints, while the default game using points is 16 points.",
+  "settings.points.type.micropoints": "Micropoints",
+  "settings.points.type.points": "Points"
 }

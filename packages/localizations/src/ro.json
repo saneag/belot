@@ -33,5 +33,9 @@
   "shuffle.players": "Amestecă jucătorii",
   "continue.last.game": "Continuă ultimul joc",
   "new.game": "Joc nou",
-  "settings": "Setări"
+  "settings": "Setări",
+  "settings.points.type": "Tipul punctelor",
+  "settings.points.type.hint": "Când folosești microbile, jocul implicit este de 162 microbile, în timp ce jocul implicit folosind bile este de 16.",
+  "settings.points.type.micropoints": "Microbile",
+  "settings.points.type.points": "Bile"
 }
