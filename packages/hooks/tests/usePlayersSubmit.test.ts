@@ -51,6 +51,10 @@ vi.mock("@belot/store", () => ({
     }),
 }));
 
+vi.mock("../src/featureToggles/useFeatureToggle", () => ({
+  useFeatureToggle: vi.fn(() => true),
+}));
+
 vi.mock("@belot/utils", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@belot/utils")>();
 
@@ -216,5 +220,24 @@ describe("usePlayersSubmit", () => {
       }),
       expect.any(Object),
     );
+  });
+
+  it("skips backend game init when feature toggle is disabled", async () => {
+    const { useFeatureToggle } = await import("../src/featureToggles/useFeatureToggle");
+    vi.mocked(useFeatureToggle).mockReturnValueOnce(false);
+
+    const { usePlayersSubmit } = await import("../src/usePlayersSubmit");
+    const { handleSubmit } = usePlayersSubmit({
+      navigateFunction: mocks.navigateFunction,
+      setItemsToStorage: mocks.setItemsToStorage,
+      getApiBaseUrl: mocks.getApiBaseUrl,
+      handleCatchError: mocks.handleCatchError,
+    });
+
+    await handleSubmit();
+
+    expect(mocks.setItemsToStorage).toHaveBeenCalledOnce();
+    expect(mocks.navigateFunction).toHaveBeenCalledOnce();
+    expect(mocks.mutate).not.toHaveBeenCalled();
   });
 });
