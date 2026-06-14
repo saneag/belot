@@ -4,7 +4,7 @@ import GameTable from "@/components/game-table";
 import Header from "@/components/game-table/header";
 import { Separator } from "@/components/ui/separator";
 
-export default function GameTableScreen() {
+export default function GameTablePage() {
   useLoadGameData({ getFromStorage: (key) => localStorage.getItem(key) });
 
   return (

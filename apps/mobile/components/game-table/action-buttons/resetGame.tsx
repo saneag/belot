@@ -29,7 +29,7 @@ export default function ResetGameButton({ setWinner }: ResetGameButtonProps) {
     removeFromStorage(StorageKeys.roundsScores);
     removeFromStorage(StorageKeys.timerStartTime);
     removeFromStorage(StorageKeys.roundsScores);
-    router.replace("/players-selection");
+    router.replace("/starting-screen");
   }, [reset, router, setWinner]);
 
   return (

@@ -50,6 +50,8 @@
   --color-input-field: var(--input-field);
   --color-input-field-foreground: var(--input-field-foreground);
   --color-success: var(--success);
+  --color-secondary-button: var(--secondary-button);
+  --color-secondary-button-foreground: var(--secondary-button-foreground);
 }
 
 :root {
@@ -90,6 +92,8 @@
   --input-field-foreground: oklch(0% 0 0);
   --success: oklch(69.417% 0.18862 143.958);
   --success-foreground: oklch(0.98 0 0);
+  --secondary-button: oklch(55.897% 0.00006 271.152);
+  --secondary-button-foreground: oklch(98.511% 0.00011 271.152);
 }
 
 .dark {
@@ -129,6 +133,8 @@
   --input-field-foreground: oklch(100% 0.00011 271.152);
   --success: oklch(69.417% 0.18862 143.958);
   --success-foreground: oklch(0.15 0 0);
+  --secondary-button: oklch(48.55% 0.00006 271.152);
+  --secondary-button-foreground: oklch(98.511% 0.00011 271.152);
 }
 
 @layer base {

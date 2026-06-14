@@ -6,7 +6,7 @@ const lightTheme = {
   foreground: "10 10 10",
   primary: "23 23 23",
   primaryForeground: "250 250 250",
-  secondary: "245 245 245",
+  secondary: "200 200 200",
   secondaryForeground: "23 23 23",
   muted: "245 245 245",
   mutedForeground: "115 115 115",
@@ -26,7 +26,7 @@ const darkTheme = {
   foreground: "250 250 250",
   primary: "229 229 229",
   primaryForeground: "23 23 23",
-  secondary: "38 38 38",
+  secondary: "115 115 115",
   secondaryForeground: "250 250 250",
   muted: "38 38 38",
   mutedForeground: "161 161 161",
@@ -40,6 +40,11 @@ const darkTheme = {
   success: "64 185 70",
   successForeground: "11 11 11",
 };
+
+export const PHONE_SCREEN_BACKGROUND = {
+  light: `rgb(${lightTheme.phoneScreenBackground})`,
+  dark: `rgb(${darkTheme.phoneScreenBackground})`,
+} as const;
 
 const buildThemeVars = (theme: typeof lightTheme) =>
   vars({

@@ -21,14 +21,16 @@ export const CurrentDealer = ({
   const dealer = useGameStore((state) => state.dealer);
 
   const truncatedName = useMemo(() => {
-    if (!dealer) return "";
+    const dealerName = typeof dealer?.name === "string" ? dealer.name : "";
 
-    const dealerName =
-      dealer.name.length > MAX_NAME_LENGTH
-        ? dealer.name.substring(0, MAX_NAME_LENGTH) + "..."
-        : dealer.name;
+    if (!dealerName) return "";
 
-    return formatLocalizationString(dealerMessage, [dealerName]);
+    const formattedDealerName =
+      dealerName.length > MAX_NAME_LENGTH
+        ? dealerName.substring(0, MAX_NAME_LENGTH) + "..."
+        : dealerName;
+
+    return formatLocalizationString(dealerMessage, [formattedDealerName]);
   }, [dealer, dealerMessage]);
 
   if (!truncatedName) {
