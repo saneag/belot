@@ -1,12 +1,12 @@
 import dotenv from "dotenv";
-import express from "express";
+import express, { type Application } from "express";
 
 import setupDb from "./config/setup-db";
 import setupRoutes from "./routes";
 
 dotenv.config();
 
-const app = express();
+const app: Application = express();
 
 app.use(express.json());
 
@@ -24,4 +24,8 @@ async function startServer() {
   });
 }
 
-void startServer();
+if (!process.env.VITEST) {
+  void startServer();
+}
+
+export { app, startServer };
