@@ -1,12 +1,15 @@
-import shared from "@belot/vitest-config";
+import shared, { coverageSourceExclude } from "@belot/vitest-config";
 
-import { defineProject, mergeConfig } from "vitest/config";
+import { defineConfig, mergeConfig } from "vitest/config";
 
 export default mergeConfig(
   shared,
-  defineProject({
+  defineConfig({
     test: {
       name: "@belot/api",
+      coverage: {
+        exclude: [...coverageSourceExclude, "index.ts", "routes/index.ts"],
+      },
     },
   }),
 );

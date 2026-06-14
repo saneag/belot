@@ -102,13 +102,11 @@ export const GameValidators = {
       .isArray({ min: 2, max: 4 })
       .withMessage("players must be an array of 2 to 4 players"),
     body("players").custom((players: unknown) => {
-      if (!Array.isArray(players)) {
-        throw new Error("players must be an array");
-      }
-      players.forEach((p, i) => validatePlayer(p, `players[${i}]`));
-      if (players.length === 4) {
-        const allHaveTeam = players.every(
-          (player: Record<string, unknown>) => typeof player.teamId === "number",
+      const playerList = players as Array<Record<string, unknown>>;
+      playerList.forEach((p, i) => validatePlayer(p, `players[${i}]`));
+      if (playerList.length === 4) {
+        const allHaveTeam = playerList.every(
+          (player) => typeof player.teamId === "number",
         );
         if (!allHaveTeam) {
           throw new Error("Each player must have teamId when there are 4 players");
@@ -133,10 +131,7 @@ export const GameValidators = {
       .isArray()
       .withMessage("teams must be an array")
       .custom((teams: unknown) => {
-        if (!Array.isArray(teams)) {
-          throw new Error("teams must be an array");
-        }
-        teams.forEach((t, i) => validateTeam(t, `teams[${i}]`));
+        (teams as unknown[]).forEach((t, i) => validateTeam(t, `teams[${i}]`));
         return true;
       }),
     body("roundsScores")
@@ -147,10 +142,7 @@ export const GameValidators = {
         if (rounds === undefined) {
           return true;
         }
-        if (!Array.isArray(rounds)) {
-          throw new Error("roundsScores must be an array");
-        }
-        rounds.forEach((r, i) => validateRoundScore(r, `roundsScores[${i}]`));
+        (rounds as unknown[]).forEach((r, i) => validateRoundScore(r, `roundsScores[${i}]`));
         return true;
       }),
     body("undoneRoundsScores")
@@ -160,10 +152,7 @@ export const GameValidators = {
         if (rounds === undefined) {
           return true;
         }
-        if (!Array.isArray(rounds)) {
-          throw new Error("undoneRoundsScores must be an array");
-        }
-        rounds.forEach((r, i) => validateRoundScore(r, `undoneRoundsScores[${i}]`));
+        (rounds as unknown[]).forEach((r, i) => validateRoundScore(r, `undoneRoundsScores[${i}]`));
         return true;
       }),
     body("isFinished").optional().isBoolean(),
@@ -200,10 +189,7 @@ export const GameValidators = {
         if (rounds === undefined) {
           return true;
         }
-        if (!Array.isArray(rounds)) {
-          throw new Error("roundsScores must be an array");
-        }
-        rounds.forEach((r, i) => validateRoundScore(r, `roundsScores[${i}]`));
+        (rounds as unknown[]).forEach((r, i) => validateRoundScore(r, `roundsScores[${i}]`));
         return true;
       }),
     body("undoneRoundsScores")
@@ -213,10 +199,7 @@ export const GameValidators = {
         if (rounds === undefined) {
           return true;
         }
-        if (!Array.isArray(rounds)) {
-          throw new Error("undoneRoundsScores must be an array");
-        }
-        rounds.forEach((r, i) => validateRoundScore(r, `undoneRoundsScores[${i}]`));
+        (rounds as unknown[]).forEach((r, i) => validateRoundScore(r, `undoneRoundsScores[${i}]`));
         return true;
       }),
     body("isFinished").optional().isBoolean(),
