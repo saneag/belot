@@ -15,7 +15,7 @@
     "test:e2e:web": "pnpm --filter @belot/e2e test:e2e:web",
     "test:e2e:mobile": "pnpm --filter @belot/e2e test:e2e:mobile",
     "test:e2e:api": "pnpm --filter @belot/e2e test:e2e:api",
-    "test:e2e:setup": "pnpm --filter @belot/e2e setup",
+    "test:e2e:setup": "pnpm --filter @belot/e2e install-browsers",
     "dev:ui": "turbo run dev --filter=@belot/mobile --filter=@belot/web",
     "nuke": "node nuke.js",
     "lockfile:sync": "pnpm install --lockfile-only",

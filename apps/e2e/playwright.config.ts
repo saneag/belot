@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 import { defineConfig, devices } from "@playwright/test";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(__dirname, "../..");
 
 const WEB_PORT = 5173;
 const MOBILE_WEB_PORT = 8081;
@@ -69,22 +68,28 @@ export default defineConfig({
     ...(shouldStart("web")
       ? [
           {
-            command: `pnpm --filter @belot/web dev -- --host 127.0.0.1 --port ${WEB_PORT}`,
-            cwd: root,
+            command: "node scripts/start-web.mjs",
+            cwd: __dirname,
             url: `http://127.0.0.1:${WEB_PORT}`,
             reuseExistingServer: !process.env.CI,
             timeout: 120_000,
+            env: {
+              E2E_WEB_PORT: String(WEB_PORT),
+            },
           },
         ]
       : []),
     ...(shouldStart("mobile")
       ? [
           {
-            command: `CI=1 pnpm --filter @belot/mobile web -- --port ${MOBILE_WEB_PORT}`,
-            cwd: root,
+            command: "node scripts/start-mobile.mjs",
+            cwd: __dirname,
             url: `http://127.0.0.1:${MOBILE_WEB_PORT}`,
             reuseExistingServer: !process.env.CI,
             timeout: 180_000,
+            env: {
+              E2E_MOBILE_WEB_PORT: String(MOBILE_WEB_PORT),
+            },
           },
         ]
       : []),
