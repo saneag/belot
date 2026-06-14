@@ -33,5 +33,9 @@
   "shuffle.players": "Перемешать игроков",
   "continue.last.game": "Продолжить последнюю игру",
   "new.game": "Новая игра",
-  "settings": "Настройки"
+  "settings": "Настройки",
+  "settings.points.type": "Тип очков",
+  "settings.points.type.hint": "При использовании микроочков, стандартная игра - 162 микроочков, в то время как при использовании очков, стандартная игра - 16 очков.",
+  "settings.points.type.micropoints": "Микроочки",
+  "settings.points.type.points": "Очки"
 }
