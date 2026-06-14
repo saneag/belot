@@ -5,4 +5,5 @@ export enum StorageKeys {
   timerStartTime = "timerStartTime",
   theme = "theme",
   settings = "settings",
+  featureToggles = "featureToggles",
 }

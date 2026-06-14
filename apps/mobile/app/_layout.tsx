@@ -3,6 +3,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { ThemeContextProvider } from "@belot/components";
 import { LocalizationContextProvider } from "@belot/localizations";
 
+import { FeatureToggleProvider } from "@/components/featureToggles/FeatureToggleProvider";
 import Navigation from "@/components/navigation";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 
@@ -20,15 +21,17 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <LocalizationContextProvider getDeviceLanguage={getDeviceLanguage}>
-        <SafeAreaProvider>
-          <ThemeContextProvider initialTheme={theme}>
-            <GluestackUIProvider mode="system">
-              <SafeAreaView className="relative w-full flex-1 bg-phone-screen-background">
-                <Navigation />
-              </SafeAreaView>
-            </GluestackUIProvider>
-          </ThemeContextProvider>
-        </SafeAreaProvider>
+        <FeatureToggleProvider>
+          <SafeAreaProvider>
+            <ThemeContextProvider initialTheme={theme}>
+              <GluestackUIProvider mode="system">
+                <SafeAreaView className="relative w-full flex-1 bg-phone-screen-background">
+                  <Navigation />
+                </SafeAreaView>
+              </GluestackUIProvider>
+            </ThemeContextProvider>
+          </SafeAreaProvider>
+        </FeatureToggleProvider>
       </LocalizationContextProvider>
     </QueryClientProvider>
   );

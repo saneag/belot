@@ -25,6 +25,10 @@ vi.mock("@belot/store", () => ({
   useGameStore: (selector: (state: unknown) => unknown) => selector({ reset: mocks.reset }),
 }));
 
+vi.mock("../src/featureToggles/useFeatureToggle", () => ({
+  useFeatureToggle: vi.fn(() => true),
+}));
+
 describe("useStartingScreenActionsHelper", () => {
   const players: Player[] = [{ id: 0, name: "A" }];
   const dealer: Player = players[0];
@@ -109,5 +113,21 @@ describe("useStartingScreenActionsHelper", () => {
     settingsAction?.onPress();
 
     expect(mocks.navigate).toHaveBeenCalledWith("settings");
+  });
+
+  it("omits settings action when settings-screen toggle is disabled", async () => {
+    const { useFeatureToggle } = await import("../src/featureToggles/useFeatureToggle");
+    vi.mocked(useFeatureToggle).mockReturnValueOnce(false);
+
+    const { useStartingScreenActionsHelper } = await import("../src/useStartingScreenActions");
+    const actions = useStartingScreenActionsHelper({
+      storagePlayers: null,
+      storageDealer: null,
+      storageRoundsScores: null,
+      removeFromStorage: mocks.removeFromStorage,
+      navigate: mocks.navigate,
+    });
+
+    expect(actions.some((action) => action.label === "Settings")).toBe(false);
   });
 });
