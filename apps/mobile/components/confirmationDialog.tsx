@@ -23,8 +23,8 @@ interface ConfirmationModalProps {
   title: ReactNode;
   content: ReactNode;
   renderShowDialog: (showDialog: () => void) => ReactNode;
-  confirmationCallback?: () => void;
-  cancelCallback?: () => void;
+  confirmationCallback?: () => Promise<void> | void;
+  cancelCallback?: () => Promise<void> | void;
   primaryButton?: "confirm" | "cancel";
   visible?: boolean;
   setVisible?: Dispatch<SetStateAction<boolean>>;

@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_type == 'branch' && github.ref_name || github.sha }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -43,6 +45,31 @@ jobs:
         run: eas whoami
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Bump Android version
+        working-directory: apps/mobile
+        run: pnpm run android:version:bump
+
+      - name: Commit Android version bump
+        id: version-bump
+        run: |
+          if git diff --quiet -- apps/mobile/app.json; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            echo "No Android version change to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/mobile/app.json
+
+          VERSION_CODE="$(node -p "require('./apps/mobile/app.json').expo.android.versionCode")"
+          git commit -m "chore(mobile): bump Android version code to ${VERSION_CODE} [skip ci]"
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push Android version bump
+        if: github.ref_type == 'branch' && steps.version-bump.outputs.committed == 'true'
+        run: git push origin "HEAD:${GITHUB_REF_NAME}"
 
       - name: Build Android APK
         working-directory: apps/mobile

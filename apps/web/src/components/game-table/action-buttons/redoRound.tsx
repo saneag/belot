@@ -24,7 +24,11 @@ export default function RedoRoundButton() {
 
   return (
     <Tooltip>
-      <TooltipTrigger onClick={redoRoundScore} disabled={undoneRoundsScoresCount === 0}>
+      <TooltipTrigger
+        onClick={redoRoundScore}
+        disabled={undoneRoundsScoresCount === 0}
+        className="rounded-lg px-4 py-1"
+      >
         <Redo />
       </TooltipTrigger>
       <TooltipContent>

@@ -16,13 +16,17 @@ export default function RedoRoundButton() {
     },
   ]);
 
-  const undoneRoundsScores = useGameStore((state) => state.undoneRoundsScores);
+  const undoneRoundsScores = useGameStore((state) =>
+    Array.isArray(state.undoneRoundsScores) ? state.undoneRoundsScores : [],
+  );
   const redoRoundScore = useGameStore((state) => state.redoRoundScore);
 
   const undoneRoundsScoresCount = useMemo(
     () => undoneRoundsScores.length,
     [undoneRoundsScores.length],
   );
+
+  const isRedoDisabled = undoneRoundsScoresCount === 0;
 
   return (
     <ExtendedTooltip
@@ -32,7 +36,8 @@ export default function RedoRoundButton() {
           variant="solid"
           action="secondary"
           onPress={redoRoundScore}
-          disabled={undoneRoundsScoresCount === 0}
+          disabled={isRedoDisabled}
+          className={isRedoDisabled ? "cursor-not-allowed opacity-50" : ""}
         >
           <Icon as={Redo} />
         </Button>

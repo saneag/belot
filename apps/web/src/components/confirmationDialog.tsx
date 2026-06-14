@@ -15,8 +15,8 @@ interface ConfirmationModalProps {
   title: ReactNode;
   content: ReactNode;
   renderShowDialog: (showDialog: () => void) => ReactNode;
-  confirmationCallback?: () => void;
-  cancelCallback?: () => void;
+  confirmationCallback?: () => Promise<void> | void;
+  cancelCallback?: () => Promise<void> | void;
   primaryButton?: "confirm" | "cancel";
   visible?: boolean;
   setVisible?: Dispatch<SetStateAction<boolean>>;
@@ -60,7 +60,7 @@ export default function ConfirmationDialog({
             {isConfirmationButtonVisible && (
               <Button
                 variant={primaryButton === "confirm" ? "default" : "secondary"}
-                onClick={handleDialogConfirmation}
+                onClick={() => void handleDialogConfirmation()}
                 disabled={isConfirmButtonDisabled}
               >
                 {messages.confirmationDialogConfirmButton}
@@ -68,7 +68,7 @@ export default function ConfirmationDialog({
             )}
             <Button
               variant={primaryButton === "cancel" ? "default" : "secondary"}
-              onClick={handleDialogCancel}
+              onClick={() => void handleDialogCancel()}
               className="px-4"
             >
               {messages.confirmationDialogCancelButton}

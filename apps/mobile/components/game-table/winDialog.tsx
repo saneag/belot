@@ -30,7 +30,7 @@ export default function WinDialog({ winner, setWinner }: WinDialogProps) {
   const handleGameReset = useCallback(() => {
     reset();
     setWinner(null);
-    router.replace("/players-selection");
+    router.replace("/starting-screen");
   }, [reset, router, setWinner]);
 
   const handleClose = useCallback(() => {
