@@ -4,4 +4,5 @@ export enum StorageKeys {
   roundsScores = "roundsScores",
   timerStartTime = "timerStartTime",
   theme = "theme",
+  settings = "settings",
 }
