@@ -12,6 +12,7 @@ import {
 } from "@belot/utils";
 
 import { usePlayersSelectionContext } from "./usePlayersSelectionContext";
+import { useFeatureToggle } from "./featureToggles/useFeatureToggle";
 
 interface UsePlayersSubmitProps {
   navigateFunction: () => void;
@@ -35,6 +36,7 @@ export function usePlayersSubmit({
   const mode = useGameStore((state) => state.mode);
   const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
   const setGameId = useGameStore((state) => state.setGameId);
+  const isBackendGameInitEnabled = useFeatureToggle("backend-game-init");
 
   const handleOpenDialog = useCallback(
     (showDialog: () => void) => {
@@ -77,6 +79,10 @@ export function usePlayersSubmit({
 
     navigateFunction();
 
+    if (!isBackendGameInitEnabled) {
+      return;
+    }
+
     initGame.mutate(
       {
         players,
@@ -97,6 +103,7 @@ export function usePlayersSubmit({
     dealer,
     handleCatchError,
     initGame,
+    isBackendGameInitEnabled,
     mode,
     navigateFunction,
     players,
