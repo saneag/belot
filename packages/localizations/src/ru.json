@@ -15,7 +15,6 @@
   "win.dialog.title.player": "Игрок {0} выиграл",
   "win.dialog.title.team": "Команда {0} выиграла",
   "win.dialog.content": "Вы можете сбросить игру или проверить текущие очки. Хотите сбросить игру?",
-  "players.setup": "Настройки",
   "players.count.number.of.players": "Количество игроков",
   "players.names.input.label": "Игрок {0}",
   "players.names.input.empty.error": "Пожалуйста, введите имя",
@@ -33,5 +32,9 @@
   "shuffle.players": "Перемешать игроков",
   "continue.last.game": "Продолжить последнюю игру",
   "new.game": "Новая игра",
-  "settings": "Настройки"
+  "settings": "Настройки",
+  "settings.points.type": "Тип очков",
+  "settings.points.type.hint": "При использовании микроочков, стандартная игра - 162 микроочков, в то время как при использовании очков, стандартная игра - 16 очков.",
+  "settings.points.type.micropoints": "Микроочки",
+  "settings.points.type.points": "Очки"
 }
