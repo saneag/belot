@@ -47,7 +47,7 @@ describe("GameValidators", () => {
       .send({ players: [{ id: 0, name: "Alice" }], mode: "classic", teams: [] });
 
     expect(response.status).toBe(400);
-    expect(response.body.errors).toBeDefined();
+    expect(response.body).toHaveProperty("errors");
   });
 
   it("initGame accepts valid payloads", async () => {
