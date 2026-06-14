@@ -8,6 +8,7 @@ overrides:
 
 allowBuilds:
   esbuild: false
+  mongodb-memory-server: true
   msw: false
   unrs-resolver: false
 
