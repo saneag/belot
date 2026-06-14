@@ -36,6 +36,7 @@ describe("PhoneScreen", () => {
       </PhoneScreen>,
     );
 
-    expect(container.firstElementChild?.className).toContain("h-screen");
+    expect(container.firstElementChild?.className).toContain("h-dvh");
+    expect(container.firstElementChild?.className).toContain("max-h-dvh");
   });
 });
