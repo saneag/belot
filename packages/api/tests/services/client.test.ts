@@ -39,9 +39,9 @@ describe("apiFetch", () => {
       "https://api.example/x",
       expect.objectContaining({
         headers: { Accept: "application/json" },
-        signal: expect.any(AbortSignal),
       }),
     );
+    expect((fetchMock.mock.calls[0]?.[1] as RequestInit).signal).toBeInstanceOf(AbortSignal);
   });
 
   it("merges init headers with Accept", async () => {
@@ -65,9 +65,9 @@ describe("apiFetch", () => {
           Accept: "application/json",
           "X-Custom": "1",
         },
-        signal: expect.any(AbortSignal),
       }),
     );
+    expect((fetchMock.mock.calls[0]?.[1] as RequestInit).signal).toBeInstanceOf(AbortSignal);
   });
 
   it("returns null when body is empty", async () => {

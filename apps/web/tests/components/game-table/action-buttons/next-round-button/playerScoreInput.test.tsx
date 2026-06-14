@@ -44,7 +44,7 @@ describe("PlayerScoreInput", () => {
 
     render(<Harness />);
 
-    const input = screen.getByRole("spinbutton") as HTMLInputElement;
+    const input = screen.getByRole<HTMLInputElement>("spinbutton");
     expect(screen.getByText("Score for Bob")).toBeTruthy();
 
     fireEvent.change(input, { target: { value: "5" } });
