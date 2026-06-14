@@ -4,8 +4,8 @@ import type { TeamScore } from "@belot/types";
 import { describe, expect, it } from "vitest";
 
 import { baseTeamScore, mockPlayers } from "../../__mocks__/gameScoreHelpers";
-import { roundByLastDigit } from "../commonUtils";
-import { calculateTeamsScore } from "./teamsScoreCalculationHelpers";
+import { roundByLastDigit } from "../../src/commonUtils";
+import { calculateTeamsScore } from "../../src/gameUtils/teamsScoreCalculationHelpers";
 
 describe("teamsScoreCalculationHelpers", () => {
   describe("calculateTeamsScore", () => {

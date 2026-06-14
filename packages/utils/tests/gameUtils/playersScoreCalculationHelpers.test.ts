@@ -8,7 +8,7 @@ import {
   calculatePlayersScores,
   calculatePlayersScoresHelper,
   sumOpponentPlayersScores,
-} from "./playersScoreCalculationHelpers";
+} from "../../src/gameUtils/playersScoreCalculationHelpers";
 
 describe("playersScoreCalculationHelpers", () => {
   beforeEach(() => {

@@ -8,7 +8,7 @@ import {
   baseTeamScore,
   mockPlayers,
 } from "../../__mocks__/gameScoreHelpers";
-import { handleRoundScoreChange } from "./scoreChangeHelpers";
+import { handleRoundScoreChange } from "../../src/gameUtils/scoreChangeHelpers";
 
 describe("scoreChangeHelpers", () => {
   describe("handleRoundScoreChange", () => {

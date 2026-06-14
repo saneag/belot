@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { removeNthElementFromEnd, roundByLastDigit, roundToDecimal } from "./commonUtils";
+import { removeNthElementFromEnd, roundByLastDigit, roundToDecimal } from "../src/commonUtils";
 
 describe("commonUtils", () => {
   describe("roundByLastDigit", () => {
