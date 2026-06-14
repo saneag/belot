@@ -5,6 +5,8 @@ import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import type { Player, RoundScore } from "@belot/types";
 
+import { useFeatureToggle } from "./featureToggles/useFeatureToggle";
+
 interface UseStartingScreenActionsHelperProps {
   storagePlayers: Player[] | null;
   storageDealer: Player | null;
@@ -28,6 +30,7 @@ export const useStartingScreenActionsHelper = ({
   navigate,
 }: UseStartingScreenActionsHelperProps) => {
   const reset = useGameStore((state) => state.reset);
+  const isSettingsScreenEnabled = useFeatureToggle("settings-screen");
 
   const messages = useLocalizations([
     {
@@ -75,10 +78,10 @@ export const useStartingScreenActionsHelper = ({
     () => ({
       index: 2,
       label: messages.settings,
-      isActive: true,
+      isActive: isSettingsScreenEnabled,
       onPress: () => void navigate("settings"),
     }),
-    [messages.settings, navigate],
+    [messages.settings, navigate, isSettingsScreenEnabled],
   );
 
   return [continueGameAction, newGameAction, settingsAction]
