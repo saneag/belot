@@ -27,8 +27,11 @@ function TooltipTrigger(props: React.ComponentProps<typeof TooltipPrimitive.Trig
   return (
     <TooltipPrimitive.Trigger
       data-slot="tooltip-trigger"
+      {...props}
       {...(asChild
-        ? {}
+        ? {
+            className: props.className,
+          }
         : {
             className: cn(
               "bg-secondary-button text-secondary-button-foreground",
@@ -36,7 +39,6 @@ function TooltipTrigger(props: React.ComponentProps<typeof TooltipPrimitive.Trig
               className,
             ),
           })}
-      {...props}
     />
   );
 }
