@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { ThemeContextProvider } from "@belot/components";
 import { LocalizationContextProvider } from "@belot/localizations";
 
+import { FeatureToggleProvider } from "@/components/featureToggles/FeatureToggleProvider";
 import { Layout } from "@/components/_layout";
 import PhoneScreen from "@/components/phoneScreen";
 import { Toaster } from "@/components/ui/sonner";
@@ -20,18 +21,20 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <LocalizationContextProvider getDeviceLanguage={getDeviceLanguage}>
-        <ThemeContextProvider initialTheme={readInitialTheme()}>
-          <Layout>
-            <TooltipProvider>
-              <PhoneScreen>
-                <Suspense>
-                  <Outlet />
-                </Suspense>
-                <Toaster />
-              </PhoneScreen>
-            </TooltipProvider>
-          </Layout>
-        </ThemeContextProvider>
+        <FeatureToggleProvider>
+          <ThemeContextProvider initialTheme={readInitialTheme()}>
+            <Layout>
+              <TooltipProvider>
+                <PhoneScreen>
+                  <Suspense>
+                    <Outlet />
+                  </Suspense>
+                  <Toaster />
+                </PhoneScreen>
+              </TooltipProvider>
+            </Layout>
+          </ThemeContextProvider>
+        </FeatureToggleProvider>
       </LocalizationContextProvider>
     </QueryClientProvider>
   );
