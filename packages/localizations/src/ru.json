@@ -15,7 +15,6 @@
   "win.dialog.title.player": "Игрок {0} выиграл",
   "win.dialog.title.team": "Команда {0} выиграла",
   "win.dialog.content": "Вы можете сбросить игру или проверить текущие очки. Хотите сбросить игру?",
-  "players.setup": "Настройки",
   "players.count.number.of.players": "Количество игроков",
   "players.names.input.label": "Игрок {0}",
   "players.names.input.empty.error": "Пожалуйста, введите имя",

@@ -10,8 +10,8 @@ export default function StartingScreen() {
   const actions = useStartingScreenActions();
 
   return (
-    <View className="flex-1 items-center justify-center bg-phone-screen-background">
-      <VStack className="absolute top-20 items-center justify-center gap-3">
+    <View className="flex-1 items-center justify-center">
+      <VStack className="absolute top-10 items-center justify-center gap-3">
         <Image
           source={require("../assets/images/ic_launcher_no_bg.png")}
           style={{ width: 100, height: 100 }}

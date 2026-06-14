@@ -15,7 +15,6 @@
   "win.dialog.title.player": "Jucător {0} a câștigat",
   "win.dialog.title.team": "Echipa {0} a câștigat",
   "win.dialog.content": "Poți reseta jocul sau verifica punctele actuale. Vrei să resetezi jocul?",
-  "players.setup": "Setare",
   "players.count.number.of.players": "Număr de jucători",
   "players.names.input.label": "Jucătorul {0}",
   "players.names.input.empty.error": "Te rugăm să introduci un nume",

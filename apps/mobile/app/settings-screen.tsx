@@ -27,7 +27,7 @@ export default function SettingsScreen() {
 
   return (
     <VStack className="flex-1 items-center justify-center">
-      <Heading size="4xl" className="mt-10 pb-2 font-normal">
+      <Heading size="4xl" className="absolute top-10 pb-2 font-normal">
         {settingsMsg}
       </Heading>
       <VStack className="flex-1 items-center justify-center gap-4">
