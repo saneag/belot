@@ -2,7 +2,7 @@ import { GameMode, type Player, type Team } from "@belot/types";
 
 import { describe, expect, it } from "vitest";
 
-import { gameKeys } from "./query-keys";
+import { gameKeys } from "../../src/constants/query-keys";
 
 describe("gameKeys", () => {
   it("all and lists return stable key prefixes", () => {
