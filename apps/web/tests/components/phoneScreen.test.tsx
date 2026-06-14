@@ -38,5 +38,9 @@ describe("PhoneScreen", () => {
 
     expect(container.firstElementChild?.className).toContain("h-dvh");
     expect(container.firstElementChild?.className).toContain("max-h-dvh");
+    expect(container.firstElementChild?.className).toContain("w-full");
+    expect(container.firstElementChild?.className).toContain("max-w-full");
+    expect(container.firstElementChild?.className).not.toContain("w-screen");
+    expect(container.firstElementChild?.className).not.toContain("min-w-sm");
   });
 });
