@@ -3,7 +3,35 @@
 import { StorageKeys } from "@belot/constants";
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import { getFromStorage, setMultipleItemsToStorage, setToStorage } from "@/helpers/storageHelpers";
+
+describe("getFromStorage", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("reads values from localStorage", () => {
+    localStorage.setItem(StorageKeys.theme, "dark");
+
+    expect(getFromStorage(StorageKeys.theme)).toBe("dark");
+  });
+
+  it("returns null when value is missing", () => {
+    expect(getFromStorage(StorageKeys.theme)).toBeNull();
+  });
+});
+
+describe("setToStorage", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("writes values to localStorage", () => {
+    setToStorage(StorageKeys.theme, "dark");
+
+    expect(localStorage.getItem(StorageKeys.theme)).toBe("dark");
+  });
+});
 
 describe("setMultipleItemsToStorage", () => {
   beforeEach(() => {
