@@ -1,3 +1,5 @@
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 import { PlayersSelectionContextProvider } from "@belot/components";
 
 import DismissKeyboardView from "@/components/dismissKeyboardView";
@@ -10,17 +12,24 @@ import { VStack } from "@/components/ui/vstack";
 
 export default function PlayersSelectionScreen() {
   return (
-    <Center className="flex-1 px-2.5">
-      <DismissKeyboardView>
-        <VStack className="gap-3">
-          <PlayersSelectionContextProvider>
-            <PlayersCount />
-            <PlayersNames />
-            <ActionButtons />
-          </PlayersSelectionContextProvider>
-          <LoadPreviousGameButton />
-        </VStack>
-      </DismissKeyboardView>
-    </Center>
+    <KeyboardAwareScrollView
+      className="flex-1 bg-phone-screen-background"
+      contentContainerStyle={{ flexGrow: 1 }}
+      enableOnAndroid
+      keyboardShouldPersistTaps="handled"
+    >
+      <Center className="flex-1 px-2.5">
+        <DismissKeyboardView>
+          <VStack className="gap-3">
+            <PlayersSelectionContextProvider>
+              <PlayersCount />
+              <PlayersNames />
+              <ActionButtons />
+            </PlayersSelectionContextProvider>
+            <LoadPreviousGameButton />
+          </VStack>
+        </DismissKeyboardView>
+      </Center>
+    </KeyboardAwareScrollView>
   );
 }
