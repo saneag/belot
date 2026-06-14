@@ -6,6 +6,11 @@ import { GameMode } from "@belot/types";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import RoundPlayerSelect from "@/components/game-table/action-buttons/next-round-button/roundPlayerSelect";
+import RoundScoreSelect from "@/components/game-table/action-buttons/next-round-button/roundScoreSelect";
+import ScoreDialogContent from "@/components/game-table/action-buttons/next-round-button/scoreDialogContent";
+import PlayerScoreInputWrapper from "@/components/game-table/action-buttons/next-round-button/playerScoreInputWrapper";
+
 const mocks = vi.hoisted(() => ({
   players: [
     { id: 0, name: "Alice" },
@@ -60,11 +65,8 @@ describe("next-round-button components", () => {
     ];
   });
 
-  it("RoundPlayerSelect selects a player", async () => {
+  it("RoundPlayerSelect selects a player", () => {
     const setRoundPlayer = vi.fn();
-    const { default: RoundPlayerSelect } = await import(
-      "@/components/game-table/action-buttons/next-round-button/roundPlayerSelect"
-    );
 
     render(<RoundPlayerSelect setRoundPlayer={setRoundPlayer} />);
     fireEvent.click(screen.getByText("Alice"));
@@ -86,7 +88,7 @@ describe("next-round-button components", () => {
     expect(setRoundPlayer).toHaveBeenCalledWith(null);
   });
 
-  it("RoundScoreSelect updates round score", async () => {
+  it("RoundScoreSelect updates round score", () => {
     const setRoundScore = vi.fn();
     const roundScore: RoundScore = {
       id: 0,
@@ -95,10 +97,6 @@ describe("next-round-button components", () => {
       totalRoundScore: 0,
       roundPlayer: null,
     };
-
-    const { default: RoundScoreSelect } = await import(
-      "@/components/game-table/action-buttons/next-round-button/roundScoreSelect"
-    );
 
     render(<RoundScoreSelect roundScore={roundScore} setRoundScore={setRoundScore} />);
     fireEvent.click(screen.getByText("+ 20"));
@@ -109,11 +107,7 @@ describe("next-round-button components", () => {
     expect(setRoundScore).toHaveBeenCalled();
   });
 
-  it("ScoreDialogContent shows player select when no round player", async () => {
-    const { default: ScoreDialogContent } = await import(
-      "@/components/game-table/action-buttons/next-round-button/scoreDialogContent"
-    );
-
+  it("ScoreDialogContent shows player select when no round player", () => {
     render(
       <ScoreDialogContent
         roundPlayer={null}
@@ -132,11 +126,7 @@ describe("next-round-button components", () => {
     expect(screen.getAllByText("next.round.player.select")[0]).toBeTruthy();
   });
 
-  it("ScoreDialogContent shows score inputs when round player selected", async () => {
-    const { default: ScoreDialogContent } = await import(
-      "@/components/game-table/action-buttons/next-round-button/scoreDialogContent"
-    );
-
+  it("ScoreDialogContent shows score inputs when round player selected", () => {
     render(
       <ScoreDialogContent
         roundPlayer={mocks.players[0]}
@@ -155,11 +145,7 @@ describe("next-round-button components", () => {
     expect(screen.getByText("* helper")).toBeTruthy();
   });
 
-  it("PlayerScoreInputWrapper renders opponent inputs", async () => {
-    const { default: PlayerScoreInputWrapper } = await import(
-      "@/components/game-table/action-buttons/next-round-button/playerScoreInputWrapper"
-    );
-
+  it("PlayerScoreInputWrapper renders opponent inputs", () => {
     render(
       <PlayerScoreInputWrapper
         roundPlayer={mocks.players[0]}

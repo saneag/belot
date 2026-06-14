@@ -5,17 +5,16 @@ import { GameMode } from "@belot/types";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import PlayerScoreInput from "@/components/game-table/action-buttons/next-round-button/playerScoreInput";
+
 vi.mock("@belot/localizations", () => ({
   useLocalizations: () => ({ nextRoundScoreForPlayer: "Score for {0}" }),
   formatLocalizationString: (msg: string, args: string[]) => `${msg}:${args[0]}`,
 }));
 
 describe("PlayerScoreInput", () => {
-  it("updates score on input change", async () => {
+  it("updates score on input change", () => {
     const setRoundScore = vi.fn();
-    const { default: PlayerScoreInput } = await import(
-      "@/components/game-table/action-buttons/next-round-button/playerScoreInput"
-    );
 
     render(
       <PlayerScoreInput
@@ -43,11 +42,8 @@ describe("PlayerScoreInput", () => {
     expect(setRoundScore).toHaveBeenCalled();
   });
 
-  it("skips auto-update when total round score is zero", async () => {
+  it("skips auto-update when total round score is zero", () => {
     const setRoundScore = vi.fn();
-    const { default: PlayerScoreInput } = await import(
-      "@/components/game-table/action-buttons/next-round-button/playerScoreInput"
-    );
 
     render(
       <PlayerScoreInput
