@@ -15,7 +15,6 @@
   "win.dialog.title.player": "Player {0} won",
   "win.dialog.title.team": "Team {0} won",
   "win.dialog.content": "You can reset the game or check current game points. Do you want to reset the game?",
-  "players.setup": "Setup",
   "players.count.number.of.players": "Number of players",
   "players.names.input.label": "Player {0}",
   "players.names.input.empty.error": "Please enter a name",

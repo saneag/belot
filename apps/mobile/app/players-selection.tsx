@@ -1,5 +1,4 @@
 import { PlayersSelectionContextProvider } from "@belot/components";
-import { useLocalization } from "@belot/localizations";
 
 import DismissKeyboardView from "@/components/dismissKeyboardView";
 import ActionButtons from "@/components/players-selection/actionButtons";
@@ -7,28 +6,19 @@ import LoadPreviousGameButton from "@/components/players-selection/loadPreviousG
 import PlayersCount from "@/components/players-selection/playersCount";
 import PlayersNames from "@/components/players-selection/playersNames";
 import { Center } from "@/components/ui/center";
-import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
 
 export default function PlayersSelectionScreen() {
-  const playersSetupMsg = useLocalization("players.setup");
-
   return (
-    <Center className="flex-1 bg-phone-screen-background px-2.5">
+    <Center className="flex-1 px-2.5">
       <DismissKeyboardView>
-        <VStack className="gap-5">
-          <Heading size="4xl" className="text-center font-normal">
-            {playersSetupMsg}
-          </Heading>
-
-          <VStack className="gap-3">
-            <PlayersSelectionContextProvider>
-              <PlayersCount />
-              <PlayersNames />
-              <ActionButtons />
-            </PlayersSelectionContextProvider>
-            <LoadPreviousGameButton />
-          </VStack>
+        <VStack className="gap-3">
+          <PlayersSelectionContextProvider>
+            <PlayersCount />
+            <PlayersNames />
+            <ActionButtons />
+          </PlayersSelectionContextProvider>
+          <LoadPreviousGameButton />
         </VStack>
       </DismissKeyboardView>
     </Center>

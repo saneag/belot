@@ -24,7 +24,7 @@ export default function RootLayout() {
         <SafeAreaProvider>
           <ThemeContextProvider initialTheme={theme}>
             <GluestackUIProvider mode="system">
-              <SafeAreaView className="flex-1">
+              <SafeAreaView className="relative flex-1 bg-phone-screen-background">
                 <KeyboardAwareScrollView
                   contentContainerStyle={{ flexGrow: 1 }}
                   enableOnAndroid
