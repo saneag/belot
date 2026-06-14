@@ -23,7 +23,7 @@ export default function RootLayout() {
         <SafeAreaProvider>
           <ThemeContextProvider initialTheme={theme}>
             <GluestackUIProvider mode="system">
-              <SafeAreaView className="relative flex-1 bg-phone-screen-background">
+              <SafeAreaView className="relative w-full flex-1 bg-phone-screen-background">
                 <Navigation />
               </SafeAreaView>
             </GluestackUIProvider>

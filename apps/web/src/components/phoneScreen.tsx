@@ -9,7 +9,7 @@ interface PhoneScreenProps {
 export default function PhoneScreen({ children }: PhoneScreenProps) {
   return (
     <div
-      className={`${isMobile() ? "h-screen" : "h-[80vh]"} bg-phone-screen-background w-screen max-w-sm min-w-sm rounded-3xl`}
+      className={`${isMobile() ? "h-screen" : "h-[80vh]"} bg-phone-screen-background relative w-screen max-w-sm min-w-sm rounded-3xl`}
     >
       {children}
     </div>

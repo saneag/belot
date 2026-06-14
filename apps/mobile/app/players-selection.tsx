@@ -2,6 +2,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import { PlayersSelectionContextProvider } from "@belot/components";
 
+import { BackButton } from "@/components/backButton";
 import DismissKeyboardView from "@/components/dismissKeyboardView";
 import ActionButtons from "@/components/players-selection/actionButtons";
 import LoadPreviousGameButton from "@/components/players-selection/loadPreviousGameButton";
@@ -18,6 +19,7 @@ export default function PlayersSelectionScreen() {
       enableOnAndroid
       keyboardShouldPersistTaps="handled"
     >
+      <BackButton />
       <Center className="flex-1 px-2.5">
         <DismissKeyboardView>
           <VStack className="gap-3">
