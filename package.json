@@ -12,12 +12,17 @@
     "test:coverage": "turbo run test:coverage",
     "test:watch": "vitest watch",
     "dev:ui": "turbo run dev --filter=@belot/mobile --filter=@belot/web",
-    "nuke": "node nuke.js"
+    "nuke": "node nuke.js",
+    "lockfile:sync": "pnpm install --lockfile-only",
+    "lockfile:check": "pnpm install --frozen-lockfile",
+    "precommit": "node scripts/pre-commit-checks.mjs",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@belot/vitest-config": "workspace:*",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@vitest/coverage-v8": "catalog:",
+    "husky": "^9.1.7",
     "prettier": "^3.7.4",
     "react": "19.1.0",
     "turbo": "^2.9.18",
