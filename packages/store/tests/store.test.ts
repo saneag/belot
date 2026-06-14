@@ -3,7 +3,7 @@ import { GameMode, type Player, type PlayerScore, type RoundScore } from "@belot
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { createGameStore, useGameStore } from "./index";
+import { createGameStore, useGameStore } from "../src/index";
 
 const baseRoundScore = (partial: Partial<RoundScore> & Pick<RoundScore, "id">): RoundScore => ({
   playersScores: [],
@@ -152,6 +152,12 @@ describe("gameStore", () => {
         store.getState().setRoundsScores([row0, row1]);
         expect(store.getState().roundsScores).toEqual([row0, row1]);
         expect(store.getState().dealer?.id).toBe(store.getState().players[1].id);
+      });
+
+      it("setRoundsScores normalizes non-array input to an empty list", () => {
+        store.getState().setEmptyPlayersNames(3);
+        store.getState().setRoundsScores(null as unknown as RoundScore[]);
+        expect(store.getState().roundsScores).toEqual([]);
       });
 
       it("updateRoundScore merges an existing row and appends a fresh empty row", () => {
