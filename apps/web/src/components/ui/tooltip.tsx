@@ -21,19 +21,24 @@ function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root
   return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
 }
 
-function TooltipTrigger({
-  className,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+function TooltipTrigger(props: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+  const { className, disabled, asChild } = props;
+
   return (
     <TooltipPrimitive.Trigger
       data-slot="tooltip-trigger"
-      className={cn(
-        "bg-secondary-button text-secondary-button-foreground",
-        props.disabled && "cursor-not-allowed opacity-50",
-        className,
-      )}
       {...props}
+      {...(asChild
+        ? {
+            className: props.className,
+          }
+        : {
+            className: cn(
+              "bg-secondary-button text-secondary-button-foreground",
+              disabled && "cursor-not-allowed opacity-50",
+              className,
+            ),
+          })}
     />
   );
 }

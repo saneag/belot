@@ -41,6 +41,11 @@ const darkTheme = {
   successForeground: "11 11 11",
 };
 
+export const PHONE_SCREEN_BACKGROUND = {
+  light: `rgb(${lightTheme.phoneScreenBackground})`,
+  dark: `rgb(${darkTheme.phoneScreenBackground})`,
+} as const;
+
 const buildThemeVars = (theme: typeof lightTheme) =>
   vars({
     "--color-primary-0": theme.primary,

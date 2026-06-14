@@ -50,13 +50,8 @@ export default function Header() {
         title={messages.gameResetTitle}
         content={messages.gameResetContent}
         renderShowDialog={(showModal) => (
-          <Button
-            variant="ghost"
-            size="icon-lg"
-            className="justify-self-start border-2"
-            onClick={showModal}
-          >
-            <ArrowLeft />
+          <Button variant="ghost" size="icon" onClick={showModal}>
+            <ArrowLeft className="size-5" />
           </Button>
         )}
         confirmationCallback={() => {

@@ -13,6 +13,8 @@ export default function Navigation() {
       initialRouteName="starting-screen"
       screenOptions={{
         headerShown: false,
+        animation: "scale_from_center",
+        detachPreviousScreen: true,
         cardStyle: { backgroundColor: "transparent", padding: 0, margin: 0 },
       }}
     >
