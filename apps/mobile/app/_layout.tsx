@@ -1,4 +1,3 @@
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import { ThemeContextProvider } from "@belot/components";
@@ -25,13 +24,7 @@ export default function RootLayout() {
           <ThemeContextProvider initialTheme={theme}>
             <GluestackUIProvider mode="system">
               <SafeAreaView className="relative flex-1 bg-phone-screen-background">
-                <KeyboardAwareScrollView
-                  contentContainerStyle={{ flexGrow: 1 }}
-                  enableOnAndroid
-                  keyboardShouldPersistTaps="handled"
-                >
-                  <Navigation />
-                </KeyboardAwareScrollView>
+                <Navigation />
               </SafeAreaView>
             </GluestackUIProvider>
           </ThemeContextProvider>
