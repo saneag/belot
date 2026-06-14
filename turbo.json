@@ -19,6 +19,9 @@
     "test:coverage": {
       "inputs": ["$TURBO_DEFAULT$", "**/*.{test,spec}.{ts,tsx}", "**/vitest.config.ts"]
     },
+    "test:e2e": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true
