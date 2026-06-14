@@ -7,7 +7,7 @@ export default function StartingPage() {
 
   return (
     <div className="flex h-full items-center justify-center">
-      <div className="absolute top-1/6 flex flex-col items-center justify-center gap-3">
+      <div className="absolute top-10 flex flex-col items-center justify-center gap-3">
         <img
           src="/images/ic_launcher_no_bg.png"
           alt="Belot-score logo"
