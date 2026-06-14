@@ -19,7 +19,7 @@ describe("useKeyboardAvoidView", () => {
 
   it("updates bottom offset on ios keyboard show", async () => {
     await setPlatformOS("ios");
-    const listeners: Record<string, Array<(e: unknown) => void>> = {};
+    const listeners: Record<string, ((e: unknown) => void)[]> = {};
 
     vi.mocked(Keyboard.addListener).mockImplementation((event, handler) => {
       listeners[event] = listeners[event] ?? [];
@@ -41,7 +41,7 @@ describe("useKeyboardAvoidView", () => {
 
   it("resets bottom on ios keyboard hide", async () => {
     await setPlatformOS("ios");
-    const listeners: Record<string, Array<(e: unknown) => void>> = {};
+    const listeners: Record<string, ((e: unknown) => void)[]> = {};
 
     vi.mocked(Keyboard.addListener).mockImplementation((event, handler) => {
       listeners[event] = listeners[event] ?? [];
@@ -63,7 +63,7 @@ describe("useKeyboardAvoidView", () => {
 
   it("handles android keyboard events", async () => {
     await setPlatformOS("android");
-    const listeners: Record<string, Array<(e: unknown) => void>> = {};
+    const listeners: Record<string, ((e: unknown) => void)[]> = {};
 
     vi.mocked(Keyboard.addListener).mockImplementation((event, handler) => {
       listeners[event] = listeners[event] ?? [];

@@ -3,12 +3,17 @@
 import { cleanup, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { type Player } from "@belot/types";
+
 import NextRoundButton from "@/components/game-table/action-buttons/next-round-button";
 
 import { renderWithTooltip } from "../../../../testUtils";
 
-const nextRoundMocks = vi.hoisted(() => ({
-  roundPlayer: { id: 0, name: "Alice" } as { id: number; name: string } | null,
+const nextRoundMocks = vi.hoisted((): {
+  roundPlayer: Player | null;
+  handleDialogOpen: ReturnType<typeof vi.fn>;
+} => ({
+  roundPlayer: { id: 0, name: "Alice" },
   handleDialogOpen: vi.fn(),
 }));
 
