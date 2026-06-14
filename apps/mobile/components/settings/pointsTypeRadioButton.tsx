@@ -7,7 +7,7 @@ import { formatLocalizationKey, useLocalizations } from "@belot/localizations";
 import ExtendedTooltip from "@/components/extendedTooltip";
 import { Button } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
-import { CircleIcon } from "@/components/ui/icon";
+import { CircleIcon, Icon } from "@/components/ui/icon";
 import { Radio, RadioGroup, RadioIcon, RadioIndicator, RadioLabel } from "@/components/ui/radio";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
@@ -50,8 +50,8 @@ export const PointsTypeRadioButton = ({ value, onChange }: PointsTypeRadioButton
           tooltipText={messages.settingsPointsTypeHint}
           tooltipTextClassName="text-base"
           button={
-            <Button variant="link" action="default" size="xs" className="px-2">
-              <CircleQuestionMark size={16} />
+            <Button variant="link" action="default" className="px-2">
+              <Icon as={CircleQuestionMark} size="md" />
             </Button>
           }
         />
