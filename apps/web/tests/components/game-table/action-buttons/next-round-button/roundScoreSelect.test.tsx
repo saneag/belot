@@ -9,7 +9,11 @@ import { type RoundScore } from "@belot/types";
 import RoundScoreSelect from "@/components/game-table/action-buttons/next-round-button/roundScoreSelect";
 
 vi.mock("@belot/localizations", () => ({
-  useLocalization: (_key: string, args?: unknown[]) => `Score:${String(args?.[0] ?? "")}`,
+  useLocalization: (_key: string, args?: unknown[]) => {
+    const value = args?.[0];
+    const label = typeof value === "string" || typeof value === "number" ? String(value) : "";
+    return `Score:${label}`;
+  },
 }));
 
 function RoundScoreSelectHarness() {

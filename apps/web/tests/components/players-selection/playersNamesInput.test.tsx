@@ -15,7 +15,11 @@ vi.mock("@belot/hooks", () => ({
 }));
 
 vi.mock("@belot/localizations", () => ({
-  useLocalization: (key: string, args?: unknown[]) => `${key}:${String(args?.[0] ?? "")}`,
+  useLocalization: (key: string, args?: unknown[]) => {
+    const value = args?.[0];
+    const label = typeof value === "string" || typeof value === "number" ? String(value) : "";
+    return `${key}:${label}`;
+  },
 }));
 
 vi.mock("@/components/players-selection/inputErrors", () => ({

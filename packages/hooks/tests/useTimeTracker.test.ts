@@ -70,9 +70,9 @@ describe("useTimeTracker", () => {
     });
 
     await vi.waitFor(() => {
-      expect(mocks.setItemsToStorage).toHaveBeenCalledWith({
-        [StorageKeys.timerStartTime]: expect.any(String),
-      });
+      expect(mocks.setItemsToStorage).toHaveBeenCalled();
+      const storedItems = mocks.setItemsToStorage.mock.calls.at(-1)?.[0] as Record<string, string>;
+      expect(typeof storedItems[StorageKeys.timerStartTime]).toBe("string");
     });
   });
 

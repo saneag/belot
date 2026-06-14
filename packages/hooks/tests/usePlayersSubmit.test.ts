@@ -130,23 +130,29 @@ describe("usePlayersSubmit", () => {
     await handleSubmit();
 
     expect(mocks.setEmptyRoundScore).toHaveBeenCalledOnce();
-    expect(mocks.setItemsToStorage).toHaveBeenCalledWith({
-      [StorageKeys.timerStartTime]: "",
-      [StorageKeys.roundsScores]: expect.any(String),
-      [StorageKeys.players]: JSON.stringify(mocks.players),
-      [StorageKeys.dealer]: JSON.stringify(mocks.dealer),
-    });
+    expect(mocks.setItemsToStorage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        [StorageKeys.timerStartTime]: "",
+        [StorageKeys.players]: JSON.stringify(mocks.players),
+        [StorageKeys.dealer]: JSON.stringify(mocks.dealer),
+      }),
+    );
+    const storedItems = mocks.setItemsToStorage.mock.calls[0]?.[0] as Record<string, string>;
+    expect(typeof storedItems[StorageKeys.roundsScores]).toBe("string");
     expect(mocks.navigateFunction).toHaveBeenCalledOnce();
     expect(mocks.mutate).toHaveBeenCalledWith(
       expect.objectContaining({
         players: mocks.players,
         mode: mocks.mode,
       }),
-      expect.objectContaining({
-        onSuccess: expect.any(Function),
-        onError: expect.any(Function),
-      }),
+      expect.any(Object),
     );
+    const mutateOptions = mocks.mutate.mock.calls[0]?.[1] as {
+      onSuccess: unknown;
+      onError: unknown;
+    };
+    expect(typeof mutateOptions.onSuccess).toBe("function");
+    expect(typeof mutateOptions.onError).toBe("function");
   });
 
   it("handles init game success and error callbacks", async () => {

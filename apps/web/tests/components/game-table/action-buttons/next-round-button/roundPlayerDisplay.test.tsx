@@ -6,7 +6,11 @@ import { describe, expect, it, vi } from "vitest";
 import RoundPlayerDisplay from "@/components/game-table/action-buttons/next-round-button/roundPlayerDisplay";
 
 vi.mock("@belot/localizations", () => ({
-  useLocalization: (_key: string, args?: unknown[]) => `Player:${String(args?.[0] ?? "")}`,
+  useLocalization: (_key: string, args?: unknown[]) => {
+    const value = args?.[0];
+    const label = typeof value === "string" || typeof value === "number" ? String(value) : "";
+    return `Player:${label}`;
+  },
 }));
 
 describe("RoundPlayerDisplay", () => {
