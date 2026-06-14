@@ -5,6 +5,10 @@ import { GameMode, type RoundScore } from "@belot/types";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import GameTable from "@/components/game-table";
+import TableBodyWrapper from "@/components/game-table/tableBodyWrapper";
+import TableHeaderWrapper from "@/components/game-table/tableHeaderWrapper";
+
 const mocks = vi.hoisted(() => ({
   roundsScores: [
     {
@@ -153,16 +157,13 @@ describe("GameTable components", () => {
     expect(mocks.redoRoundScore).toHaveBeenCalled();
   });
 
-  it("TableHeaderWrapper renders player names", async () => {
-    const { default: TableHeaderWrapper } = await import(
-      "@/components/game-table/tableHeaderWrapper"
-    );
+  it("TableHeaderWrapper renders player names", () => {
     render(<TableHeaderWrapper />);
     expect(screen.getByText("A")).toBeTruthy();
     expect(screen.getByText("Score")).toBeTruthy();
   });
 
-  it("TableBodyWrapper renders completed rounds", async () => {
+  it("TableBodyWrapper renders completed rounds", () => {
     mocks.roundsScores = [
       {
         id: 0,
@@ -183,13 +184,11 @@ describe("GameTable components", () => {
       },
     ];
 
-    const { default: TableBodyWrapper } = await import("@/components/game-table/tableBodyWrapper");
     render(<TableBodyWrapper />);
     expect(screen.getByText("10")).toBeTruthy();
   });
 
-  it("GameTable renders action buttons without winner", async () => {
-    const { default: GameTable } = await import("@/components/game-table");
+  it("GameTable renders action buttons without winner", () => {
     render(<GameTable />);
     expect(screen.getAllByRole("button").length).toBeGreaterThan(0);
   });

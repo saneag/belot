@@ -15,6 +15,8 @@ export const coverageSourceExclude = [
 export default defineConfig({
   test: {
     passWithNoTests: true,
+    // Coverage + jsdom is noticeably slower on Windows; avoid flaky 5s default timeouts.
+    testTimeout: process.platform === "win32" ? 15_000 : 10_000,
     coverage: {
       provider: "v8",
       include: ["**/*.{ts,tsx}"],

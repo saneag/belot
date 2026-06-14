@@ -7,6 +7,8 @@ import { type Player, type Team } from "@belot/types";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import NextRoundButton from "@/components/game-table/action-buttons/next-round-button";
+
 vi.mock("@belot/hooks", () => ({
   useHandleNextRound: () => ({
     handleNextRound: vi.fn(),
@@ -53,11 +55,7 @@ vi.mock("@belot/localizations", () => ({
 }));
 
 describe("NextRoundButton", () => {
-  it("opens next round dialog", async () => {
-    const { default: NextRoundButton } = await import(
-      "@/components/game-table/action-buttons/next-round-button"
-    );
-
+  it("opens next round dialog", () => {
     function Wrapper() {
       const [, setWinner] = useState<Player | Team | null>(null);
       return <NextRoundButton setWinner={setWinner} />;
