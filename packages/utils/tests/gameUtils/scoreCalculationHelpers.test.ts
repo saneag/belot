@@ -16,7 +16,7 @@ import {
   calculateTotalRoundScore,
   recalculateScoreOnRedo,
   recalculateScoreOnUndo,
-} from "./scoreCalculationHelpers";
+} from "../../src/gameUtils/scoreCalculationHelpers";
 
 describe("scoreCalculationHelpers", () => {
   beforeEach(() => {

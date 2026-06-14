@@ -18,7 +18,7 @@ import {
   preparePreviousRoundScoreRow,
   prepareRoundScoresBasedOnGameMode,
   prepareTeams,
-} from "./prepareStates";
+} from "../../src/gameUtils/prepareStates";
 
 describe("prepareStates", () => {
   describe("prepareEmptyRoundScoreRow", () => {

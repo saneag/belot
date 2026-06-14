@@ -2,17 +2,17 @@ import type { Player } from "@belot/types";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getPlayersCount, getPlayersNames } from "./playerNamesHelpers";
+import { getPlayersCount, getPlayersNames } from "../../src/playersUtils/playerNamesHelpers";
 import {
   excludeChangedValue,
   isPlayerNameValid,
   isPlayersNamesEmpty,
   isPlayersNamesRepeating,
   validatePlayersNames,
-} from "./playerNamesValidations";
+} from "../../src/playersUtils/playerNamesValidations";
 
-vi.mock("./playerNamesHelpers", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("./playerNamesHelpers")>();
+vi.mock("../../src/playersUtils/playerNamesHelpers", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../src/playersUtils/playerNamesHelpers")>();
   return {
     ...actual,
     getPlayersNames: vi.fn(actual.getPlayersNames),
@@ -25,7 +25,9 @@ const player = (id: number, name: string): Player => ({ id, name });
 describe("playerNamesValidations", () => {
   beforeEach(async () => {
     const actual =
-      await vi.importActual<typeof import("./playerNamesHelpers")>("./playerNamesHelpers");
+      await vi.importActual<typeof import("../../src/playersUtils/playerNamesHelpers")>(
+        "../../src/playersUtils/playerNamesHelpers",
+      );
     vi.mocked(getPlayersNames).mockImplementation(actual.getPlayersNames);
     vi.mocked(getPlayersCount).mockImplementation(actual.getPlayersCount);
   });

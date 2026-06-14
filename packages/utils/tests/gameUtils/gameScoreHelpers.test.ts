@@ -17,14 +17,14 @@ import {
   mockRoundSlice,
   mockTeams,
   mockTeamsScores,
-} from "./../../__mocks__/gameScoreHelpers";
+} from "../../__mocks__/gameScoreHelpers";
 import {
   checkForGameWinner,
   getOpponentPlayersScore,
   getOpponentTeamScore,
   setNextDealer,
   setPreviousDealer,
-} from "./gameScoreHelpers";
+} from "../../src/gameUtils/gameScoreHelpers";
 
 describe("gameScoreHelpers", () => {
   beforeEach(() => {
