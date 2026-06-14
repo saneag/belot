@@ -162,4 +162,91 @@ describe("apiFetch", () => {
     await vi.advanceTimersByTimeAsync(DEFAULT_API_TIMEOUT_MS);
     await requestExpectation;
   });
+
+  it("rethrows non-timeout errors from fetch", async () => {
+    const networkError = new Error("network down");
+    fetchMock.mockRejectedValue(networkError);
+
+    await expect(apiFetch("https://api.example/x")).rejects.toThrow("network down");
+  });
+
+  it("aborts immediately when caller signal is already aborted", async () => {
+    const callerController = new AbortController();
+    callerController.abort();
+
+    fetchMock.mockImplementation((_url, init) => {
+      const signal = (init as RequestInit).signal;
+
+      return new Promise((_resolve, reject) => {
+        if (signal?.aborted) {
+          const abortError = new Error("The operation was aborted.");
+          abortError.name = "AbortError";
+          reject(abortError);
+          return;
+        }
+
+        signal?.addEventListener("abort", () => {
+          const abortError = new Error("The operation was aborted.");
+          abortError.name = "AbortError";
+          reject(abortError);
+        });
+      });
+    });
+
+    await expect(
+      apiFetch("https://api.example/x", { signal: callerController.signal }),
+    ).rejects.toMatchObject({
+      name: "AbortError",
+    });
+  });
+
+  it("aborts when caller signal is aborted after request starts", async () => {
+    const callerController = new AbortController();
+
+    fetchMock.mockImplementation((_url, init) => {
+      const signal = (init as RequestInit).signal;
+
+      return new Promise((_resolve, reject) => {
+        signal?.addEventListener("abort", () => {
+          const abortError = new Error("The operation was aborted.");
+          abortError.name = "AbortError";
+          reject(abortError);
+        });
+      });
+    });
+
+    const request = apiFetch("https://api.example/x", { signal: callerController.signal });
+    callerController.abort();
+
+    await expect(request).rejects.toMatchObject({
+      name: "AbortError",
+    });
+  });
+
+  it("does not treat caller abort as a timeout", async () => {
+    vi.useFakeTimers();
+    const callerController = new AbortController();
+
+    fetchMock.mockImplementation((_url, init) => {
+      const signal = (init as RequestInit).signal;
+
+      return new Promise((_resolve, reject) => {
+        signal?.addEventListener("abort", () => {
+          const abortError = new Error("The operation was aborted.");
+          abortError.name = "AbortError";
+          reject(abortError);
+        });
+      });
+    });
+
+    const request = apiFetch("https://api.example/x", { signal: callerController.signal });
+    callerController.abort();
+
+    await expect(request).rejects.toMatchObject({
+      name: "AbortError",
+    });
+    await expect(request).rejects.not.toMatchObject({
+      status: 408,
+    });
+  });
 });
