@@ -1,9 +1,9 @@
-import { Router } from "express";
+import { Router, type IRouter } from "express";
 
 import { GameService, type InitGameInput, type UpdateGameInput } from "../services/game-service";
 import { GameValidators } from "../validators/game-validators";
 
-const router = Router();
+const router: IRouter = Router();
 
 router.post("/init", ...GameValidators.initGame, async (req, res) => {
   try {
