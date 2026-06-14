@@ -68,7 +68,7 @@ describe("useHandleSkipRound", () => {
       storageItems = items;
       return storageWrite;
     });
-    const { useHandleSkipRound } = await import("./useHandleSkipRound");
+    const { useHandleSkipRound } = await import("../src/useHandleSkipRound");
 
     const handleSkipRound = useHandleSkipRound({ setItemsToStorage });
 
@@ -101,5 +101,67 @@ describe("useHandleSkipRound", () => {
     expect(storedRoundsScores[0].totalRoundScore).toBe(16);
     expect(storedRoundsScores[1].id).toBe(1);
     expect(storedDealer).toEqual(players[1]);
+  });
+
+  it("returns early when there are no rounds to skip", async () => {
+    mocks.setState({
+      players,
+      teams: [],
+      mode: GameMode.classic,
+      roundsScores: [],
+      dealer: players[0],
+      skipRound: mocks.skipRound,
+    });
+
+    const setItemsToStorage = vi.fn();
+    const { useHandleSkipRound } = await import("../src/useHandleSkipRound");
+    const handleSkipRound = useHandleSkipRound({ setItemsToStorage });
+
+    await handleSkipRound();
+
+    expect(mocks.skipRound).toHaveBeenCalledOnce();
+    expect(setItemsToStorage).not.toHaveBeenCalled();
+  });
+
+  it("omits dealer storage when next dealer cannot be resolved", async () => {
+    mocks.setState({
+      players: [],
+      teams: [],
+      mode: GameMode.classic,
+      roundsScores: [initialRound],
+      dealer: null,
+      skipRound: mocks.skipRound,
+    });
+
+    const setItemsToStorage = vi.fn();
+    const { useHandleSkipRound } = await import("../src/useHandleSkipRound");
+    const handleSkipRound = useHandleSkipRound({ setItemsToStorage });
+
+    await handleSkipRound();
+
+    const storageItems = setItemsToStorage.mock.calls[0]?.[0] as Partial<
+      Record<StorageKeys, string>
+    >;
+    expect(storageItems[StorageKeys.roundsScores]).toBeDefined();
+    expect(storageItems[StorageKeys.dealer]).toBeUndefined();
+  });
+
+  it("uses empty rounds when store roundsScores is not an array", async () => {
+    mocks.setState({
+      players,
+      teams: [],
+      mode: GameMode.classic,
+      roundsScores: null,
+      dealer: players[0],
+      skipRound: mocks.skipRound,
+    });
+
+    const setItemsToStorage = vi.fn();
+    const { useHandleSkipRound } = await import("../src/useHandleSkipRound");
+    const handleSkipRound = useHandleSkipRound({ setItemsToStorage });
+
+    await handleSkipRound();
+
+    expect(setItemsToStorage).not.toHaveBeenCalled();
   });
 });
