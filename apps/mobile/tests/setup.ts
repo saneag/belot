@@ -2,17 +2,83 @@ import React from "react";
 
 import { vi } from "vitest";
 
+const UI_ONLY_PROPS = new Set([
+  "action",
+  "variant",
+  "size",
+  "space",
+  "as",
+  "isDisabled",
+  "isHovered",
+  "isFocusVisible",
+  "isFocused",
+  "isInvalid",
+  "isOpen",
+  "isTruncated",
+  "bold",
+  "underline",
+  "strikeThrough",
+  "italic",
+  "highlight",
+  "sub",
+  "placement",
+  "shouldOverlapWithTrigger",
+  "trigger",
+  "context",
+  "testID",
+]);
+
+const DOM_EVENT_PROPS = new Set([
+  "onClick",
+  "onChange",
+  "onInput",
+  "onFocus",
+  "onBlur",
+  "onKeyDown",
+  "onKeyUp",
+  "onKeyPress",
+  "onMouseDown",
+  "onMouseUp",
+  "onMouseEnter",
+  "onMouseLeave",
+  "onSubmit",
+  "onDoubleClick",
+  "onContextMenu",
+  "onWheel",
+  "onScroll",
+]);
+
+function omitUiProps(props: Record<string, unknown>) {
+  const domProps: Record<string, unknown> = {};
+
+  for (const [key, value] of Object.entries(props)) {
+    if (UI_ONLY_PROPS.has(key) || key.startsWith("accessibility")) {
+      continue;
+    }
+
+    if (key.startsWith("on") && !DOM_EVENT_PROPS.has(key)) {
+      continue;
+    }
+
+    domProps[key] = value;
+  }
+
+  return domProps;
+}
+
 const createElement = (
   tag: string,
   { children, onPress, onChangeText, ...props }: Record<string, unknown> = {},
 ) => {
-  if (onPress || props.onClick) {
+  const domProps = omitUiProps(props);
+
+  if (onPress || domProps.onClick) {
     return React.createElement(
       "button",
       {
         type: "button",
-        onClick: onPress ?? props.onClick,
-        ...props,
+        onClick: onPress ?? domProps.onClick,
+        ...domProps,
       },
       children as React.ReactNode,
     );
@@ -21,36 +87,22 @@ const createElement = (
   if (typeof onChangeText === "function") {
     return React.createElement("input", {
       onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChangeText(e.target.value),
-      ...props,
+      ...domProps,
     });
   }
 
-  return React.createElement(tag, props, children as React.ReactNode);
+  return React.createElement(tag, domProps, children as React.ReactNode);
 };
 
 vi.mock("react-native", () => {
   const listeners: Record<string, ((e?: unknown) => void)[]> = {};
   const platform = { OS: "ios" as string, select: (obj: Record<string, unknown>) => obj.ios ?? obj.default };
 
-  const addListener = (event: string, handler: (e?: unknown) => void) => {
-    if (!listeners[event]) {
-      listeners[event] = [];
-    }
-    listeners[event].push(handler);
-    return {
-      remove: () => {
-        listeners[event] = listeners[event].filter((h) => h !== handler);
-      },
-    };
-  };
-
-  const emit = (event: string, payload?: unknown) => {
-    listeners[event]?.forEach((handler) => handler(payload));
-  };
-
   return {
     __listeners: listeners,
-    __emit: emit,
+    __emit: (event: string, payload?: unknown) => {
+      listeners[event]?.forEach((handler) => handler(payload));
+    },
     __platform: platform,
     Platform: platform,
     View: (props: Record<string, unknown>) => createElement("div", props),
@@ -61,10 +113,10 @@ vi.mock("react-native", () => {
         scrollToEnd: vi.fn(),
         scrollTo: vi.fn(),
       }));
-      return React.createElement("div", { ref, ...props });
+      return React.createElement("div", { ref, ...omitUiProps(props) });
     }),
-    TouchableWithoutFeedback: (props: Record<string, unknown>) =>
-      createElement("div", { onClick: props.onPress, ...props }),
+    TouchableWithoutFeedback: ({ onPress, ...props }: Record<string, unknown>) =>
+      createElement("div", { onPress, ...props }),
     Keyboard: {
       dismiss: vi.fn(),
       addListener: vi.fn((event: string, handler: (e?: unknown) => void) => {
@@ -153,7 +205,7 @@ vi.mock("lucide-react-native", () => ({
 const mockUi = (name: string) => {
   const Component = ({ children, onPress, as, ...props }: Record<string, unknown>) => {
     if (as) {
-      return React.createElement("span", { "data-testid": "icon", ...props });
+      return React.createElement("span", { "data-testid": "icon", ...omitUiProps(props) });
     }
     return createElement("div", { "data-testid": name, onPress, ...props, children });
   };
@@ -166,7 +218,7 @@ const buttonMock = ({ children, onPress, disabled, ...props }: Record<string, un
     type: "button",
     onClick: disabled ? undefined : onPress,
     disabled,
-    ...props,
+    ...omitUiProps(props),
     children,
   });
 
@@ -175,6 +227,9 @@ vi.mock("@/components/ui/button", () => ({
   Button: buttonMock,
   ButtonText: ({ children }: { children: React.ReactNode }) =>
     React.createElement("span", null, children),
+  ButtonSpinner: () => React.createElement("span", { "data-testid": "button-spinner" }),
+  ButtonIcon: ({ children, as, ...props }: Record<string, unknown>) =>
+    React.createElement("span", { "data-testid": "button-icon", ...omitUiProps(props) }, children as React.ReactNode),
 }));
 vi.mock("@/components/ui/heading", () => ({
   Heading: ({ children, ...props }: Record<string, unknown>) =>
@@ -189,7 +244,8 @@ vi.mock("@/components/ui/text", () => ({
     createElement("span", { ...props, children }),
 }));
 vi.mock("@/components/ui/icon", () => ({
-  Icon: mockUi("icon"),
+  Icon: ({ as, size, ...props }: Record<string, unknown>) =>
+    React.createElement("span", { "data-testid": "icon", ...omitUiProps(props) }),
   ArrowLeftIcon: () => React.createElement("span"),
   CloseIcon: () => React.createElement("span"),
   CircleIcon: () => React.createElement("span"),
