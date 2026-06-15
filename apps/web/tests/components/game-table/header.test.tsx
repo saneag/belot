@@ -43,7 +43,15 @@ vi.mock("@belot/localizations", async (importOriginal) => {
 });
 
 vi.mock("@/hooks/usePreventBackPress", () => ({
-  usePreventBackPress: (callback: () => void) => callback(),
+  usePreventBackPress: (callback: () => void) => {
+    callback();
+    return {
+      state: "unblocked",
+      reset: vi.fn(),
+      proceed: vi.fn(),
+      location: undefined,
+    };
+  },
 }));
 
 vi.mock("@/components/confirmationDialog", () => ({
