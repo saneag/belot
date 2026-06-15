@@ -1,9 +1,13 @@
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
-import { ROUND_POINTS } from "@belot/constants";
+import { useGameStore } from "@belot/store";
 import { useLocalization } from "@belot/localizations";
 import { RoundScore } from "@belot/types";
-import { calculateTotalRoundScore, roundToDecimal } from "@belot/utils/src";
+import {
+  calculateTotalRoundScore,
+  formatTotalRoundScoreForDisplay,
+  getRoundPointsPresets,
+} from "@belot/utils/src";
 
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
@@ -16,19 +20,23 @@ export interface RoundScoreSelectProps {
 }
 
 export default function RoundScoreSelect({ roundScore, setRoundScore }: RoundScoreSelectProps) {
+  const pointsType = useGameStore((state) => state.pointsType);
   const [isPositive, setIsPositive] = useState(true);
 
   const roundScoreMsg = useLocalization("next.round.score", [
-    roundToDecimal(roundScore.totalRoundScore),
+    formatTotalRoundScoreForDisplay(roundScore.totalRoundScore, pointsType),
   ]);
 
   const operationSign = isPositive ? "+" : "-";
+  const roundPointsPresets = getRoundPointsPresets(pointsType);
 
   const handleRoundPointsChange = useCallback(
     (roundPoint: number) => {
-      setRoundScore((prev) => calculateTotalRoundScore(operationSign, roundPoint, prev));
+      setRoundScore((prev) =>
+        calculateTotalRoundScore(operationSign, roundPoint, prev, pointsType),
+      );
     },
-    [operationSign, setRoundScore],
+    [operationSign, pointsType, setRoundScore],
   );
 
   return (
@@ -37,7 +45,7 @@ export default function RoundScoreSelect({ roundScore, setRoundScore }: RoundSco
         {roundScoreMsg}
       </Text>
       <HStack className="flex-wrap items-center justify-center gap-2.5">
-        {ROUND_POINTS.map((roundPoint) => (
+        {roundPointsPresets.map((roundPoint) => (
           <Button
             variant="solid"
             action="secondary"
@@ -45,7 +53,7 @@ export default function RoundScoreSelect({ roundScore, setRoundScore }: RoundSco
             onPress={() => handleRoundPointsChange(roundPoint)}
           >
             <ButtonText>
-              {operationSign} {roundToDecimal(roundPoint)}
+              {operationSign} {roundPoint}
             </ButtonText>
           </Button>
         ))}

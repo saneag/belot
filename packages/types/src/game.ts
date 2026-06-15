@@ -49,4 +49,5 @@ export interface SumOpponentPlayersScoresProps {
   roundPlayer?: Player | null;
   currentOpponent?: TeamScore | PlayerScore;
   shouldRoundScore?: boolean;
+  pointsType?: string;
 }

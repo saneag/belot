@@ -1,4 +1,4 @@
-import { DEFAULT_ROUND_POINTS } from "@belot/constants";
+import { POINTS_TYPE } from "@belot/constants";
 import {
   GameMode,
   type GameSlice,
@@ -10,6 +10,8 @@ import {
   type Team,
   type TeamScore,
 } from "@belot/types";
+
+import { getDefaultRoundPoints } from "../pointsTypeHelpers";
 
 const preparePlayersScores = (
   state: Partial<RoundSlice> & Partial<PlayersSlice> & Partial<GameSlice>,
@@ -74,12 +76,13 @@ export const prepareEmptyRoundScoreRow = (
   state: Partial<RoundSlice> & Partial<PlayersSlice> & Partial<GameSlice>,
 ): RoundScore => {
   const lastRoundScore = state.roundsScores?.at(-1);
+  const pointsType = state.pointsType ?? POINTS_TYPE[0].id;
 
   return {
     id: lastRoundScore?.id !== undefined ? lastRoundScore.id + 1 : 0,
     playersScores: preparePlayersScores(state),
     teamsScores: prepareTeamsScores(state),
-    totalRoundScore: DEFAULT_ROUND_POINTS,
+    totalRoundScore: getDefaultRoundPoints(pointsType),
     roundPlayer: null,
   };
 };
@@ -87,6 +90,7 @@ export const prepareEmptyRoundScoreRow = (
 export const preparePreviousRoundScoreRow = (
   previousRoundScore: RoundScore,
   undoneRoundScore: RoundScore,
+  pointsType: string = POINTS_TYPE[0].id,
 ): RoundScore => {
   return {
     id: undoneRoundScore.id,
@@ -98,7 +102,7 @@ export const preparePreviousRoundScoreRow = (
       ...teamScore,
       score: 0,
     })),
-    totalRoundScore: DEFAULT_ROUND_POINTS,
+    totalRoundScore: getDefaultRoundPoints(pointsType),
     roundPlayer: null,
   };
 };

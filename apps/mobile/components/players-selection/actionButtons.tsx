@@ -10,7 +10,7 @@ import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
-import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import { getFromStorage, setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 
 import DealerSelectDialogContent from "./dealerSelectDialogContent";
 
@@ -39,6 +39,7 @@ function SubmitButton() {
     navigateFunction: () => router.replace("/game-table"),
     setItemsToStorage: setMultipleItemsToStorage,
     getApiBaseUrl,
+    getFromStorage,
     handleCatchError: () => {
       ToastAndroid.showWithGravity(messages.serverOffline, ToastAndroid.SHORT, ToastAndroid.CENTER);
     },

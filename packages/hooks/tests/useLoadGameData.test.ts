@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => {
   const setPlayers = vi.fn();
   const setDealer = vi.fn();
   const setRoundsScores = vi.fn();
+  const setPointsType = vi.fn();
   const stateHolders: { value: unknown }[] = [];
   const hasFetchedRef = { current: false };
 
@@ -14,6 +15,7 @@ const mocks = vi.hoisted(() => {
     setPlayers,
     setDealer,
     setRoundsScores,
+    setPointsType,
     stateHolders,
     hasFetchedRef,
     storeState: {
@@ -57,6 +59,7 @@ vi.mock("@belot/store", () => ({
       setPlayers: mocks.setPlayers,
       setDealer: mocks.setDealer,
       setRoundsScores: mocks.setRoundsScores,
+      setPointsType: mocks.setPointsType,
     }),
 }));
 
