@@ -14,9 +14,9 @@
     "report": "playwright show-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.0",
-    "@types/node": "^24.10.1",
-    "mongodb-memory-server": "^10.2.0",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^24.13.2",
+    "mongodb-memory-server": "^10.4.3",
     "typescript": "~5.9.3"
   }
 }

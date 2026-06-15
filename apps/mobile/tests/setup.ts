@@ -29,7 +29,7 @@ const createElement = (
 };
 
 vi.mock("react-native", () => {
-  const listeners: Record<string, Array<(e?: unknown) => void>> = {};
+  const listeners: Record<string, ((e?: unknown) => void)[]> = {};
   const platform = { OS: "ios" as string, select: (obj: Record<string, unknown>) => obj.ios ?? obj.default };
 
   const addListener = (event: string, handler: (e?: unknown) => void) => {

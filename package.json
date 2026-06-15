@@ -28,10 +28,10 @@
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@vitest/coverage-v8": "catalog:",
     "husky": "^9.1.7",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.4",
     "react": "19.1.0",
     "turbo": "^2.9.18",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "vitest": "catalog:"
   },
   "packageManager": "pnpm@11.6.0",
