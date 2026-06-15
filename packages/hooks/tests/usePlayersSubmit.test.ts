@@ -16,9 +16,11 @@ const mocks = vi.hoisted(() => {
     setValidations: vi.fn(),
     setEmptyRoundScore: vi.fn(),
     setGameId: vi.fn(),
+    setPointsType: vi.fn(),
     navigateFunction: vi.fn(),
     setItemsToStorage: vi.fn(),
     getApiBaseUrl: vi.fn(() => "https://api.example"),
+    getFromStorage: vi.fn(() => null),
     handleCatchError: vi.fn(),
     mutate: vi.fn(),
   };
@@ -48,6 +50,7 @@ vi.mock("@belot/store", () => ({
       mode: mocks.mode,
       setEmptyRoundScore: mocks.setEmptyRoundScore,
       setGameId: mocks.setGameId,
+      setPointsType: mocks.setPointsType,
     }),
 }));
 
@@ -97,6 +100,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -114,6 +118,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -128,6 +133,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -165,6 +171,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -192,6 +199,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -209,6 +217,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -231,6 +240,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 

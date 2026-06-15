@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import type { Player, RoundScore } from "@belot/types";
+import type { Settings } from "./useSettings";
 
 interface UseLoadGameDataBaseProps {
   getFromStorage: (key: StorageKeys) => Promise<string | null> | string | null;
@@ -44,6 +45,7 @@ export function useLoadGameData({
   const setPlayers = useGameStore((state) => state.setPlayers);
   const setDealer = useGameStore((state) => state.setDealer);
   const setRoundsScores = useGameStore((state) => state.setRoundsScores);
+  const setPointsType = useGameStore((state) => state.setPointsType);
 
   useEffect(() => {
     const shouldFetchStorage =
@@ -55,6 +57,12 @@ export function useLoadGameData({
         const storagePlayers = await getFromStorage(StorageKeys.players);
         const storageDealer = await getFromStorage(StorageKeys.dealer);
         const storageRoundsScores = await getFromStorage(StorageKeys.roundsScores);
+        const storageSettings = await getFromStorage(StorageKeys.settings);
+
+        if (storageSettings) {
+          const parsedSettings = JSON.parse(storageSettings) as Settings;
+          setPointsType(parsedSettings.pointsType);
+        }
 
         if (storagePlayers && storageDealer && storageRoundsScores) {
           const parsedPlayers = JSON.parse(storagePlayers) as Player[];
@@ -86,6 +94,7 @@ export function useLoadGameData({
     roundsScores?.length,
     setDealer,
     setPlayers,
+    setPointsType,
     setRoundsScores,
     shouldSetData,
   ]);

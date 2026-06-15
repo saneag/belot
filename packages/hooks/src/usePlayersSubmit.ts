@@ -18,6 +18,7 @@ interface UsePlayersSubmitProps {
   navigateFunction: () => void;
   setItemsToStorage: (items: Partial<Record<StorageKeys, string>>) => Promise<void> | void;
   getApiBaseUrl: () => string;
+  getFromStorage: (key: StorageKeys) => Promise<string | null> | string | null;
   handleCatchError: (error: unknown) => void;
 }
 
@@ -25,6 +26,7 @@ export function usePlayersSubmit({
   navigateFunction,
   setItemsToStorage,
   getApiBaseUrl,
+  getFromStorage,
   handleCatchError,
 }: UsePlayersSubmitProps) {
   const { setValidations } = usePlayersSelectionContext();
@@ -36,6 +38,7 @@ export function usePlayersSubmit({
   const mode = useGameStore((state) => state.mode);
   const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
   const setGameId = useGameStore((state) => state.setGameId);
+  const setPointsType = useGameStore((state) => state.setPointsType);
   const isBackendGameInitEnabled = useFeatureToggle("backend-game-init");
 
   const handleOpenDialog = useCallback(
@@ -64,10 +67,20 @@ export function usePlayersSubmit({
 
     setEmptyRoundScore();
 
+    const storageSettings = await getFromStorage(StorageKeys.settings);
+    const pointsType = storageSettings
+      ? (JSON.parse(storageSettings) as { pointsType: string }).pointsType
+      : undefined;
+
+    if (pointsType) {
+      setPointsType(pointsType);
+    }
+
     const emptyRoundScore: RoundScore = prepareEmptyRoundScoreRow({
       dealer,
       mode,
       players,
+      pointsType,
     });
 
     await setItemsToStorage({
@@ -101,6 +114,7 @@ export function usePlayersSubmit({
     );
   }, [
     dealer,
+    getFromStorage,
     handleCatchError,
     initGame,
     isBackendGameInitEnabled,
@@ -110,6 +124,7 @@ export function usePlayersSubmit({
     setEmptyRoundScore,
     setGameId,
     setItemsToStorage,
+    setPointsType,
     setValidations,
   ]);
 

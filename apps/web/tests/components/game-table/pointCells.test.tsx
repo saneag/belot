@@ -7,6 +7,11 @@ import { GameMode } from "@belot/types";
 
 import PointCells from "@/components/game-table/pointCells";
 
+vi.mock("@belot/store", () => ({
+  useGameStore: (selector: (state: { pointsType: string }) => unknown) =>
+    selector({ pointsType: "micropoints" }),
+}));
+
 vi.mock("@belot/utils/src", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@belot/utils/src")>();
   return {
@@ -16,7 +21,6 @@ vi.mock("@belot/utils/src", async (importOriginal) => {
       score.totalScore > 0 ? `+${score.totalScore}` : String(score.totalScore),
     getCurrentScoreColor: (score: { totalScore: number }) =>
       score.totalScore > 0 ? "text-success" : score.totalScore < 0 ? "text-destructive" : "",
-    roundToDecimal: (value: number) => value.toFixed(1),
   };
 });
 
@@ -48,7 +52,7 @@ describe("PointCells", () => {
     expect(screen.getByText("+10")).toBeTruthy();
   });
 
-  it("rounds three-digit total scores in teams mode", () => {
+  it("rounds three-digit micropoint total scores in teams mode", () => {
     render(
       <table>
         <tbody>
@@ -59,7 +63,7 @@ describe("PointCells", () => {
                 id: 0,
                 playersScores: [],
                 teamsScores: [{ id: 0, teamId: 0, score: 100, boltCount: 0, totalScore: 100 }],
-                totalRoundScore: 100,
+                totalRoundScore: 162,
               }}
             />
           </tr>
@@ -67,7 +71,7 @@ describe("PointCells", () => {
       </table>,
     );
 
-    expect(screen.getByText("100.0")).toBeTruthy();
+    expect(screen.getByText("16")).toBeTruthy();
   });
 
   it("uses neutral styling for zero current scores", () => {

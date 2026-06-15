@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from "react";
 
+import { useGameStore } from "@belot/store";
 import { formatLocalizationString, useLocalizations } from "@belot/localizations";
 import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
-import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode } from "@belot/utils/src";
+import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode, getScoreInputMaxLength } from "@belot/utils/src";
 
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
@@ -27,6 +28,7 @@ export default function PlayerScoreInput({
   teams,
   roundPlayer,
 }: PlayerScoreInputProps) {
+  const pointsType = useGameStore((state) => state.pointsType);
   const messages = useLocalizations([{ key: "next.round.score.for.player" }]);
 
   const finalRoundScore = useMemo(
@@ -71,7 +73,7 @@ export default function PlayerScoreInput({
       <Input variant="rounded" className="w-full">
         <InputField
           value={String(finalRoundScore?.score || 0)}
-          maxLength={3}
+          maxLength={getScoreInputMaxLength(pointsType)}
           keyboardType="number-pad"
           onChangeText={(value) => handleInputChange(Number(value))}
           selectTextOnFocus

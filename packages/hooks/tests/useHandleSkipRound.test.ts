@@ -52,6 +52,7 @@ describe("useHandleSkipRound", () => {
       players,
       teams: [],
       mode: GameMode.classic,
+      pointsType: "micropoints",
       roundsScores: [initialRound],
       dealer: players[0],
       skipRound: mocks.skipRound,

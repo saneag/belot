@@ -1,4 +1,4 @@
-import { LIMIT_OF_ROUND_POINTS } from "@belot/constants";
+import { POINTS_TYPE } from "@belot/constants";
 import {
   GameMode,
   type GameSlice,
@@ -8,7 +8,11 @@ import {
   type RoundSlice,
 } from "@belot/types";
 
-import { removeNthElementFromEnd, roundToDecimal } from "../commonUtils";
+import { removeNthElementFromEnd } from "../commonUtils";
+import {
+  finalizeTotalRoundScore,
+  getLimitOfRoundPoints,
+} from "../pointsTypeHelpers";
 import { setNextDealer, setPreviousDealer } from "./gameScoreHelpers";
 import { calculatePlayersScores } from "./playersScoreCalculationHelpers";
 import { prepareEmptyRoundScoreRow, preparePreviousRoundScoreRow } from "./prepareStates";
@@ -18,19 +22,30 @@ export const calculateRoundScore = (
   roundScore: RoundScore,
   roundPlayer: Player | null,
   gameMode: GameMode,
+  pointsType: string = POINTS_TYPE[0].id,
 ) => {
   return {
     ...roundScore,
     roundPlayer,
     playersScores:
       gameMode === GameMode.classic
-        ? calculatePlayersScores(roundScore.playersScores, roundPlayer, roundScore.totalRoundScore)
+        ? calculatePlayersScores(
+            roundScore.playersScores,
+            roundPlayer,
+            roundScore.totalRoundScore,
+            pointsType,
+          )
         : [],
     teamsScores:
       gameMode === GameMode.teams
-        ? calculateTeamsScore(roundScore.teamsScores, roundPlayer, roundScore.totalRoundScore)
+        ? calculateTeamsScore(
+            roundScore.teamsScores,
+            roundPlayer,
+            roundScore.totalRoundScore,
+            pointsType,
+          )
         : [],
-    totalRoundScore: roundToDecimal(roundScore.totalRoundScore),
+    totalRoundScore: finalizeTotalRoundScore(roundScore.totalRoundScore, pointsType),
   };
 };
 
@@ -38,8 +53,10 @@ export const calculateTotalRoundScore = (
   operationSign: string,
   roundPoint: number,
   prev: RoundScore,
+  pointsType: string = POINTS_TYPE[0].id,
 ): RoundScore => {
   let totalRoundScore = prev.totalRoundScore;
+  const limits = getLimitOfRoundPoints(pointsType);
 
   if (operationSign === "+") {
     totalRoundScore += roundPoint;
@@ -47,12 +64,12 @@ export const calculateTotalRoundScore = (
     totalRoundScore -= roundPoint;
   }
 
-  if (totalRoundScore >= LIMIT_OF_ROUND_POINTS.positive) {
-    totalRoundScore = LIMIT_OF_ROUND_POINTS.positive;
+  if (totalRoundScore >= limits.positive) {
+    totalRoundScore = limits.positive;
   }
 
-  if (totalRoundScore <= LIMIT_OF_ROUND_POINTS.negative) {
-    totalRoundScore = LIMIT_OF_ROUND_POINTS.negative;
+  if (totalRoundScore <= limits.negative) {
+    totalRoundScore = limits.negative;
   }
 
   return {
@@ -64,7 +81,7 @@ export const calculateTotalRoundScore = (
 export const recalculateScoreOnUndo = (
   state: RoundSlice & Partial<PlayersSlice> & Partial<GameSlice>,
 ): Pick<RoundSlice, "roundsScores" | "undoneRoundsScores"> => {
-  const { roundsScores, undoneRoundsScores } = state;
+  const { roundsScores, undoneRoundsScores, pointsType = POINTS_TYPE[0].id } = state;
 
   const undoneRoundScore = roundsScores.at(-2);
   let previousRoundScore = roundsScores.at(-3);
@@ -88,7 +105,7 @@ export const recalculateScoreOnUndo = (
   return {
     roundsScores: [
       ...adjustedRoundsScores,
-      preparePreviousRoundScoreRow(previousRoundScore, undoneRoundScore),
+      preparePreviousRoundScoreRow(previousRoundScore, undoneRoundScore, pointsType),
     ],
     undoneRoundsScores: [...undoneRoundsScores, undoneRoundScore],
     ...setPreviousDealer(state),
