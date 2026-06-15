@@ -1,6 +1,3 @@
-import { useLocalizations } from "@belot/localizations";
-
-import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 
 import DialogPointsTypeToggle from "./dialogPointsTypeToggle";
@@ -16,8 +13,6 @@ type ScoreDialogContentProps = RoundPlayerDisplayProps &
   };
 
 export default function ScoreDialogContent(props: ScoreDialogContentProps) {
-  const messages = useLocalizations([{ key: "next.round.score.for.player.input.helper" }]);
-
   if (!props.roundPlayer) {
     return <RoundPlayerSelect setRoundPlayer={props.setRoundPlayer} />;
   }
@@ -40,9 +35,6 @@ export default function ScoreDialogContent(props: ScoreDialogContentProps) {
         roundPlayer={props.roundPlayer}
         pointsType={props.dialogPointsType}
       />
-      <Text size="sm" className="text-center text-error-400">
-        {"* " + messages.nextRoundScoreForPlayerInputHelper}
-      </Text>
     </VStack>
   );
 }
