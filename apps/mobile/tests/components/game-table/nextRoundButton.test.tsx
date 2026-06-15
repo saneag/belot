@@ -32,7 +32,6 @@ vi.mock("@belot/localizations", async (importOriginal) => {
     useLocalization: (key: string, args?: string[]) =>
       args ? `${key}:${args.join(",")}` : key,
     useLocalizations: () => ({
-      nextRoundScoreForPlayerInputHelper: "helper",
       nextRoundScoreForPlayer: "Score for {0}",
       settingsPointsTypeMicropoints: "Micropoints",
       settingsPointsTypePoints: "Points",
@@ -159,7 +158,8 @@ describe("next-round-button components", () => {
       />,
     );
 
-    expect(screen.getByText("* helper")).toBeTruthy();
+    expect(screen.getByText("next.round.score:16")).toBeTruthy();
+    expect(screen.getByText("Score for {0}:Bob")).toBeTruthy();
   });
 
   it("PlayerScoreInputWrapper renders opponent inputs", () => {

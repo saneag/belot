@@ -8,10 +8,6 @@ import { type Player, type RoundScore } from "@belot/types";
 
 import ScoreDialogContent from "@/components/game-table/action-buttons/next-round-button/scoreDialogContent";
 
-vi.mock("@belot/localizations", () => ({
-  useLocalizations: () => ({ nextRoundScoreForPlayerInputHelper: "Helper text" }),
-}));
-
 vi.mock("@/components/game-table/action-buttons/next-round-button/roundPlayerSelect", () => ({
   default: () => <div>Select player</div>,
 }));
@@ -78,6 +74,6 @@ describe("ScoreDialogContent", () => {
     expect(screen.getByText("Selected player")).toBeTruthy();
     expect(screen.getByText("Points type toggle")).toBeTruthy();
     expect(screen.getByText("Score select")).toBeTruthy();
-    expect(screen.getByText("* Helper text")).toBeTruthy();
+    expect(screen.getByText("Score inputs")).toBeTruthy();
   });
 });
