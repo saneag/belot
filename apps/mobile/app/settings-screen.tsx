@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { useFocusEffect } from "expo-router";
 
-import { useSettings } from "@belot/hooks";
+import { useSettings, useIsPointsTypeEnabled } from "@belot/hooks";
 import { useLocalization } from "@belot/localizations";
 
 import { BackButton } from "@/components/backButton";
@@ -14,6 +14,7 @@ import { getFromStorage, setToStorage } from "@/helpers/storageHelpers";
 
 export default function SettingsScreen() {
   const settingsMsg = useLocalization("settings");
+  const isPointsTypeEnabled = useIsPointsTypeEnabled();
 
   const { settings, setSettings, getSettingsFromLocalStorage } = useSettings({
     getFromStorage,
@@ -31,7 +32,9 @@ export default function SettingsScreen() {
       <BackButton />
       <PageHeader title={settingsMsg} />
       <VStack className="flex-1 items-center justify-center gap-4">
-        <PointsTypeRadioButton value={settings.pointsType} onChange={setSettings} />
+        {isPointsTypeEnabled ? (
+          <PointsTypeRadioButton value={settings.pointsType} onChange={setSettings} />
+        ) : null}
       </VStack>
     </VStack>
   );

@@ -17,6 +17,10 @@ const mocks = vi.hoisted(() => ({
   effectCleanups: [] as Array<(() => void) | void>,
 }));
 
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useSyncPointsTypeFeature: vi.fn(),
+}));
+
 vi.mock("../src/featureToggles/featureToggleUtils", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../src/featureToggles/featureToggleUtils")>();
 
@@ -62,7 +66,9 @@ describe("FeatureToggleProvider", () => {
 
     expect(element.type).toBe(FeatureToggleContext.Provider);
     expect(element.props.value).toEqual(FEATURE_TOGGLES);
-    expect(element.props.children).toBe("child");
+    expect(element.props.children).toEqual(
+      expect.arrayContaining(["child"]),
+    );
   });
 
   it("syncs centralized toggles on mount", async () => {

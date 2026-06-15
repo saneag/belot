@@ -50,6 +50,10 @@ vi.mock("react", () => ({
   },
 }));
 
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useIsPointsTypeEnabled: vi.fn(() => false),
+}));
+
 vi.mock("@belot/store", () => ({
   useGameStore: (selector: (state: unknown) => unknown) =>
     selector({

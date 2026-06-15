@@ -134,6 +134,7 @@ describe("next-round-button components", () => {
         setRoundScore={vi.fn()}
         dialogPointsType="micropoints"
         onDialogPointsTypeChange={vi.fn()}
+        isPointsTypeEnabled={false}
       />,
     );
 
@@ -155,6 +156,7 @@ describe("next-round-button components", () => {
         setRoundScore={vi.fn()}
         dialogPointsType="micropoints"
         onDialogPointsTypeChange={vi.fn()}
+        isPointsTypeEnabled={false}
       />,
     );
 

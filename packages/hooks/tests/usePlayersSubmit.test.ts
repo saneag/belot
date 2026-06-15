@@ -58,6 +58,11 @@ vi.mock("../src/featureToggles/useFeatureToggle", () => ({
   useFeatureToggle: vi.fn(() => true),
 }));
 
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useIsPointsTypeEnabled: () => false,
+  useEffectivePointsType: () => "micropoints",
+}));
+
 vi.mock("@belot/utils", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@belot/utils")>();
 

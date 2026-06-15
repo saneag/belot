@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 
 import { useState } from "react";
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { type Player, type RoundScore } from "@belot/types";
 
@@ -29,6 +29,10 @@ vi.mock("@/components/game-table/action-buttons/next-round-button/playerScoreInp
 }));
 
 describe("ScoreDialogContent", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("renders player select when no round player is chosen", () => {
     const setRoundPlayer = vi.fn();
     const setRoundScore = vi.fn();
@@ -41,6 +45,7 @@ describe("ScoreDialogContent", () => {
         setRoundScore={setRoundScore}
         dialogPointsType="micropoints"
         onDialogPointsTypeChange={vi.fn()}
+        isPointsTypeEnabled={false}
       />,
     );
 
@@ -48,7 +53,7 @@ describe("ScoreDialogContent", () => {
   });
 
   it("renders score inputs when round player is chosen", () => {
-    function Harness() {
+    function Harness({ isPointsTypeEnabled }: { isPointsTypeEnabled: boolean }) {
       const [roundPlayer, setRoundPlayer] = useState<Player | null>({ id: 0, name: "Alice" });
       const [roundScore, setRoundScore] = useState<RoundScore>({
         id: 0,
@@ -65,15 +70,33 @@ describe("ScoreDialogContent", () => {
           setRoundScore={setRoundScore}
           dialogPointsType="micropoints"
           onDialogPointsTypeChange={vi.fn()}
+          isPointsTypeEnabled={isPointsTypeEnabled}
         />
       );
     }
 
-    render(<Harness />);
+    render(<Harness isPointsTypeEnabled={true} />);
 
     expect(screen.getByText("Selected player")).toBeTruthy();
     expect(screen.getByText("Points type toggle")).toBeTruthy();
     expect(screen.getByText("Score select")).toBeTruthy();
     expect(screen.getByText("Score inputs")).toBeTruthy();
+  });
+
+  it("hides points type toggle when feature is disabled", () => {
+    render(
+      <ScoreDialogContent
+        roundPlayer={{ id: 0, name: "Alice" }}
+        setRoundPlayer={vi.fn()}
+        roundScore={{ id: 0, playersScores: [], teamsScores: [], totalRoundScore: 0 }}
+        setRoundScore={vi.fn()}
+        dialogPointsType="micropoints"
+        onDialogPointsTypeChange={vi.fn()}
+        isPointsTypeEnabled={false}
+      />,
+    );
+
+    expect(screen.queryByText("Points type toggle")).toBeNull();
+    expect(screen.getByText("Score select")).toBeTruthy();
   });
 });

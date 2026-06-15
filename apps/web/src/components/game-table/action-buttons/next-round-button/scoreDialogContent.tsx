@@ -8,6 +8,7 @@ type ScoreDialogContentProps = RoundPlayerDisplayProps &
   Pick<RoundScoreSelectProps, "roundScore" | "setRoundScore"> & {
     dialogPointsType: string;
     onDialogPointsTypeChange: (pointsType: string) => void;
+    isPointsTypeEnabled: boolean;
   };
 
 export default function ScoreDialogContent(props: ScoreDialogContentProps) {
@@ -18,10 +19,12 @@ export default function ScoreDialogContent(props: ScoreDialogContentProps) {
   return (
     <div className="flex flex-col gap-2.5">
       <RoundPlayerDisplay roundPlayer={props.roundPlayer} setRoundPlayer={props.setRoundPlayer} />
-      <DialogPointsTypeToggle
-        value={props.dialogPointsType}
-        onChange={props.onDialogPointsTypeChange}
-      />
+      {props.isPointsTypeEnabled ? (
+        <DialogPointsTypeToggle
+          value={props.dialogPointsType}
+          onChange={props.onDialogPointsTypeChange}
+        />
+      ) : null}
       <RoundScoreSelect
         roundScore={props.roundScore}
         setRoundScore={props.setRoundScore}

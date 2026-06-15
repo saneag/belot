@@ -17,4 +17,5 @@ export * from "./useHandleNextRound";
 export * from "./useHandleSkipRound";
 export * from "./useStartingScreenActions";
 export * from "./useSettings";
+export * from "./usePointsTypeFeature";
 export * from "./featureToggles";
