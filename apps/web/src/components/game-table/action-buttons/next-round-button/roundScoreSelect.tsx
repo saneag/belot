@@ -1,10 +1,10 @@
 import { type Dispatch, type SetStateAction, useCallback, useState } from "react";
 
-import { useGameStore } from "@belot/store";
 import { useLocalization } from "@belot/localizations";
 import { type RoundScore } from "@belot/types";
 import {
   calculateTotalRoundScore,
+  formatRoundPointPresetForDisplay,
   formatTotalRoundScoreForDisplay,
   getRoundPointsPresets,
 } from "@belot/utils/src";
@@ -14,10 +14,14 @@ import { Button } from "@/components/ui/button";
 export interface RoundScoreSelectProps {
   roundScore: RoundScore;
   setRoundScore: Dispatch<SetStateAction<RoundScore>>;
+  pointsType: string;
 }
 
-export default function RoundScoreSelect({ roundScore, setRoundScore }: RoundScoreSelectProps) {
-  const pointsType = useGameStore((state) => state.pointsType);
+export default function RoundScoreSelect({
+  roundScore,
+  setRoundScore,
+  pointsType,
+}: RoundScoreSelectProps) {
   const [isPositive, setIsPositive] = useState(true);
 
   const roundScoreMsg = useLocalization("next.round.score", [
@@ -46,7 +50,7 @@ export default function RoundScoreSelect({ roundScore, setRoundScore }: RoundSco
             variant="secondary"
             onClick={() => handleRoundPointsChange(roundPoint)}
           >
-            {operationSign} {roundPoint}
+            {operationSign} {formatRoundPointPresetForDisplay(roundPoint, pointsType)}
           </Button>
         ))}
         <Button variant="outline" onClick={() => setIsPositive(!isPositive)}>

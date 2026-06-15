@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from "react";
 
-import { useGameStore } from "@belot/store";
 import { formatLocalizationString, useLocalizations } from "@belot/localizations";
 import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
 import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode, getScoreInputMaxLength } from "@belot/utils/src";
@@ -17,6 +16,7 @@ interface PlayerScoreInputProps {
   players: Player[];
   teams: Team[];
   roundPlayer: Player | null;
+  pointsType: string;
 }
 
 export default function PlayerScoreInput({
@@ -27,8 +27,8 @@ export default function PlayerScoreInput({
   players,
   teams,
   roundPlayer,
+  pointsType,
 }: PlayerScoreInputProps) {
-  const pointsType = useGameStore((state) => state.pointsType);
   const messages = useLocalizations([{ key: "next.round.score.for.player" }]);
 
   const finalRoundScore = useMemo(

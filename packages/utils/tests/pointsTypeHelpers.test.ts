@@ -2,14 +2,20 @@ import { LIMIT_OF_ROUND_POINTS, POINTS_TYPE } from "@belot/constants";
 
 import { describe, expect, it } from "vitest";
 
+import { NEXT_WINNING_STEP, WIN_POINTS } from "@belot/constants";
+
 import {
   formatTotalRoundScoreForDisplay,
+  formatRoundPointPresetForDisplay,
   getDefaultRoundPoints,
   getLimitOfRoundPoints,
+  getNextWinningStep,
   getRoundPointsPresets,
   getScoreInputMaxLength,
+  getWinPoints,
   isMicropointsMode,
   normalizeSkippedRoundScore,
+  convertRoundScoreForPointsType,
 } from "../src/pointsTypeHelpers";
 
 describe("pointsTypeHelpers", () => {
@@ -56,6 +62,30 @@ describe("pointsTypeHelpers", () => {
     });
   });
 
+  describe("formatRoundPointPresetForDisplay", () => {
+    it("shows decimal labels for micropoint preset values", () => {
+      expect(formatRoundPointPresetForDisplay(20, POINTS_TYPE[0].id)).toBe(2);
+      expect(formatRoundPointPresetForDisplay(100, POINTS_TYPE[0].id)).toBe(10);
+    });
+
+    it("shows point preset values as-is in points mode", () => {
+      expect(formatRoundPointPresetForDisplay(2, POINTS_TYPE[1].id)).toBe(2);
+      expect(formatRoundPointPresetForDisplay(10, POINTS_TYPE[1].id)).toBe(10);
+    });
+  });
+
+  describe("getWinPoints", () => {
+    it("returns 101 regardless of points type", () => {
+      expect(getWinPoints()).toBe(WIN_POINTS);
+    });
+  });
+
+  describe("getNextWinningStep", () => {
+    it("returns 50 regardless of points type", () => {
+      expect(getNextWinningStep()).toBe(NEXT_WINNING_STEP);
+    });
+  });
+
   describe("getScoreInputMaxLength", () => {
     it("returns 3 for micropoints", () => {
       expect(getScoreInputMaxLength(POINTS_TYPE[0].id)).toBe(3);
@@ -83,6 +113,46 @@ describe("pointsTypeHelpers", () => {
 
     it("keeps point values unchanged when skipping a round", () => {
       expect(normalizeSkippedRoundScore(16, POINTS_TYPE[1].id)).toBe(16);
+    });
+  });
+
+  describe("convertRoundScoreForPointsType", () => {
+    it("converts micropoint round scores to points", () => {
+      expect(
+        convertRoundScoreForPointsType(
+          {
+            id: 0,
+            roundPlayer: null,
+            totalRoundScore: 162,
+            playersScores: [{ id: 0, playerId: 0, score: 50, boltCount: 0, totalScore: 0 }],
+            teamsScores: [],
+          },
+          POINTS_TYPE[0].id,
+          POINTS_TYPE[1].id,
+        ),
+      ).toMatchObject({
+        totalRoundScore: 16,
+        playersScores: [{ score: 5 }],
+      });
+    });
+
+    it("converts point round scores to micropoints", () => {
+      expect(
+        convertRoundScoreForPointsType(
+          {
+            id: 0,
+            roundPlayer: null,
+            totalRoundScore: 16,
+            playersScores: [{ id: 0, playerId: 0, score: 5, boltCount: 0, totalScore: 0 }],
+            teamsScores: [],
+          },
+          POINTS_TYPE[1].id,
+          POINTS_TYPE[0].id,
+        ),
+      ).toMatchObject({
+        totalRoundScore: 162,
+        playersScores: [{ score: 50 }],
+      });
     });
   });
 });

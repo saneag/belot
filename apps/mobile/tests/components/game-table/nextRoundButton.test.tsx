@@ -24,15 +24,22 @@ const mocks = vi.hoisted(() => ({
   gameMode: "classic" as "classic" | "teams",
 }));
 
-vi.mock("@belot/localizations", () => ({
-  useLocalization: (key: string, args?: string[]) =>
-    args ? `${key}:${args.join(",")}` : key,
-  useLocalizations: () => ({
-    nextRoundScoreForPlayerInputHelper: "helper",
-    nextRoundScoreForPlayer: "Score for {0}",
-  }),
-  formatLocalizationString: (msg: string, args: string[]) => `${msg}:${args[0]}`,
-}));
+vi.mock("@belot/localizations", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@belot/localizations")>();
+
+  return {
+    ...actual,
+    useLocalization: (key: string, args?: string[]) =>
+      args ? `${key}:${args.join(",")}` : key,
+    useLocalizations: () => ({
+      nextRoundScoreForPlayerInputHelper: "helper",
+      nextRoundScoreForPlayer: "Score for {0}",
+      settingsPointsTypeMicropoints: "Micropoints",
+      settingsPointsTypePoints: "Points",
+    }),
+    formatLocalizationString: (msg: string, args: string[]) => `${msg}:${args[0]}`,
+  };
+});
 
 vi.mock("@belot/store", () => ({
   useGameStore: (selector: (state: Record<string, unknown>) => unknown) =>
@@ -98,12 +105,18 @@ describe("next-round-button components", () => {
       roundPlayer: null,
     };
 
-    render(<RoundScoreSelect roundScore={roundScore} setRoundScore={setRoundScore} />);
-    fireEvent.click(screen.getByText("+ 20"));
+    render(
+      <RoundScoreSelect
+        roundScore={roundScore}
+        setRoundScore={setRoundScore}
+        pointsType="micropoints"
+      />,
+    );
+    fireEvent.click(screen.getByText("+ 2"));
     expect(setRoundScore).toHaveBeenCalled();
 
     fireEvent.click(screen.getByText("+"));
-    fireEvent.click(screen.getByText("- 20"));
+    fireEvent.click(screen.getByText("- 2"));
     expect(setRoundScore).toHaveBeenCalled();
   });
 
@@ -120,6 +133,8 @@ describe("next-round-button components", () => {
           roundPlayer: null,
         }}
         setRoundScore={vi.fn()}
+        dialogPointsType="micropoints"
+        onDialogPointsTypeChange={vi.fn()}
       />,
     );
 
@@ -139,6 +154,8 @@ describe("next-round-button components", () => {
           roundPlayer: mocks.players[0],
         }}
         setRoundScore={vi.fn()}
+        dialogPointsType="micropoints"
+        onDialogPointsTypeChange={vi.fn()}
       />,
     );
 
@@ -157,6 +174,7 @@ describe("next-round-button components", () => {
           roundPlayer: mocks.players[0],
         }}
         setRoundScore={vi.fn()}
+        pointsType="micropoints"
       />,
     );
 
