@@ -7,12 +7,12 @@ import { StorageKeys, THEMES } from "@belot/constants";
 import { renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { getFromStorage } from "@/helpers/storageHelpers";
+import { useReadInitialTheme } from "@/hooks/useReadInitialTheme";
+
 vi.mock("@/helpers/storageHelpers", () => ({
   getFromStorage: vi.fn(),
 }));
-
-import { getFromStorage } from "@/helpers/storageHelpers";
-import { useReadInitialTheme } from "@/hooks/useReadInitialTheme";
 
 describe("useReadInitialTheme", () => {
   beforeEach(() => {

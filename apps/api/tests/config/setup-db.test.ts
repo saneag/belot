@@ -34,9 +34,9 @@ describe("setupDb", () => {
   it("exits when MONGODB_URI is missing", async () => {
     vi.stubEnv("MONGODB_URI", "");
     delete process.env.MONGODB_URI;
-    const exitSpy = vi.spyOn(process, "exit").mockImplementation((() => {
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {
       throw new Error("process.exit");
-    }) as typeof process.exit);
+    });
 
     const setupDb = (await import("../../config/setup-db")).default;
 
