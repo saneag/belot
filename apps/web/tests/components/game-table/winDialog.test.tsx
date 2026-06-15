@@ -9,7 +9,7 @@ import WinDialog from "@/components/game-table/winDialog";
 const reset = vi.fn();
 const navigateMock = vi.fn();
 const storeMocks = vi.hoisted(() => ({
-  mode: "classic" as "classic" | "teams",
+  mode: "classic",
 }));
 
 vi.mock("react-router-dom", async (importOriginal) => {

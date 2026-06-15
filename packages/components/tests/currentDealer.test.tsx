@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CurrentDealer } from "../src/currentDealer";
 
 const mocks = vi.hoisted(() => ({
-  dealer: { id: 0, name: "Alice" } as { id: number; name: string } | null,
+  dealer: { id: 0, name: "Alice" },
 }));
 
 vi.mock("@belot/store", () => ({
