@@ -11,7 +11,7 @@ const storeMocks = vi.hoisted(() => ({
     { id: 1, name: "Bob" },
   ],
   teams: [{ id: 0, name: "Team A", playersIds: [0, 1] }],
-  mode: "classic" as "classic" | "teams",
+  mode: "classic",
 }));
 
 vi.mock("@belot/store", () => ({
