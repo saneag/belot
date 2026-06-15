@@ -1,4 +1,4 @@
-import { useGameStore } from "@belot/store";
+import { useEffectivePointsType } from "@belot/hooks";
 import { GameMode, RoundScore } from "@belot/types";
 import {
   formatTotalRoundScoreForDisplay,
@@ -19,7 +19,7 @@ interface PointCellsProps {
 const COMMON_CELL_CLASSNAME = "size-full py-1";
 
 export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
-  const pointsType = useGameStore((state) => state.pointsType);
+  const pointsType = useEffectivePointsType();
   const scoreArray =
     gameMode === GameMode.classic ? roundScore.playersScores : roundScore.teamsScores;
 

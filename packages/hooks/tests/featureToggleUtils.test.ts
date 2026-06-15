@@ -20,6 +20,7 @@ describe("featureToggleUtils", () => {
 
   it("identifies known feature toggles", () => {
     expect(isKnownFeatureToggle("settings-screen")).toBe(true);
+    expect(isKnownFeatureToggle("points-type")).toBe(true);
     expect(isKnownFeatureToggle("unknown-toggle")).toBe(false);
   });
 

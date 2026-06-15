@@ -1,4 +1,4 @@
-import { useGameStore } from "@belot/store";
+import { useEffectivePointsType } from "@belot/hooks";
 import { GameMode, type RoundScore } from "@belot/types";
 import {
   formatTotalRoundScoreForDisplay,
@@ -27,7 +27,7 @@ const getWebCurrentScoreColor = (
 };
 
 export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
-  const pointsType = useGameStore((state) => state.pointsType);
+  const pointsType = useEffectivePointsType();
   const scoreArray =
     gameMode === GameMode.classic ? roundScore.playersScores : roundScore.teamsScores;
 

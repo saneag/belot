@@ -4,6 +4,7 @@ import { POINTS_TYPE, StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import type { Player, RoundScore } from "@belot/types";
 import type { Settings } from "./useSettings";
+import { useIsPointsTypeEnabled } from "./usePointsTypeFeature";
 
 interface UseLoadGameDataBaseProps {
   getFromStorage: (key: StorageKeys) => Promise<string | null> | string | null;
@@ -46,6 +47,7 @@ export function useLoadGameData({
   const setDealer = useGameStore((state) => state.setDealer);
   const setRoundsScores = useGameStore((state) => state.setRoundsScores);
   const setPointsType = useGameStore((state) => state.setPointsType);
+  const isPointsTypeEnabled = useIsPointsTypeEnabled();
 
   useEffect(() => {
     const shouldFetchStorage =
@@ -59,7 +61,7 @@ export function useLoadGameData({
         const storageRoundsScores = await getFromStorage(StorageKeys.roundsScores);
         const storageSettings = await getFromStorage(StorageKeys.settings);
 
-        if (storageSettings) {
+        if (storageSettings && isPointsTypeEnabled) {
           try {
             const parsedSettings = JSON.parse(storageSettings) as Settings;
             const isValidPointsType = POINTS_TYPE.some((type) => type.id === parsedSettings.pointsType);
@@ -98,6 +100,7 @@ export function useLoadGameData({
   }, [
     dealer,
     getFromStorage,
+    isPointsTypeEnabled,
     players?.length,
     roundsScores?.length,
     setDealer,

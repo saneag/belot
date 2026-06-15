@@ -4,6 +4,8 @@ import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import { normalizeSkippedRoundScore, prepareEmptyRoundScoreRow, setNextDealer } from "@belot/utils";
 
+import { useEffectivePointsType } from "./usePointsTypeFeature";
+
 interface UseHandleSkipRoundProps {
   setItemsToStorage: (items: Partial<Record<StorageKeys, string>>) => Promise<void> | void;
 }
@@ -12,7 +14,7 @@ export const useHandleSkipRound = ({ setItemsToStorage }: UseHandleSkipRoundProp
   const players = useGameStore((state) => state.players);
   const teams = useGameStore((state) => state.teams);
   const mode = useGameStore((state) => state.mode);
-  const pointsType = useGameStore((state) => state.pointsType);
+  const pointsType = useEffectivePointsType();
   const roundsScores = useGameStore((state) =>
     Array.isArray(state.roundsScores) ? state.roundsScores : [],
   );

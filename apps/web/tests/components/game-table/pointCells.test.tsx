@@ -7,9 +7,8 @@ import { GameMode } from "@belot/types";
 
 import PointCells from "@/components/game-table/pointCells";
 
-vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: { pointsType: string }) => unknown) =>
-    selector({ pointsType: "micropoints" }),
+vi.mock("@belot/hooks", () => ({
+  useEffectivePointsType: () => "micropoints",
 }));
 
 vi.mock("@belot/utils/src", async (importOriginal) => {
