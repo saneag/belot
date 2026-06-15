@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { CurrentDealer } from "@belot/components";
@@ -37,9 +38,15 @@ export default function Header() {
     setItemsToStorage: setMultipleItemsToStorage,
   });
 
-  usePreventBackPress(() => {
+  const blocker = usePreventBackPress(() => {
     setShowDialog(true);
   });
+
+  useEffect(() => {
+    if (!showDialog && blocker.state === "blocked") {
+      blocker.reset();
+    }
+  }, [blocker, showDialog]);
 
   return (
     <div
