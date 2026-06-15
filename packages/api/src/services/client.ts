@@ -52,7 +52,7 @@ export async function apiFetch<T>(url: string, init?: RequestInit): Promise<T> {
     if (!res.ok) {
       const message =
         typeof data === "object" && data !== null && "message" in data
-          ? String((data as { message: unknown }).message)
+          ? String(data.message)
           : res.statusText;
       throw new ApiError(res.status, message, data);
     }

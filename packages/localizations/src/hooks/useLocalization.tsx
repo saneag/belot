@@ -32,7 +32,7 @@ export const useLocalizations = (localizations: Localization[]) => {
   const { t } = useTranslation();
 
   return useMemo(() => {
-    const localizedStrings: Record<string, string> = {} as Record<string, string>;
+    const localizedStrings: Record<string, string> = {};
 
     localizations.forEach(({ key, args }) => {
       localizedStrings[formatLocalizationKey(key)] = formatLocalizationString(t(key), args);

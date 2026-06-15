@@ -83,7 +83,7 @@ export default function PlayerScoreInput({
           type="number"
           onChange={(e) => handleInputChange(Number(e.target.value))}
           onFocus={(e) => {
-            const inputElement = e.target as HTMLInputElement;
+            const inputElement = e.target;
             inputElement.select();
           }}
         />
