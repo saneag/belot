@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { StorageKeys } from "@belot/constants";
+import { POINTS_TYPE, StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import type { Player, RoundScore } from "@belot/types";
 import type { Settings } from "./useSettings";
@@ -60,8 +60,16 @@ export function useLoadGameData({
         const storageSettings = await getFromStorage(StorageKeys.settings);
 
         if (storageSettings) {
-          const parsedSettings = JSON.parse(storageSettings) as Settings;
-          setPointsType(parsedSettings.pointsType);
+          try {
+            const parsedSettings = JSON.parse(storageSettings) as Settings;
+            const isValidPointsType = POINTS_TYPE.some((type) => type.id === parsedSettings.pointsType);
+
+            if (isValidPointsType) {
+              setPointsType(parsedSettings.pointsType);
+            }
+          } catch {
+            // Ignore invalid settings payloads and keep the default points type.
+          }
         }
 
         if (storagePlayers && storageDealer && storageRoundsScores) {

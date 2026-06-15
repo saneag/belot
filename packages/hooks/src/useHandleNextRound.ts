@@ -6,6 +6,7 @@ import type { Player, RoundScore, Team } from "@belot/types";
 import {
   calculateRoundScore,
   checkForGameWinner,
+  convertRoundScoreForPointsType,
   getDefaultRoundPoints,
   prepareEmptyRoundScoreRow,
   setNextDealer,
@@ -30,6 +31,7 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
   const [roundScore, setRoundScore] = useState<RoundScore>(
     createDefaultRoundScoreState(pointsType),
   );
+  const [dialogPointsType, setDialogPointsType] = useState(pointsType);
   const [gameOverflowCount, setGameOverflowCount] = useState(0);
 
   const players = useGameStore((state) => state.players);
@@ -43,14 +45,29 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
 
   const handleCancel = useCallback(() => {
     setRoundPlayer(null);
-  }, []);
+    setDialogPointsType(pointsType);
+  }, [pointsType]);
+
+  const handleDialogPointsTypeChange = useCallback(
+    (newPointsType: string) => {
+      setRoundScore((prev) => convertRoundScoreForPointsType(prev, dialogPointsType, newPointsType));
+      setDialogPointsType(newPointsType);
+    },
+    [dialogPointsType],
+  );
 
   const handleNextRound = useCallback(() => {
-    const calculatedRoundScore = calculateRoundScore(roundScore, roundPlayer, gameMode, pointsType);
+    const calculatedRoundScore = calculateRoundScore(
+      roundScore,
+      roundPlayer,
+      gameMode,
+      dialogPointsType,
+    );
     updateRoundScore(calculatedRoundScore);
 
     setRoundPlayer(null);
     setRoundScore(createDefaultRoundScoreState(pointsType));
+    setDialogPointsType(pointsType);
 
     setWinner(
       checkForGameWinner(
@@ -60,7 +77,6 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
         calculatedRoundScore,
         gameOverflowCount,
         setGameOverflowCount,
-        pointsType,
       ),
     );
 
@@ -99,6 +115,7 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
     setToLocalStorage(StorageKeys.dealer, JSON.stringify(nextDealer));
   }, [
     dealer,
+    dialogPointsType,
     gameMode,
     gameOverflowCount,
     players,
@@ -114,22 +131,27 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
 
   const handleDialogOpen = useCallback(
     (showDialog: () => void) => {
+      setDialogPointsType(pointsType);
+
       const lastRoundScores = roundsScores.at(-1);
       if (lastRoundScores) {
         setRoundScore(lastRoundScores);
       }
+
       showDialog();
     },
-    [roundsScores],
+    [pointsType, roundsScores],
   );
 
   return {
     handleNextRound,
     handleCancel,
     handleDialogOpen,
+    onDialogPointsTypeChange: handleDialogPointsTypeChange,
     roundPlayer,
     setRoundPlayer,
     roundScore,
     setRoundScore,
+    dialogPointsType,
   };
 };

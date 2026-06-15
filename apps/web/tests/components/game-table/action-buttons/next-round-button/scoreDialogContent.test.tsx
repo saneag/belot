@@ -20,6 +20,10 @@ vi.mock("@/components/game-table/action-buttons/next-round-button/roundPlayerDis
   default: () => <div>Selected player</div>,
 }));
 
+vi.mock("@/components/game-table/action-buttons/next-round-button/dialogPointsTypeToggle", () => ({
+  default: () => <div>Points type toggle</div>,
+}));
+
 vi.mock("@/components/game-table/action-buttons/next-round-button/roundScoreSelect", () => ({
   default: () => <div>Score select</div>,
 }));
@@ -39,6 +43,8 @@ describe("ScoreDialogContent", () => {
         setRoundPlayer={setRoundPlayer}
         roundScore={{ id: 0, playersScores: [], teamsScores: [], totalRoundScore: 0 }}
         setRoundScore={setRoundScore}
+        dialogPointsType="micropoints"
+        onDialogPointsTypeChange={vi.fn()}
       />,
     );
 
@@ -61,6 +67,8 @@ describe("ScoreDialogContent", () => {
           setRoundPlayer={setRoundPlayer}
           roundScore={roundScore}
           setRoundScore={setRoundScore}
+          dialogPointsType="micropoints"
+          onDialogPointsTypeChange={vi.fn()}
         />
       );
     }
@@ -68,6 +76,7 @@ describe("ScoreDialogContent", () => {
     render(<Harness />);
 
     expect(screen.getByText("Selected player")).toBeTruthy();
+    expect(screen.getByText("Points type toggle")).toBeTruthy();
     expect(screen.getByText("Score select")).toBeTruthy();
     expect(screen.getByText("* Helper text")).toBeTruthy();
   });

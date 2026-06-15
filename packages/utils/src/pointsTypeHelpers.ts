@@ -6,6 +6,7 @@ import {
   ROUND_POINTS,
   WIN_POINTS,
 } from "@belot/constants";
+import type { RoundScore } from "@belot/types";
 
 import { roundByLastDigit, roundToDecimal } from "./commonUtils";
 
@@ -25,11 +26,12 @@ export const getLimitOfRoundPoints = (pointsType: string) =>
 export const getRoundPointsPresets = (pointsType: string) =>
   isMicropointsMode(pointsType) ? ROUND_POINTS : ROUND_POINTS.map(roundToDecimal);
 
-export const getWinPoints = (pointsType: string) =>
-  isMicropointsMode(pointsType) ? WIN_POINTS : roundToDecimal(WIN_POINTS);
+export const formatRoundPointPresetForDisplay = (roundPoint: number, pointsType: string) =>
+  isMicropointsMode(pointsType) ? roundToDecimal(roundPoint) : roundPoint;
 
-export const getNextWinningStep = (pointsType: string) =>
-  isMicropointsMode(pointsType) ? NEXT_WINNING_STEP : roundToDecimal(NEXT_WINNING_STEP);
+export const getWinPoints = () => WIN_POINTS;
+
+export const getNextWinningStep = () => NEXT_WINNING_STEP;
 
 export const formatTotalRoundScoreForDisplay = (totalRoundScore: number, pointsType: string) =>
   isMicropointsMode(pointsType) && String(totalRoundScore).length === 3
@@ -56,3 +58,61 @@ export const getBoltLimitDisplayPenalty = (pointsType: string) =>
 
 export const roundScoreValue = (score: number, pointsType: string) =>
   isMicropointsMode(pointsType) ? roundByLastDigit(score) : score;
+
+export const convertScoreValueForPointsType = (
+  score: number,
+  fromPointsType: string,
+  toPointsType: string,
+) => {
+  if (fromPointsType === toPointsType) {
+    return score;
+  }
+
+  if (isMicropointsMode(fromPointsType)) {
+    return roundToDecimal(score);
+  }
+
+  return score * 10;
+};
+
+const clampTotalRoundScore = (totalRoundScore: number, pointsType: string) => {
+  const limits = getLimitOfRoundPoints(pointsType);
+
+  if (totalRoundScore >= limits.positive) {
+    return limits.positive;
+  }
+
+  if (totalRoundScore <= limits.negative) {
+    return limits.negative;
+  }
+
+  return totalRoundScore;
+};
+
+export const convertRoundScoreForPointsType = (
+  roundScore: RoundScore,
+  fromPointsType: string,
+  toPointsType: string,
+): RoundScore => {
+  if (fromPointsType === toPointsType) {
+    return roundScore;
+  }
+
+  const totalRoundScore = clampTotalRoundScore(
+    convertScoreValueForPointsType(roundScore.totalRoundScore, fromPointsType, toPointsType),
+    toPointsType,
+  );
+
+  return {
+    ...roundScore,
+    totalRoundScore,
+    playersScores: roundScore.playersScores.map((playerScore) => ({
+      ...playerScore,
+      score: convertScoreValueForPointsType(playerScore.score, fromPointsType, toPointsType),
+    })),
+    teamsScores: roundScore.teamsScores.map((teamScore) => ({
+      ...teamScore,
+      score: convertScoreValueForPointsType(teamScore.score, fromPointsType, toPointsType),
+    })),
+  };
+};

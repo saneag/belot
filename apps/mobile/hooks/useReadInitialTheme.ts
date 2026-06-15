@@ -1,8 +1,6 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useColorScheme } from "react-native";
-
-import { useFocusEffect } from "expo-router";
 
 import { StorageKeys, THEMES } from "@belot/constants";
 
@@ -20,11 +18,9 @@ export const useReadInitialTheme = () => {
     setTheme(initial);
   }, [systemColorScheme]);
 
-  useFocusEffect(
-    useCallback(() => {
-      readInitialTheme();
-    }, [readInitialTheme]),
-  );
+  useEffect(() => {
+    void readInitialTheme();
+  }, [readInitialTheme]);
 
   return { theme };
 };
