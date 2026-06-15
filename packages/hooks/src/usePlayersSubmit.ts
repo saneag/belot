@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { useGameInit } from "@belot/api-client";
-import { StorageKeys } from "@belot/constants";
+import { POINTS_TYPE, StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import { type RoundScore } from "@belot/types";
 import {
@@ -13,6 +13,7 @@ import {
 
 import { usePlayersSelectionContext } from "./usePlayersSelectionContext";
 import { useFeatureToggle } from "./featureToggles/useFeatureToggle";
+import { useIsPointsTypeEnabled } from "./usePointsTypeFeature";
 
 interface UsePlayersSubmitProps {
   navigateFunction: () => void;
@@ -40,6 +41,7 @@ export function usePlayersSubmit({
   const setGameId = useGameStore((state) => state.setGameId);
   const setPointsType = useGameStore((state) => state.setPointsType);
   const isBackendGameInitEnabled = useFeatureToggle("backend-game-init");
+  const isPointsTypeEnabled = useIsPointsTypeEnabled();
 
   const handleOpenDialog = useCallback(
     (showDialog: () => void) => {
@@ -68,11 +70,12 @@ export function usePlayersSubmit({
     setEmptyRoundScore();
 
     const storageSettings = await getFromStorage(StorageKeys.settings);
-    const pointsType = storageSettings
+    const storedPointsType = storageSettings
       ? (JSON.parse(storageSettings) as { pointsType: string }).pointsType
       : undefined;
+    const pointsType = isPointsTypeEnabled ? storedPointsType : POINTS_TYPE[0].id;
 
-    if (pointsType) {
+    if (isPointsTypeEnabled && pointsType) {
       setPointsType(pointsType);
     }
 
@@ -118,6 +121,7 @@ export function usePlayersSubmit({
     handleCatchError,
     initGame,
     isBackendGameInitEnabled,
+    isPointsTypeEnabled,
     mode,
     navigateFunction,
     players,

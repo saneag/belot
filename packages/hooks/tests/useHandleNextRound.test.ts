@@ -48,6 +48,10 @@ vi.mock("react", () => ({
   useCallback: (callback: (...args: unknown[]) => unknown) => callback,
 }));
 
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useIsPointsTypeEnabled: () => false,
+}));
+
 vi.mock("@belot/store", () => ({
   useGameStore: (selector: (state: unknown) => unknown) =>
     selector({

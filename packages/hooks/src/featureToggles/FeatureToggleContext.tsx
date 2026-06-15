@@ -6,6 +6,7 @@ import {
   type FeatureToggleState,
 } from "./featureToggleUtils";
 import type { FeatureToggleStorage } from "./types";
+import { useSyncPointsTypeFeature } from "../usePointsTypeFeature";
 
 export const FeatureToggleContext = createContext<FeatureToggleState>(
   getDefaultFeatureToggleState(),
@@ -14,6 +15,11 @@ export const FeatureToggleContext = createContext<FeatureToggleState>(
 interface FeatureToggleProviderProps extends FeatureToggleStorage {
   children: ReactNode;
 }
+
+const PointsTypeFeatureSync = () => {
+  useSyncPointsTypeFeature();
+  return null;
+};
 
 export const FeatureToggleProvider = ({
   children,
@@ -44,6 +50,9 @@ export const FeatureToggleProvider = ({
   }, [getFromStorage, setToStorage]);
 
   return (
-    <FeatureToggleContext.Provider value={toggles}>{children}</FeatureToggleContext.Provider>
+    <FeatureToggleContext.Provider value={toggles}>
+      <PointsTypeFeatureSync />
+      {children}
+    </FeatureToggleContext.Provider>
   );
 };
