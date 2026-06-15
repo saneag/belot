@@ -4,7 +4,7 @@ import { useState } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { GameMode, type Player, type RoundScore, type Team } from "@belot/types";
+import { GameMode, type RoundScore, type Team } from "@belot/types";
 
 import PlayerScoreInput from "@/components/game-table/action-buttons/next-round-button/playerScoreInput";
 
@@ -37,7 +37,7 @@ describe("PlayerScoreInput", () => {
             { id: 1, name: "Bob" },
           ]}
           teams={[]}
-          roundPlayer={{ id: 0, name: "Alice" } as Player}
+          roundPlayer={{ id: 0, name: "Alice" }}
         />
       );
     }
@@ -70,7 +70,7 @@ describe("PlayerScoreInput", () => {
           gameMode={GameMode.teams}
           players={[]}
           teams={[{ id: 1, name: "Team B", playersIds: [0, 1] }] as Team[]}
-          roundPlayer={{ id: 0, name: "Alice" } as Player}
+          roundPlayer={{ id: 0, name: "Alice" }}
         />
       );
     }
