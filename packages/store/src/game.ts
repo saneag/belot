@@ -1,3 +1,4 @@
+import { POINTS_TYPE } from "@belot/constants";
 import { GameMode, type GameSlice, type PlayersSlice, type RoundSlice } from "@belot/types";
 
 import { create } from "zustand";
@@ -20,6 +21,7 @@ export const createGameStore = () =>
       set(() => ({
         players: [],
         mode: GameMode.classic,
+        pointsType: POINTS_TYPE[0].id,
         dealer: null,
         roundsScores: [],
         teams: [],

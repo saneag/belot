@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo } from "react";
 
+import { useGameStore } from "@belot/store";
 import { formatLocalizationString, useLocalizations } from "@belot/localizations";
 import {
   GameMode,
@@ -9,7 +10,7 @@ import {
   type Team,
   type TeamScore,
 } from "@belot/types";
-import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode } from "@belot/utils/src";
+import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode, getScoreInputMaxLength } from "@belot/utils/src";
 
 import { Field, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
@@ -33,6 +34,7 @@ export default function PlayerScoreInput({
   teams,
   roundPlayer,
 }: PlayerScoreInputProps) {
+  const pointsType = useGameStore((state) => state.pointsType);
   const messages = useLocalizations([{ key: "next.round.score.for.player" }]);
 
   const finalRoundScore = useMemo(
@@ -79,7 +81,7 @@ export default function PlayerScoreInput({
           id={`${opponent.id}`}
           className="[-moz-appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
           value={String(finalRoundScore?.score || 0)}
-          maxLength={3}
+          maxLength={getScoreInputMaxLength(pointsType)}
           type="number"
           onChange={(e) => handleInputChange(Number(e.target.value))}
           onFocus={(e) => {

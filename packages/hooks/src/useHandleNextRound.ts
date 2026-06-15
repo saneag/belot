@@ -1,11 +1,12 @@
 import { type Dispatch, type SetStateAction, useCallback, useState } from "react";
 
-import { DEFAULT_ROUND_POINTS, StorageKeys } from "@belot/constants";
+import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import type { Player, RoundScore, Team } from "@belot/types";
 import {
   calculateRoundScore,
   checkForGameWinner,
+  getDefaultRoundPoints,
   prepareEmptyRoundScoreRow,
   setNextDealer,
 } from "@belot/utils";
@@ -15,17 +16,20 @@ interface UseHandleNextRoundProps {
   setToLocalStorage: (key: StorageKeys, value: string) => void;
 }
 
-const defaultRoundScoreState: RoundScore = {
+const createDefaultRoundScoreState = (pointsType: string): RoundScore => ({
   id: 0,
   playersScores: [],
   teamsScores: [],
-  totalRoundScore: DEFAULT_ROUND_POINTS,
+  totalRoundScore: getDefaultRoundPoints(pointsType),
   roundPlayer: null,
-};
+});
 
 export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNextRoundProps) => {
+  const pointsType = useGameStore((state) => state.pointsType);
   const [roundPlayer, setRoundPlayer] = useState<Player | null>(null);
-  const [roundScore, setRoundScore] = useState<RoundScore>(defaultRoundScoreState);
+  const [roundScore, setRoundScore] = useState<RoundScore>(
+    createDefaultRoundScoreState(pointsType),
+  );
   const [gameOverflowCount, setGameOverflowCount] = useState(0);
 
   const players = useGameStore((state) => state.players);
@@ -42,11 +46,11 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
   }, []);
 
   const handleNextRound = useCallback(() => {
-    const calculatedRoundScore = calculateRoundScore(roundScore, roundPlayer, gameMode);
+    const calculatedRoundScore = calculateRoundScore(roundScore, roundPlayer, gameMode, pointsType);
     updateRoundScore(calculatedRoundScore);
 
     setRoundPlayer(null);
-    setRoundScore(defaultRoundScoreState);
+    setRoundScore(createDefaultRoundScoreState(pointsType));
 
     setWinner(
       checkForGameWinner(
@@ -56,6 +60,7 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
         calculatedRoundScore,
         gameOverflowCount,
         setGameOverflowCount,
+        pointsType,
       ),
     );
 
@@ -76,6 +81,7 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
       players,
       teams,
       mode: gameMode,
+      pointsType,
       roundsScores: updatedRoundsScores,
     });
 
@@ -96,6 +102,7 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
     gameMode,
     gameOverflowCount,
     players,
+    pointsType,
     roundPlayer,
     roundScore,
     roundsScores,

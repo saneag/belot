@@ -54,6 +54,7 @@ vi.mock("@belot/store", () => ({
       players: mocks.players,
       teams: mocks.teams,
       mode: mocks.mode,
+      pointsType: "micropoints",
       roundsScores: mocks.roundsScores,
       updateRoundScore: mocks.updateRoundScore,
       dealer: mocks.dealer,

@@ -1,5 +1,11 @@
+import { useGameStore } from "@belot/store";
 import { GameMode, RoundScore } from "@belot/types";
-import { getCurrentScore, getCurrentScoreColor, getScore, roundToDecimal } from "@belot/utils";
+import {
+  formatTotalRoundScoreForDisplay,
+  getCurrentScore,
+  getCurrentScoreColor,
+  getScore,
+} from "@belot/utils";
 
 import { Box } from "@/components/ui/box";
 import { TableData } from "@/components/ui/table";
@@ -13,6 +19,7 @@ interface PointCellsProps {
 const COMMON_CELL_CLASSNAME = "size-full py-1";
 
 export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
+  const pointsType = useGameStore((state) => state.pointsType);
   const scoreArray =
     gameMode === GameMode.classic ? roundScore.playersScores : roundScore.teamsScores;
 
@@ -28,8 +35,10 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
               {getScore(score)}
             </Text>
             {score.score ? (
-              <Text className={`absolute right-0.5 top-0 ${getCurrentScoreColor(score, true)}`}>
-                {getCurrentScore(score)}
+              <Text
+                className={`absolute right-0.5 top-0 ${getCurrentScoreColor(score, true, pointsType)}`}
+              >
+                {getCurrentScore(score, pointsType)}
               </Text>
             ) : null}
           </Box>
@@ -38,9 +47,7 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
       <TableData className="border-l border-primary-500 p-0">
         <Box className={`${COMMON_CELL_CLASSNAME}`}>
           <Text size="xl" bold className="text-center">
-            {String(roundScore.totalRoundScore).length === 3
-              ? roundToDecimal(roundScore.totalRoundScore)
-              : roundScore.totalRoundScore}
+            {formatTotalRoundScoreForDisplay(roundScore.totalRoundScore, pointsType)}
           </Text>
         </Box>
       </TableData>
