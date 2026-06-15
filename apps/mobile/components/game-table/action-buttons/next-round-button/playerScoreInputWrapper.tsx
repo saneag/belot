@@ -10,12 +10,14 @@ interface PlayerScoreInputWrapperProps {
   roundScore: RoundScore;
   setRoundScore: Dispatch<SetStateAction<RoundScore>>;
   roundPlayer: Player | null;
+  pointsType: string;
 }
 
 export default function PlayerScoreInputWrapper({
   roundScore,
   setRoundScore,
   roundPlayer,
+  pointsType,
 }: PlayerScoreInputWrapperProps) {
   const players = useGameStore((state) => state.players);
   const teams = useGameStore((state) => state.teams);
@@ -43,6 +45,7 @@ export default function PlayerScoreInputWrapper({
       players={players}
       teams={teams}
       roundPlayer={roundPlayer}
+      pointsType={pointsType}
     />
   ));
 }

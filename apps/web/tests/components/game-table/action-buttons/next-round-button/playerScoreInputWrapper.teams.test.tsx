@@ -58,6 +58,7 @@ describe("PlayerScoreInputWrapper teams mode", () => {
           roundScore={roundScore}
           setRoundScore={setRoundScore}
           roundPlayer={{ id: 0, name: "Alice", teamId: 0 }}
+          pointsType="micropoints"
         />
       );
     }

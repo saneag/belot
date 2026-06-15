@@ -13,8 +13,8 @@ vi.mock("@/helpers/localization", () => ({
   getDeviceLanguage: () => "en",
 }));
 
-vi.mock("@/components/navigation", () => ({
-  default: () => <div>Navigation</div>,
+vi.mock("expo-router", () => ({
+  Stack: () => <div>Expo Stack</div>,
 }));
 
 vi.mock("@belot/components", () => ({
@@ -26,10 +26,10 @@ vi.mock("@belot/localizations", () => ({
 }));
 
 describe("RootLayout", () => {
-  it("renders navigation inside providers", async () => {
+  it("renders expo stack inside providers", async () => {
     const { default: RootLayout } = await import("@/app/_layout");
     render(<RootLayout />);
 
-    expect(screen.getByText("Navigation")).toBeTruthy();
+    expect(screen.getByText("Expo Stack")).toBeTruthy();
   });
 });

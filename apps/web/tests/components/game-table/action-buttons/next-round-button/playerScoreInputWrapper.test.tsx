@@ -55,6 +55,7 @@ describe("PlayerScoreInputWrapper", () => {
           roundScore={roundScore}
           setRoundScore={setRoundScore}
           roundPlayer={{ id: 0, name: "Alice" }}
+          pointsType="micropoints"
         />
       );
     }
