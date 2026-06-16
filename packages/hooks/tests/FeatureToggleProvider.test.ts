@@ -54,8 +54,8 @@ describe("FeatureToggleProvider", () => {
   });
 
   it("provides default toggle state before sync completes", async () => {
-    const { FeatureToggleContext, FeatureToggleProvider } =
-      await import("../src/featureToggles/FeatureToggleContext");
+    const { FeatureToggleContext } = await import("../src/featureToggles/toggleContext");
+    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleProvider");
 
     const element = FeatureToggleProvider({
       children: "child",
@@ -69,7 +69,7 @@ describe("FeatureToggleProvider", () => {
   });
 
   it("syncs centralized toggles on mount", async () => {
-    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleContext");
+    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleProvider");
 
     FeatureToggleProvider({
       children: "child",
@@ -111,7 +111,7 @@ describe("FeatureToggleProvider", () => {
         }),
     );
 
-    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleContext");
+    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleProvider");
 
     FeatureToggleProvider({
       children: "child",
