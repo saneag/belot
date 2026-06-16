@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   },
 }));
 
-vi.mock("../src/featureToggles/FeatureToggleContext", () => ({
+vi.mock("../src/featureToggles/toggleContext", () => ({
   FeatureToggleContext: {
     Provider: ({ children }: { children: React.ReactNode }) => children,
   },

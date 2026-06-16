@@ -1,4 +1,5 @@
 export * from "./types";
 export * from "./featureToggleUtils";
-export * from "./FeatureToggleContext";
+export * from "./toggleContext";
+export * from "./FeatureToggleProvider";
 export * from "./useFeatureToggle";

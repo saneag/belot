@@ -1,11 +1,10 @@
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import { Stack } from "expo-router";
-
 import { ThemeContextProvider } from "@belot/components";
 import { LocalizationContextProvider } from "@belot/localizations";
 
 import { FeatureToggleProvider } from "@/components/featureToggles/FeatureToggleProvider";
+import { JsStack, stackScreenOptions } from "@/components/navigation";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 
 import { getDeviceLanguage } from "@/helpers/localization";
@@ -27,12 +26,7 @@ export default function RootLayout() {
             <ThemeContextProvider initialTheme={theme}>
               <GluestackUIProvider mode="system">
                 <SafeAreaView className="relative w-full flex-1 bg-phone-screen-background">
-                  <Stack
-                    screenOptions={{
-                      headerShown: false,
-                      contentStyle: { backgroundColor: "transparent" },
-                    }}
-                  />
+                  <JsStack screenOptions={stackScreenOptions} />
                 </SafeAreaView>
               </GluestackUIProvider>
             </ThemeContextProvider>

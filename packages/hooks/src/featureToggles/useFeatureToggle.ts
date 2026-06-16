@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
-import { FeatureToggleContext } from "./FeatureToggleContext";
 import { isKnownFeatureToggle, logUnknownFeatureToggle } from "./featureToggleUtils";
+import { FeatureToggleContext } from "./toggleContext";
 
 export const useFeatureToggle = (name: string): boolean => {
   const toggles = useContext(FeatureToggleContext);

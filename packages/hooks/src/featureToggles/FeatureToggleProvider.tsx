@@ -1,4 +1,4 @@
-import { type ReactNode, createContext, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { useSyncPointsTypeFeature } from "../usePointsTypeFeature";
 import {
@@ -7,11 +7,8 @@ import {
   getDefaultFeatureToggleState,
   syncFeatureTogglesToStorage,
 } from "./featureToggleUtils";
+import { FeatureToggleContext } from "./toggleContext";
 import type { FeatureToggleStorage } from "./types";
-
-export const FeatureToggleContext = createContext<FeatureToggleState>(
-  getDefaultFeatureToggleState(),
-);
 
 interface FeatureToggleProviderProps extends FeatureToggleStorage {
   children: ReactNode;
