@@ -1,7 +1,5 @@
-import { useCallback } from "react";
-
 import { POINTS_TYPE } from "@belot/constants";
-import { formatLocalizationKey, useLocalizations } from "@belot/localizations";
+import { usePointsTypeSelection } from "@belot/hooks";
 
 import { CircleIcon } from "@/components/ui/icon";
 import { Radio, RadioGroup, RadioIcon, RadioIndicator, RadioLabel } from "@/components/ui/radio";
@@ -12,25 +10,7 @@ interface DialogPointsTypeToggleProps {
 }
 
 export default function DialogPointsTypeToggle({ value, onChange }: DialogPointsTypeToggleProps) {
-  const messages = useLocalizations([
-    {
-      key: "settings.points.type.micropoints",
-    },
-    {
-      key: "settings.points.type.points",
-    },
-  ]);
-
-  const handleChange = useCallback(
-    (newValue: string) => {
-      if (newValue === value) {
-        return;
-      }
-
-      onChange(newValue);
-    },
-    [onChange, value],
-  );
+  const { handleChange, getOptionLabel } = usePointsTypeSelection({ value, onChange });
 
   return (
     <RadioGroup value={value} className="flex flex-row items-center justify-center gap-4">
@@ -39,7 +19,7 @@ export default function DialogPointsTypeToggle({ value, onChange }: DialogPoints
           <RadioIndicator>
             <RadioIcon as={CircleIcon} />
           </RadioIndicator>
-          <RadioLabel>{messages[formatLocalizationKey(type.localizationKey)]}</RadioLabel>
+          <RadioLabel>{getOptionLabel(type.localizationKey)}</RadioLabel>
         </Radio>
       ))}
     </RadioGroup>

@@ -1,8 +1,5 @@
-import { useCallback } from "react";
-
 import { POINTS_TYPE } from "@belot/constants";
-import { Settings } from "@belot/hooks";
-import { formatLocalizationKey, useLocalizations } from "@belot/localizations";
+import { Settings, usePointsTypeSelection } from "@belot/hooks";
 
 import ExtendedTooltip from "@/components/extendedTooltip";
 import { Button } from "@/components/ui/button";
@@ -20,31 +17,11 @@ interface PointsTypeRadioButtonProps {
 }
 
 export const PointsTypeRadioButton = ({ value, onChange }: PointsTypeRadioButtonProps) => {
-  const messages = useLocalizations([
-    {
-      key: "settings.points.type",
-    },
-    {
-      key: "settings.points.type.hint",
-    },
-    {
-      key: "settings.points.type.micropoints",
-    },
-    {
-      key: "settings.points.type.points",
-    },
-  ]);
-
-  const handleChange = useCallback(
-    async (newValue: string) => {
-      if (newValue === value) {
-        return;
-      }
-
-      await onChange({ pointsType: newValue });
-    },
-    [onChange, value],
-  );
+  const { messages, handleChange, getOptionLabel } = usePointsTypeSelection({
+    value,
+    onChange: (newValue) => onChange({ pointsType: newValue }),
+    includeSettingsLabels: true,
+  });
 
   return (
     <VStack>
@@ -67,7 +44,7 @@ export const PointsTypeRadioButton = ({ value, onChange }: PointsTypeRadioButton
             <RadioIndicator>
               <RadioIcon as={CircleIcon} />
             </RadioIndicator>
-            <RadioLabel>{messages[formatLocalizationKey(type.localizationKey)]}</RadioLabel>
+            <RadioLabel>{getOptionLabel(type.localizationKey)}</RadioLabel>
           </Radio>
         ))}
       </RadioGroup>

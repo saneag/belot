@@ -1,7 +1,5 @@
-import { useCallback } from "react";
-
 import { POINTS_TYPE } from "@belot/constants";
-import { formatLocalizationKey, useLocalizations } from "@belot/localizations";
+import { usePointsTypeSelection } from "@belot/hooks";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -12,25 +10,7 @@ interface DialogPointsTypeToggleProps {
 }
 
 export default function DialogPointsTypeToggle({ value, onChange }: DialogPointsTypeToggleProps) {
-  const messages = useLocalizations([
-    {
-      key: "settings.points.type.micropoints",
-    },
-    {
-      key: "settings.points.type.points",
-    },
-  ]);
-
-  const handleChange = useCallback(
-    (newValue: string) => {
-      if (newValue === value) {
-        return;
-      }
-
-      onChange(newValue);
-    },
-    [onChange, value],
-  );
+  const { handleChange, getOptionLabel } = usePointsTypeSelection({ value, onChange });
 
   return (
     <RadioGroup
@@ -42,7 +22,7 @@ export default function DialogPointsTypeToggle({ value, onChange }: DialogPoints
         <div key={type.id} className="flex items-center gap-2">
           <RadioGroupItem value={type.id} id={`dialog-points-type-${type.id}`} />
           <Label htmlFor={`dialog-points-type-${type.id}`}>
-            {messages[formatLocalizationKey(type.localizationKey)]}
+            {getOptionLabel(type.localizationKey)}
           </Label>
         </div>
       ))}
