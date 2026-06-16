@@ -220,6 +220,60 @@ describe("gameScoreHelpers", () => {
       expect(mockSetGameOverflowCount).not.toHaveBeenCalled();
     });
 
+    it("should not declare a winner in points mode when total score is below 101", () => {
+      const mockCalculatedRoundScore: RoundScore = {
+        id: 1,
+        playersScores: [
+          {
+            ...mockPlayersScores[0],
+            totalScore: 34,
+          },
+          ...mockPlayersScores.slice(1).map((ps) => ({ ...ps, totalScore: 5 })),
+        ],
+        teamsScores: mockTeamsScores,
+        totalRoundScore: 16,
+        roundPlayer: mockPlayers[0],
+      };
+
+      expect(
+        checkForGameWinner(
+          GameMode.classic,
+          mockPlayers,
+          mockTeams,
+          mockCalculatedRoundScore,
+          0,
+          mockSetGameOverflowCount,
+        ),
+      ).toBeNull();
+    });
+
+    it("should declare a winner in points mode when total score reaches 101", () => {
+      const mockCalculatedRoundScore: RoundScore = {
+        id: 1,
+        playersScores: [
+          {
+            ...mockPlayersScores[0],
+            totalScore: WIN_POINTS,
+          },
+          ...mockPlayersScores.slice(1),
+        ],
+        teamsScores: mockTeamsScores,
+        totalRoundScore: 16,
+        roundPlayer: mockPlayers[0],
+      };
+
+      expect(
+        checkForGameWinner(
+          GameMode.classic,
+          mockPlayers,
+          mockTeams,
+          mockCalculatedRoundScore,
+          0,
+          mockSetGameOverflowCount,
+        ),
+      ).toEqual(mockPlayers[0]);
+    });
+
     it("should return null if game mode is classic and there is no winner", () => {
       const mockCalculatedRoundScore: RoundScore = {
         id: 1,

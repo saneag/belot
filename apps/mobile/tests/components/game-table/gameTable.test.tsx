@@ -96,6 +96,7 @@ vi.mock("@belot/hooks", () => ({
   useGetTableHeaderDealerBackground: () => ({
     getDealerBackground: () => "",
   }),
+  useEffectivePointsType: () => "micropoints",
 }));
 
 vi.mock("@/hooks/game-table/useGetPlayersNamesWithScoreColumn", () => ({

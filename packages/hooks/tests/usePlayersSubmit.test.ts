@@ -15,10 +15,13 @@ const mocks = vi.hoisted(() => {
     mode: "classic",
     setValidations: vi.fn(),
     setEmptyRoundScore: vi.fn(),
+    setRoundsScores: vi.fn(),
     setGameId: vi.fn(),
+    setPointsType: vi.fn(),
     navigateFunction: vi.fn(),
     setItemsToStorage: vi.fn(),
     getApiBaseUrl: vi.fn(() => "https://api.example"),
+    getFromStorage: vi.fn(() => null),
     handleCatchError: vi.fn(),
     mutate: vi.fn(),
   };
@@ -47,12 +50,19 @@ vi.mock("@belot/store", () => ({
       dealer: mocks.dealer,
       mode: mocks.mode,
       setEmptyRoundScore: mocks.setEmptyRoundScore,
+      setRoundsScores: mocks.setRoundsScores,
       setGameId: mocks.setGameId,
+      setPointsType: mocks.setPointsType,
     }),
 }));
 
 vi.mock("../src/featureToggles/useFeatureToggle", () => ({
   useFeatureToggle: vi.fn(() => true),
+}));
+
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useIsPointsTypeEnabled: () => false,
+  useEffectivePointsType: () => "micropoints",
 }));
 
 vi.mock("@belot/utils", async (importOriginal) => {
@@ -97,6 +107,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -114,6 +125,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -128,12 +140,14 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
     await handleSubmit();
 
-    expect(mocks.setEmptyRoundScore).toHaveBeenCalledOnce();
+    expect(mocks.setPointsType).toHaveBeenCalled();
+    expect(mocks.setRoundsScores).toHaveBeenCalledOnce();
     expect(mocks.setItemsToStorage).toHaveBeenCalledWith(
       expect.objectContaining({
         [StorageKeys.timerStartTime]: "",
@@ -165,6 +179,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -192,12 +207,13 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
     await handleSubmit();
 
-    expect(mocks.setEmptyRoundScore).not.toHaveBeenCalled();
+    expect(mocks.setRoundsScores).not.toHaveBeenCalled();
     expect(mocks.navigateFunction).not.toHaveBeenCalled();
   });
 
@@ -209,6 +225,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 
@@ -231,6 +248,7 @@ describe("usePlayersSubmit", () => {
       navigateFunction: mocks.navigateFunction,
       setItemsToStorage: mocks.setItemsToStorage,
       getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
       handleCatchError: mocks.handleCatchError,
     });
 

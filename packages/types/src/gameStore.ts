@@ -3,8 +3,10 @@ import { GameMode, type Player, type RoundScore, type Team } from "./game";
 export interface GameSlice {
   mode: GameMode;
   gameId: string | null;
+  pointsType: string;
 
   setGameId: (gameId: string | null) => void;
+  setPointsType: (pointsType: string) => void;
 }
 
 export interface RoundSlice {

@@ -1,4 +1,4 @@
-import { LIMIT_OF_ROUND_POINTS } from "@belot/constants";
+import { LIMIT_OF_ROUND_POINTS, POINTS_TYPE } from "@belot/constants";
 import { GameMode, type Player, type RoundScore } from "@belot/types";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -57,6 +57,24 @@ describe("scoreCalculationHelpers", () => {
       expect(result.totalRoundScore).toBe(16);
       expect(result.teamsScores).toHaveLength(2);
     });
+
+    it("keeps point totals unchanged in points mode", () => {
+      const roundScore: RoundScore = baseRoundScore({
+        id: 0,
+        playersScores: mockPlayersScores,
+        teamsScores: mockTeamsScores,
+        totalRoundScore: 16,
+      });
+
+      const result = calculateRoundScore(
+        roundScore,
+        roundPlayer,
+        GameMode.classic,
+        POINTS_TYPE[1].id,
+      );
+
+      expect(result.totalRoundScore).toBe(16);
+    });
   });
 
   describe("calculateTotalRoundScore", () => {
@@ -89,6 +107,16 @@ describe("scoreCalculationHelpers", () => {
         totalRoundScore: LIMIT_OF_ROUND_POINTS.negative,
       });
       expect(result.totalRoundScore).toBe(LIMIT_OF_ROUND_POINTS.negative);
+    });
+
+    it("uses point limits when points type is points", () => {
+      const pointsPrev: RoundScore = baseRoundScore({
+        id: 0,
+        totalRoundScore: 10,
+      });
+
+      const result = calculateTotalRoundScore("+", 50, pointsPrev, POINTS_TYPE[1].id);
+      expect(result.totalRoundScore).toBe(57);
     });
   });
 

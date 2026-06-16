@@ -34,6 +34,7 @@ describe("PlayerScoreInput", () => {
         ]}
         teams={[]}
         roundPlayer={{ id: 0, name: "Alice" }}
+        pointsType="micropoints"
       />,
     );
 
@@ -63,6 +64,7 @@ describe("PlayerScoreInput", () => {
         ]}
         teams={[]}
         roundPlayer={{ id: 0, name: "Alice" }}
+        pointsType="micropoints"
       />,
     );
 

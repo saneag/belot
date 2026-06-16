@@ -2,7 +2,9 @@ import { useCallback } from "react";
 
 import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
-import { prepareEmptyRoundScoreRow, roundByLastDigit, setNextDealer } from "@belot/utils";
+import { normalizeSkippedRoundScore, prepareEmptyRoundScoreRow, setNextDealer } from "@belot/utils";
+
+import { useEffectivePointsType } from "./usePointsTypeFeature";
 
 interface UseHandleSkipRoundProps {
   setItemsToStorage: (items: Partial<Record<StorageKeys, string>>) => Promise<void> | void;
@@ -12,6 +14,7 @@ export const useHandleSkipRound = ({ setItemsToStorage }: UseHandleSkipRoundProp
   const players = useGameStore((state) => state.players);
   const teams = useGameStore((state) => state.teams);
   const mode = useGameStore((state) => state.mode);
+  const pointsType = useEffectivePointsType();
   const roundsScores = useGameStore((state) =>
     Array.isArray(state.roundsScores) ? state.roundsScores : [],
   );
@@ -32,13 +35,17 @@ export const useHandleSkipRound = ({ setItemsToStorage }: UseHandleSkipRoundProp
 
     updatedRoundsScores[lastIndex] = {
       ...lastRoundScore,
-      totalRoundScore: roundByLastDigit(lastRoundScore.totalRoundScore),
+      totalRoundScore: normalizeSkippedRoundScore(
+        lastRoundScore.totalRoundScore,
+        pointsType,
+      ),
     };
 
     const newEmptyRow = prepareEmptyRoundScoreRow({
       players,
       teams,
       mode,
+      pointsType,
       roundsScores: updatedRoundsScores,
     });
 
@@ -58,5 +65,5 @@ export const useHandleSkipRound = ({ setItemsToStorage }: UseHandleSkipRoundProp
     }
 
     await setItemsToStorage(storageItems);
-  }, [dealer, mode, players, roundsScores, setItemsToStorage, skipRound, teams]);
+  }, [dealer, mode, players, pointsType, roundsScores, setItemsToStorage, skipRound, teams]);
 };
