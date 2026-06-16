@@ -37,7 +37,7 @@ export function usePlayersSubmit({
   const players = useGameStore((state) => state.players);
   const dealer = useGameStore((state) => state.dealer);
   const mode = useGameStore((state) => state.mode);
-  const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
+  const setRoundsScores = useGameStore((state) => state.setRoundsScores);
   const setGameId = useGameStore((state) => state.setGameId);
   const setPointsType = useGameStore((state) => state.setPointsType);
   const isBackendGameInitEnabled = useFeatureToggle("backend-game-init");
@@ -67,24 +67,26 @@ export function usePlayersSubmit({
       return;
     }
 
-    setEmptyRoundScore();
-
     const storageSettings = await getFromStorage(StorageKeys.settings);
     const storedPointsType = storageSettings
       ? (JSON.parse(storageSettings) as { pointsType: string }).pointsType
       : undefined;
-    const pointsType = isPointsTypeEnabled ? storedPointsType : POINTS_TYPE[0].id;
+    const pointsType = isPointsTypeEnabled
+      ? storedPointsType ?? POINTS_TYPE[0].id
+      : POINTS_TYPE[0].id;
 
-    if (isPointsTypeEnabled && pointsType) {
-      setPointsType(pointsType);
-    }
+    setPointsType(pointsType);
 
     const emptyRoundScore: RoundScore = prepareEmptyRoundScoreRow({
       dealer,
       mode,
       players,
+      teams: prepareTeams(players, mode),
       pointsType,
+      roundsScores: [],
     });
+
+    setRoundsScores([emptyRoundScore]);
 
     await setItemsToStorage({
       [StorageKeys.timerStartTime]: "",
@@ -125,7 +127,7 @@ export function usePlayersSubmit({
     mode,
     navigateFunction,
     players,
-    setEmptyRoundScore,
+    setRoundsScores,
     setGameId,
     setItemsToStorage,
     setPointsType,

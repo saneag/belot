@@ -15,6 +15,7 @@ const mocks = vi.hoisted(() => {
     mode: "classic",
     setValidations: vi.fn(),
     setEmptyRoundScore: vi.fn(),
+    setRoundsScores: vi.fn(),
     setGameId: vi.fn(),
     setPointsType: vi.fn(),
     navigateFunction: vi.fn(),
@@ -49,6 +50,7 @@ vi.mock("@belot/store", () => ({
       dealer: mocks.dealer,
       mode: mocks.mode,
       setEmptyRoundScore: mocks.setEmptyRoundScore,
+      setRoundsScores: mocks.setRoundsScores,
       setGameId: mocks.setGameId,
       setPointsType: mocks.setPointsType,
     }),
@@ -144,7 +146,8 @@ describe("usePlayersSubmit", () => {
 
     await handleSubmit();
 
-    expect(mocks.setEmptyRoundScore).toHaveBeenCalledOnce();
+    expect(mocks.setPointsType).toHaveBeenCalled();
+    expect(mocks.setRoundsScores).toHaveBeenCalledOnce();
     expect(mocks.setItemsToStorage).toHaveBeenCalledWith(
       expect.objectContaining({
         [StorageKeys.timerStartTime]: "",
@@ -210,7 +213,7 @@ describe("usePlayersSubmit", () => {
 
     await handleSubmit();
 
-    expect(mocks.setEmptyRoundScore).not.toHaveBeenCalled();
+    expect(mocks.setRoundsScores).not.toHaveBeenCalled();
     expect(mocks.navigateFunction).not.toHaveBeenCalled();
   });
 

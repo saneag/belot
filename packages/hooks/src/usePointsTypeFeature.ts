@@ -16,11 +16,12 @@ export const useEffectivePointsType = () => {
 
 export const useSyncPointsTypeFeature = () => {
   const isPointsTypeEnabled = useIsPointsTypeEnabled();
+  const pointsType = useGameStore((state) => state.pointsType);
   const setPointsType = useGameStore((state) => state.setPointsType);
 
   useEffect(() => {
-    if (!isPointsTypeEnabled) {
+    if (!isPointsTypeEnabled && pointsType !== POINTS_TYPE[0].id) {
       setPointsType(POINTS_TYPE[0].id);
     }
-  }, [isPointsTypeEnabled, setPointsType]);
+  }, [isPointsTypeEnabled, pointsType, setPointsType]);
 };

@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { NEXT_WINNING_STEP, WIN_POINTS } from "@belot/constants";
 
 import {
+  applyDefaultTotalRoundScore,
   formatTotalRoundScoreForDisplay,
   formatRoundPointPresetForDisplay,
   getDefaultRoundPoints,
@@ -36,6 +37,38 @@ describe("pointsTypeHelpers", () => {
 
     it("returns 16 for points", () => {
       expect(getDefaultRoundPoints(POINTS_TYPE[1].id)).toBe(16);
+    });
+  });
+
+  describe("applyDefaultTotalRoundScore", () => {
+    it("applies the default total for pending rounds", () => {
+      expect(
+        applyDefaultTotalRoundScore(
+          {
+            id: 0,
+            roundPlayer: null,
+            totalRoundScore: 162,
+            playersScores: [],
+            teamsScores: [],
+          },
+          POINTS_TYPE[1].id,
+        ),
+      ).toMatchObject({ totalRoundScore: 16 });
+    });
+
+    it("keeps completed rounds unchanged", () => {
+      expect(
+        applyDefaultTotalRoundScore(
+          {
+            id: 0,
+            roundPlayer: { id: 0, name: "A" },
+            totalRoundScore: 162,
+            playersScores: [],
+            teamsScores: [],
+          },
+          POINTS_TYPE[1].id,
+        ),
+      ).toMatchObject({ totalRoundScore: 162 });
     });
   });
 

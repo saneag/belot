@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { POINTS_TYPE, StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
-import type { Player, RoundScore } from "@belot/types";
+import { GameMode, type Player, type RoundScore } from "@belot/types";
+import { applyDefaultTotalRoundScore, repairRoundScoreScores } from "@belot/utils";
 import type { Settings } from "./useSettings";
 import { useIsPointsTypeEnabled } from "./usePointsTypeFeature";
 
@@ -48,6 +49,11 @@ export function useLoadGameData({
   const setRoundsScores = useGameStore((state) => state.setRoundsScores);
   const setPointsType = useGameStore((state) => state.setPointsType);
   const isPointsTypeEnabled = useIsPointsTypeEnabled();
+  const getFromStorageRef = useRef(getFromStorage);
+
+  useEffect(() => {
+    getFromStorageRef.current = getFromStorage;
+  }, [getFromStorage]);
 
   useEffect(() => {
     const shouldFetchStorage =
@@ -56,10 +62,12 @@ export function useLoadGameData({
 
     if (shouldFetchStorage) {
       const fetchData = async () => {
-        const storagePlayers = await getFromStorage(StorageKeys.players);
-        const storageDealer = await getFromStorage(StorageKeys.dealer);
-        const storageRoundsScores = await getFromStorage(StorageKeys.roundsScores);
-        const storageSettings = await getFromStorage(StorageKeys.settings);
+        const storagePlayers = await getFromStorageRef.current(StorageKeys.players);
+        const storageDealer = await getFromStorageRef.current(StorageKeys.dealer);
+        const storageRoundsScores = await getFromStorageRef.current(StorageKeys.roundsScores);
+        const storageSettings = await getFromStorageRef.current(StorageKeys.settings);
+
+        let parsedPointsType = POINTS_TYPE[0].id;
 
         if (storageSettings && isPointsTypeEnabled) {
           try {
@@ -67,7 +75,11 @@ export function useLoadGameData({
             const isValidPointsType = POINTS_TYPE.some((type) => type.id === parsedSettings.pointsType);
 
             if (isValidPointsType) {
-              setPointsType(parsedSettings.pointsType);
+              parsedPointsType = parsedSettings.pointsType;
+
+              if (parsedPointsType !== useGameStore.getState().pointsType) {
+                setPointsType(parsedPointsType);
+              }
             }
           } catch {
             // Ignore invalid settings payloads and keep the default points type.
@@ -77,7 +89,26 @@ export function useLoadGameData({
         if (storagePlayers && storageDealer && storageRoundsScores) {
           const parsedPlayers = JSON.parse(storagePlayers) as Player[];
           const parsedDealer = JSON.parse(storageDealer) as Player;
-          const parsedRoundsScores = JSON.parse(storageRoundsScores) as RoundScore[];
+          let parsedRoundsScores = JSON.parse(storageRoundsScores) as RoundScore[];
+
+          if (parsedRoundsScores.length > 0) {
+            const lastRoundIndex = parsedRoundsScores.length - 1;
+            const gameMode =
+              parsedPlayers.length === 4 ? GameMode.teams : GameMode.classic;
+
+            parsedRoundsScores = [
+              ...parsedRoundsScores.slice(0, lastRoundIndex),
+              applyDefaultTotalRoundScore(
+                repairRoundScoreScores(parsedRoundsScores[lastRoundIndex], {
+                  players: parsedPlayers,
+                  mode: gameMode,
+                  pointsType: parsedPointsType,
+                  roundsScores: parsedRoundsScores,
+                }),
+                parsedPointsType,
+              ),
+            ];
+          }
 
           if (shouldSetData) {
             setPlayers(parsedPlayers);
@@ -99,7 +130,6 @@ export function useLoadGameData({
     }
   }, [
     dealer,
-    getFromStorage,
     isPointsTypeEnabled,
     players?.length,
     roundsScores?.length,

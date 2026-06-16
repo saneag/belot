@@ -88,10 +88,20 @@ describe("FeatureToggleProvider", () => {
     });
 
     await vi.waitFor(() => {
-      expect(mocks.setToggles).toHaveBeenCalledWith({
+      expect(mocks.setToggles).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    const updateToggles = mocks.setToggles.mock.calls[0]?.[0] as (
+      current: FeatureToggleState,
+    ) => FeatureToggleState;
+    expect(
+      updateToggles({
         ...FEATURE_TOGGLES,
-        "settings-screen": true,
-      });
+        "settings-screen": false,
+      }),
+    ).toEqual({
+      ...FEATURE_TOGGLES,
+      "settings-screen": true,
     });
   });
 

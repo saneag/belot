@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { POINTS_TYPE } from "@belot/constants";
 import { formatLocalizationKey, useLocalizations } from "@belot/localizations";
 
-import { CircleIcon, Icon } from "@/components/ui/icon";
+import { CircleIcon } from "@/components/ui/icon";
 import { Radio, RadioGroup, RadioIcon, RadioIndicator, RadioLabel } from "@/components/ui/radio";
 
 interface DialogPointsTypeToggleProps {
@@ -23,9 +23,13 @@ export default function DialogPointsTypeToggle({ value, onChange }: DialogPoints
 
   const handleChange = useCallback(
     (newValue: string) => {
+      if (newValue === value) {
+        return;
+      }
+
       onChange(newValue);
     },
-    [onChange],
+    [onChange, value],
   );
 
   return (

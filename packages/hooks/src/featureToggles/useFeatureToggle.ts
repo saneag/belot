@@ -11,5 +11,5 @@ export const useFeatureToggle = (name: string): boolean => {
     return false;
   }
 
-  return toggles[name];
+  return toggles[name] ?? false;
 };
