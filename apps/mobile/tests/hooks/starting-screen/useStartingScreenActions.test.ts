@@ -29,6 +29,7 @@ vi.mock("@belot/hooks", () => ({
 vi.mock("@/helpers/storageHelpers", () => ({
   getFromStorage: vi.fn(),
   removeFromStorage: vi.fn(),
+  setToStorage: vi.fn(),
 }));
 
 describe("useStartingScreenActions", () => {

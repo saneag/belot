@@ -1,13 +1,21 @@
-import { BOLT_COUNT_LIMIT, BOLT_POINTS } from "@belot/constants";
+import { BOLT_COUNT_LIMIT, BOLT_POINTS, POINTS_TYPE } from "@belot/constants";
 import type { Player, TeamScore } from "@belot/types";
 
-import { roundByLastDigit } from "../commonUtils";
+import {
+  getBoltTotalPenalty,
+  getZeroScorePenalty,
+  roundScoreValue,
+} from "../pointsTypeHelpers";
 
 export const calculateTeamsScore = (
   teamsScores: TeamScore[],
   roundPlayer: Player | null,
   totalRoundScore: number,
+  pointsType: string = POINTS_TYPE[0].id,
 ): TeamScore[] => {
+  const zeroScorePenalty = getZeroScorePenalty(pointsType);
+  const boltTotalPenalty = getBoltTotalPenalty(pointsType);
+
   return teamsScores.map((teamScore) => {
     const { score, boltCount, totalScore, teamId } = teamScore;
     const halfScore = totalRoundScore / 2;
@@ -30,30 +38,34 @@ export const calculateTeamsScore = (
         ...teamScore,
         score: BOLT_POINTS,
         boltCount: boltCount + 1,
-        totalScore: boltCount + 1 === BOLT_COUNT_LIMIT ? totalScore - 10 : totalScore,
+        totalScore: boltCount + 1 === BOLT_COUNT_LIMIT ? totalScore + boltTotalPenalty : totalScore,
       };
     }
 
     if (!isOwnTeam && !isScoreLowerThanHalfOfTotalScore && !isEqualScore) {
+      const finalScore = roundScoreValue(totalRoundScore, pointsType);
+
       return {
         ...teamScore,
-        score: roundByLastDigit(totalRoundScore),
-        totalScore: totalScore + roundByLastDigit(totalRoundScore),
+        score: finalScore,
+        totalScore: totalScore + finalScore,
       };
     }
 
     if (score === 0) {
       return {
         ...teamScore,
-        score: -10,
-        totalScore: totalScore - 10,
+        score: zeroScorePenalty,
+        totalScore: totalScore + zeroScorePenalty,
       };
     }
 
+    const finalScore = roundScoreValue(score, pointsType);
+
     return {
       ...teamScore,
-      score: roundByLastDigit(score),
-      totalScore: totalScore + roundByLastDigit(score),
+      score: finalScore,
+      totalScore: totalScore + finalScore,
     };
   });
 };

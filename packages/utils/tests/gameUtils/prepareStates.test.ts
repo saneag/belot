@@ -18,6 +18,7 @@ import {
   preparePreviousRoundScoreRow,
   prepareRoundScoresBasedOnGameMode,
   prepareTeams,
+  repairRoundScoreScores,
 } from "../../src/gameUtils/prepareStates";
 
 describe("prepareStates", () => {
@@ -166,6 +167,47 @@ describe("prepareStates", () => {
       };
 
       expect(prepareEmptyRoundScoreRow(state).teamsScores).toEqual([]);
+    });
+
+    it("derives team scores from players when teams are missing (teams mode)", () => {
+      const state = {
+        ...mockRoundSlice,
+        mode: GameMode.teams,
+        players: mockPlayers,
+        roundsScores: [] as RoundScore[],
+      };
+
+      expect(prepareEmptyRoundScoreRow(state).teamsScores).toEqual([
+        { id: 0, teamId: 0, score: 0, boltCount: 0, totalScore: 0 },
+        { id: 1, teamId: 1, score: 0, boltCount: 0, totalScore: 0 },
+      ]);
+    });
+  });
+
+  describe("repairRoundScoreScores", () => {
+    it("fills missing team scores for a pending round", () => {
+      const roundsScores: RoundScore[] = [
+        baseRoundScore({
+          id: 0,
+          teamsScores: [
+            baseTeamScore({ id: 0, teamId: 0, totalScore: 40 }),
+            baseTeamScore({ id: 1, teamId: 1, totalScore: 30 }),
+          ],
+          totalRoundScore: DEFAULT_ROUND_POINTS,
+        }),
+        baseRoundScore({ id: 1, teamsScores: [], totalRoundScore: DEFAULT_ROUND_POINTS }),
+      ];
+
+      const repaired = repairRoundScoreScores(roundsScores[1], {
+        mode: GameMode.teams,
+        players: mockPlayers,
+        roundsScores,
+      });
+
+      expect(repaired.teamsScores).toEqual([
+        { id: 0, teamId: 0, score: 0, boltCount: 0, totalScore: 40 },
+        { id: 1, teamId: 1, score: 0, boltCount: 0, totalScore: 30 },
+      ]);
     });
   });
 

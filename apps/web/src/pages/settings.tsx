@@ -1,6 +1,6 @@
 import { useCallback, useLayoutEffect } from "react";
 
-import { useSettings } from "@belot/hooks";
+import { useSettings, useIsPointsTypeEnabled } from "@belot/hooks";
 import { useLocalization } from "@belot/localizations";
 
 import { BackButton } from "@/components/backButton";
@@ -9,6 +9,7 @@ import { PointsTypeRadioButton } from "@/components/settings/pointsTypeRadioButt
 
 export default function SettingsPage() {
   const settingsMsg = useLocalization("settings");
+  const isPointsTypeEnabled = useIsPointsTypeEnabled();
   const getFromStorage = useCallback((key: string) => localStorage.getItem(key), []);
   const setToStorage = useCallback(
     (key: string, value: string) => localStorage.setItem(key, value),
@@ -30,7 +31,9 @@ export default function SettingsPage() {
       <PageHeader title={settingsMsg} />
 
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
-        <PointsTypeRadioButton value={settings.pointsType} onChange={setSettings} />
+        {isPointsTypeEnabled ? (
+          <PointsTypeRadioButton value={settings.pointsType} onChange={setSettings} />
+        ) : null}
       </div>
     </div>
   );

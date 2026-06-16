@@ -1,12 +1,13 @@
 // @vitest-environment jsdom
 
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   settings: { pointsType: "points" },
   setSettings: vi.fn(),
   getSettingsFromLocalStorage: vi.fn(),
+  isPointsTypeEnabled: true,
 }));
 
 vi.mock("@belot/hooks", () => ({
@@ -15,6 +16,7 @@ vi.mock("@belot/hooks", () => ({
     setSettings: mocks.setSettings,
     getSettingsFromLocalStorage: mocks.getSettingsFromLocalStorage,
   }),
+  useIsPointsTypeEnabled: () => mocks.isPointsTypeEnabled,
 }));
 
 vi.mock("@belot/localizations", () => ({
@@ -34,7 +36,12 @@ vi.mock("@/components/settings/pointsTypeRadioButton", () => ({
 }));
 
 describe("SettingsScreen", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("renders settings screen", async () => {
+    mocks.isPointsTypeEnabled = true;
     const { default: SettingsScreen } = await import("@/app/settings-screen");
     render(<SettingsScreen />);
 
@@ -42,5 +49,13 @@ describe("SettingsScreen", () => {
     expect(screen.getByRole("heading", { name: "Settings" })).toBeTruthy();
     expect(screen.getByText("PointsType")).toBeTruthy();
     expect(mocks.getSettingsFromLocalStorage).toHaveBeenCalled();
+  });
+
+  it("hides points type settings when feature is disabled", async () => {
+    mocks.isPointsTypeEnabled = false;
+    const { default: SettingsScreen } = await import("@/app/settings-screen");
+    render(<SettingsScreen />);
+
+    expect(screen.queryByText("PointsType")).toBeNull();
   });
 });

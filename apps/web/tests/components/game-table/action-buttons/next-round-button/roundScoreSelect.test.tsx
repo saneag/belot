@@ -24,7 +24,13 @@ function RoundScoreSelectHarness() {
     totalRoundScore: 0,
   });
 
-  return <RoundScoreSelect roundScore={roundScore} setRoundScore={setRoundScore} />;
+  return (
+    <RoundScoreSelect
+      roundScore={roundScore}
+      setRoundScore={setRoundScore}
+      pointsType="micropoints"
+    />
+  );
 }
 
 describe("RoundScoreSelect", () => {

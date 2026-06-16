@@ -48,12 +48,17 @@ vi.mock("react", () => ({
   useCallback: (callback: (...args: unknown[]) => unknown) => callback,
 }));
 
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useIsPointsTypeEnabled: () => true,
+}));
+
 vi.mock("@belot/store", () => ({
   useGameStore: (selector: (state: unknown) => unknown) =>
     selector({
       players: mocks.players,
       teams: mocks.teams,
       mode: mocks.mode,
+      pointsType: "points",
       roundsScores: mocks.roundsScores,
       updateRoundScore: mocks.updateRoundScore,
       dealer: mocks.dealer,
@@ -122,7 +127,13 @@ describe("useHandleNextRound", () => {
     handleDialogOpen(showDialog);
 
     const roundScoreHolder = mocks.stateHolders[1];
-    expect(roundScoreHolder.value).toEqual(mocks.roundsScores[0]);
+    const roundScore = roundScoreHolder.value as RoundScore;
+    expect(roundScore).toMatchObject({
+      id: 0,
+      totalRoundScore: 16,
+      roundPlayer: null,
+    });
+    expect(roundScore.playersScores.length).toBeGreaterThan(0);
     expect(showDialog).toHaveBeenCalledOnce();
   });
 
