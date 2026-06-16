@@ -3,7 +3,11 @@ import { Dispatch, SetStateAction, useCallback, useMemo } from "react";
 import { useSyncPlayerScoreInput } from "@belot/hooks";
 import { formatLocalizationString, useLocalizations } from "@belot/localizations";
 import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
-import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode, getScoreInputMaxLength } from "@belot/utils/src";
+import {
+  getScoreInputMaxLength,
+  handleRoundScoreChange,
+  prepareRoundScoresBasedOnGameMode,
+} from "@belot/utils/src";
 
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";

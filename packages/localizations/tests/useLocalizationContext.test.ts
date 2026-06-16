@@ -32,7 +32,9 @@ describe("useLocalizationContext", () => {
   });
 
   it("exposes default getDeviceLanguage handler", async () => {
-    mocks.useContext.mockImplementation((context: { defaultValue: unknown }) => context.defaultValue);
+    mocks.useContext.mockImplementation(
+      (context: { defaultValue: unknown }) => context.defaultValue,
+    );
 
     const { useLocalizationContext } = await import("../src/hooks/useLocalizationContext");
     expect(useLocalizationContext().getDeviceLanguage()).toBe("en");

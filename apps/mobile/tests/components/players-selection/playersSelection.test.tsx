@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { PLAYERS_COUNT } from "@belot/constants";
 
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -14,15 +13,17 @@ const mocks = vi.hoisted(() => ({
   storagePlayers: null as unknown,
   fetchPreviousPlayers: vi.fn(),
   loadPlayersNamesFromStorage: vi.fn(),
-  players: [{ id: 0, name: "" }, { id: 1, name: "" }],
+  players: [
+    { id: 0, name: "" },
+    { id: 1, name: "" },
+  ],
   dealer: null,
   validations: {},
   theme: "light",
 }));
 
 vi.mock("@belot/localizations", () => ({
-  useLocalization: (key: string, args?: number[]) =>
-    args ? `${key}:${args[0]}` : key,
+  useLocalization: (key: string, args?: number[]) => (args ? `${key}:${args[0]}` : key),
   useLocalizations: () => ({
     playersReset: "Reset",
     playersSubmitDialogTitle: "Submit title",
@@ -72,7 +73,10 @@ vi.mock("@belot/hooks", () => ({
     setVisible?: (v: boolean) => void;
   }) => ({
     isVisible: visible ?? false,
-    messages: { confirmationDialogConfirmButton: "Confirm", confirmationDialogCancelButton: "Cancel" },
+    messages: {
+      confirmationDialogConfirmButton: "Confirm",
+      confirmationDialogCancelButton: "Cancel",
+    },
     showDialog: (cb?: () => void) => {
       cb?.();
       setVisible?.(true);
@@ -87,8 +91,9 @@ vi.mock("@belot/hooks", () => ({
 }));
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: { players: typeof mocks.players; shufflePlayers: () => void }) => unknown) =>
-    selector({ players: mocks.players, shufflePlayers: vi.fn() }),
+  useGameStore: (
+    selector: (state: { players: typeof mocks.players; shufflePlayers: () => void }) => unknown,
+  ) => selector({ players: mocks.players, shufflePlayers: vi.fn() }),
 }));
 
 vi.mock("@belot/components", () => ({
@@ -132,34 +137,30 @@ describe("players-selection components", () => {
   });
 
   it("LoadPreviousGameButton hidden without storage players", async () => {
-    const { default: LoadPreviousGameButton } = await import(
-      "@/components/players-selection/loadPreviousGameButton"
-    );
+    const { default: LoadPreviousGameButton } =
+      await import("@/components/players-selection/loadPreviousGameButton");
     const { container } = render(<LoadPreviousGameButton />);
     expect(container.textContent).toBe("");
   });
 
   it("LoadPreviousGameButton shown with storage players", async () => {
     mocks.storagePlayers = [{ id: 0, name: "A" }];
-    const { default: LoadPreviousGameButton } = await import(
-      "@/components/players-selection/loadPreviousGameButton"
-    );
+    const { default: LoadPreviousGameButton } =
+      await import("@/components/players-selection/loadPreviousGameButton");
     render(<LoadPreviousGameButton />);
     expect(screen.getByText("load.previous.game.button")).toBeTruthy();
   });
 
   it("PlayersRandomizer renders shuffle button", async () => {
-    const { default: PlayersRandomizer } = await import(
-      "@/components/players-selection/playersRandomizer"
-    );
+    const { default: PlayersRandomizer } =
+      await import("@/components/players-selection/playersRandomizer");
     render(<PlayersRandomizer />);
     expect(screen.getAllByRole("button").length).toBeGreaterThan(0);
   });
 
   it("DealerSelectDialogContent renders player buttons", async () => {
-    const { default: DealerSelectDialogContent } = await import(
-      "@/components/players-selection/dealerSelectDialogContent"
-    );
+    const { default: DealerSelectDialogContent } =
+      await import("@/components/players-selection/dealerSelectDialogContent");
     render(<DealerSelectDialogContent />);
     expect(screen.getAllByRole("button").length).toBeGreaterThanOrEqual(2);
   });

@@ -1,6 +1,6 @@
 import { useCallback, useLayoutEffect } from "react";
 
-import { useSettings, useIsPointsTypeEnabled } from "@belot/hooks";
+import { useIsPointsTypeEnabled, useSettings } from "@belot/hooks";
 import { useLocalization } from "@belot/localizations";
 
 import { BackButton } from "@/components/backButton";

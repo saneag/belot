@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
-
-import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, it, vi } from "vitest";
 
 import WinDialog from "@/components/game-table/winDialog";
+
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 const reset = vi.fn();
 const navigateMock = vi.fn();
@@ -21,8 +21,9 @@ vi.mock("react-router-dom", async (importOriginal) => {
 });
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: { mode: typeof storeMocks.mode; reset: typeof reset }) => unknown) =>
-    selector({ mode: storeMocks.mode, reset }),
+  useGameStore: (
+    selector: (state: { mode: typeof storeMocks.mode; reset: typeof reset }) => unknown,
+  ) => selector({ mode: storeMocks.mode, reset }),
 }));
 
 vi.mock("@belot/localizations", async (importOriginal) => {

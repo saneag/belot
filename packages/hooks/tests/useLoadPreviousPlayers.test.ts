@@ -71,10 +71,7 @@ describe("useLoadPreviousPlayers", () => {
 
     await fetchPreviousPlayers();
 
-    expect(consoleError).toHaveBeenCalledWith(
-      "Error in useLoadPreviousPlayers",
-      expect.any(Error),
-    );
+    expect(consoleError).toHaveBeenCalledWith("Error in useLoadPreviousPlayers", expect.any(Error));
     consoleError.mockRestore();
   });
 

@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
+import { type EmitterSubscription, Keyboard } from "react-native";
 
-import { Keyboard, type EmitterSubscription } from "react-native";
+import { useKeyboardAvoidView } from "@/hooks/useKeyboardAvoidView";
 
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import { useKeyboardAvoidView } from "@/hooks/useKeyboardAvoidView";
 
 describe("useKeyboardAvoidView cleanup", () => {
   it("removes keyboard listeners on unmount", async () => {
@@ -24,9 +23,12 @@ describe("useKeyboardAvoidView cleanup", () => {
 
     const removes = [vi.fn(), vi.fn()];
     let call = 0;
-    vi.mocked(Keyboard.addListener).mockImplementation(() => ({
-      remove: removes[call++],
-    }) as unknown as EmitterSubscription);
+    vi.mocked(Keyboard.addListener).mockImplementation(
+      () =>
+        ({
+          remove: removes[call++],
+        }) as unknown as EmitterSubscription,
+    );
 
     const { unmount } = renderHook(() => useKeyboardAvoidView());
     unmount();

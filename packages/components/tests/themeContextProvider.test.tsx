@@ -1,10 +1,9 @@
 // @vitest-environment jsdom
+import { THEMES } from "@belot/constants";
+import { useThemeContext } from "@belot/hooks";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
-import { THEMES } from "@belot/constants";
-import { useThemeContext } from "@belot/hooks";
 
 import { ThemeContextProvider } from "../src/themeContextProvider";
 

@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-
 import { THEMES } from "@belot/constants";
 
 import PlayersNames from "@/components/players-selection/playersNames";
+
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@belot/components", () => ({
   PlayersTable: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,

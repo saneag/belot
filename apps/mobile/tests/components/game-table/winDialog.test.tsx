@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { GameMode } from "@belot/types";
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
@@ -85,9 +84,8 @@ describe("WinDialog", () => {
 describe("ResetGameButton", () => {
   it("resets game and navigates home", async () => {
     const setWinner = vi.fn();
-    const { default: ResetGameButton } = await import(
-      "@/components/game-table/action-buttons/resetGame"
-    );
+    const { default: ResetGameButton } =
+      await import("@/components/game-table/action-buttons/resetGame");
 
     render(<ResetGameButton setWinner={setWinner} />);
     fireEvent.click(screen.getByRole("button", { name: "Reset game" }));

@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import { usePlayersSelectionContext } from "@belot/hooks";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import { usePlayersSelectionContext } from "@belot/hooks";
 
 import { PlayersSelectionContextProvider } from "../src/playersSelectionContextProvider";
 

@@ -38,9 +38,8 @@ describe("useStartingScreenActions", () => {
   });
 
   it("returns actions from helper", async () => {
-    const { useStartingScreenActions } = await import(
-      "@/hooks/starting-screen/useStartingScreenActions"
-    );
+    const { useStartingScreenActions } =
+      await import("@/hooks/starting-screen/useStartingScreenActions");
 
     const actions = useStartingScreenActions();
     expect(actions).toHaveLength(2);
@@ -48,9 +47,8 @@ describe("useStartingScreenActions", () => {
   });
 
   it("navigates to game-table path", async () => {
-    const { useStartingScreenActions } = await import(
-      "@/hooks/starting-screen/useStartingScreenActions"
-    );
+    const { useStartingScreenActions } =
+      await import("@/hooks/starting-screen/useStartingScreenActions");
     useStartingScreenActions();
 
     mocks.navigateArgs?.navigate("game-table");
@@ -58,9 +56,8 @@ describe("useStartingScreenActions", () => {
   });
 
   it("navigates to players-selection path", async () => {
-    const { useStartingScreenActions } = await import(
-      "@/hooks/starting-screen/useStartingScreenActions"
-    );
+    const { useStartingScreenActions } =
+      await import("@/hooks/starting-screen/useStartingScreenActions");
     useStartingScreenActions();
 
     mocks.navigateArgs?.navigate("players-selection");
@@ -68,9 +65,8 @@ describe("useStartingScreenActions", () => {
   });
 
   it("navigates to settings path", async () => {
-    const { useStartingScreenActions } = await import(
-      "@/hooks/starting-screen/useStartingScreenActions"
-    );
+    const { useStartingScreenActions } =
+      await import("@/hooks/starting-screen/useStartingScreenActions");
     useStartingScreenActions();
 
     mocks.navigateArgs?.navigate("settings");
@@ -78,9 +74,8 @@ describe("useStartingScreenActions", () => {
   });
 
   it("throws for unknown navigation path", async () => {
-    const { useStartingScreenActions } = await import(
-      "@/hooks/starting-screen/useStartingScreenActions"
-    );
+    const { useStartingScreenActions } =
+      await import("@/hooks/starting-screen/useStartingScreenActions");
     useStartingScreenActions();
 
     expect(() => mocks.navigateArgs?.navigate("unknown")).toThrow("Unknown navigation path");
