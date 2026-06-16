@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 
-import { POINTS_TYPE, StorageKeys } from "@belot/constants";
+import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import { GameMode, type Player, type RoundScore } from "@belot/types";
-import { applyDefaultTotalRoundScore, repairRoundScoreScores } from "@belot/utils";
+import { applyDefaultTotalRoundScore, getDefaultPointsType, parseStoredPointsType, repairRoundScoreScores } from "@belot/utils";
 import type { Settings } from "./useSettings";
 import { useIsPointsTypeEnabled } from "./usePointsTypeFeature";
 
 interface UseLoadGameDataBaseProps {
   getFromStorage: (key: StorageKeys) => Promise<string | null> | string | null;
+  setToStorage?: (key: StorageKeys, value: string) => Promise<void> | void;
 }
 
 interface UseLoadGameDataSetProps extends UseLoadGameDataBaseProps {
@@ -32,6 +33,7 @@ export function useLoadGameData(props: UseLoadGameDataSetProps): null;
 
 export function useLoadGameData({
   getFromStorage,
+  setToStorage,
   shouldSetData = true,
 }: UseLoadGameDataSetProps | (UseLoadGameDataReadProps & { shouldSetData: false })) {
   const hasFetchedData = useRef(false);
@@ -50,10 +52,15 @@ export function useLoadGameData({
   const setPointsType = useGameStore((state) => state.setPointsType);
   const isPointsTypeEnabled = useIsPointsTypeEnabled();
   const getFromStorageRef = useRef(getFromStorage);
+  const setToStorageRef = useRef(setToStorage);
 
   useEffect(() => {
     getFromStorageRef.current = getFromStorage;
   }, [getFromStorage]);
+
+  useEffect(() => {
+    setToStorageRef.current = setToStorage;
+  }, [setToStorage]);
 
   useEffect(() => {
     const shouldFetchStorage =
@@ -67,22 +74,24 @@ export function useLoadGameData({
         const storageRoundsScores = await getFromStorageRef.current(StorageKeys.roundsScores);
         const storageSettings = await getFromStorageRef.current(StorageKeys.settings);
 
-        let parsedPointsType = POINTS_TYPE[0].id;
+        let parsedPointsType = getDefaultPointsType();
 
         if (storageSettings && isPointsTypeEnabled) {
-          try {
-            const parsedSettings = JSON.parse(storageSettings) as Settings;
-            const isValidPointsType = POINTS_TYPE.some((type) => type.id === parsedSettings.pointsType);
+          const storedPointsType = parseStoredPointsType(storageSettings);
 
-            if (isValidPointsType) {
-              parsedPointsType = parsedSettings.pointsType;
+          if (storedPointsType) {
+            parsedPointsType = storedPointsType;
 
-              if (parsedPointsType !== useGameStore.getState().pointsType) {
-                setPointsType(parsedPointsType);
-              }
+            if (parsedPointsType !== useGameStore.getState().pointsType) {
+              setPointsType(parsedPointsType);
             }
-          } catch {
-            // Ignore invalid settings payloads and keep the default points type.
+          } else {
+            const defaultSettings: Settings = { pointsType: getDefaultPointsType() };
+
+            await setToStorageRef.current?.(
+              StorageKeys.settings,
+              JSON.stringify(defaultSettings),
+            );
           }
         }
 

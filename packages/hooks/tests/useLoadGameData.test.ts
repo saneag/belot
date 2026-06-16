@@ -3,6 +3,8 @@ import type { Player, RoundScore } from "@belot/types";
 
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 
+import { useIsPointsTypeEnabled } from "../src/usePointsTypeFeature";
+
 const mocks = vi.hoisted(() => {
   const setPlayers = vi.fn();
   const setDealer = vi.fn();
@@ -87,6 +89,31 @@ describe("useLoadGameData", () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("restores default settings when stored points type is invalid", async () => {
+    vi.mocked(useIsPointsTypeEnabled).mockReturnValue(true);
+
+    const setToStorage = vi.fn().mockResolvedValue(undefined);
+    const storage: Partial<Record<StorageKeys, string>> = {
+      [StorageKeys.settings]: JSON.stringify({ pointsType: "invalid" }),
+    };
+
+    const { useLoadGameData } = await import("../src/useLoadGameData");
+
+    useLoadGameData({
+      getFromStorage: (key) => storage[key] ?? null,
+      setToStorage,
+    });
+
+    await vi.waitFor(() => {
+      expect(setToStorage).toHaveBeenCalledWith(
+        StorageKeys.settings,
+        JSON.stringify({ pointsType: "micropoints" }),
+      );
+    });
+
+    expect(mocks.setPointsType).not.toHaveBeenCalled();
   });
 
   it("restores the saved dealer after rounds so hydration does not advance it", async () => {
