@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import TableHeaderWrapper from "@/components/game-table/tableHeaderWrapper";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import TableHeaderWrapper from "@/components/game-table/tableHeaderWrapper";
 
 const headerMocks = vi.hoisted(() => ({
   roundsScores: [{ id: 0 }],

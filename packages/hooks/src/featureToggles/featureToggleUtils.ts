@@ -1,8 +1,4 @@
-import {
-  FEATURE_TOGGLES,
-  StorageKeys,
-  type FeatureToggleName,
-} from "@belot/constants";
+import { FEATURE_TOGGLES, type FeatureToggleName, StorageKeys } from "@belot/constants";
 
 import type { FeatureToggleStorage } from "./types";
 
@@ -88,10 +84,7 @@ export const syncFeatureTogglesToStorage = async ({
   const storedValue = await getFromStorage(StorageKeys.featureToggles);
 
   if (needsFeatureToggleStorageSync(storedValue, centralizedState)) {
-    await setToStorage(
-      StorageKeys.featureToggles,
-      serializeFeatureToggleState(centralizedState),
-    );
+    await setToStorage(StorageKeys.featureToggles, serializeFeatureToggleState(centralizedState));
   }
 
   return centralizedState;

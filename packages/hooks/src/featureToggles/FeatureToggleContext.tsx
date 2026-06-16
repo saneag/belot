@@ -1,13 +1,13 @@
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import { type ReactNode, createContext, useEffect, useState } from "react";
 
+import { useSyncPointsTypeFeature } from "../usePointsTypeFeature";
 import {
+  type FeatureToggleState,
   areFeatureToggleStatesEqual,
   getDefaultFeatureToggleState,
   syncFeatureTogglesToStorage,
-  type FeatureToggleState,
 } from "./featureToggleUtils";
 import type { FeatureToggleStorage } from "./types";
-import { useSyncPointsTypeFeature } from "../usePointsTypeFeature";
 
 export const FeatureToggleContext = createContext<FeatureToggleState>(
   getDefaultFeatureToggleState(),

@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import { Layout } from "@/components/_layout";
 
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
-import { Layout } from "@/components/_layout";
 
 describe("Layout", () => {
   it("centers children in the viewport", () => {

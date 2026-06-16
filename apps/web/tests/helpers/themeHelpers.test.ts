@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-
 import { StorageKeys, THEMES } from "@belot/constants";
-import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { readInitialTheme } from "@/helpers/themeHelpers";
+
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("readInitialTheme", () => {
   beforeEach(() => {

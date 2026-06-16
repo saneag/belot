@@ -1,6 +1,6 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
+
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 describe("getApiBaseUrl", () => {
   afterEach(() => {

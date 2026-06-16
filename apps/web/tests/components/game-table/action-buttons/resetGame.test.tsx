@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
-
-import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
 
 import ResetGameButton from "@/components/game-table/action-buttons/resetGame";
+
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 const reset = vi.fn();
 const navigateMock = vi.fn();

@@ -37,9 +37,7 @@ export const calculatePlayersScoresHelper = (
     .filter((playerScore) => playerScore.playerId !== roundPlayer?.id)
     .map((playerScore) => ({
       playerId: playerScore.playerId,
-      score: shouldRoundScore
-        ? roundScoreValue(playerScore.score, pointsType)
-        : playerScore.score,
+      score: shouldRoundScore ? roundScoreValue(playerScore.score, pointsType) : playerScore.score,
     }));
   const highestOpponentScore = Math.max(
     ...opponentsWithComparableScores.map((playerScore) => playerScore.score),
@@ -73,7 +71,8 @@ export const calculatePlayersScoresHelper = (
           ...playerScore,
           score: BOLT_POINTS,
           boltCount: boltCount + 1,
-          totalScore: boltCount + 1 === BOLT_COUNT_LIMIT ? totalScore + boltTotalPenalty : totalScore,
+          totalScore:
+            boltCount + 1 === BOLT_COUNT_LIMIT ? totalScore + boltTotalPenalty : totalScore,
         };
       } else {
         const finalRoundPlayerScore = shouldRoundScore
@@ -91,9 +90,10 @@ export const calculatePlayersScoresHelper = (
     if (shouldApplyBolt && highestOpponentPlayerIds.includes(playerId)) {
       const sharedScoreIndex = highestOpponentPlayerIds.indexOf(playerId);
       const sharedBonus = sharedBoltScore + (sharedScoreIndex < sharedBoltScoreRemainder ? 1 : 0);
-      const finalScore = useMicropointRounding && !shouldRoundScore
-        ? roundScoreValue(roundedScore + sharedBonus, pointsType)
-        : roundedScore + sharedBonus;
+      const finalScore =
+        useMicropointRounding && !shouldRoundScore
+          ? roundScoreValue(roundedScore + sharedBonus, pointsType)
+          : roundedScore + sharedBonus;
 
       return {
         ...playerScore,
@@ -184,7 +184,9 @@ export const sumOpponentPlayersScores = ({
       return acc;
     }
 
-    return acc + (shouldRoundScore ? roundScoreValue(playerScore.score, pointsType) : playerScore.score);
+    return (
+      acc + (shouldRoundScore ? roundScoreValue(playerScore.score, pointsType) : playerScore.score)
+    );
   }, 0);
 
   if (totalRoundScore && shouldRoundScore) {

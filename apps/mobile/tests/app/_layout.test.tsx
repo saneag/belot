@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { THEMES } from "@belot/constants";
 
 import { render, screen } from "@testing-library/react";
@@ -22,7 +21,9 @@ vi.mock("@belot/components", () => ({
 }));
 
 vi.mock("@belot/localizations", () => ({
-  LocalizationContextProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  LocalizationContextProvider: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 describe("RootLayout", () => {

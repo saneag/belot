@@ -24,10 +24,9 @@ const player = (id: number, name: string): Player => ({ id, name });
 
 describe("playerNamesValidations", () => {
   beforeEach(async () => {
-    const actual =
-      await vi.importActual<typeof import("../../src/playersUtils/playerNamesHelpers")>(
-        "../../src/playersUtils/playerNamesHelpers",
-      );
+    const actual = await vi.importActual<
+      typeof import("../../src/playersUtils/playerNamesHelpers")
+    >("../../src/playersUtils/playerNamesHelpers");
     vi.mocked(getPlayersNames).mockImplementation(actual.getPlayersNames);
     vi.mocked(getPlayersCount).mockImplementation(actual.getPlayersCount);
   });

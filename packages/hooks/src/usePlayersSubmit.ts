@@ -11,8 +11,8 @@ import {
   validatePlayersNames,
 } from "@belot/utils";
 
-import { usePlayersSelectionContext } from "./usePlayersSelectionContext";
 import { useFeatureToggle } from "./featureToggles/useFeatureToggle";
+import { usePlayersSelectionContext } from "./usePlayersSelectionContext";
 import { useIsPointsTypeEnabled } from "./usePointsTypeFeature";
 
 interface UsePlayersSubmitProps {
@@ -72,7 +72,7 @@ export function usePlayersSubmit({
       ? (JSON.parse(storageSettings) as { pointsType: string }).pointsType
       : undefined;
     const pointsType = isPointsTypeEnabled
-      ? storedPointsType ?? POINTS_TYPE[0].id
+      ? (storedPointsType ?? POINTS_TYPE[0].id)
       : POINTS_TYPE[0].id;
 
     setPointsType(pointsType);

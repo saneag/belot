@@ -1,8 +1,5 @@
 import { StorageKeys } from "@belot/constants";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
 import {
   convertToObject,
   getFromStorage,
@@ -10,6 +7,9 @@ import {
   setMultipleItemsToStorage,
   setToStorage,
 } from "@/helpers/storageHelpers";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("storageHelpers", () => {
   beforeEach(() => {

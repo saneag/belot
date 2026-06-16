@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import DealerSelectDialogContent from "@/components/players-selection/dealerSelectDialogContent";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import DealerSelectDialogContent from "@/components/players-selection/dealerSelectDialogContent";
 
 const handleDealerChange = vi.fn();
 
