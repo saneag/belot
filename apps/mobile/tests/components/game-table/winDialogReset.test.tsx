@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   replace: vi.fn(),
-  reset: vi.fn(),
+  markForReset: vi.fn(),
 }));
 
 vi.mock("expo-router", () => ({
@@ -22,8 +22,8 @@ vi.mock("@belot/localizations", () => ({
 }));
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: { mode: GameMode; reset: () => void }) => unknown) =>
-    selector({ mode: GameMode.classic, reset: mocks.reset }),
+  useGameStore: (selector: (state: { mode: GameMode; markForReset: () => void }) => unknown) =>
+    selector({ mode: GameMode.classic, markForReset: mocks.markForReset }),
 }));
 
 vi.mock("@belot/hooks", () => ({
@@ -64,8 +64,8 @@ describe("WinDialog reset flow", () => {
     render(<WinDialog winner={{ id: 0, name: "Alice" }} setWinner={setWinner} />);
 
     fireEvent.click(screen.getByText("Confirm"));
-    expect(mocks.reset).toHaveBeenCalled();
     expect(setWinner).toHaveBeenCalledWith(null);
+    expect(mocks.markForReset).toHaveBeenCalled();
     expect(mocks.replace).toHaveBeenCalledWith("/starting-screen");
   });
 });
