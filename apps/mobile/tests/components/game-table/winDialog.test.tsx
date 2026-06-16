@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   replace: vi.fn(),
-  reset: vi.fn(),
+  markForReset: vi.fn(),
   winner: { id: 0, name: "Alice" },
 }));
 
@@ -24,8 +24,8 @@ vi.mock("@belot/localizations", () => ({
 }));
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: { mode: GameMode; reset: () => void }) => unknown) =>
-    selector({ mode: GameMode.classic, reset: mocks.reset }),
+  useGameStore: (selector: (state: { mode: GameMode; markForReset: () => void }) => unknown) =>
+    selector({ mode: GameMode.classic, markForReset: mocks.markForReset }),
 }));
 
 vi.mock("@/helpers/storageHelpers", () => ({
@@ -90,8 +90,8 @@ describe("ResetGameButton", () => {
     render(<ResetGameButton setWinner={setWinner} />);
     fireEvent.click(screen.getByRole("button", { name: "Reset game" }));
 
-    expect(mocks.reset).toHaveBeenCalled();
     expect(setWinner).toHaveBeenCalledWith(null);
+    expect(mocks.markForReset).toHaveBeenCalled();
     expect(mocks.replace).toHaveBeenCalledWith("/starting-screen");
   });
 });

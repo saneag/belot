@@ -20,17 +20,16 @@ export default function ResetGameButton({ setWinner }: ResetGameButtonProps) {
 
   const resetGameButtonMsg = useLocalization("game.reset.submit.button");
 
-  const reset = useGameStore((state) => state.reset);
+  const markForReset = useGameStore((state) => state.markForReset);
 
   const handleReset = useCallback(() => {
-    reset();
-    setWinner(null);
     removeFromStorage(StorageKeys.dealer);
     removeFromStorage(StorageKeys.roundsScores);
     removeFromStorage(StorageKeys.timerStartTime);
-    removeFromStorage(StorageKeys.roundsScores);
+    setWinner(null);
+    markForReset();
     router.replace("/starting-screen");
-  }, [reset, router, setWinner]);
+  }, [markForReset, router, setWinner]);
 
   return (
     <Button variant="solid" action="secondary" className="self-center" onPress={handleReset}>
