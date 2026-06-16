@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useLoadGameData, useStartingScreenActionsHelper } from "@belot/hooks";
 
+import { getFromStorage, setToStorage } from "@/helpers/storageHelpers";
+
 interface StartingScreenAction {
   index: number;
   label: string;
@@ -13,7 +15,8 @@ export const useStartingScreenActions = (): StartingScreenAction[] => {
   const navigate = useNavigate();
 
   const gameData = useLoadGameData({
-    getFromStorage: (key) => localStorage.getItem(key),
+    getFromStorage,
+    setToStorage,
     shouldSetData: false,
   });
 

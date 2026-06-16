@@ -12,6 +12,36 @@ import { roundByLastDigit, roundToDecimal } from "./commonUtils";
 
 export const isMicropointsMode = (pointsType: string) => pointsType === POINTS_TYPE[0].id;
 
+export const isValidPointsType = (pointsType: string) =>
+  POINTS_TYPE.some((type) => type.id === pointsType);
+
+export const getDefaultPointsType = () => POINTS_TYPE[0].id;
+
+export const parseStoredPointsType = (storageSettings: string): string | null => {
+  try {
+    const parsedSettings = JSON.parse(storageSettings) as { pointsType?: unknown };
+
+    if (typeof parsedSettings.pointsType !== "string") {
+      console.warn(
+        "[Settings] Stored settings are missing a valid pointsType. Falling back to default.",
+      );
+      return null;
+    }
+
+    if (!isValidPointsType(parsedSettings.pointsType)) {
+      console.warn(
+        `[Settings] Stored points type "${parsedSettings.pointsType}" is invalid. Falling back to default.`,
+      );
+      return null;
+    }
+
+    return parsedSettings.pointsType;
+  } catch (error) {
+    console.error("[Settings] Failed to parse stored settings. Falling back to default.", error);
+    return null;
+  }
+};
+
 export const getDefaultRoundPoints = (pointsType: string) =>
   isMicropointsMode(pointsType) ? DEFAULT_ROUND_POINTS : roundToDecimal(DEFAULT_ROUND_POINTS);
 
