@@ -25,13 +25,13 @@ export default function WinDialog({ winner, setWinner }: WinDialogProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   const gameMode = useGameStore((state) => state.mode);
-  const reset = useGameStore((state) => state.reset);
+  const markForReset = useGameStore((state) => state.markForReset);
 
   const handleGameReset = useCallback(() => {
-    reset();
     setWinner(null);
+    markForReset();
     router.replace("/starting-screen");
-  }, [reset, router, setWinner]);
+  }, [markForReset, router, setWinner]);
 
   const handleClose = useCallback(() => {
     setIsVisible(false);

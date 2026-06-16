@@ -6,11 +6,13 @@ import { useGameStore } from "@belot/store";
 interface UseHandleGameResetProps {
   navigateFunction: () => void;
   setItemsToStorage: (items: Partial<Record<StorageKeys, string>>) => Promise<void> | void;
+  afterNavigate?: () => void;
 }
 
 export const useHandleGameReset = ({
   navigateFunction,
   setItemsToStorage,
+  afterNavigate,
 }: UseHandleGameResetProps) => {
   const [showDialog, setShowDialog] = useState(false);
 
@@ -22,9 +24,13 @@ export const useHandleGameReset = ({
       [StorageKeys.roundsScores]: JSON.stringify([]),
       [StorageKeys.dealer]: "",
     });
-    resetGame();
     navigateFunction();
-  }, [navigateFunction, resetGame, setItemsToStorage]);
+    if (afterNavigate) {
+      afterNavigate();
+    } else {
+      resetGame();
+    }
+  }, [afterNavigate, navigateFunction, resetGame, setItemsToStorage]);
 
   return {
     handleReset,
