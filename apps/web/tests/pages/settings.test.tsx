@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
-
-import { render, screen, cleanup } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import SettingsPage from "@/pages/settings";
+
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const setSettings = vi.fn();
 const getSettingsFromLocalStorage = vi.fn();
@@ -13,7 +12,10 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@belot/hooks", () => ({
-  useSettings: ({ getFromStorage, setToStorage }: {
+  useSettings: ({
+    getFromStorage,
+    setToStorage,
+  }: {
     getFromStorage: (key: string) => string | null;
     setToStorage: (key: string, value: string) => void;
   }) => {

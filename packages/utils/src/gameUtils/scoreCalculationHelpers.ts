@@ -9,10 +9,7 @@ import {
 } from "@belot/types";
 
 import { removeNthElementFromEnd } from "../commonUtils";
-import {
-  finalizeTotalRoundScore,
-  getLimitOfRoundPoints,
-} from "../pointsTypeHelpers";
+import { finalizeTotalRoundScore, getLimitOfRoundPoints } from "../pointsTypeHelpers";
 import { setNextDealer, setPreviousDealer } from "./gameScoreHelpers";
 import { calculatePlayersScores } from "./playersScoreCalculationHelpers";
 import { prepareEmptyRoundScoreRow, preparePreviousRoundScoreRow } from "./prepareStates";

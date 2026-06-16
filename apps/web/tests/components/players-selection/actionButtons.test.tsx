@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import ActionButtons from "@/components/players-selection/actionButtons";
 
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-
-import ActionButtons from "@/components/players-selection/actionButtons";
 
 const handleReset = vi.fn();
 const handleOpenDialog = vi.fn();

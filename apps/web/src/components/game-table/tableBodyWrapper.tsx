@@ -4,6 +4,7 @@ import type { RefObject } from "react";
 import { useGameStore } from "@belot/store";
 
 import { TableBody, TableRow } from "@/components/ui/table";
+
 import useAutoScrollTableBody from "@/hooks/game-table/useAutoScrollTableBody";
 
 import PointCells from "./pointCells";

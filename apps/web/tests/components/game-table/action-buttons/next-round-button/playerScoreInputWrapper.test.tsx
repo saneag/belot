@@ -1,20 +1,22 @@
 // @vitest-environment jsdom
-
 import { useState } from "react";
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
 
 import { GameMode, type Player, type RoundScore } from "@belot/types";
 
 import PlayerScoreInputWrapper from "@/components/game-table/action-buttons/next-round-button/playerScoreInputWrapper";
 
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: {
-    players: Player[];
-    teams: [];
-    roundsScores: RoundScore[];
-    mode: GameMode;
-  }) => unknown) =>
+  useGameStore: (
+    selector: (state: {
+      players: Player[];
+      teams: [];
+      roundsScores: RoundScore[];
+      mode: GameMode;
+    }) => unknown,
+  ) =>
     selector({
       players: [
         { id: 0, name: "Alice" },

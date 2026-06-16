@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import ExtendedTooltip from "@/components/extendedTooltip";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import ExtendedTooltip from "@/components/extendedTooltip";
 
 describe("ExtendedTooltip", () => {
   it("renders button and tooltip text", () => {
@@ -25,12 +24,7 @@ describe("ExtendedTooltip", () => {
   });
 
   it("handles long press and press out", () => {
-    render(
-      <ExtendedTooltip
-        tooltipText="Tooltip"
-        button={<button type="button">Btn</button>}
-      />,
-    );
+    render(<ExtendedTooltip tooltipText="Tooltip" button={<button type="button">Btn</button>} />);
 
     const button = screen.getByText("Btn");
     fireEvent.click(button);

@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { POINTS_TYPE } from "@belot/constants";
 
 import { fireEvent, render, screen } from "@testing-library/react";

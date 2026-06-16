@@ -66,10 +66,11 @@ describe("useHandleConfirmationDialog", () => {
     const cancelCallback = vi.fn();
 
     const { useHandleConfirmationDialog } = await import("../src/useHandleConfirmationDialog");
-    const { handleDialogConfirmation, handleDialogCancel, hideDialog } = useHandleConfirmationDialog({
-      confirmationCallback,
-      cancelCallback,
-    });
+    const { handleDialogConfirmation, handleDialogCancel, hideDialog } =
+      useHandleConfirmationDialog({
+        confirmationCallback,
+        cancelCallback,
+      });
 
     hideDialog();
     expect(mocks.setInternalVisible).toHaveBeenCalledWith(false);

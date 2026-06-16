@@ -1,4 +1,13 @@
-import { GameMode, type Player, type PlayerScore, type PlayersSlice, type RoundScore, type RoundSlice, type Team, type TeamScore } from "@belot/types";
+import {
+  GameMode,
+  type Player,
+  type PlayerScore,
+  type PlayersSlice,
+  type RoundScore,
+  type RoundSlice,
+  type Team,
+  type TeamScore,
+} from "@belot/types";
 
 import { getNextWinningStep, getWinPoints } from "../pointsTypeHelpers";
 
@@ -66,8 +75,7 @@ const checkForPlayerWinner = (
   const nextWinningStep = getNextWinningStep();
 
   const winner = calculatedRoundScore.playersScores.filter(
-    (playerScore) =>
-      playerScore.totalScore >= winPoints + gameOverflowCount * nextWinningStep,
+    (playerScore) => playerScore.totalScore >= winPoints + gameOverflowCount * nextWinningStep,
   );
 
   if (winner.length > 1) {
@@ -108,16 +116,6 @@ export const checkForGameWinner = (
   setGameOverflowCount: (value: number | ((prev: number) => number)) => void,
 ) => {
   return gameMode === GameMode.classic
-    ? checkForPlayerWinner(
-        players,
-        calculatedRoundScore,
-        gameOverflowCount,
-        setGameOverflowCount,
-      )
-    : checkForTeamWinner(
-        teams,
-        calculatedRoundScore,
-        gameOverflowCount,
-        setGameOverflowCount,
-      );
+    ? checkForPlayerWinner(players, calculatedRoundScore, gameOverflowCount, setGameOverflowCount)
+    : checkForTeamWinner(teams, calculatedRoundScore, gameOverflowCount, setGameOverflowCount);
 };

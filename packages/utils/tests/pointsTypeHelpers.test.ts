@@ -1,13 +1,13 @@
 import { LIMIT_OF_ROUND_POINTS, POINTS_TYPE } from "@belot/constants";
+import { NEXT_WINNING_STEP, WIN_POINTS } from "@belot/constants";
 
 import { describe, expect, it, vi } from "vitest";
 
-import { NEXT_WINNING_STEP, WIN_POINTS } from "@belot/constants";
-
 import {
   applyDefaultTotalRoundScore,
-  formatTotalRoundScoreForDisplay,
+  convertRoundScoreForPointsType,
   formatRoundPointPresetForDisplay,
+  formatTotalRoundScoreForDisplay,
   getDefaultRoundPoints,
   getLimitOfRoundPoints,
   getNextWinningStep,
@@ -17,7 +17,6 @@ import {
   isMicropointsMode,
   normalizeSkippedRoundScore,
   parseStoredPointsType,
-  convertRoundScoreForPointsType,
 } from "../src/pointsTypeHelpers";
 
 describe("pointsTypeHelpers", () => {
@@ -192,9 +191,9 @@ describe("pointsTypeHelpers", () => {
 
   describe("parseStoredPointsType", () => {
     it("returns the stored points type when valid", () => {
-      expect(
-        parseStoredPointsType(JSON.stringify({ pointsType: POINTS_TYPE[1].id })),
-      ).toBe(POINTS_TYPE[1].id);
+      expect(parseStoredPointsType(JSON.stringify({ pointsType: POINTS_TYPE[1].id }))).toBe(
+        POINTS_TYPE[1].id,
+      );
     });
 
     it("returns null and warns when points type is invalid", () => {

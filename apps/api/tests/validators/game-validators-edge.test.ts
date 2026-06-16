@@ -1,6 +1,6 @@
 import express, { type RequestHandler } from "express";
-import { describe, expect, it } from "vitest";
 import request from "supertest";
+import { describe, expect, it } from "vitest";
 
 import { GameValidators } from "../../validators/game-validators";
 
@@ -34,7 +34,10 @@ describe("GameValidators edge cases", () => {
     const response = await request(app)
       .post("/test")
       .send({
-        players: [{ id: 0, name: 123 }, { id: 1, name: "Bob" }],
+        players: [
+          { id: 0, name: 123 },
+          { id: 1, name: "Bob" },
+        ],
         mode: "classic",
         teams: [],
       });
@@ -48,7 +51,10 @@ describe("GameValidators edge cases", () => {
     const response = await request(app)
       .post("/test")
       .send({
-        players: [{ id: 0, name: "Alice", teamId: "bad" }, { id: 1, name: "Bob" }],
+        players: [
+          { id: 0, name: "Alice", teamId: "bad" },
+          { id: 1, name: "Bob" },
+        ],
         mode: "classic",
         teams: [],
       });
@@ -220,9 +226,7 @@ describe("GameValidators edge cases", () => {
       res.status(200).json({ ok: true }),
     );
 
-    const response = await request(app)
-      .patch(`/test/${validId}`)
-      .send({ dealer: null });
+    const response = await request(app).patch(`/test/${validId}`).send({ dealer: null });
 
     expect(response.status).toBe(200);
   });

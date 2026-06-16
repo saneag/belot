@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-
 import { Keyboard } from "react-native";
+
+import DismissKeyboardView from "@/components/dismissKeyboardView";
 
 import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import DismissKeyboardView from "@/components/dismissKeyboardView";
 
 describe("DismissKeyboardView", () => {
   it("dismisses keyboard on press", () => {

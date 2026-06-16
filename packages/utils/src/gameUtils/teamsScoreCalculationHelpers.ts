@@ -1,11 +1,7 @@
 import { BOLT_COUNT_LIMIT, BOLT_POINTS, POINTS_TYPE } from "@belot/constants";
 import type { Player, TeamScore } from "@belot/types";
 
-import {
-  getBoltTotalPenalty,
-  getZeroScorePenalty,
-  roundScoreValue,
-} from "../pointsTypeHelpers";
+import { getBoltTotalPenalty, getZeroScorePenalty, roundScoreValue } from "../pointsTypeHelpers";
 
 export const calculateTeamsScore = (
   teamsScores: TeamScore[],

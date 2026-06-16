@@ -2,6 +2,8 @@ import { GameMode, type Player } from "@belot/types";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { GameService } from "../../services/game-service";
+
 const mocks = vi.hoisted(() => ({
   create: vi.fn(),
   findById: vi.fn(),
@@ -32,8 +34,6 @@ vi.mock("mongoose", async (importOriginal) => {
     isValidObjectId: mocks.isValidObjectId,
   };
 });
-
-import { GameService } from "../../services/game-service";
 
 const players: Player[] = [
   { id: 0, name: "Alice" },
@@ -126,9 +126,7 @@ describe("GameService", () => {
   it("updateGameById returns null for invalid ids", async () => {
     mocks.isValidObjectId.mockReturnValue(false);
 
-    await expect(
-      GameService.updateGameById("bad-id", { isFinished: true }),
-    ).resolves.toBeNull();
+    await expect(GameService.updateGameById("bad-id", { isFinished: true })).resolves.toBeNull();
   });
 
   it("updateGameById updates round score fields", async () => {

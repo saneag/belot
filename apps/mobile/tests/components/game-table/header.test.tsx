@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { AppState } from "react-native";
 
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -39,7 +38,10 @@ vi.mock("@belot/hooks", () => ({
     setVisible?: (v: boolean) => void;
   }) => ({
     isVisible: visible ?? false,
-    messages: { confirmationDialogConfirmButton: "Confirm", confirmationDialogCancelButton: "Cancel" },
+    messages: {
+      confirmationDialogConfirmButton: "Confirm",
+      confirmationDialogCancelButton: "Cancel",
+    },
     showDialog: (cb?: () => void) => {
       cb?.();
       setVisible?.(true);

@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { getAllGames } from "../../src/services";
 import { useAllGames } from "../../src/hooks/useAllGames";
+import { getAllGames } from "../../src/services";
 
 vi.mock("../../src/services", () => ({
   getAllGames: vi.fn(),

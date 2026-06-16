@@ -75,10 +75,7 @@ export const createRoundSlice: StateCreator<
 
       updatedRoundsScores[lastIndex] = {
         ...lastRoundScore,
-        totalRoundScore: normalizeSkippedRoundScore(
-          lastRoundScore.totalRoundScore,
-          pointsType,
-        ),
+        totalRoundScore: normalizeSkippedRoundScore(lastRoundScore.totalRoundScore, pointsType),
       };
 
       const newEmptyRow = prepareEmptyRoundScoreRow({

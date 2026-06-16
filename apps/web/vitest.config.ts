@@ -11,11 +11,7 @@ export default mergeConfig(
       name: "@belot/web",
       setupFiles: ["./tests/setup.ts"],
       coverage: {
-        exclude: [
-          ...coverageSourceExclude,
-          "src/components/ui/**",
-          "src/main.tsx",
-        ],
+        exclude: [...coverageSourceExclude, "src/components/ui/**", "src/main.tsx"],
       },
     },
   }),

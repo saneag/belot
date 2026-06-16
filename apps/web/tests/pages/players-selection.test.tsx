@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import PlayersSelectionPage from "@/pages/players-selection";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import PlayersSelectionPage from "@/pages/players-selection";
 
 vi.mock("@belot/components", () => ({
   PlayersSelectionContextProvider: ({ children }: { children: React.ReactNode }) => (

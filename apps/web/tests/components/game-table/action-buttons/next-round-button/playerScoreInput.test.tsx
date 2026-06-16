@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
-
 import { useState } from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
 
 import { GameMode, type RoundScore, type Team } from "@belot/types";
 
 import PlayerScoreInput from "@/components/game-table/action-buttons/next-round-button/playerScoreInput";
+
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@belot/localizations", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@belot/localizations")>();
