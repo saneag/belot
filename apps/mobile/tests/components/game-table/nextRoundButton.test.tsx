@@ -1,15 +1,14 @@
 // @vitest-environment jsdom
-
 import type { Player, RoundScore } from "@belot/types";
 import { GameMode } from "@belot/types";
 
-import { fireEvent, render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
+import PlayerScoreInputWrapper from "@/components/game-table/action-buttons/next-round-button/playerScoreInputWrapper";
 import RoundPlayerSelect from "@/components/game-table/action-buttons/next-round-button/roundPlayerSelect";
 import RoundScoreSelect from "@/components/game-table/action-buttons/next-round-button/roundScoreSelect";
 import ScoreDialogContent from "@/components/game-table/action-buttons/next-round-button/scoreDialogContent";
-import PlayerScoreInputWrapper from "@/components/game-table/action-buttons/next-round-button/playerScoreInputWrapper";
+
+import { fireEvent, render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   players: [
@@ -29,8 +28,7 @@ vi.mock("@belot/localizations", async (importOriginal) => {
 
   return {
     ...actual,
-    useLocalization: (key: string, args?: string[]) =>
-      args ? `${key}:${args.join(",")}` : key,
+    useLocalization: (key: string, args?: string[]) => (args ? `${key}:${args.join(",")}` : key),
     useLocalizations: () => ({
       nextRoundScoreForPlayer: "Score for {0}",
       settingsPointsTypeMicropoints: "Micropoints",
@@ -82,9 +80,8 @@ describe("next-round-button components", () => {
   it("RoundPlayerDisplay shows player and allows edit", async () => {
     const setRoundPlayer = vi.fn();
     vi.resetModules();
-    const { default: RoundPlayerDisplay } = await import(
-      "@/components/game-table/action-buttons/next-round-button/roundPlayerDisplay"
-    );
+    const { default: RoundPlayerDisplay } =
+      await import("@/components/game-table/action-buttons/next-round-button/roundPlayerDisplay");
 
     const { container } = render(
       <RoundPlayerDisplay roundPlayer={mocks.players[0]} setRoundPlayer={setRoundPlayer} />,

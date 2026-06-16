@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  formatLocalizationKey,
-  formatLocalizationString,
-} from "../src/hooks/useLocalization";
+import { formatLocalizationKey, formatLocalizationString } from "../src/hooks/useLocalization";
 
 describe("localization formatting", () => {
   it("formats localization keys into camelCase property names", () => {

@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-
 import { GameMode, type RoundScore } from "@belot/types";
+
+import PointCells from "@/components/game-table/pointCells";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
-import PointCells from "@/components/game-table/pointCells";
 
 describe("PointCells branches", () => {
   it("shows current score overlay when score has bolt count", () => {
@@ -28,9 +27,7 @@ describe("PointCells branches", () => {
   it("renders two-digit total scores without decimal conversion", () => {
     const roundScore: RoundScore = {
       id: 0,
-      playersScores: [
-        { id: 0, playerId: 0, score: 5, boltCount: 0, totalScore: 5 },
-      ],
+      playersScores: [{ id: 0, playerId: 0, score: 5, boltCount: 0, totalScore: 5 }],
       teamsScores: [],
       totalRoundScore: 50,
       roundPlayer: null,

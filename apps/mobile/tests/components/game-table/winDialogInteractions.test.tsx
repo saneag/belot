@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { GameMode } from "@belot/types";
 
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -63,9 +62,7 @@ describe("WinDialog interactions", () => {
     const setWinner = vi.fn();
     const { default: WinDialog } = await import("@/components/game-table/winDialog");
 
-    render(
-      <WinDialog winner={{ id: 0, name: "Team A" }} setWinner={setWinner} />,
-    );
+    render(<WinDialog winner={{ id: 0, name: "Team A" }} setWinner={setWinner} />);
 
     expect(screen.getByText("Team wins")).toBeTruthy();
     fireEvent.click(screen.getByText("Cancel"));

@@ -1,8 +1,7 @@
 // @vitest-environment jsdom
+import { subscribeToVisibilityChange } from "@/helpers/subscribeToVisibilityChange";
 
 import { describe, expect, it, vi } from "vitest";
-
-import { subscribeToVisibilityChange } from "@/helpers/subscribeToVisibilityChange";
 
 describe("subscribeToVisibilityChange", () => {
   it("subscribes and unsubscribes from visibilitychange", () => {

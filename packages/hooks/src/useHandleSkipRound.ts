@@ -35,10 +35,7 @@ export const useHandleSkipRound = ({ setItemsToStorage }: UseHandleSkipRoundProp
 
     updatedRoundsScores[lastIndex] = {
       ...lastRoundScore,
-      totalRoundScore: normalizeSkippedRoundScore(
-        lastRoundScore.totalRoundScore,
-        pointsType,
-      ),
+      totalRoundScore: normalizeSkippedRoundScore(lastRoundScore.totalRoundScore, pointsType),
     };
 
     const newEmptyRow = prepareEmptyRoundScoreRow({

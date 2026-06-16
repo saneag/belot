@@ -10,7 +10,11 @@ import {
   type Team,
   type TeamScore,
 } from "@belot/types";
-import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode, getScoreInputMaxLength } from "@belot/utils/src";
+import {
+  getScoreInputMaxLength,
+  handleRoundScoreChange,
+  prepareRoundScoresBasedOnGameMode,
+} from "@belot/utils/src";
 
 import { Field, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group";

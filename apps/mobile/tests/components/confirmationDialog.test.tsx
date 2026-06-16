@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
-
-import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
-import { describe, expect, it, vi } from "vitest";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
+
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@belot/hooks", () => ({
   useHandleConfirmationDialog: ({
@@ -47,7 +47,9 @@ function TestDialog() {
       title="Title"
       content="Content"
       renderShowDialog={(show) => (
-        <button type="button" onClick={show}>Open</button>
+        <button type="button" onClick={show}>
+          Open
+        </button>
       )}
       confirmationCallback={vi.fn()}
       visible={visible}
@@ -70,7 +72,11 @@ describe("ConfirmationDialog", () => {
       <ConfirmationDialog
         title={<span>Custom title</span>}
         content={<span>Custom content</span>}
-        renderShowDialog={(show) => <button type="button" onClick={show}>Open</button>}
+        renderShowDialog={(show) => (
+          <button type="button" onClick={show}>
+            Open
+          </button>
+        )}
         visible={true}
         setVisible={vi.fn()}
         primaryButton="confirm"

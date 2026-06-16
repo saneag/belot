@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import { useStartingScreenActions } from "@/hooks/starting-screen/useStartingScreenActions";
 
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import { useStartingScreenActions } from "@/hooks/starting-screen/useStartingScreenActions";
 
 const navigateMock = vi.fn();
 

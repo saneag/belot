@@ -1,22 +1,23 @@
 // @vitest-environment jsdom
-
-import { render } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-
 import { GameMode } from "@belot/types";
 
 import TableBodyWrapper from "@/components/game-table/tableBodyWrapper";
+
+import { render } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/hooks/game-table/useAutoScrollTableBody", () => ({
   default: vi.fn(),
 }));
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: {
-    players: { id: number }[];
-    roundsScores: { id: number; playersScores: unknown[]; teamsScores: unknown[] }[];
-    mode: GameMode;
-  }) => unknown) =>
+  useGameStore: (
+    selector: (state: {
+      players: { id: number }[];
+      roundsScores: { id: number; playersScores: unknown[]; teamsScores: unknown[] }[];
+      mode: GameMode;
+    }) => unknown,
+  ) =>
     selector({
       players: [{ id: 0 }, { id: 1 }, { id: 2 }],
       roundsScores: [

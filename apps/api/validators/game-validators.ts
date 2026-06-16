@@ -105,9 +105,7 @@ export const GameValidators = {
       const playerList = players as Array<Record<string, unknown>>;
       playerList.forEach((p, i) => validatePlayer(p, `players[${i}]`));
       if (playerList.length === 4) {
-        const allHaveTeam = playerList.every(
-          (player) => typeof player.teamId === "number",
-        );
+        const allHaveTeam = playerList.every((player) => typeof player.teamId === "number");
         if (!allHaveTeam) {
           throw new Error("Each player must have teamId when there are 4 players");
         }

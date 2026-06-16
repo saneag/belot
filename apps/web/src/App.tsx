@@ -1,11 +1,12 @@
 import { Suspense } from "react";
+
 import { Outlet } from "react-router-dom";
 
 import { ThemeContextProvider } from "@belot/components";
 import { LocalizationContextProvider } from "@belot/localizations";
 
-import { FeatureToggleProvider } from "@/components/featureToggles/FeatureToggleProvider";
 import { Layout } from "@/components/_layout";
+import { FeatureToggleProvider } from "@/components/featureToggles/FeatureToggleProvider";
 import PhoneScreen from "@/components/phoneScreen";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";

@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import PlayersRandomizer from "@/components/players-selection/playersRandomizer";
 
 import { screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import PlayersRandomizer from "@/components/players-selection/playersRandomizer";
 
 import { renderWithTooltip } from "../../testUtils";
 

@@ -1,6 +1,6 @@
-import { FEATURE_TOGGLES } from "@belot/constants";
-
 import type { ReactElement } from "react";
+
+import { FEATURE_TOGGLES } from "@belot/constants";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -54,9 +54,8 @@ describe("FeatureToggleProvider", () => {
   });
 
   it("provides default toggle state before sync completes", async () => {
-    const { FeatureToggleContext, FeatureToggleProvider } = await import(
-      "../src/featureToggles/FeatureToggleContext"
-    );
+    const { FeatureToggleContext, FeatureToggleProvider } =
+      await import("../src/featureToggles/FeatureToggleContext");
 
     const element = FeatureToggleProvider({
       children: "child",
@@ -66,9 +65,7 @@ describe("FeatureToggleProvider", () => {
 
     expect(element.type).toBe(FeatureToggleContext.Provider);
     expect(element.props.value).toEqual(FEATURE_TOGGLES);
-    expect(element.props.children).toEqual(
-      expect.arrayContaining(["child"]),
-    );
+    expect(element.props.children).toEqual(expect.arrayContaining(["child"]));
   });
 
   it("syncs centralized toggles on mount", async () => {

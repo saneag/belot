@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -45,7 +44,10 @@ describe("ExtendedTooltip interactions", () => {
     const { default: ExtendedTooltip } = await import("@/components/extendedTooltip");
 
     const { container } = render(
-      <ExtendedTooltip tooltipText="Tooltip" button={"not-an-element" as unknown as React.ReactElement<Record<string, unknown>>} />,
+      <ExtendedTooltip
+        tooltipText="Tooltip"
+        button={"not-an-element" as unknown as React.ReactElement<Record<string, unknown>>}
+      />,
     );
 
     expect(container.querySelector("button")).toBeNull();

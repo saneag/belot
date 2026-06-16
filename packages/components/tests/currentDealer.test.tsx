@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -40,11 +39,7 @@ describe("CurrentDealer", () => {
     mocks.dealer = { id: 0, name: "" };
 
     const { container } = render(
-      <CurrentDealer
-        dealerMessage="Dealer: {0}"
-        blockWrapper="div"
-        textWrapper="span"
-      />,
+      <CurrentDealer dealerMessage="Dealer: {0}" blockWrapper="div" textWrapper="span" />,
     );
 
     expect(container.querySelector("div")).toBeTruthy();
@@ -55,11 +50,7 @@ describe("CurrentDealer", () => {
     mocks.dealer = { id: 0, name: undefined as unknown as string };
 
     const { container } = render(
-      <CurrentDealer
-        dealerMessage="Dealer: {0}"
-        blockWrapper="div"
-        textWrapper="span"
-      />,
+      <CurrentDealer dealerMessage="Dealer: {0}" blockWrapper="div" textWrapper="span" />,
     );
 
     expect(container.querySelector("span")).toBeNull();
@@ -68,13 +59,7 @@ describe("CurrentDealer", () => {
   it("truncates long dealer names", () => {
     mocks.dealer = { id: 0, name: "VeryLongPlayerName" };
 
-    render(
-      <CurrentDealer
-        dealerMessage="Dealer: {0}"
-        blockWrapper="div"
-        textWrapper="span"
-      />,
-    );
+    render(<CurrentDealer dealerMessage="Dealer: {0}" blockWrapper="div" textWrapper="span" />);
 
     expect(screen.getByText("Dealer: {0}:VeryLongPl...")).toBeTruthy();
   });
