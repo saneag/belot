@@ -1,6 +1,6 @@
 import { LIMIT_OF_ROUND_POINTS, POINTS_TYPE } from "@belot/constants";
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { NEXT_WINNING_STEP, WIN_POINTS } from "@belot/constants";
 
@@ -16,6 +16,7 @@ import {
   getWinPoints,
   isMicropointsMode,
   normalizeSkippedRoundScore,
+  parseStoredPointsType,
   convertRoundScoreForPointsType,
 } from "../src/pointsTypeHelpers";
 
@@ -186,6 +187,32 @@ describe("pointsTypeHelpers", () => {
         totalRoundScore: 162,
         playersScores: [{ score: 50 }],
       });
+    });
+  });
+
+  describe("parseStoredPointsType", () => {
+    it("returns the stored points type when valid", () => {
+      expect(
+        parseStoredPointsType(JSON.stringify({ pointsType: POINTS_TYPE[1].id })),
+      ).toBe(POINTS_TYPE[1].id);
+    });
+
+    it("returns null and warns when points type is invalid", () => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+      expect(parseStoredPointsType(JSON.stringify({ pointsType: "invalid" }))).toBeNull();
+      expect(warnSpy).toHaveBeenCalled();
+
+      warnSpy.mockRestore();
+    });
+
+    it("returns null and logs when settings JSON is malformed", () => {
+      const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+      expect(parseStoredPointsType("{not-json")).toBeNull();
+      expect(errorSpy).toHaveBeenCalled();
+
+      errorSpy.mockRestore();
     });
   });
 });
