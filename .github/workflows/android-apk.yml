@@ -104,21 +104,26 @@ jobs:
           VERSION_CODE="$(node -p "require('./apps/mobile/app.json').expo.android.versionCode")"
           APK_NAME="belot-score-${VERSION}-build${VERSION_CODE}.apk"
           cp apps/mobile/android/app/build/outputs/apk/release/app-release.apk "$APK_NAME"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG_NAME="android/v${VERSION}-build${VERSION_CODE}"
+            RELEASE_NAME="Belot Score v${VERSION} (build ${VERSION_CODE})"
+          else
+            TAG_NAME="${GITHUB_REF_NAME}"
+            RELEASE_NAME="Belot Score ${GITHUB_REF_NAME}"
+          fi
+
           echo "apk_path=$APK_NAME" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: Upload APK artifact
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v4
-        with:
-          name: belot-android-apk
-          path: ${{ steps.artifact.outputs.apk_path }}
-          retention-days: 30
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+          echo "release_name=$RELEASE_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          name: Belot Score ${{ github.ref_name }}
+          tag_name: ${{ steps.artifact.outputs.tag_name }}
+          name: ${{ steps.artifact.outputs.release_name }}
           files: ${{ steps.artifact.outputs.apk_path }}
           generate_release_notes: true
+          make_latest: true
