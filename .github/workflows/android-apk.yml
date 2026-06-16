@@ -1,0 +1,123 @@
+name: Build Android APK (Local)
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_type == 'branch' && github.ref_name || github.sha }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 17
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'apps/mobile/package.json') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Bump Android version
+        if: github.event_name == 'workflow_dispatch'
+        working-directory: apps/mobile
+        run: pnpm run android:version:bump
+
+      - name: Commit Android version bump
+        if: github.event_name == 'workflow_dispatch'
+        id: version-bump
+        run: |
+          if git diff --quiet -- apps/mobile/app.json; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            echo "No Android version change to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/mobile/app.json
+
+          VERSION_CODE="$(node -p "require('./apps/mobile/app.json').expo.android.versionCode")"
+          git commit -m "chore(mobile): bump Android version code to ${VERSION_CODE} [skip ci]"
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push Android version bump
+        if: github.event_name == 'workflow_dispatch' && github.ref_type == 'branch' && steps.version-bump.outputs.committed == 'true'
+        run: git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Generate native Android project
+        working-directory: apps/mobile
+        run: pnpm exec expo prebuild -p android --clean
+
+      - name: Configure release signing
+        working-directory: apps/mobile
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: node ./scripts/configure-android-release-signing.mjs
+
+      - name: Build release APK
+        working-directory: apps/mobile
+        env:
+          NODE_ENV: production
+        run: node ./scripts/android-gradlew.js assembleRelease
+
+      - name: Prepare release artifact
+        id: artifact
+        run: |
+          VERSION="$(node -p "require('./apps/mobile/app.json').expo.version")"
+          VERSION_CODE="$(node -p "require('./apps/mobile/app.json').expo.android.versionCode")"
+          APK_NAME="belot-score-${VERSION}-build${VERSION_CODE}.apk"
+          cp apps/mobile/android/app/build/outputs/apk/release/app-release.apk "$APK_NAME"
+          echo "apk_path=$APK_NAME" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Upload APK artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: belot-android-apk
+          path: ${{ steps.artifact.outputs.apk_path }}
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Belot Score ${{ github.ref_name }}
+          files: ${{ steps.artifact.outputs.apk_path }}
+          generate_release_notes: true
