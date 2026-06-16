@@ -1,8 +1,5 @@
-import { useCallback } from "react";
-
 import { POINTS_TYPE } from "@belot/constants";
-import type { Settings } from "@belot/hooks";
-import { formatLocalizationKey, useLocalizations } from "@belot/localizations";
+import { type Settings, usePointsTypeSelection } from "@belot/hooks";
 
 import { Button } from "@/components/ui/button";
 import { FieldLegend, FieldSet } from "@/components/ui/field";
@@ -18,31 +15,11 @@ interface PointsTypeRadioButtonProps {
 }
 
 export const PointsTypeRadioButton = ({ value, onChange }: PointsTypeRadioButtonProps) => {
-  const messages = useLocalizations([
-    {
-      key: "settings.points.type",
-    },
-    {
-      key: "settings.points.type.hint",
-    },
-    {
-      key: "settings.points.type.micropoints",
-    },
-    {
-      key: "settings.points.type.points",
-    },
-  ]);
-
-  const handleChange = useCallback(
-    async (newValue: string) => {
-      if (newValue === value) {
-        return;
-      }
-
-      await onChange({ pointsType: newValue });
-    },
-    [onChange, value],
-  );
+  const { messages, handleChange, getOptionLabel } = usePointsTypeSelection({
+    value,
+    onChange: (newValue) => onChange({ pointsType: newValue }),
+    includeSettingsLabels: true,
+  });
 
   return (
     <FieldSet className="w-full max-w-xs">
@@ -66,7 +43,7 @@ export const PointsTypeRadioButton = ({ value, onChange }: PointsTypeRadioButton
         {POINTS_TYPE.map((type) => (
           <div key={type.id} className="flex items-center gap-3">
             <RadioGroupItem value={type.id} id={type.id} />
-            <Label htmlFor={type.id}>{messages[formatLocalizationKey(type.localizationKey)]}</Label>
+            <Label htmlFor={type.id}>{getOptionLabel(type.localizationKey)}</Label>
           </div>
         ))}
       </RadioGroup>
