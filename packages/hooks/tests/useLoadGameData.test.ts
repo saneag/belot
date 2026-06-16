@@ -55,16 +55,24 @@ vi.mock("../src/usePointsTypeFeature", () => ({
 }));
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: unknown) => unknown) =>
-    selector({
-      players: mocks.storeState.players,
-      dealer: mocks.storeState.dealer,
-      roundsScores: mocks.storeState.roundsScores,
-      setPlayers: mocks.setPlayers,
-      setDealer: mocks.setDealer,
-      setRoundsScores: mocks.setRoundsScores,
-      setPointsType: mocks.setPointsType,
-    }),
+  useGameStore: Object.assign(
+    (selector: (state: unknown) => unknown) =>
+      selector({
+        players: mocks.storeState.players,
+        dealer: mocks.storeState.dealer,
+        roundsScores: mocks.storeState.roundsScores,
+        pointsType: "micropoints",
+        setPlayers: mocks.setPlayers,
+        setDealer: mocks.setDealer,
+        setRoundsScores: mocks.setRoundsScores,
+        setPointsType: mocks.setPointsType,
+      }),
+    {
+      getState: () => ({
+        pointsType: "micropoints",
+      }),
+    },
+  ),
 }));
 
 describe("useLoadGameData", () => {
@@ -114,7 +122,19 @@ describe("useLoadGameData", () => {
     });
 
     expect(mocks.setPlayers).toHaveBeenCalledWith(players);
-    expect(mocks.setRoundsScores).toHaveBeenCalledWith(roundsScores);
+    expect(mocks.setRoundsScores).toHaveBeenCalledWith([
+      expect.objectContaining({
+        id: 0,
+        totalRoundScore: 162,
+      }),
+    ]);
+    const restoredRoundsScores = mocks.setRoundsScores.mock
+      .calls[0]?.[0] as RoundScore[];
+    expect(restoredRoundsScores[0].playersScores).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ playerId: 0, score: 0 }),
+      ]),
+    );
     expect(mocks.setPlayers.mock.invocationCallOrder[0]).toBeLessThan(
       mocks.setRoundsScores.mock.invocationCallOrder[0],
     );
@@ -153,7 +173,16 @@ describe("useLoadGameData", () => {
     });
 
     expect(mocks.stateHolders[1]?.value).toEqual(dealer);
-    expect(mocks.stateHolders[2]?.value).toEqual(roundsScores);
+    const loadedRoundsScores = mocks.stateHolders[2]?.value as RoundScore[];
+    expect(loadedRoundsScores[0]).toMatchObject({
+      id: 0,
+      totalRoundScore: 162,
+    });
+    expect(loadedRoundsScores[0].playersScores).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ playerId: 0, score: 0 }),
+      ]),
+    );
     expect(mocks.setPlayers).not.toHaveBeenCalled();
     expect(mocks.setDealer).not.toHaveBeenCalled();
     expect(mocks.setRoundsScores).not.toHaveBeenCalled();

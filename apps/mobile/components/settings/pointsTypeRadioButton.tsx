@@ -37,9 +37,13 @@ export const PointsTypeRadioButton = ({ value, onChange }: PointsTypeRadioButton
 
   const handleChange = useCallback(
     async (newValue: string) => {
+      if (newValue === value) {
+        return;
+      }
+
       await onChange({ pointsType: newValue });
     },
-    [onChange],
+    [onChange, value],
   );
 
   return (

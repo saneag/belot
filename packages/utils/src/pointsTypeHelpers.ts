@@ -15,6 +15,17 @@ export const isMicropointsMode = (pointsType: string) => pointsType === POINTS_T
 export const getDefaultRoundPoints = (pointsType: string) =>
   isMicropointsMode(pointsType) ? DEFAULT_ROUND_POINTS : roundToDecimal(DEFAULT_ROUND_POINTS);
 
+export const applyDefaultTotalRoundScore = (roundScore: RoundScore, pointsType: string) => {
+  if (roundScore.roundPlayer) {
+    return roundScore;
+  }
+
+  return {
+    ...roundScore,
+    totalRoundScore: getDefaultRoundPoints(pointsType),
+  };
+};
+
 export const getLimitOfRoundPoints = (pointsType: string) =>
   isMicropointsMode(pointsType)
     ? LIMIT_OF_ROUND_POINTS

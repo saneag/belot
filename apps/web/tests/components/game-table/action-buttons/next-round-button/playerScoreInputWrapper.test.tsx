@@ -45,7 +45,10 @@ describe("PlayerScoreInputWrapper", () => {
     function Harness() {
       const [roundScore, setRoundScore] = useState<RoundScore>({
         id: 1,
-        playersScores: [],
+        playersScores: [
+          { id: 0, playerId: 0, score: 0, boltCount: 0, totalScore: 0 },
+          { id: 1, playerId: 1, score: 0, boltCount: 0, totalScore: 0 },
+        ],
         teamsScores: [],
         totalRoundScore: 0,
       });

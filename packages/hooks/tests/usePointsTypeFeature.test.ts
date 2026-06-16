@@ -53,6 +53,7 @@ describe("usePointsTypeFeature", () => {
   });
 
   it("resets store to micropoints when feature is disabled", async () => {
+    mocks.storePointsType = POINTS_TYPE[1].id;
     mocks.isPointsTypeEnabled = false;
 
     const { useSyncPointsTypeFeature } = await import("../src/usePointsTypeFeature");
@@ -60,5 +61,16 @@ describe("usePointsTypeFeature", () => {
     useSyncPointsTypeFeature();
 
     expect(mocks.setPointsType).toHaveBeenCalledWith(POINTS_TYPE[0].id);
+  });
+
+  it("does not reset store when points type is already micropoints", async () => {
+    mocks.storePointsType = POINTS_TYPE[0].id;
+    mocks.isPointsTypeEnabled = false;
+
+    const { useSyncPointsTypeFeature } = await import("../src/usePointsTypeFeature");
+
+    useSyncPointsTypeFeature();
+
+    expect(mocks.setPointsType).not.toHaveBeenCalled();
   });
 });

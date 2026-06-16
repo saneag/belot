@@ -148,7 +148,10 @@ describe("next-round-button components", () => {
         setRoundPlayer={vi.fn()}
         roundScore={{
           id: 0,
-          playersScores: [],
+          playersScores: [
+            { id: 0, playerId: 0, score: 0, boltCount: 0, totalScore: 0 },
+            { id: 1, playerId: 1, score: 0, boltCount: 0, totalScore: 0 },
+          ],
           teamsScores: [],
           totalRoundScore: 162,
           roundPlayer: mocks.players[0],
@@ -170,7 +173,10 @@ describe("next-round-button components", () => {
         roundPlayer={mocks.players[0]}
         roundScore={{
           id: 0,
-          playersScores: [],
+          playersScores: [
+            { id: 0, playerId: 0, score: 0, boltCount: 0, totalScore: 0 },
+            { id: 1, playerId: 1, score: 0, boltCount: 0, totalScore: 0 },
+          ],
           teamsScores: [],
           totalRoundScore: 162,
           roundPlayer: mocks.players[0],

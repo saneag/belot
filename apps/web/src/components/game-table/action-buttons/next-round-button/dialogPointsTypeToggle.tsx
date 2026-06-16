@@ -23,9 +23,13 @@ export default function DialogPointsTypeToggle({ value, onChange }: DialogPoints
 
   const handleChange = useCallback(
     (newValue: string) => {
+      if (newValue === value) {
+        return;
+      }
+
       onChange(newValue);
     },
-    [onChange],
+    [onChange, value],
   );
 
   return (
