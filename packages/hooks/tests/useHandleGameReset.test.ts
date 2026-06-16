@@ -25,8 +25,12 @@ describe("useHandleGameReset", () => {
     mocks.setItemsToStorage.mockResolvedValue(undefined);
   });
 
-  it("clears storage, resets game, and navigates", async () => {
+  it("clears storage, navigates, then resets game", async () => {
     const { useHandleGameReset } = await import("../src/useHandleGameReset");
+
+    const callOrder: string[] = [];
+    mocks.navigateFunction.mockImplementation(() => callOrder.push("navigate"));
+    mocks.resetGame.mockImplementation(() => callOrder.push("reset"));
 
     const { handleReset } = useHandleGameReset({
       navigateFunction: mocks.navigateFunction,
@@ -42,5 +46,24 @@ describe("useHandleGameReset", () => {
     });
     expect(mocks.resetGame).toHaveBeenCalledOnce();
     expect(mocks.navigateFunction).toHaveBeenCalledOnce();
+    expect(callOrder).toEqual(["navigate", "reset"]);
+  });
+
+  it("calls afterNavigate instead of resetting directly when provided", async () => {
+    const { useHandleGameReset } = await import("../src/useHandleGameReset");
+
+    const afterNavigate = vi.fn();
+
+    const { handleReset } = useHandleGameReset({
+      navigateFunction: mocks.navigateFunction,
+      setItemsToStorage: mocks.setItemsToStorage,
+      afterNavigate,
+    });
+
+    await handleReset();
+
+    expect(mocks.navigateFunction).toHaveBeenCalledOnce();
+    expect(afterNavigate).toHaveBeenCalledOnce();
+    expect(mocks.resetGame).not.toHaveBeenCalled();
   });
 });

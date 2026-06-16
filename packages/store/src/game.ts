@@ -8,6 +8,8 @@ import { createPlayersSlice } from "./players.slice";
 import { createRoundSlice } from "./rounds.slice";
 
 export interface GameStore extends GameSlice, PlayersSlice, RoundSlice {
+  pendingReset: boolean;
+  markForReset: () => void;
   reset: () => void;
 }
 
@@ -16,6 +18,10 @@ export const createGameStore = () =>
     ...createPlayersSlice(set, ...rest),
     ...createRoundSlice(set, ...rest),
     ...createGameSlice(set, ...rest),
+
+    pendingReset: false,
+
+    markForReset: () => set(() => ({ pendingReset: true })),
 
     reset: () =>
       set(() => ({
@@ -26,6 +32,7 @@ export const createGameStore = () =>
         roundsScores: [],
         teams: [],
         undoneRoundsScores: [],
+        pendingReset: false,
       })),
   }));
 
