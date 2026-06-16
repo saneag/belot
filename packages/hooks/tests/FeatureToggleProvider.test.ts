@@ -17,6 +17,10 @@ const mocks = vi.hoisted(() => ({
   effectCleanups: [] as Array<(() => void) | void>,
 }));
 
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useSyncPointsTypeFeature: vi.fn(),
+}));
+
 vi.mock("../src/featureToggles/featureToggleUtils", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../src/featureToggles/featureToggleUtils")>();
 
@@ -62,7 +66,9 @@ describe("FeatureToggleProvider", () => {
 
     expect(element.type).toBe(FeatureToggleContext.Provider);
     expect(element.props.value).toEqual(FEATURE_TOGGLES);
-    expect(element.props.children).toBe("child");
+    expect(element.props.children).toEqual(
+      expect.arrayContaining(["child"]),
+    );
   });
 
   it("syncs centralized toggles on mount", async () => {
@@ -82,10 +88,20 @@ describe("FeatureToggleProvider", () => {
     });
 
     await vi.waitFor(() => {
-      expect(mocks.setToggles).toHaveBeenCalledWith({
+      expect(mocks.setToggles).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    const updateToggles = mocks.setToggles.mock.calls[0]?.[0] as (
+      current: FeatureToggleState,
+    ) => FeatureToggleState;
+    expect(
+      updateToggles({
         ...FEATURE_TOGGLES,
-        "settings-screen": true,
-      });
+        "settings-screen": false,
+      }),
+    ).toEqual({
+      ...FEATURE_TOGGLES,
+      "settings-screen": true,
     });
   });
 

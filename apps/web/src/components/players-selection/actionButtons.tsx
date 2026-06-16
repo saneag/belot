@@ -8,7 +8,7 @@ import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
-import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import { getFromStorage, setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 
 import { toast } from "sonner";
 
@@ -39,6 +39,7 @@ function SubmitButton() {
     navigateFunction: () => void navigate("/game-table", { replace: true }),
     setItemsToStorage: setMultipleItemsToStorage,
     getApiBaseUrl,
+    getFromStorage,
     handleCatchError: () => {
       toast.error(messages.serverOffline);
     },

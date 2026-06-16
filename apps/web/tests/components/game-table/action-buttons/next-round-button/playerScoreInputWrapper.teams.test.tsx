@@ -49,7 +49,10 @@ describe("PlayerScoreInputWrapper teams mode", () => {
       const [roundScore, setRoundScore] = useState<RoundScore>({
         id: 1,
         playersScores: [],
-        teamsScores: [],
+        teamsScores: [
+          { id: 0, teamId: 0, score: 0, boltCount: 0, totalScore: 0 },
+          { id: 1, teamId: 1, score: 0, boltCount: 0, totalScore: 0 },
+        ],
         totalRoundScore: 0,
       });
 
@@ -58,6 +61,7 @@ describe("PlayerScoreInputWrapper teams mode", () => {
           roundScore={roundScore}
           setRoundScore={setRoundScore}
           roundPlayer={{ id: 0, name: "Alice", teamId: 0 }}
+          pointsType="micropoints"
         />
       );
     }

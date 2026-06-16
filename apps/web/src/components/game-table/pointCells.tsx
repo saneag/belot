@@ -1,5 +1,11 @@
+import { useEffectivePointsType } from "@belot/hooks";
 import { GameMode, type RoundScore } from "@belot/types";
-import { getCurrentScore, getCurrentScoreColor, getScore, roundToDecimal } from "@belot/utils/src";
+import {
+  formatTotalRoundScoreForDisplay,
+  getCurrentScore,
+  getCurrentScoreColor,
+  getScore,
+} from "@belot/utils/src";
 
 import { TableCell } from "@/components/ui/table";
 
@@ -8,8 +14,11 @@ interface PointCellsProps {
   gameMode: GameMode;
 }
 
-const getWebCurrentScoreColor = (score: Parameters<typeof getCurrentScoreColor>[0]) => {
-  const color = getCurrentScoreColor(score);
+const getWebCurrentScoreColor = (
+  score: Parameters<typeof getCurrentScoreColor>[0],
+  pointsType: string,
+) => {
+  const color = getCurrentScoreColor(score, false, pointsType);
 
   if (color === "text-success") return "text-success";
   if (color === "text-destructive") return "text-destructive";
@@ -18,6 +27,7 @@ const getWebCurrentScoreColor = (score: Parameters<typeof getCurrentScoreColor>[
 };
 
 export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
+  const pointsType = useEffectivePointsType();
   const scoreArray =
     gameMode === GameMode.classic ? roundScore.playersScores : roundScore.teamsScores;
 
@@ -32,8 +42,10 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
             <span className="text-xl">{getScore(score)}</span>
           </div>
           {score.score ? (
-            <span className={`absolute top-0 right-0.5 text-xs ${getWebCurrentScoreColor(score)}`}>
-              {getCurrentScore(score)}
+            <span
+              className={`absolute top-0 right-0.5 text-xs ${getWebCurrentScoreColor(score, pointsType)}`}
+            >
+              {getCurrentScore(score, pointsType)}
             </span>
           ) : null}
         </TableCell>
@@ -41,9 +53,7 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
       <TableCell className="border-primary flex flex-1 border-l p-0">
         <div className="flex size-full items-center justify-center p-0">
           <span className="text-xl font-bold">
-            {String(roundScore.totalRoundScore).length === 3
-              ? roundToDecimal(roundScore.totalRoundScore)
-              : roundScore.totalRoundScore}
+            {formatTotalRoundScoreForDisplay(roundScore.totalRoundScore, pointsType)}
           </span>
         </div>
       </TableCell>

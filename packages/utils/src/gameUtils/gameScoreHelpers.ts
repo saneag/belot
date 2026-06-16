@@ -1,14 +1,6 @@
-import { NEXT_WINNING_STEP, WIN_POINTS } from "@belot/constants";
-import {
-  GameMode,
-  type Player,
-  type PlayerScore,
-  type PlayersSlice,
-  type RoundScore,
-  type RoundSlice,
-  type Team,
-  type TeamScore,
-} from "@belot/types";
+import { GameMode, type Player, type PlayerScore, type PlayersSlice, type RoundScore, type RoundSlice, type Team, type TeamScore } from "@belot/types";
+
+import { getNextWinningStep, getWinPoints } from "../pointsTypeHelpers";
 
 export const setNextDealer = (state: Partial<RoundSlice> & Partial<PlayersSlice>) => {
   if (state.roundsScores?.length === 0) {
@@ -70,8 +62,12 @@ const checkForPlayerWinner = (
   gameOverflowCount: number,
   setGameOverflowCount: (value: number | ((prev: number) => number)) => void,
 ) => {
+  const winPoints = getWinPoints();
+  const nextWinningStep = getNextWinningStep();
+
   const winner = calculatedRoundScore.playersScores.filter(
-    (playerScore) => playerScore.totalScore >= WIN_POINTS + gameOverflowCount * NEXT_WINNING_STEP,
+    (playerScore) =>
+      playerScore.totalScore >= winPoints + gameOverflowCount * nextWinningStep,
   );
 
   if (winner.length > 1) {
@@ -88,8 +84,11 @@ const checkForTeamWinner = (
   gameOverflowCount: number,
   setGameOverflowCount: (value: number | ((prev: number) => number)) => void,
 ) => {
+  const winPoints = getWinPoints();
+  const nextWinningStep = getNextWinningStep();
+
   const winner = calculatedRoundScore.teamsScores.filter(
-    (teamScore) => teamScore.totalScore >= WIN_POINTS + gameOverflowCount * NEXT_WINNING_STEP,
+    (teamScore) => teamScore.totalScore >= winPoints + gameOverflowCount * nextWinningStep,
   );
 
   if (winner.length > 1) {
@@ -109,6 +108,16 @@ export const checkForGameWinner = (
   setGameOverflowCount: (value: number | ((prev: number) => number)) => void,
 ) => {
   return gameMode === GameMode.classic
-    ? checkForPlayerWinner(players, calculatedRoundScore, gameOverflowCount, setGameOverflowCount)
-    : checkForTeamWinner(teams, calculatedRoundScore, gameOverflowCount, setGameOverflowCount);
+    ? checkForPlayerWinner(
+        players,
+        calculatedRoundScore,
+        gameOverflowCount,
+        setGameOverflowCount,
+      )
+    : checkForTeamWinner(
+        teams,
+        calculatedRoundScore,
+        gameOverflowCount,
+        setGameOverflowCount,
+      );
 };

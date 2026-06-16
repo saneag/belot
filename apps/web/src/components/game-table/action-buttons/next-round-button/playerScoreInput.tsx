@@ -1,5 +1,6 @@
-import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo } from "react";
+import { type Dispatch, type SetStateAction, useCallback, useMemo } from "react";
 
+import { useSyncPlayerScoreInput } from "@belot/hooks";
 import { formatLocalizationString, useLocalizations } from "@belot/localizations";
 import {
   GameMode,
@@ -9,7 +10,7 @@ import {
   type Team,
   type TeamScore,
 } from "@belot/types";
-import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode } from "@belot/utils/src";
+import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode, getScoreInputMaxLength } from "@belot/utils/src";
 
 import { Field, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
@@ -22,6 +23,7 @@ interface PlayerScoreInputProps {
   players: Player[];
   teams: Team[];
   roundPlayer: Player | null;
+  pointsType: string;
 }
 
 export default function PlayerScoreInput({
@@ -32,6 +34,7 @@ export default function PlayerScoreInput({
   players,
   teams,
   roundPlayer,
+  pointsType,
 }: PlayerScoreInputProps) {
   const messages = useLocalizations([{ key: "next.round.score.for.player" }]);
 
@@ -65,11 +68,12 @@ export default function PlayerScoreInput({
     [gameMode, opponent, roundPlayer, setRoundScore],
   );
 
-  useEffect(() => {
-    if (roundScore.totalRoundScore) {
-      handleInputChange(finalRoundScore?.score || 0);
-    }
-  }, [finalRoundScore?.score, handleInputChange, roundScore.totalRoundScore]);
+  useSyncPlayerScoreInput({
+    opponentId: opponent.id,
+    totalRoundScore: roundScore.totalRoundScore,
+    targetScore: finalRoundScore?.score ?? 0,
+    onScoreChange: handleInputChange,
+  });
 
   return (
     <Field>
@@ -79,7 +83,7 @@ export default function PlayerScoreInput({
           id={`${opponent.id}`}
           className="[-moz-appearance:textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
           value={String(finalRoundScore?.score || 0)}
-          maxLength={3}
+          maxLength={getScoreInputMaxLength(pointsType)}
           type="number"
           onChange={(e) => handleInputChange(Number(e.target.value))}
           onFocus={(e) => {
