@@ -1,6 +1,8 @@
 import express from "express";
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import request from "supertest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import gamesRouter from "../../routes/games-router";
 
 const mocks = vi.hoisted(() => ({
   initGame: vi.fn(),
@@ -17,8 +19,6 @@ vi.mock("../../services/game-service", () => ({
     updateGameById: mocks.updateGameById,
   },
 }));
-
-import gamesRouter from "../../routes/games-router";
 
 const app = express();
 app.use(express.json());
@@ -122,9 +122,7 @@ describe("games router", () => {
   it("PATCH /:id updates game when found", async () => {
     mocks.updateGameById.mockResolvedValue({ id: validId, isFinished: true });
 
-    const response = await request(app)
-      .patch(`/games/${validId}`)
-      .send({ isFinished: true });
+    const response = await request(app).patch(`/games/${validId}`).send({ isFinished: true });
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: validId, isFinished: true });
@@ -133,9 +131,7 @@ describe("games router", () => {
   it("PATCH /:id returns 404 when game is missing", async () => {
     mocks.updateGameById.mockResolvedValue(null);
 
-    const response = await request(app)
-      .patch(`/games/${validId}`)
-      .send({ isFinished: true });
+    const response = await request(app).patch(`/games/${validId}`).send({ isFinished: true });
 
     expect(response.status).toBe(404);
   });
@@ -143,9 +139,7 @@ describe("games router", () => {
   it("PATCH /:id returns 500 on service errors", async () => {
     mocks.updateGameById.mockRejectedValue(new Error("db down"));
 
-    const response = await request(app)
-      .patch(`/games/${validId}`)
-      .send({ isFinished: true });
+    const response = await request(app).patch(`/games/${validId}`).send({ isFinished: true });
 
     expect(response.status).toBe(500);
   });

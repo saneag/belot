@@ -1,4 +1,4 @@
-import { Router, type IRouter } from "express";
+import { type IRouter, Router } from "express";
 
 import { GameService, type InitGameInput, type UpdateGameInput } from "../services/game-service";
 import { GameValidators } from "../validators/game-validators";

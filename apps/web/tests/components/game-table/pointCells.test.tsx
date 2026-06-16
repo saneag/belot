@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-
 import { GameMode } from "@belot/types";
 
 import PointCells from "@/components/game-table/pointCells";
+
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@belot/hooks", () => ({
   useEffectivePointsType: () => "micropoints",

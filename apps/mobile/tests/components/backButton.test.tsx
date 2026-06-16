@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-
 import { useRouter } from "expo-router";
+
+import { BackButton } from "@/components/backButton";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-
-import { BackButton } from "@/components/backButton";
 
 describe("BackButton", () => {
   beforeEach(() => {

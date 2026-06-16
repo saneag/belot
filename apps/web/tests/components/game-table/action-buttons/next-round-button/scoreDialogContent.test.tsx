@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
-
 import { useState } from "react";
-import { render, screen, cleanup } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { type Player, type RoundScore } from "@belot/types";
 
 import ScoreDialogContent from "@/components/game-table/action-buttons/next-round-button/scoreDialogContent";
+
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@/components/game-table/action-buttons/next-round-button/roundPlayerSelect", () => ({
   default: () => <div>Select player</div>,

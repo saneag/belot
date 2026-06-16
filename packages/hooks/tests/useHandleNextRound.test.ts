@@ -39,9 +39,7 @@ vi.mock("react", () => ({
     mocks.stateHolders.push(holder);
     const setState = (next: unknown) => {
       holder.value =
-        typeof next === "function"
-          ? (next as (current: unknown) => unknown)(holder.value)
-          : next;
+        typeof next === "function" ? (next as (current: unknown) => unknown)(holder.value) : next;
     };
     return [holder.value, setState];
   },

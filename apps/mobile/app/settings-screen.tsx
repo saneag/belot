@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { useFocusEffect } from "expo-router";
 
-import { useSettings, useIsPointsTypeEnabled } from "@belot/hooks";
+import { useIsPointsTypeEnabled, useSettings } from "@belot/hooks";
 import { useLocalization } from "@belot/localizations";
 
 import { BackButton } from "@/components/backButton";

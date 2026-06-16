@@ -36,10 +36,7 @@ describe("useLocalization hooks", () => {
     mocks.t.mockImplementation((key: string) => key);
 
     const { useLocalizations } = await import("../src/hooks/useLocalization");
-    const messages = useLocalizations([
-      { key: "time" },
-      { key: "settings", args: ["A"] },
-    ]);
+    const messages = useLocalizations([{ key: "time" }, { key: "settings", args: ["A"] }]);
 
     expect(messages.time).toBe("time");
     expect(messages.settings).toBe("settings");

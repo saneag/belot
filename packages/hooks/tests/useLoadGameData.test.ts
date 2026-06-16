@@ -1,7 +1,7 @@
 import { StorageKeys } from "@belot/constants";
 import type { Player, RoundScore } from "@belot/types";
 
-import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useIsPointsTypeEnabled } from "../src/usePointsTypeFeature";
 
@@ -44,9 +44,7 @@ vi.mock("react", () => ({
     mocks.stateHolders.push(holder);
     const setState = (next: unknown) => {
       holder.value =
-        typeof next === "function"
-          ? (next as (current: unknown) => unknown)(holder.value)
-          : next;
+        typeof next === "function" ? (next as (current: unknown) => unknown)(holder.value) : next;
     };
     return [holder.value, setState];
   },
@@ -155,12 +153,9 @@ describe("useLoadGameData", () => {
         totalRoundScore: 162,
       }),
     ]);
-    const restoredRoundsScores = mocks.setRoundsScores.mock
-      .calls[0]?.[0] as RoundScore[];
+    const restoredRoundsScores = mocks.setRoundsScores.mock.calls[0]?.[0] as RoundScore[];
     expect(restoredRoundsScores[0].playersScores).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ playerId: 0, score: 0 }),
-      ]),
+      expect.arrayContaining([expect.objectContaining({ playerId: 0, score: 0 })]),
     );
     expect(mocks.setPlayers.mock.invocationCallOrder[0]).toBeLessThan(
       mocks.setRoundsScores.mock.invocationCallOrder[0],
@@ -206,9 +201,7 @@ describe("useLoadGameData", () => {
       totalRoundScore: 162,
     });
     expect(loadedRoundsScores[0].playersScores).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ playerId: 0, score: 0 }),
-      ]),
+      expect.arrayContaining([expect.objectContaining({ playerId: 0, score: 0 })]),
     );
     expect(mocks.setPlayers).not.toHaveBeenCalled();
     expect(mocks.setDealer).not.toHaveBeenCalled();

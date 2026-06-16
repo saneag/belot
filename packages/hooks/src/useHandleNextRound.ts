@@ -60,7 +60,9 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
         return;
       }
 
-      setRoundScore((prev) => convertRoundScoreForPointsType(prev, dialogPointsType, newPointsType));
+      setRoundScore((prev) =>
+        convertRoundScoreForPointsType(prev, dialogPointsType, newPointsType),
+      );
       setDialogPointsType(newPointsType);
     },
     [dialogPointsType, isPointsTypeEnabled],

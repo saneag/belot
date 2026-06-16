@@ -3,10 +3,10 @@ import { FEATURE_TOGGLES, StorageKeys } from "@belot/constants";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
+  areFeatureToggleStatesEqual,
   getDefaultFeatureToggleState,
   isKnownFeatureToggle,
   logUnknownFeatureToggle,
-  areFeatureToggleStatesEqual,
   needsFeatureToggleStorageSync,
   parseStoredFeatureToggles,
   serializeFeatureToggleState,
@@ -60,9 +60,7 @@ describe("featureToggleUtils", () => {
   });
 
   it("detects equivalent feature toggle states", () => {
-    expect(
-      areFeatureToggleStatesEqual(FEATURE_TOGGLES, { ...FEATURE_TOGGLES }),
-    ).toBe(true);
+    expect(areFeatureToggleStatesEqual(FEATURE_TOGGLES, { ...FEATURE_TOGGLES })).toBe(true);
   });
 
   it("detects when storage is missing newly added feature toggles", () => {
@@ -90,9 +88,9 @@ describe("featureToggleUtils", () => {
   });
 
   it("skips storage sync when all centralized toggles match storage", () => {
-    expect(
-      needsFeatureToggleStorageSync(JSON.stringify(FEATURE_TOGGLES), FEATURE_TOGGLES),
-    ).toBe(false);
+    expect(needsFeatureToggleStorageSync(JSON.stringify(FEATURE_TOGGLES), FEATURE_TOGGLES)).toBe(
+      false,
+    );
   });
 
   it("syncs centralized toggles to storage", async () => {
@@ -113,14 +111,12 @@ describe("featureToggleUtils", () => {
   });
 
   it("updates storage when a new centralized toggle is missing from storage", async () => {
-    const getFromStorage = vi
-      .fn()
-      .mockResolvedValue(
-        JSON.stringify({
-          "settings-screen": true,
-          "backend-game-init": false,
-        }),
-      );
+    const getFromStorage = vi.fn().mockResolvedValue(
+      JSON.stringify({
+        "settings-screen": true,
+        "backend-game-init": false,
+      }),
+    );
     const setToStorage = vi.fn().mockResolvedValue(undefined);
 
     const syncedToggles = await syncFeatureTogglesToStorage({
@@ -136,9 +132,7 @@ describe("featureToggleUtils", () => {
   });
 
   it("skips storage write when centralized toggles are already synced", async () => {
-    const getFromStorage = vi
-      .fn()
-      .mockResolvedValue(serializeFeatureToggleState(FEATURE_TOGGLES));
+    const getFromStorage = vi.fn().mockResolvedValue(serializeFeatureToggleState(FEATURE_TOGGLES));
     const setToStorage = vi.fn();
 
     await syncFeatureTogglesToStorage({

@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import PlayersNamesInput from "@/components/players-selection/playersNamesInput";
 
 import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import PlayersNamesInput from "@/components/players-selection/playersNamesInput";
 
 const handlePlayerNameChange = vi.fn();
 

@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import PhoneScreen from "@/components/phoneScreen";
 
 import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import PhoneScreen from "@/components/phoneScreen";
 
 const mobileMocks = vi.hoisted(() => ({
   isMobile: false,

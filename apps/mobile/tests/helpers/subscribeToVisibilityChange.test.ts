@@ -1,8 +1,8 @@
 import { AppState } from "react-native";
 
-import { describe, expect, it, vi } from "vitest";
-
 import { subscribeToVisibilityChange } from "@/helpers/subscribeToVisibilityChange";
+
+import { describe, expect, it, vi } from "vitest";
 
 describe("subscribeToVisibilityChange", () => {
   it("calls handler when app becomes active", () => {

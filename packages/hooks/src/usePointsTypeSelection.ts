@@ -24,7 +24,9 @@ export const usePointsTypeSelection = ({
   includeSettingsLabels = false,
 }: UsePointsTypeSelectionParams) => {
   const messages = useLocalizations(
-    includeSettingsLabels ? [...SETTINGS_LABEL_KEYS, ...POINTS_TYPE_OPTION_KEYS] : [...POINTS_TYPE_OPTION_KEYS],
+    includeSettingsLabels
+      ? [...SETTINGS_LABEL_KEYS, ...POINTS_TYPE_OPTION_KEYS]
+      : [...POINTS_TYPE_OPTION_KEYS],
   );
 
   const handleChange = useCallback(

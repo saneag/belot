@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import GameTablePage from "@/pages/game-table";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import GameTablePage from "@/pages/game-table";
 
 const useLoadGameData = vi.fn<(options: { getFromStorage: (key: string) => unknown }) => void>();
 

@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -18,9 +17,8 @@ vi.mock("@belot/hooks", () => ({
 describe("FeatureToggleProvider", () => {
   it("passes web storage helpers to the shared provider", async () => {
     const { getFromStorage, setToStorage } = await import("@/helpers/storageHelpers");
-    const { FeatureToggleProvider } = await import(
-      "@/components/featureToggles/FeatureToggleProvider"
-    );
+    const { FeatureToggleProvider } =
+      await import("@/components/featureToggles/FeatureToggleProvider");
 
     render(
       <FeatureToggleProvider>

@@ -96,7 +96,10 @@ const createElement = (
 
 vi.mock("react-native", () => {
   const listeners: Record<string, ((e?: unknown) => void)[]> = {};
-  const platform = { OS: "ios" as string, select: (obj: Record<string, unknown>) => obj.ios ?? obj.default };
+  const platform = {
+    OS: "ios" as string,
+    select: (obj: Record<string, unknown>) => obj.ios ?? obj.default,
+  };
 
   return {
     __listeners: listeners,
@@ -229,7 +232,11 @@ vi.mock("@/components/ui/button", () => ({
     React.createElement("span", null, children),
   ButtonSpinner: () => React.createElement("span", { "data-testid": "button-spinner" }),
   ButtonIcon: ({ children, as, ...props }: Record<string, unknown>) =>
-    React.createElement("span", { "data-testid": "button-icon", ...omitUiProps(props) }, children as React.ReactNode),
+    React.createElement(
+      "span",
+      { "data-testid": "button-icon", ...omitUiProps(props) },
+      children as React.ReactNode,
+    ),
 }));
 vi.mock("@/components/ui/heading", () => ({
   Heading: ({ children, ...props }: Record<string, unknown>) =>
@@ -287,8 +294,13 @@ vi.mock("@/components/ui/radio", () => ({
     React.createElement("span", null, children),
 }));
 vi.mock("@/components/ui/tooltip", () => ({
-  Tooltip: ({ trigger, children }: { trigger: (props: object) => React.ReactNode; children: React.ReactNode }) =>
-    React.createElement("div", null, trigger({ onPress: vi.fn() }), children),
+  Tooltip: ({
+    trigger,
+    children,
+  }: {
+    trigger: (props: object) => React.ReactNode;
+    children: React.ReactNode;
+  }) => React.createElement("div", null, trigger({ onPress: vi.fn() }), children),
   TooltipContent: ({ children }: { children: React.ReactNode }) =>
     React.createElement("div", null, children),
   TooltipText: ({ children }: { children: React.ReactNode }) =>
