@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef } from "react";
 
 import { formatLocalizationString, useLocalizations } from "@belot/localizations";
 import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
@@ -61,11 +61,36 @@ export default function PlayerScoreInput({
     [gameMode, opponent, roundPlayer, setRoundScore],
   );
 
+  const lastSyncedScoreRef = useRef<{
+    opponentId: number;
+    totalRoundScore: number;
+    score: number;
+  } | null>(null);
+
   useEffect(() => {
-    if (roundScore.totalRoundScore) {
-      handleInputChange(finalRoundScore?.score || 0);
+    if (!roundScore.totalRoundScore) {
+      lastSyncedScoreRef.current = null;
+      return;
     }
-  }, [finalRoundScore?.score, handleInputChange, roundScore.totalRoundScore]);
+
+    const targetScore = finalRoundScore?.score ?? 0;
+    const lastSyncedScore = lastSyncedScoreRef.current;
+
+    if (
+      lastSyncedScore?.opponentId === opponent.id &&
+      lastSyncedScore.totalRoundScore === roundScore.totalRoundScore &&
+      lastSyncedScore.score === targetScore
+    ) {
+      return;
+    }
+
+    handleInputChange(targetScore);
+    lastSyncedScoreRef.current = {
+      opponentId: opponent.id,
+      totalRoundScore: roundScore.totalRoundScore,
+      score: targetScore,
+    };
+  }, [finalRoundScore?.score, handleInputChange, opponent.id, roundScore.totalRoundScore]);
 
   return (
     <VStack space="xs">

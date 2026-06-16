@@ -4,11 +4,13 @@ import { POINTS_TYPE, StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import type { Player, RoundScore, Team } from "@belot/types";
 import {
+  applyDefaultTotalRoundScore,
   calculateRoundScore,
   checkForGameWinner,
   convertRoundScoreForPointsType,
   getDefaultRoundPoints,
   prepareEmptyRoundScoreRow,
+  repairRoundScoreScores,
   setNextDealer,
 } from "@belot/utils";
 
@@ -145,12 +147,23 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
 
       const lastRoundScores = roundsScores.at(-1);
       if (lastRoundScores) {
-        setRoundScore(lastRoundScores);
+        setRoundScore(
+          applyDefaultTotalRoundScore(
+            repairRoundScoreScores(lastRoundScores, {
+              players,
+              teams,
+              mode: gameMode,
+              pointsType,
+              roundsScores,
+            }),
+            pointsType,
+          ),
+        );
       }
 
       showDialog();
     },
-    [pointsType, roundsScores],
+    [gameMode, players, pointsType, roundsScores, teams],
   );
 
   return {

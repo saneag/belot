@@ -52,7 +52,10 @@ describe("useFeatureToggle", () => {
   });
 
   it("returns false when toggle is disabled in context", async () => {
-    mocks.toggles = { ...FEATURE_TOGGLES };
+    mocks.toggles = {
+      ...FEATURE_TOGGLES,
+      "settings-screen": false,
+    };
 
     const { useFeatureToggle } = await import("../src/featureToggles/useFeatureToggle");
 

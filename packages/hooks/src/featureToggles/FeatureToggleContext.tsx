@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
 
 import {
+  areFeatureToggleStatesEqual,
   getDefaultFeatureToggleState,
   syncFeatureTogglesToStorage,
   type FeatureToggleState,
@@ -38,7 +39,9 @@ export const FeatureToggleProvider = ({
       });
 
       if (!isCancelled) {
-        setToggles(syncedToggles);
+        setToggles((current) =>
+          areFeatureToggleStatesEqual(current, syncedToggles) ? current : syncedToggles,
+        );
       }
     };
 

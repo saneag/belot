@@ -49,7 +49,7 @@ vi.mock("react", () => ({
 }));
 
 vi.mock("../src/usePointsTypeFeature", () => ({
-  useIsPointsTypeEnabled: () => false,
+  useIsPointsTypeEnabled: () => true,
 }));
 
 vi.mock("@belot/store", () => ({
@@ -58,7 +58,7 @@ vi.mock("@belot/store", () => ({
       players: mocks.players,
       teams: mocks.teams,
       mode: mocks.mode,
-      pointsType: "micropoints",
+      pointsType: "points",
       roundsScores: mocks.roundsScores,
       updateRoundScore: mocks.updateRoundScore,
       dealer: mocks.dealer,
@@ -127,7 +127,13 @@ describe("useHandleNextRound", () => {
     handleDialogOpen(showDialog);
 
     const roundScoreHolder = mocks.stateHolders[1];
-    expect(roundScoreHolder.value).toEqual(mocks.roundsScores[0]);
+    const roundScore = roundScoreHolder.value as RoundScore;
+    expect(roundScore).toMatchObject({
+      id: 0,
+      totalRoundScore: 16,
+      roundPlayer: null,
+    });
+    expect(roundScore.playersScores.length).toBeGreaterThan(0);
     expect(showDialog).toHaveBeenCalledOnce();
   });
 
