@@ -35,10 +35,7 @@ export default function GameTable() {
           maxHeight: height / (isMobile() ? 1.17 : 1.5) - CONTAINER_MARGIN_BOTTOM,
         }}
       >
-        <div
-          ref={tableBodyScrollRef}
-          className="scrollbar-subtle min-h-0 flex-1 overflow-y-auto"
-        >
+        <div ref={tableBodyScrollRef} className="scrollbar-subtle min-h-0 flex-1 overflow-y-auto">
           <Table className="w-full" containerClassName="overflow-visible">
             <TableHeaderWrapper />
             <TableBodyWrapper scrollContainerRef={tableBodyScrollRef} />

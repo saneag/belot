@@ -23,8 +23,7 @@ vi.mock("@belot/store", () => ({
 }));
 
 vi.mock("../src/featureToggles/useFeatureToggle", () => ({
-  useFeatureToggle: (name: string) =>
-    name === "points-type" ? mocks.isPointsTypeEnabled : false,
+  useFeatureToggle: (name: string) => (name === "points-type" ? mocks.isPointsTypeEnabled : false),
 }));
 
 describe("usePointsTypeFeature", () => {

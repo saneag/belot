@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { GameMode } from "@belot/types";
 
 import { fireEvent, render, screen } from "@testing-library/react";

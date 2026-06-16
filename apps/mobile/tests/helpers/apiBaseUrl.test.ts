@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
-
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
+
+import { describe, expect, it } from "vitest";
 
 describe("getApiBaseUrl", () => {
   it("returns env value when set", () => {

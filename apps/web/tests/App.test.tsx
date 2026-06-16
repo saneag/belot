@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import App from "@/App";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import App from "@/App";
 
 vi.mock("@belot/components", () => ({
   ThemeContextProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,

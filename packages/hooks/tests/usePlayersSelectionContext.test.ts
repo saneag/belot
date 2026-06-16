@@ -36,7 +36,9 @@ describe("usePlayersSelectionContext", () => {
   });
 
   it("exposes default noop validation handlers from context default", async () => {
-    mocks.useContext.mockImplementation((context: { defaultValue: unknown }) => context.defaultValue);
+    mocks.useContext.mockImplementation(
+      (context: { defaultValue: unknown }) => context.defaultValue,
+    );
 
     const module = await import("../src/usePlayersSelectionContext");
     const contextValue = module.usePlayersSelectionContext();

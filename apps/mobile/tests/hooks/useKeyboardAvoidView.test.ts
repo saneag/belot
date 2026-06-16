@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
+import { type EmitterSubscription, Keyboard } from "react-native";
 
-import { Keyboard, type EmitterSubscription } from "react-native";
+import { useKeyboardAvoidView } from "@/hooks/useKeyboardAvoidView";
 
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-
-import { useKeyboardAvoidView } from "@/hooks/useKeyboardAvoidView";
 
 async function setPlatformOS(os: string) {
   const rn = (await import("react-native")) as unknown as { __platform: { OS: string } };

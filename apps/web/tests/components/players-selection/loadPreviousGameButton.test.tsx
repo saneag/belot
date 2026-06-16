@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import LoadPreviousGameButton from "@/components/players-selection/loadPreviousGameButton";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import LoadPreviousGameButton from "@/components/players-selection/loadPreviousGameButton";
 
 const loadPlayersNamesFromStorage = vi.fn();
 const fetchPreviousPlayers = vi.fn();

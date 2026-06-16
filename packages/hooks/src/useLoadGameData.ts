@@ -3,9 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import { GameMode, type Player, type RoundScore } from "@belot/types";
-import { applyDefaultTotalRoundScore, getDefaultPointsType, parseStoredPointsType, repairRoundScoreScores } from "@belot/utils";
-import type { Settings } from "./useSettings";
+import {
+  applyDefaultTotalRoundScore,
+  getDefaultPointsType,
+  parseStoredPointsType,
+  repairRoundScoreScores,
+} from "@belot/utils";
+
 import { useIsPointsTypeEnabled } from "./usePointsTypeFeature";
+import type { Settings } from "./useSettings";
 
 interface UseLoadGameDataBaseProps {
   getFromStorage: (key: StorageKeys) => Promise<string | null> | string | null;
@@ -88,10 +94,7 @@ export function useLoadGameData({
           } else {
             const defaultSettings: Settings = { pointsType: getDefaultPointsType() };
 
-            await setToStorageRef.current?.(
-              StorageKeys.settings,
-              JSON.stringify(defaultSettings),
-            );
+            await setToStorageRef.current?.(StorageKeys.settings, JSON.stringify(defaultSettings));
           }
         }
 
@@ -102,8 +105,7 @@ export function useLoadGameData({
 
           if (parsedRoundsScores.length > 0) {
             const lastRoundIndex = parsedRoundsScores.length - 1;
-            const gameMode =
-              parsedPlayers.length === 4 ? GameMode.teams : GameMode.classic;
+            const gameMode = parsedPlayers.length === 4 ? GameMode.teams : GameMode.classic;
 
             parsedRoundsScores = [
               ...parsedRoundsScores.slice(0, lastRoundIndex),

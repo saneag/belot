@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import RedoRoundButton from "@/components/game-table/action-buttons/redoRound";
 
 import { screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import RedoRoundButton from "@/components/game-table/action-buttons/redoRound";
 
 import { renderWithTooltip } from "../../../testUtils";
 
@@ -14,10 +13,12 @@ vi.mock("@belot/localizations", () => ({
 }));
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: {
-    undoneRoundsScores: { id: number }[];
-    redoRoundScore: typeof redoRoundScore;
-  }) => unknown) =>
+  useGameStore: (
+    selector: (state: {
+      undoneRoundsScores: { id: number }[];
+      redoRoundScore: typeof redoRoundScore;
+    }) => unknown,
+  ) =>
     selector({
       undoneRoundsScores: [{ id: 0 }],
       redoRoundScore,

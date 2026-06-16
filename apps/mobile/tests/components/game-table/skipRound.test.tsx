@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-
 import { useState } from "react";
+
+import ConfirmationDialog from "@/components/confirmationDialog";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import ConfirmationDialog from "@/components/confirmationDialog";
 
 vi.mock("@belot/hooks", () => ({
   useHandleSkipRound: () => vi.fn(),
@@ -51,7 +50,9 @@ function SkipRoundHarness() {
       title="Skip round"
       content="Skip content"
       renderShowDialog={(show) => (
-        <button type="button" onClick={show}>Skip</button>
+        <button type="button" onClick={show}>
+          Skip
+        </button>
       )}
       confirmationCallback={vi.fn()}
       visible={visible}
@@ -62,9 +63,8 @@ function SkipRoundHarness() {
 
 describe("SkipRoundButton", () => {
   it("renders skip round confirmation flow", async () => {
-    const { default: SkipRoundButton } = await import(
-      "@/components/game-table/action-buttons/skipRound"
-    );
+    const { default: SkipRoundButton } =
+      await import("@/components/game-table/action-buttons/skipRound");
 
     render(<SkipRoundButton />);
     expect(screen.getAllByRole("button").length).toBeGreaterThan(0);

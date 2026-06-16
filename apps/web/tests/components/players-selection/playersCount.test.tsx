@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import PlayersCount from "@/components/players-selection/playersCount";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import PlayersCount from "@/components/players-selection/playersCount";
 
 const handlePlayersCountChange = vi.fn();
 

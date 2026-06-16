@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
-
-import { renderHook } from "@testing-library/react";
 import { createRef } from "react";
-import { afterEach, describe, expect, it, vi } from "vitest";
 
 import useAutoScrollTableBody from "@/hooks/game-table/useAutoScrollTableBody";
+
+import { renderHook } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 describe("useAutoScrollTableBody", () => {
   afterEach(() => {

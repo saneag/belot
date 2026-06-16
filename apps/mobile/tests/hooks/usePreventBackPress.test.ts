@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-
 import { BackHandler } from "react-native";
+
+import { usePreventBackPress } from "@/hooks/usePreventBackPress";
 
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-
-import { usePreventBackPress } from "@/hooks/usePreventBackPress";
 
 describe("usePreventBackPress", () => {
   beforeEach(() => {
