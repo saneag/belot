@@ -5,7 +5,12 @@ import { useGameStore } from "@belot/store";
 
 import { useFeatureToggle } from "./featureToggles/useFeatureToggle";
 
-export const useIsPointsTypeEnabled = () => useFeatureToggle("points-type");
+export const useIsPointsTypeEnabled = () => {
+  const isSettingsScreenEnabled = useFeatureToggle("settings-screen");
+  const isPointsTypeEnabled = useFeatureToggle("points-type");
+
+  return isSettingsScreenEnabled && isPointsTypeEnabled;
+};
 
 export const useEffectivePointsType = () => {
   const isPointsTypeEnabled = useIsPointsTypeEnabled();

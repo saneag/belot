@@ -20,7 +20,7 @@ function ResetButton() {
   const handleReset = useHandlePlayersSelectionResetButton();
 
   return (
-    <Button variant="outline" onClick={handleReset}>
+    <Button variant="outline" onClick={handleReset} data-testid="players-reset-button">
       {resetMsg}
     </Button>
   );
@@ -50,7 +50,7 @@ function SubmitButton() {
       title={messages.playersSubmitDialogTitle}
       content={<DealerSelectDialogContent />}
       renderShowDialog={(showDialog) => (
-        <Button onClick={() => handleOpenDialog(showDialog)}>
+        <Button onClick={() => handleOpenDialog(showDialog)} data-testid="players-submit-button">
           {messages.playersSubmitDialogButton}
         </Button>
       )}

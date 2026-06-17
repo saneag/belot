@@ -30,6 +30,7 @@ export default function PlayersNamesInput({ player }: PlayersNamesInputProps) {
             type="text"
             value={player.name}
             onChange={(e) => handlePlayerNameChange(e.target.value)}
+            data-testid={`players-names-input-${player.id}`}
           />
           <InputGroupAddon
             align="inline-end"
