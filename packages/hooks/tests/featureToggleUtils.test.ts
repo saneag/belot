@@ -70,27 +70,23 @@ describe("featureToggleUtils", () => {
           "settings-screen": true,
           "backend-game-init": false,
         }),
-        FEATURE_TOGGLES,
       ),
     ).toBe(true);
   });
 
-  it("detects when stored values differ from centralized defaults", () => {
+  it("does not trigger sync when stored values differ from centralized defaults", () => {
     expect(
       needsFeatureToggleStorageSync(
         JSON.stringify({
           ...FEATURE_TOGGLES,
           "settings-screen": true,
         }),
-        FEATURE_TOGGLES,
       ),
-    ).toBe(true);
+    ).toBe(false);
   });
 
   it("skips storage sync when all centralized toggles match storage", () => {
-    expect(needsFeatureToggleStorageSync(JSON.stringify(FEATURE_TOGGLES), FEATURE_TOGGLES)).toBe(
-      false,
-    );
+    expect(needsFeatureToggleStorageSync(JSON.stringify(FEATURE_TOGGLES))).toBe(false);
   });
 
   it("syncs centralized toggles to storage", async () => {
@@ -124,11 +120,16 @@ describe("featureToggleUtils", () => {
       setToStorage,
     });
 
+    const expectedState = {
+      ...FEATURE_TOGGLES,
+      "settings-screen": true,
+      "backend-game-init": false,
+    };
     expect(setToStorage).toHaveBeenCalledWith(
       StorageKeys.featureToggles,
-      serializeFeatureToggleState(FEATURE_TOGGLES),
+      serializeFeatureToggleState(expectedState),
     );
-    expect(syncedToggles).toEqual(FEATURE_TOGGLES);
+    expect(syncedToggles).toEqual(expectedState);
   });
 
   it("skips storage write when centralized toggles are already synced", async () => {
