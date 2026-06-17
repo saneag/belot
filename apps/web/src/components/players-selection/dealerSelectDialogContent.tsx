@@ -19,6 +19,7 @@ export default function DealerSelectDialogContent() {
             "w-fit px-4",
           )}
           type="button"
+          data-testid={`dealer-select-dialog-button-${player.id}`}
         >
           {player.name}
         </Button>

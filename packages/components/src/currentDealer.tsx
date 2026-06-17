@@ -37,5 +37,9 @@ export const CurrentDealer = ({
     return <BlockWrapper />;
   }
 
-  return <TextWrapper className={textWrapperClassName}>{truncatedName}</TextWrapper>;
+  return (
+    <TextWrapper className={textWrapperClassName} data-testid="current-dealer">
+      {truncatedName}
+    </TextWrapper>
+  );
 };
