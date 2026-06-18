@@ -31,20 +31,28 @@ export const useHandleSkipRound = ({ setItemsToStorage }: UseHandleSkipRoundProp
     const lastIndex = roundsScoresCount - 1;
     const lastRoundScore = roundsScores[lastIndex];
 
+    const previousCompletedRound = lastIndex > 0 ? roundsScores[lastIndex - 1] : null;
+    const skippedTotalRoundScore = previousCompletedRound
+      ? previousCompletedRound.totalRoundScore
+      : normalizeSkippedRoundScore(lastRoundScore.totalRoundScore, pointsType);
+
     const updatedRoundsScores = [...roundsScores];
 
     updatedRoundsScores[lastIndex] = {
       ...lastRoundScore,
-      totalRoundScore: normalizeSkippedRoundScore(lastRoundScore.totalRoundScore, pointsType),
+      totalRoundScore: skippedTotalRoundScore,
     };
 
-    const newEmptyRow = prepareEmptyRoundScoreRow({
-      players,
-      teams,
-      mode,
-      pointsType,
-      roundsScores: updatedRoundsScores,
-    });
+    const newEmptyRow = {
+      ...prepareEmptyRoundScoreRow({
+        players,
+        teams,
+        mode,
+        pointsType,
+        roundsScores: updatedRoundsScores,
+      }),
+      totalRoundScore: skippedTotalRoundScore,
+    };
 
     const nextRoundsScores = [...updatedRoundsScores, newEmptyRow];
     const { dealer: nextDealer } = setNextDealer({
