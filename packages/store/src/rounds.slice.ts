@@ -71,17 +71,25 @@ export const createRoundSlice: StateCreator<
       const lastRoundScore = state.roundsScores[lastIndex];
       const pointsType = state.pointsType ?? "micropoints";
 
+      const previousCompletedRound = lastIndex > 0 ? state.roundsScores[lastIndex - 1] : null;
+      const skippedTotalRoundScore = previousCompletedRound
+        ? previousCompletedRound.totalRoundScore
+        : normalizeSkippedRoundScore(lastRoundScore.totalRoundScore, pointsType);
+
       const updatedRoundsScores = [...state.roundsScores];
 
       updatedRoundsScores[lastIndex] = {
         ...lastRoundScore,
-        totalRoundScore: normalizeSkippedRoundScore(lastRoundScore.totalRoundScore, pointsType),
+        totalRoundScore: skippedTotalRoundScore,
       };
 
-      const newEmptyRow = prepareEmptyRoundScoreRow({
-        ...state,
-        roundsScores: updatedRoundsScores,
-      });
+      const newEmptyRow = {
+        ...prepareEmptyRoundScoreRow({
+          ...state,
+          roundsScores: updatedRoundsScores,
+        }),
+        totalRoundScore: skippedTotalRoundScore,
+      };
 
       return {
         roundsScores: [...updatedRoundsScores, newEmptyRow],
