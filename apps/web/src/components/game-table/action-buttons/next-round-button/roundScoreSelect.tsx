@@ -42,13 +42,16 @@ export default function RoundScoreSelect({
 
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-center text-xl">{roundScoreMsg}</span>
+      <span className="text-center text-xl" data-testid="round-score-display">
+        {roundScoreMsg}
+      </span>
       <div className="flex flex-wrap items-center justify-center gap-2.5">
         {roundPointsPresets.map((roundPoint) => (
           <Button
             key={roundPoint}
             variant="secondary"
             onClick={() => handleRoundPointsChange(roundPoint)}
+            data-testid={`round-score-select-button-${operationSign}${roundPoint}`}
           >
             {operationSign} {formatRoundPointPresetForDisplay(roundPoint, pointsType)}
           </Button>
