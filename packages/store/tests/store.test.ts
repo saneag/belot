@@ -203,7 +203,7 @@ describe("gameStore", () => {
         expect(store.getState().roundsScores).toEqual([]);
       });
 
-      it("skipRound rounds the last total and appends a new empty row", () => {
+      it("skipRound normalizes the pending row when there is no previous completed round", () => {
         store.getState().setEmptyPlayersNames(3);
         const row0 = baseRoundScore({
           id: 0,
@@ -218,7 +218,34 @@ describe("gameStore", () => {
         store.getState().skipRound();
         expect(store.getState().roundsScores).toHaveLength(2);
         expect(store.getState().roundsScores[0].totalRoundScore).toBe(5);
-        expect(store.getState().roundsScores[1].totalRoundScore).toBe(DEFAULT_ROUND_POINTS);
+        expect(store.getState().roundsScores[1].totalRoundScore).toBe(5);
+      });
+
+      it("skipRound copies totalRoundScore from the previous completed round", () => {
+        store.getState().setEmptyPlayersNames(3);
+        const completedRound = baseRoundScore({
+          id: 0,
+          playersScores: [
+            basePlayerScore({ id: 0, playerId: 0, totalScore: 36 }),
+            basePlayerScore({ id: 1, playerId: 1, totalScore: 10 }),
+            basePlayerScore({ id: 2, playerId: 2, totalScore: 10 }),
+          ],
+          totalRoundScore: 36,
+        });
+        const pendingRound = baseRoundScore({
+          id: 1,
+          playersScores: [
+            basePlayerScore({ id: 0, playerId: 0, totalScore: 36 }),
+            basePlayerScore({ id: 1, playerId: 1, totalScore: 10 }),
+            basePlayerScore({ id: 2, playerId: 2, totalScore: 10 }),
+          ],
+          totalRoundScore: DEFAULT_ROUND_POINTS,
+        });
+        store.getState().setRoundsScores([completedRound, pendingRound]);
+        store.getState().skipRound();
+        expect(store.getState().roundsScores).toHaveLength(3);
+        expect(store.getState().roundsScores[1].totalRoundScore).toBe(36);
+        expect(store.getState().roundsScores[2].totalRoundScore).toBe(36);
       });
 
       it("undoRoundScore delegates to recalculateScoreOnUndo", () => {
