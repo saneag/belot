@@ -27,6 +27,7 @@ export default function TableHeaderWrapper() {
           <TableHead
             key={index}
             className={`${getDealerBackground(index)} ${index !== 0 ? "border-primary border-l" : ""} flex h-full flex-1 items-center justify-center p-0 text-2xl`}
+            data-testid={`game-table-header-player-${playerName}`}
           >
             {playerName}
           </TableHead>

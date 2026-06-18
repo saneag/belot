@@ -24,7 +24,9 @@ export default function RoundPlayerDisplay({
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-1">
-      <span className="text-primary">{roundPlayerMsg}</span>
+      <span className="text-primary" data-testid="round-player-display">
+        {roundPlayerMsg}
+      </span>
       {roundPlayer && (
         <Button variant="link" className="h-fit p-0" onClick={handleRoundPlayerEdit}>
           <Pencil className="text-blue-500" size={12} />
