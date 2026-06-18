@@ -41,3 +41,9 @@ jobs:
 
       - name: Unit tests
         run: pnpm test
+
+      - name: Install Playwright browsers
+        run: pnpm --filter @belot/e2e install-browsers:ci
+
+      - name: E2E tests
+        run: pnpm test:e2e

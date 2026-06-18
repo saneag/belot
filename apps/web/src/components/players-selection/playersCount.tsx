@@ -19,6 +19,7 @@ export default function PlayersCount() {
             variant={playersCount === count ? "default" : "outline"}
             className="px-4"
             onClick={() => handlePlayersCountChange(count)}
+            data-testid={`players-count-button-${count}`}
           >
             {count}
           </Button>

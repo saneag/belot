@@ -31,6 +31,7 @@ export default function RoundPlayerSelect({
             variant="outline"
             className="px-4"
             onClick={() => handleRoundPlayerChange(player)}
+            data-testid={`round-player-select-${player.id}`}
           >
             {player.name}
           </Button>

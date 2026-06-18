@@ -58,17 +58,15 @@ export const parseStoredFeatureToggles = (
   }
 };
 
-export const needsFeatureToggleStorageSync = (
-  storedValue: string | null,
-  centralizedState: FeatureToggleState,
-): boolean => {
+export const needsFeatureToggleStorageSync = (storedValue: string | null): boolean => {
   const storedToggles = parseStoredFeatureToggles(storedValue);
 
   if (!storedToggles) {
     return true;
   }
 
-  return FEATURE_TOGGLE_NAMES.some((name) => storedToggles[name] !== centralizedState[name]);
+  // Only sync when storage is missing a toggle that exists in code (new toggle added)
+  return FEATURE_TOGGLE_NAMES.some((name) => storedToggles[name] === undefined);
 };
 
 export const areFeatureToggleStatesEqual = (
@@ -82,10 +80,14 @@ export const syncFeatureTogglesToStorage = async ({
 }: FeatureToggleStorage): Promise<FeatureToggleState> => {
   const centralizedState = getDefaultFeatureToggleState();
   const storedValue = await getFromStorage(StorageKeys.featureToggles);
+  const storedToggles = parseStoredFeatureToggles(storedValue) ?? {};
 
-  if (needsFeatureToggleStorageSync(storedValue, centralizedState)) {
-    await setToStorage(StorageKeys.featureToggles, serializeFeatureToggleState(centralizedState));
+  // Stored values override code defaults; code defaults fill in any missing toggles
+  const mergedState: FeatureToggleState = { ...centralizedState, ...storedToggles };
+
+  if (needsFeatureToggleStorageSync(storedValue)) {
+    await setToStorage(StorageKeys.featureToggles, serializeFeatureToggleState(mergedState));
   }
 
-  return centralizedState;
+  return mergedState;
 };
