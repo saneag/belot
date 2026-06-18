@@ -94,6 +94,7 @@ export default function PlayerScoreInput({
             const inputElement = e.target;
             inputElement.select();
           }}
+          data-testid={`round-score-player-input-${opponent.id}`}
         />
       </InputGroup>
     </Field>

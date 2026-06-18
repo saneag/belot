@@ -8,7 +8,7 @@
   "next.round.title": "Introdu scorul",
   "next.round.player.select": "Cine a jucat?",
   "next.round.player.display": "{0} a jucat această rundă",
-  "next.round.score": "Scor runda: {0}",
+  "next.round.score": "Scorul rundei: {0}",
   "next.round.score.for.player": "Scor pentru {0}",
   "next.round.button": "Runda următoare",
   "win.dialog.title.player": "Jucător {0} a câștigat",

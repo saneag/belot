@@ -39,11 +39,14 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
           className={`${index !== 0 ? "border-primary border-l" : ""} relative flex flex-1 p-0`}
         >
           <div className="flex size-full items-center justify-center">
-            <span className="text-xl">{getScore(score)}</span>
+            <span className="text-xl" data-testid={`round-score-${score.id}`}>
+              {getScore(score)}
+            </span>
           </div>
           {score.score ? (
             <span
               className={`absolute top-0 right-0.5 text-xs ${getWebCurrentScoreColor(score, pointsType)}`}
+              data-testid={`current-round-score-${score.id}`}
             >
               {getCurrentScore(score, pointsType)}
             </span>
@@ -52,7 +55,7 @@ export default function PointCells({ roundScore, gameMode }: PointCellsProps) {
       ))}
       <TableCell className="border-primary flex flex-1 border-l p-0">
         <div className="flex size-full items-center justify-center p-0">
-          <span className="text-xl font-bold">
+          <span className="text-xl font-bold" data-testid={`total-round-score-${roundScore.id}`}>
             {formatTotalRoundScoreForDisplay(roundScore.totalRoundScore, pointsType)}
           </span>
         </div>
