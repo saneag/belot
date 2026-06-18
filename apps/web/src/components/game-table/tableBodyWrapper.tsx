@@ -33,6 +33,7 @@ export default function TableBodyWrapper({ scrollContainerRef }: TableBodyWrappe
             <TableRow
               key={roundScore.id}
               className={`${index > 0 && index % playersCount === 0 ? "border-t-2!" : ""} border-primary flex flex-row border-b`}
+              data-testid={`game-table-round-${index}`}
             >
               <PointCells roundScore={roundScore} gameMode={gameMode} />
             </TableRow>

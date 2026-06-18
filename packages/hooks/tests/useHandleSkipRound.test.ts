@@ -105,6 +105,7 @@ describe("useHandleSkipRound", () => {
     expect(storedRoundsScores[0].id).toBe(0);
     expect(storedRoundsScores[0].totalRoundScore).toBe(16);
     expect(storedRoundsScores[1].id).toBe(1);
+    expect(storedRoundsScores[1].totalRoundScore).toBe(16);
     expect(storedDealer).toEqual(players[1]);
   });
 

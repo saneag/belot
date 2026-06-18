@@ -8,7 +8,7 @@
   "next.round.title": "Enter score",
   "next.round.player.select": "Who played?",
   "next.round.player.display": "{0} played this round",
-  "next.round.score": "Round score: {0}",
+  "next.round.score": "Round's score: {0}",
   "next.round.score.for.player": "Score for {0}",
   "next.round.button": "Next round",
   "win.dialog.title.player": "Player {0} won",

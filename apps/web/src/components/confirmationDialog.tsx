@@ -62,6 +62,7 @@ export default function ConfirmationDialog({
                 variant={primaryButton === "confirm" ? "default" : "secondary"}
                 onClick={() => void handleDialogConfirmation()}
                 disabled={isConfirmButtonDisabled}
+                data-testid="confirmation-dialog-confirm-button"
               >
                 {messages.confirmationDialogConfirmButton}
               </Button>
@@ -70,6 +71,7 @@ export default function ConfirmationDialog({
               variant={primaryButton === "cancel" ? "default" : "secondary"}
               onClick={() => void handleDialogCancel()}
               className="px-4"
+              data-testid="confirmation-dialog-cancel-button"
             >
               {messages.confirmationDialogCancelButton}
             </Button>
