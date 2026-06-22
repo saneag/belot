@@ -56,6 +56,7 @@ export function useLoadGameData({
   const setDealer = useGameStore((state) => state.setDealer);
   const setRoundsScores = useGameStore((state) => state.setRoundsScores);
   const setPointsType = useGameStore((state) => state.setPointsType);
+  const setMaxScore = useGameStore((state) => state.setMaxScore);
   const isPointsTypeEnabled = useIsPointsTypeEnabled();
   const getFromStorageRef = useRef(getFromStorage);
   const setToStorageRef = useRef(setToStorage);
@@ -79,6 +80,15 @@ export function useLoadGameData({
         const storageDealer = await getFromStorageRef.current(StorageKeys.dealer);
         const storageRoundsScores = await getFromStorageRef.current(StorageKeys.roundsScores);
         const storageSettings = await getFromStorageRef.current(StorageKeys.settings);
+        const storageMaxScore = await getFromStorageRef.current(StorageKeys.maxScore);
+
+        if (storageMaxScore) {
+          const parsedMaxScore = Number(storageMaxScore);
+
+          if (!isNaN(parsedMaxScore) && parsedMaxScore !== useGameStore.getState().maxScore) {
+            setMaxScore(parsedMaxScore);
+          }
+        }
 
         let parsedPointsType = getDefaultPointsType();
 
@@ -145,6 +155,7 @@ export function useLoadGameData({
     players?.length,
     roundsScores?.length,
     setDealer,
+    setMaxScore,
     setPlayers,
     setPointsType,
     setRoundsScores,
