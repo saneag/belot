@@ -43,6 +43,7 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
   const players = useGameStore((state) => state.players);
   const teams = useGameStore((state) => state.teams);
   const gameMode = useGameStore((state) => state.mode);
+  const maxScore = useGameStore((state) => state.maxScore);
   const roundsScores = useGameStore((state) =>
     Array.isArray(state.roundsScores) ? state.roundsScores : [],
   );
@@ -91,6 +92,7 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
         calculatedRoundScore,
         gameOverflowCount,
         setGameOverflowCount,
+        maxScore,
       ),
     );
 
@@ -132,6 +134,7 @@ export const useHandleNextRound = ({ setWinner, setToLocalStorage }: UseHandleNe
     dealer,
     gameMode,
     gameOverflowCount,
+    maxScore,
     players,
     pointsType,
     roundPlayer,
