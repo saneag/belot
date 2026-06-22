@@ -27,6 +27,21 @@ vi.mock("@belot/store", () => ({
 }));
 
 vi.mock("@belot/hooks", () => ({
+  useGameReset: ({
+    navigateFunction,
+    afterNavigate,
+    onComplete,
+  }: {
+    navigateFunction: () => void;
+    afterNavigate?: () => void;
+    onComplete?: () => void;
+  }) => ({
+    handleReset: () => {
+      navigateFunction();
+      afterNavigate?.();
+      onComplete?.();
+    },
+  }),
   useHandleConfirmationDialog: ({
     visible,
     setVisible,
