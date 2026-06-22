@@ -13,3 +13,7 @@ export const setMultipleItemsToStorage = (items: Partial<Record<StorageKeys, str
     }
   });
 };
+
+export const removeItemsFromStorage = (keys: StorageKeys[]): void => {
+  keys.forEach((key) => localStorage.removeItem(key));
+};
