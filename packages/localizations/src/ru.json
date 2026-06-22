@@ -15,6 +15,7 @@
   "win.dialog.title.team": "Команда {0} выиграла",
   "win.dialog.content": "Вы можете сбросить игру или проверить текущие очки. Хотите сбросить игру?",
   "players.count.number.of.players": "Количество игроков",
+  "players.maxScore.label": "Максимальный счёт",
   "players.names.input.label": "Игрок {0}",
   "players.names.input.empty.error": "Пожалуйста, введите имя",
   "players.names.input.duplicated.name.error": "Имя уже используется",
