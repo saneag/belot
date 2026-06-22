@@ -1,15 +1,15 @@
-import { Dispatch, SetStateAction, useCallback } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import { useRouter } from "expo-router";
 
-import { StorageKeys } from "@belot/constants";
+import { useGameReset } from "@belot/hooks";
 import { useLocalization } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import { Player, Team } from "@belot/types";
 
 import { Button, ButtonText } from "@/components/ui/button";
 
-import { removeFromStorage } from "@/helpers/storageHelpers";
+import { removeItemsFromStorage } from "@/helpers/storageHelpers";
 
 interface ResetGameButtonProps {
   setWinner: Dispatch<SetStateAction<Player | Team | null>>;
@@ -22,17 +22,20 @@ export default function ResetGameButton({ setWinner }: ResetGameButtonProps) {
 
   const markForReset = useGameStore((state) => state.markForReset);
 
-  const handleReset = useCallback(() => {
-    removeFromStorage(StorageKeys.dealer);
-    removeFromStorage(StorageKeys.roundsScores);
-    removeFromStorage(StorageKeys.timerStartTime);
-    setWinner(null);
-    markForReset();
-    router.replace("/starting-screen");
-  }, [markForReset, router, setWinner]);
+  const { handleReset } = useGameReset({
+    navigateFunction: () => router.replace("/starting-screen"),
+    removeItemsFromStorage,
+    afterNavigate: markForReset,
+    onComplete: () => setWinner(null),
+  });
 
   return (
-    <Button variant="solid" action="secondary" className="self-center" onPress={handleReset}>
+    <Button
+      variant="solid"
+      action="secondary"
+      className="self-center"
+      onPress={() => void handleReset()}
+    >
       <ButtonText>{resetGameButtonMsg}</ButtonText>
     </Button>
   );
