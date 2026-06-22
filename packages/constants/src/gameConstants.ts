@@ -16,5 +16,6 @@ export const TEAM_MEMBERS_MAP: Record<number, number> = {
 export const BOLT_POINTS = -999;
 export const BOLT_COUNT_LIMIT = 3;
 export const WIN_POINTS = 101;
+export const WIN_SCORE_OPTIONS = [51, 101] as const;
 export const NEXT_WINNING_STEP = 50;
 export const PLAYERS_COUNT = [3, 4];
