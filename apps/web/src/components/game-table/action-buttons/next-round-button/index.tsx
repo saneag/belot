@@ -7,6 +7,8 @@ import { type Player, type Team } from "@belot/types";
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
+import { setToStorage } from "@/helpers/storageHelpers";
+
 import { ArrowRight } from "lucide-react";
 
 import ScoreDialogContent from "./scoreDialogContent";
@@ -20,7 +22,7 @@ export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
 
   const { handleNextRound, handleCancel, handleDialogOpen, ...rest } = useHandleNextRound({
     setWinner,
-    setToLocalStorage: (key, value) => localStorage.setItem(key, value),
+    setToLocalStorage: setToStorage,
   });
 
   return (
