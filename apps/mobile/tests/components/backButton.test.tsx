@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { useRouter } from "expo-router";
 
 import { BackButton } from "@/components/backButton";

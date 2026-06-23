@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import TableHeaderWrapper from "@/components/game-table/tableHeaderWrapper";
 
 import { render, screen } from "@testing-library/react";

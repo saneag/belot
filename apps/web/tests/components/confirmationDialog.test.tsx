@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import ConfirmationDialog from "@/components/confirmationDialog";
 
 import { render, screen } from "@testing-library/react";

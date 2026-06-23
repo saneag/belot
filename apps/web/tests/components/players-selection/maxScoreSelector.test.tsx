@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import MaxScoreSelector from "@/components/players-selection/maxScoreSelector";
 
 import { cleanup, render, screen } from "@testing-library/react";

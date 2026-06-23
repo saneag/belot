@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import useGetPlayersNamesWithScoreColumn from "@/hooks/game-table/useGetPlayersNamesWithScoreColumn";
 
 import { renderHook } from "@testing-library/react";

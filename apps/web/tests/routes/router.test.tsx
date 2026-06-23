@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { Suspense } from "react";
 
 import { RouterProvider } from "react-router-dom";

@@ -8,6 +8,7 @@ export default mergeConfig(
   mergeConfig(viteConfig, shared),
   defineConfig({
     test: {
+      environment: "jsdom",
       name: "@belot/web",
       setupFiles: ["./tests/setup.ts"],
       coverage: {

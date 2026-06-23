@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { Keyboard } from "react-native";
 
 import DismissKeyboardView from "@/components/dismissKeyboardView";

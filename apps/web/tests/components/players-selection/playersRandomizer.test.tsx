@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import PlayersRandomizer from "@/components/players-selection/playersRandomizer";
 
 import { screen } from "@testing-library/react";

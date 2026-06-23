@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { getDeviceLanguage } from "@/helpers/localization";
 
 import { afterEach, describe, expect, it, vi } from "vitest";

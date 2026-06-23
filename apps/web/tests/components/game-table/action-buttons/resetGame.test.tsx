@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { MemoryRouter } from "react-router-dom";
 
 import ResetGameButton from "@/components/game-table/action-buttons/resetGame";

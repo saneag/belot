@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import ExtendedTooltip from "@/components/extendedTooltip";
 
 import { fireEvent, render, screen } from "@testing-library/react";

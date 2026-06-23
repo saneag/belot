@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { THEMES } from "@belot/constants";
 import { useThemeContext } from "@belot/hooks";
 

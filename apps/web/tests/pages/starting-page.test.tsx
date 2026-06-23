@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import StartingPage from "@/pages/starting-page";
 
 import { render, screen } from "@testing-library/react";

@@ -15,6 +15,7 @@ export default mergeConfig(
       jsx: "automatic",
     },
     test: {
+      environment: "jsdom",
       name: "@belot/mobile",
       setupFiles: ["./tests/setup.ts"],
       coverage: {

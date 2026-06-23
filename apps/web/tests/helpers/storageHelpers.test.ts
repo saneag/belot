@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { StorageKeys } from "@belot/constants";
 
 import {
