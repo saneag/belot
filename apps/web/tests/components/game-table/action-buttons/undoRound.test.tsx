@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import UndoRoundButton from "@/components/game-table/action-buttons/undoRound";
 
 import { screen } from "@testing-library/react";

@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { GameMode } from "@belot/types";
 
 import TableBodyWrapper from "@/components/game-table/tableBodyWrapper";

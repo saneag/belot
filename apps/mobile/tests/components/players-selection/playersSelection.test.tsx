@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { PLAYERS_COUNT } from "@belot/constants";
 
 import { fireEvent, render, screen } from "@testing-library/react";

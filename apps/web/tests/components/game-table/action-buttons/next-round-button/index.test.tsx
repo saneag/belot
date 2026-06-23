@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { type Player } from "@belot/types";
 
 import NextRoundButton from "@/components/game-table/action-buttons/next-round-button";
