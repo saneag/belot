@@ -36,5 +36,13 @@
   "settings.points.type": "Points type",
   "settings.points.type.hint": "When using micropoints, the default game is 162 micropoints, while the default game using points is 16 points.",
   "settings.points.type.micropoints": "Micropoints",
-  "settings.points.type.points": "Points"
+  "settings.points.type.points": "Points",
+  "dev.tools.title": "Dev tools",
+  "dev.tools.password.label": "Password",
+  "dev.tools.unlock.button": "Unlock",
+  "dev.tools.try.again.in": "Try again in {0}.",
+  "dev.tools.feature.toggle.label": "{0} feature toggle",
+  "dev.tools.locked.error": "Dev tools are temporarily locked.",
+  "dev.tools.too.many.attempts.error": "Too many incorrect attempts. Try again in 5 minutes.",
+  "dev.tools.incorrect.password.error": "Incorrect password."
 }

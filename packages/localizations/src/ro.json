@@ -36,5 +36,13 @@
   "settings.points.type": "Tipul punctelor",
   "settings.points.type.hint": "Când folosești microbile, jocul implicit este de 162 microbile, în timp ce jocul implicit folosind bile este de 16.",
   "settings.points.type.micropoints": "Microbile",
-  "settings.points.type.points": "Bile"
+  "settings.points.type.points": "Bile",
+  "dev.tools.title": "Instrumente dev",
+  "dev.tools.password.label": "Parolă",
+  "dev.tools.unlock.button": "Deblochează",
+  "dev.tools.try.again.in": "Încearcă din nou peste {0}.",
+  "dev.tools.feature.toggle.label": "Comutator funcționalitate {0}",
+  "dev.tools.locked.error": "Instrumentele dev sunt blocate temporar.",
+  "dev.tools.too.many.attempts.error": "Prea multe încercări incorecte. Încearcă din nou peste 5 minute.",
+  "dev.tools.incorrect.password.error": "Parolă incorectă."
 }

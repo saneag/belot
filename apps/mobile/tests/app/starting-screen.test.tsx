@@ -1,8 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+const mocks = vi.hoisted(() => ({
+  push: vi.fn(),
+}));
 
 vi.mock("expo-router", () => ({
   useNavigation: () => ({ addListener: vi.fn(() => vi.fn()) }),
+  useRouter: () => ({ push: mocks.push }),
 }));
 
 vi.mock("@belot/store", () => ({
@@ -18,6 +23,11 @@ vi.mock("@/hooks/starting-screen/useStartingScreenActions", () => ({
 }));
 
 describe("StartingScreen", () => {
+  afterEach(() => {
+    document.body.innerHTML = "";
+    vi.clearAllMocks();
+  });
+
   it("renders title and action buttons", async () => {
     const { default: StartingScreen } = await import("@/app/starting-screen");
     render(<StartingScreen />);
@@ -25,5 +35,15 @@ describe("StartingScreen", () => {
     expect(screen.getByText("Belot-score")).toBeTruthy();
     expect(screen.getByText("New game")).toBeTruthy();
     expect(screen.getByText("Settings")).toBeTruthy();
+  });
+
+  it("opens dev tools from the hidden brand long press", async () => {
+    const { fireEvent } = await import("@testing-library/react");
+    const { default: StartingScreen } = await import("@/app/starting-screen");
+    render(<StartingScreen />);
+
+    fireEvent.doubleClick(screen.getByText("Belot-score"));
+
+    expect(mocks.push).toHaveBeenCalledWith("/dev-tools");
   });
 });

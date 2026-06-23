@@ -8,6 +8,7 @@ import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/App", () => ({ default: () => null }));
+vi.mock("@/pages/dev-tools", () => ({ default: () => null }));
 vi.mock("@/pages/game-table", () => ({ default: () => null }));
 vi.mock("@/pages/players-selection", () => ({ default: () => null }));
 vi.mock("@/pages/settings", () => ({ default: () => null }));
@@ -19,10 +20,16 @@ describe("router", () => {
 
     const rootRoute = router.routes[0];
     expect(rootRoute?.path).toBe("/");
-    expect(rootRoute?.children).toHaveLength(4);
+    expect(rootRoute?.children).toHaveLength(5);
 
     const paths = rootRoute?.children?.map((route) => route.path ?? "index");
-    expect(paths).toEqual(["index", "/players-selection", "/game-table", "/settings"]);
+    expect(paths).toEqual([
+      "index",
+      "/players-selection",
+      "/game-table",
+      "/settings",
+      "/dev-tools",
+    ]);
   });
 
   it("creates a browser router instance", () => {

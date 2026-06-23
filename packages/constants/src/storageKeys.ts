@@ -7,4 +7,6 @@ export enum StorageKeys {
   settings = "settings",
   featureToggles = "featureToggles",
   maxScore = "maxScore",
+  devToolsFailedAttempts = "devToolsFailedAttempts",
+  devToolsBlockedAt = "devToolsBlockedAt",
 }
