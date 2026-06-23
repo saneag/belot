@@ -15,6 +15,7 @@
   "win.dialog.title.team": "Echipa {0} a câștigat",
   "win.dialog.content": "Poți reseta jocul sau verifica punctele actuale. Vrei să resetezi jocul?",
   "players.count.number.of.players": "Număr de jucători",
+  "players.maxScore.label": "Scor maxim",
   "players.names.input.label": "Jucătorul {0}",
   "players.names.input.empty.error": "Te rugăm să introduci un nume",
   "players.names.input.duplicated.name.error": "Nume duplicat",

@@ -27,3 +27,7 @@ export const convertToObject = <T>(value: string): T => {
 export const removeFromStorage = async (key: StorageKeys): Promise<void> => {
   await AsyncStorage.removeItem(key);
 };
+
+export const removeItemsFromStorage = async (keys: StorageKeys[]): Promise<void> => {
+  await AsyncStorage.multiRemove(keys);
+};

@@ -29,10 +29,25 @@ vi.mock("@belot/store", () => ({
 }));
 
 vi.mock("@/helpers/storageHelpers", () => ({
-  removeFromStorage: vi.fn(),
+  removeItemsFromStorage: vi.fn(),
 }));
 
 vi.mock("@belot/hooks", () => ({
+  useGameReset: ({
+    navigateFunction,
+    afterNavigate,
+    onComplete,
+  }: {
+    navigateFunction: () => void;
+    afterNavigate?: () => void;
+    onComplete?: () => void;
+  }) => ({
+    handleReset: () => {
+      navigateFunction();
+      afterNavigate?.();
+      onComplete?.();
+    },
+  }),
   useHandleConfirmationDialog: ({
     visible,
     setVisible,

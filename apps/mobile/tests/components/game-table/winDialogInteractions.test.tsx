@@ -28,6 +28,7 @@ vi.mock("@belot/store", () => ({
 }));
 
 vi.mock("@belot/hooks", () => ({
+  useGameReset: () => ({ handleReset: vi.fn() }),
   useHandleConfirmationDialog: ({
     visible,
     setVisible,

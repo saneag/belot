@@ -70,12 +70,12 @@ const checkForPlayerWinner = (
   calculatedRoundScore: RoundScore,
   gameOverflowCount: number,
   setGameOverflowCount: (value: number | ((prev: number) => number)) => void,
+  maxScore: number,
 ) => {
-  const winPoints = getWinPoints();
   const nextWinningStep = getNextWinningStep();
 
   const winner = calculatedRoundScore.playersScores.filter(
-    (playerScore) => playerScore.totalScore >= winPoints + gameOverflowCount * nextWinningStep,
+    (playerScore) => playerScore.totalScore >= maxScore + gameOverflowCount * nextWinningStep,
   );
 
   if (winner.length > 1) {
@@ -91,12 +91,12 @@ const checkForTeamWinner = (
   calculatedRoundScore: RoundScore,
   gameOverflowCount: number,
   setGameOverflowCount: (value: number | ((prev: number) => number)) => void,
+  maxScore: number,
 ) => {
-  const winPoints = getWinPoints();
   const nextWinningStep = getNextWinningStep();
 
   const winner = calculatedRoundScore.teamsScores.filter(
-    (teamScore) => teamScore.totalScore >= winPoints + gameOverflowCount * nextWinningStep,
+    (teamScore) => teamScore.totalScore >= maxScore + gameOverflowCount * nextWinningStep,
   );
 
   if (winner.length > 1) {
@@ -114,8 +114,21 @@ export const checkForGameWinner = (
   calculatedRoundScore: RoundScore,
   gameOverflowCount: number,
   setGameOverflowCount: (value: number | ((prev: number) => number)) => void,
+  maxScore: number = getWinPoints(),
 ) => {
   return gameMode === GameMode.classic
-    ? checkForPlayerWinner(players, calculatedRoundScore, gameOverflowCount, setGameOverflowCount)
-    : checkForTeamWinner(teams, calculatedRoundScore, gameOverflowCount, setGameOverflowCount);
+    ? checkForPlayerWinner(
+        players,
+        calculatedRoundScore,
+        gameOverflowCount,
+        setGameOverflowCount,
+        maxScore,
+      )
+    : checkForTeamWinner(
+        teams,
+        calculatedRoundScore,
+        gameOverflowCount,
+        setGameOverflowCount,
+        maxScore,
+      );
 };
