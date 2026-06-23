@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { type BlockerFunction, NavigationType } from "react-router-dom";
 
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";

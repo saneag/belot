@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { GameMode } from "@belot/types";
 
 import PlayerScoreInput from "@/components/game-table/action-buttons/next-round-button/playerScoreInput";

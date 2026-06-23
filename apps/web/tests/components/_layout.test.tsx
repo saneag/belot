@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { Layout } from "@/components/_layout";
 
 import { render } from "@testing-library/react";

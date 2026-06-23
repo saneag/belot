@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import SettingsPage from "@/pages/settings";
 
 import { cleanup, render, screen } from "@testing-library/react";

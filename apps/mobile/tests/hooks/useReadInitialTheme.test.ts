@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { useColorScheme } from "react-native";
 
 import { StorageKeys, THEMES } from "@belot/constants";

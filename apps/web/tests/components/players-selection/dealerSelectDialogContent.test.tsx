@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import DealerSelectDialogContent from "@/components/players-selection/dealerSelectDialogContent";
 
 import { render, screen } from "@testing-library/react";

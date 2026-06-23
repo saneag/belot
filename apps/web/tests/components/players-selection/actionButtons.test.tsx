@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import ActionButtons from "@/components/players-selection/actionButtons";
 
 import { cleanup, render, screen } from "@testing-library/react";
