@@ -4,7 +4,7 @@ import { isKnownFeatureToggle, logUnknownFeatureToggle } from "./featureToggleUt
 import { FeatureToggleContext } from "./toggleContext";
 
 export const useFeatureToggle = (name: string): boolean => {
-  const toggles = useContext(FeatureToggleContext);
+  const { toggles } = useContext(FeatureToggleContext);
 
   if (!isKnownFeatureToggle(name)) {
     logUnknownFeatureToggle(name);
@@ -13,3 +13,5 @@ export const useFeatureToggle = (name: string): boolean => {
 
   return toggles[name] ?? false;
 };
+
+export const useFeatureToggles = () => useContext(FeatureToggleContext);

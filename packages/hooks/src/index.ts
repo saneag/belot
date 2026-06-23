@@ -22,4 +22,6 @@ export * from "./useSettings";
 export * from "./usePointsTypeFeature";
 export * from "./usePointsTypeSelection";
 export * from "./useMaxScoreSelection";
+export * from "./useDevTools";
+export * from "./useDevToolsAuth";
 export * from "./featureToggles";

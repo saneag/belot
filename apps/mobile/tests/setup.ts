@@ -68,16 +68,17 @@ function omitUiProps(props: Record<string, unknown>) {
 
 const createElement = (
   tag: string,
-  { children, onPress, onChangeText, ...props }: Record<string, unknown> = {},
+  { children, onPress, onLongPress, onChangeText, ...props }: Record<string, unknown> = {},
 ) => {
   const domProps = omitUiProps(props);
 
-  if (onPress || domProps.onClick) {
+  if (onPress || onLongPress || domProps.onClick) {
     return React.createElement(
       "button",
       {
         type: "button",
         onClick: onPress ?? domProps.onClick,
+        onDoubleClick: onLongPress,
         ...domProps,
       },
       children as React.ReactNode,
@@ -93,6 +94,22 @@ const createElement = (
 
   return React.createElement(tag, domProps, children as React.ReactNode);
 };
+
+interface MockScrollViewHandle {
+  scrollToEnd: ReturnType<typeof vi.fn>;
+  scrollTo: ReturnType<typeof vi.fn>;
+}
+
+const MockScrollView = React.forwardRef<MockScrollViewHandle, Record<string, unknown>>(
+  function MockScrollView(props, ref) {
+    React.useImperativeHandle(ref, () => ({
+      scrollToEnd: vi.fn(),
+      scrollTo: vi.fn(),
+    }));
+
+    return React.createElement("div", omitUiProps(props));
+  },
+);
 
 vi.mock("react-native", () => {
   const listeners: Record<string, ((e?: unknown) => void)[]> = {};
@@ -111,13 +128,7 @@ vi.mock("react-native", () => {
     View: (props: Record<string, unknown>) => createElement("div", props),
     Text: (props: Record<string, unknown>) => createElement("span", props),
     Image: (props: Record<string, unknown>) => createElement("img", props),
-    ScrollView: React.forwardRef((props: Record<string, unknown>, ref) => {
-      React.useImperativeHandle(ref, () => ({
-        scrollToEnd: vi.fn(),
-        scrollTo: vi.fn(),
-      }));
-      return React.createElement("div", { ref, ...omitUiProps(props) });
-    }),
+    ScrollView: MockScrollView,
     TouchableWithoutFeedback: ({ onPress, ...props }: Record<string, unknown>) =>
       createElement("div", { onPress, ...props }),
     Keyboard: {
@@ -156,6 +167,19 @@ vi.mock("react-native", () => {
     },
     ActivityIndicator: (props: Record<string, unknown>) => createElement("div", props),
     Pressable: (props: Record<string, unknown>) => createElement("button", props),
+    Switch: ({ value, onValueChange, accessibilityLabel, ...props }: Record<string, unknown>) =>
+      React.createElement("input", {
+        type: "checkbox",
+        role: "switch",
+        checked: Boolean(value),
+        "aria-label": accessibilityLabel,
+        onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+          if (typeof onValueChange === "function") {
+            onValueChange(event.target.checked);
+          }
+        },
+        ...omitUiProps(props),
+      }),
     StyleSheet: { create: (styles: unknown) => styles },
   };
 });
@@ -216,11 +240,17 @@ const mockUi = (name: string) => {
   return Component;
 };
 
-const buttonMock = ({ children, onPress, disabled, ...props }: Record<string, unknown>) =>
+const buttonMock = ({
+  children,
+  onPress,
+  disabled,
+  isDisabled,
+  ...props
+}: Record<string, unknown>) =>
   createElement("button", {
     type: "button",
-    onClick: disabled ? undefined : onPress,
-    disabled,
+    onClick: disabled || isDisabled ? undefined : onPress,
+    disabled: Boolean(disabled || isDisabled),
     ...omitUiProps(props),
     children,
   });
