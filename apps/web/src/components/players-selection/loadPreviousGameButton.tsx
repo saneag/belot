@@ -5,13 +5,13 @@ import { useLocalization } from "@belot/localizations";
 
 import { Button } from "@/components/ui/button";
 
+import { getFromStorage } from "@/helpers/storageHelpers";
+
 export default function LoadPreviousGameButton() {
   const buttonMsg = useLocalization("load.previous.game.button");
 
   const { storagePlayers, fetchPreviousPlayers, loadPlayersNamesFromStorage } =
-    useLoadPreviousPlayers({
-      getFromStorage: (key) => localStorage.getItem(key),
-    });
+    useLoadPreviousPlayers({ getFromStorage });
 
   useLayoutEffect(() => {
     void fetchPreviousPlayers();

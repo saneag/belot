@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useLoadGameData, useStartingScreenActionsHelper } from "@belot/hooks";
 
-import { getFromStorage, setToStorage } from "@/helpers/storageHelpers";
+import { getFromStorage, removeFromStorage, setToStorage } from "@/helpers/storageHelpers";
 
 interface StartingScreenAction {
   index: number;
@@ -22,7 +22,7 @@ export const useStartingScreenActions = (): StartingScreenAction[] => {
 
   const startingScreenActions = useStartingScreenActionsHelper({
     ...gameData,
-    removeFromStorage: (key) => localStorage.removeItem(key),
+    removeFromStorage,
     navigate: (path: string) => {
       switch (path) {
         case "game-table":
