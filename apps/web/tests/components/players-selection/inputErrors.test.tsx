@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { EmptyNameError, RepeatingNamesError } from "@/components/players-selection/inputErrors";
 
 import { render, screen } from "@testing-library/react";

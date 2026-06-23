@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-import { Image, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 
 import { useGameStore } from "@belot/store";
 
@@ -14,6 +14,7 @@ import { useStartingScreenActions } from "@/hooks/starting-screen/useStartingScr
 
 export default function StartingScreen() {
   const navigation = useNavigation();
+  const router = useRouter();
   const pendingReset = useGameStore((state) => state.pendingReset);
   const reset = useGameStore((state) => state.reset);
 
@@ -29,15 +30,21 @@ export default function StartingScreen() {
 
   return (
     <View className="flex-1 items-center justify-center">
-      <VStack className="absolute top-10 items-center justify-center gap-3">
-        <Image
-          source={require("../assets/images/ic_launcher_no_bg.png")}
-          style={{ width: 100, height: 100 }}
-        />
-        <Heading size="4xl" className="text-center font-normal">
-          Belot-score
-        </Heading>
-      </VStack>
+      <Pressable
+        className="absolute top-10"
+        onLongPress={() => void router.push("/dev-tools")}
+        delayLongPress={1200}
+      >
+        <VStack className="items-center justify-center gap-3">
+          <Image
+            source={require("../assets/images/ic_launcher_no_bg.png")}
+            style={{ width: 100, height: 100 }}
+          />
+          <Heading size="4xl" className="text-center font-normal">
+            Belot-score
+          </Heading>
+        </VStack>
+      </Pressable>
       <VStack className="gap-3">
         {actions.map((action) => (
           <Button key={action.index} onPress={action.onPress} action="primary" variant="solid">

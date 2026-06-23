@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { useState } from "react";
 
 import { type Player, type RoundScore } from "@belot/types";

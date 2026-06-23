@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import RoundPlayerSelect from "@/components/game-table/action-buttons/next-round-button/roundPlayerSelect";
 
 import { render, screen } from "@testing-library/react";

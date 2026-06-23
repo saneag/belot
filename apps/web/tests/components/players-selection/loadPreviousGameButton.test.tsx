@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import LoadPreviousGameButton from "@/components/players-selection/loadPreviousGameButton";
 
 import { render, screen } from "@testing-library/react";

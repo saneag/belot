@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { StorageKeys, THEMES } from "@belot/constants";
 
 import { readInitialTheme } from "@/helpers/themeHelpers";

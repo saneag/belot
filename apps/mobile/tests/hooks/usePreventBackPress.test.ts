@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { BackHandler } from "react-native";
 
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";

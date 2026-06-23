@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { MemoryRouter } from "react-router-dom";
 
 import { BackButton } from "@/components/backButton";

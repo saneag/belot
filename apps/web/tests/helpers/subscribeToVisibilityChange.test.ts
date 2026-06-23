@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { subscribeToVisibilityChange } from "@/helpers/subscribeToVisibilityChange";
 
 import { describe, expect, it, vi } from "vitest";

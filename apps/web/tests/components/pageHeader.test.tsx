@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { PageHeader } from "@/components/pageHeader";
 
 import { render, screen } from "@testing-library/react";

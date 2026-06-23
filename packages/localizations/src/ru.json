@@ -36,5 +36,13 @@
   "settings.points.type": "Тип очков",
   "settings.points.type.hint": "При использовании микроочков, стандартная игра - 162 микроочков, в то время как при использовании очков, стандартная игра - 16 очков.",
   "settings.points.type.micropoints": "Микроочки",
-  "settings.points.type.points": "Очки"
+  "settings.points.type.points": "Очки",
+  "dev.tools.title": "Инструменты разработчика",
+  "dev.tools.password.label": "Пароль",
+  "dev.tools.unlock.button": "Разблокировать",
+  "dev.tools.try.again.in": "Попробуйте снова через {0}.",
+  "dev.tools.feature.toggle.label": "Переключатель функции {0}",
+  "dev.tools.locked.error": "Инструменты разработчика временно заблокированы.",
+  "dev.tools.too.many.attempts.error": "Слишком много неверных попыток. Попробуйте снова через 5 минут.",
+  "dev.tools.incorrect.password.error": "Неверный пароль."
 }

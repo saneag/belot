@@ -10,7 +10,11 @@ import { useLocalizations } from "@belot/localizations";
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
-import { removeItemsFromStorage, setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import {
+  getFromStorage,
+  removeItemsFromStorage,
+  setMultipleItemsToStorage,
+} from "@/helpers/storageHelpers";
 import { subscribeToVisibilityChange } from "@/helpers/subscribeToVisibilityChange";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
 
@@ -72,7 +76,7 @@ export default function Header() {
       <TimeTracker
         textWrapper="span"
         textWrapperClassName="justify-self-end"
-        getItemFromStorage={(key) => localStorage.getItem(key)}
+        getItemFromStorage={getFromStorage}
         setItemsToStorage={setMultipleItemsToStorage}
         isVisible={() => document.visibilityState === "visible"}
         subscribeToVisibilityChange={subscribeToVisibilityChange}
