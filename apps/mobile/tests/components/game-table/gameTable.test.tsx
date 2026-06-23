@@ -1,13 +1,12 @@
 // @vitest-environment jsdom
-
 import { GameMode, type RoundScore } from "@belot/types";
-
-import { fireEvent, render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import GameTable from "@/components/game-table";
 import TableBodyWrapper from "@/components/game-table/tableBodyWrapper";
 import TableHeaderWrapper from "@/components/game-table/tableHeaderWrapper";
+
+import { fireEvent, render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   roundsScores: [
@@ -47,7 +46,9 @@ vi.mock("@belot/localizations", () => ({
 }));
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: typeof mocks & { mode: GameMode; reset: () => void }) => unknown) =>
+  useGameStore: (
+    selector: (state: typeof mocks & { mode: GameMode; reset: () => void }) => unknown,
+  ) =>
     selector({
       ...mocks,
       mode: GameMode.classic,
@@ -56,13 +57,20 @@ vi.mock("@belot/store", () => ({
 }));
 
 vi.mock("@belot/hooks", () => ({
+  useGameReset: () => ({ handleReset: vi.fn() }),
   useHandleSkipRound: () => vi.fn(),
   useHandleNextRound: () => ({
     handleNextRound: vi.fn(),
     handleCancel: vi.fn(),
     handleDialogOpen: vi.fn(),
     roundPlayer: null,
-    roundScore: { id: 0, playersScores: [], teamsScores: [], totalRoundScore: 0, roundPlayer: null },
+    roundScore: {
+      id: 0,
+      playersScores: [],
+      teamsScores: [],
+      totalRoundScore: 0,
+      roundPlayer: null,
+    },
     setRoundPlayer: vi.fn(),
     setRoundScore: vi.fn(),
   }),
@@ -78,7 +86,10 @@ vi.mock("@belot/hooks", () => ({
     cancelCallback?: () => void;
   }) => ({
     isVisible: visible ?? false,
-    messages: { confirmationDialogConfirmButton: "Confirm", confirmationDialogCancelButton: "Cancel" },
+    messages: {
+      confirmationDialogConfirmButton: "Confirm",
+      confirmationDialogCancelButton: "Cancel",
+    },
     showDialog: (cb?: () => void) => {
       cb?.();
       setVisible?.(true);
@@ -96,6 +107,7 @@ vi.mock("@belot/hooks", () => ({
   useGetTableHeaderDealerBackground: () => ({
     getDealerBackground: () => "",
   }),
+  useEffectivePointsType: () => "micropoints",
 }));
 
 vi.mock("@/hooks/game-table/useGetPlayersNamesWithScoreColumn", () => ({
@@ -129,9 +141,8 @@ describe("GameTable components", () => {
       roundPlayer: null,
     });
 
-    const { default: UndoRoundButton } = await import(
-      "@/components/game-table/action-buttons/undoRound"
-    );
+    const { default: UndoRoundButton } =
+      await import("@/components/game-table/action-buttons/undoRound");
     render(<UndoRoundButton />);
     fireEvent.click(screen.getAllByRole("button")[0]);
     expect(mocks.undoRoundScore).toHaveBeenCalled();
@@ -149,9 +160,8 @@ describe("GameTable components", () => {
     ];
 
     vi.resetModules();
-    const { default: RedoRoundButton } = await import(
-      "@/components/game-table/action-buttons/redoRound"
-    );
+    const { default: RedoRoundButton } =
+      await import("@/components/game-table/action-buttons/redoRound");
     render(<RedoRoundButton />);
     fireEvent.click(screen.getAllByRole("button").at(-1)!);
     expect(mocks.redoRoundScore).toHaveBeenCalled();

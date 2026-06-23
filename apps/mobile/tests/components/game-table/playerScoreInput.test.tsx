@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-
 import { GameMode } from "@belot/types";
+
+import PlayerScoreInput from "@/components/game-table/action-buttons/next-round-button/playerScoreInput";
 
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import PlayerScoreInput from "@/components/game-table/action-buttons/next-round-button/playerScoreInput";
 
 vi.mock("@belot/localizations", () => ({
   useLocalizations: () => ({ nextRoundScoreForPlayer: "Score for {0}" }),
@@ -34,6 +33,7 @@ describe("PlayerScoreInput", () => {
         ]}
         teams={[]}
         roundPlayer={{ id: 0, name: "Alice" }}
+        pointsType="micropoints"
       />,
     );
 
@@ -63,6 +63,7 @@ describe("PlayerScoreInput", () => {
         ]}
         teams={[]}
         roundPlayer={{ id: 0, name: "Alice" }}
+        pointsType="micropoints"
       />,
     );
 

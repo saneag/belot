@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
-
 import { useState } from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
 
 import { type RoundScore } from "@belot/types";
 
 import RoundScoreSelect from "@/components/game-table/action-buttons/next-round-button/roundScoreSelect";
+
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@belot/localizations", () => ({
   useLocalization: (_key: string, args?: unknown[]) => {
@@ -24,7 +24,13 @@ function RoundScoreSelectHarness() {
     totalRoundScore: 0,
   });
 
-  return <RoundScoreSelect roundScore={roundScore} setRoundScore={setRoundScore} />;
+  return (
+    <RoundScoreSelect
+      roundScore={roundScore}
+      setRoundScore={setRoundScore}
+      pointsType="micropoints"
+    />
+  );
 }
 
 describe("RoundScoreSelect", () => {

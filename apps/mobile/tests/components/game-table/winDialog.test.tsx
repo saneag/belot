@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { GameMode } from "@belot/types";
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
@@ -7,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   replace: vi.fn(),
-  reset: vi.fn(),
+  markForReset: vi.fn(),
   winner: { id: 0, name: "Alice" },
 }));
 
@@ -25,15 +24,30 @@ vi.mock("@belot/localizations", () => ({
 }));
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: { mode: GameMode; reset: () => void }) => unknown) =>
-    selector({ mode: GameMode.classic, reset: mocks.reset }),
+  useGameStore: (selector: (state: { mode: GameMode; markForReset: () => void }) => unknown) =>
+    selector({ mode: GameMode.classic, markForReset: mocks.markForReset }),
 }));
 
 vi.mock("@/helpers/storageHelpers", () => ({
-  removeFromStorage: vi.fn(),
+  removeItemsFromStorage: vi.fn(),
 }));
 
 vi.mock("@belot/hooks", () => ({
+  useGameReset: ({
+    navigateFunction,
+    afterNavigate,
+    onComplete,
+  }: {
+    navigateFunction: () => void;
+    afterNavigate?: () => void;
+    onComplete?: () => void;
+  }) => ({
+    handleReset: () => {
+      navigateFunction();
+      afterNavigate?.();
+      onComplete?.();
+    },
+  }),
   useHandleConfirmationDialog: ({
     visible,
     setVisible,
@@ -85,15 +99,14 @@ describe("WinDialog", () => {
 describe("ResetGameButton", () => {
   it("resets game and navigates home", async () => {
     const setWinner = vi.fn();
-    const { default: ResetGameButton } = await import(
-      "@/components/game-table/action-buttons/resetGame"
-    );
+    const { default: ResetGameButton } =
+      await import("@/components/game-table/action-buttons/resetGame");
 
     render(<ResetGameButton setWinner={setWinner} />);
     fireEvent.click(screen.getByRole("button", { name: "Reset game" }));
 
-    expect(mocks.reset).toHaveBeenCalled();
     expect(setWinner).toHaveBeenCalledWith(null);
+    expect(mocks.markForReset).toHaveBeenCalled();
     expect(mocks.replace).toHaveBeenCalledWith("/starting-screen");
   });
 });

@@ -43,12 +43,25 @@ export const useSettings = ({ getFromStorage, setToStorage }: UseSettings) => {
     }
 
     const parsedSettings = JSON.parse(settingsFromStorage) as Settings;
+
+    if (settingsRef.current.pointsType === parsedSettings.pointsType) {
+      return;
+    }
+
     settingsRef.current = parsedSettings;
     setSettings(parsedSettings);
   }, [getFromStorage]);
 
   const setSettingsToLocalStorage = useCallback(
     async (newSettings: Partial<Settings>) => {
+      const hasChanges = Object.entries(newSettings).some(
+        ([key, value]) => settingsRef.current[key as keyof Settings] !== value,
+      );
+
+      if (!hasChanges) {
+        return;
+      }
+
       storageRequestIdRef.current += 1;
       const updatedSettings = {
         ...settingsRef.current,

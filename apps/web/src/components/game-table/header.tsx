@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import { CurrentDealer } from "@belot/components";
@@ -9,7 +10,7 @@ import { useLocalizations } from "@belot/localizations";
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
-import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import { removeItemsFromStorage, setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 import { subscribeToVisibilityChange } from "@/helpers/subscribeToVisibilityChange";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
 
@@ -35,7 +36,7 @@ export default function Header() {
       void navigate("/", {
         replace: true,
       }),
-    setItemsToStorage: setMultipleItemsToStorage,
+    removeItemsFromStorage,
   });
 
   const blocker = usePreventBackPress(() => {

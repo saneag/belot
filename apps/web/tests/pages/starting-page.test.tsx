@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import StartingPage from "@/pages/starting-page";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import StartingPage from "@/pages/starting-page";
 
 vi.mock("@/hooks/starting-screen/useStartingScreenActions", () => ({
   useStartingScreenActions: () => [

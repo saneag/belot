@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import { CurrentDealer, TimeTracker } from "@belot/components";
 import { useHandleGameReset } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
+import { useGameStore } from "@belot/store";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
@@ -14,12 +15,18 @@ import { HStack } from "@/components/ui/hstack";
 import { ArrowLeftIcon, Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 
-import { getFromStorage, setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import {
+  getFromStorage,
+  removeItemsFromStorage,
+  setMultipleItemsToStorage,
+} from "@/helpers/storageHelpers";
 import { subscribeToVisibilityChange } from "@/helpers/subscribeToVisibilityChange";
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
 
 export default function Header() {
   const router = useRouter();
+
+  const markForReset = useGameStore((state) => state.markForReset);
 
   const messages = useLocalizations([
     {
@@ -35,7 +42,8 @@ export default function Header() {
 
   const { showDialog, setShowDialog, handleReset } = useHandleGameReset({
     navigateFunction: () => router.replace("/starting-screen"),
-    setItemsToStorage: setMultipleItemsToStorage,
+    removeItemsFromStorage,
+    afterNavigate: markForReset,
   });
 
   usePreventBackPress(() => {

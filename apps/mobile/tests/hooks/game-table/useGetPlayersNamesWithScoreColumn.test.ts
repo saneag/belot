@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -42,9 +41,8 @@ describe("useGetPlayersNamesWithScoreColumn", () => {
   });
 
   it("returns player names with score column in classic mode", async () => {
-    const { default: useGetPlayersNamesWithScoreColumn } = await import(
-      "@/hooks/game-table/useGetPlayersNamesWithScoreColumn"
-    );
+    const { default: useGetPlayersNamesWithScoreColumn } =
+      await import("@/hooks/game-table/useGetPlayersNamesWithScoreColumn");
 
     const { result } = renderHook(() => useGetPlayersNamesWithScoreColumn());
 
@@ -55,9 +53,8 @@ describe("useGetPlayersNamesWithScoreColumn", () => {
   it("returns team names in teams mode", async () => {
     mocks.mode = "teams";
 
-    const { default: useGetPlayersNamesWithScoreColumn } = await import(
-      "@/hooks/game-table/useGetPlayersNamesWithScoreColumn"
-    );
+    const { default: useGetPlayersNamesWithScoreColumn } =
+      await import("@/hooks/game-table/useGetPlayersNamesWithScoreColumn");
 
     const { result } = renderHook(() => useGetPlayersNamesWithScoreColumn());
 

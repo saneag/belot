@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+
 import { Image, View } from "react-native";
+
+import { useNavigation } from "expo-router";
+
+import { useGameStore } from "@belot/store";
 
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
@@ -7,6 +13,18 @@ import { VStack } from "@/components/ui/vstack";
 import { useStartingScreenActions } from "@/hooks/starting-screen/useStartingScreenActions";
 
 export default function StartingScreen() {
+  const navigation = useNavigation();
+  const pendingReset = useGameStore((state) => state.pendingReset);
+  const reset = useGameStore((state) => state.reset);
+
+  useEffect(() => {
+    return navigation.addListener("transitionEnd" as never, () => {
+      if (pendingReset) {
+        reset();
+      }
+    });
+  }, [navigation, pendingReset, reset]);
+
   const actions = useStartingScreenActions();
 
   return (

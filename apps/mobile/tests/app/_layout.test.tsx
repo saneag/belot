@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { THEMES } from "@belot/constants";
 
 import { render, screen } from "@testing-library/react";
@@ -14,7 +13,8 @@ vi.mock("@/helpers/localization", () => ({
 }));
 
 vi.mock("@/components/navigation", () => ({
-  default: () => <div>Navigation</div>,
+  JsStack: () => <div>Js Stack</div>,
+  stackScreenOptions: {},
 }));
 
 vi.mock("@belot/components", () => ({
@@ -22,14 +22,16 @@ vi.mock("@belot/components", () => ({
 }));
 
 vi.mock("@belot/localizations", () => ({
-  LocalizationContextProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  LocalizationContextProvider: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 describe("RootLayout", () => {
-  it("renders navigation inside providers", async () => {
+  it("renders js stack inside providers", async () => {
     const { default: RootLayout } = await import("@/app/_layout");
     render(<RootLayout />);
 
-    expect(screen.getByText("Navigation")).toBeTruthy();
+    expect(screen.getByText("Js Stack")).toBeTruthy();
   });
 });

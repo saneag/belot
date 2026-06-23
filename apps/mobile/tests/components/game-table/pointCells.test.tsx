@@ -1,11 +1,10 @@
 // @vitest-environment jsdom
-
 import { GameMode, type RoundScore } from "@belot/types";
+
+import PointCells from "@/components/game-table/pointCells";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-
-import PointCells from "@/components/game-table/pointCells";
 
 const roundScore: RoundScore = {
   id: 0,

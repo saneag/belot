@@ -2,12 +2,14 @@ import { type Dispatch, type SetStateAction, useCallback, useEffect, useState } 
 
 import { useNavigate } from "react-router-dom";
 
-import { StorageKeys } from "@belot/constants";
+import { useGameReset } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import { GameMode, type Player, type Team } from "@belot/types";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
+
+import { removeItemsFromStorage } from "@/helpers/storageHelpers";
 
 interface WinDialogProps {
   winner: Player | Team | null;
@@ -26,17 +28,12 @@ export default function WinDialog({ winner, setWinner }: WinDialogProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   const gameMode = useGameStore((state) => state.mode);
-  const reset = useGameStore((state) => state.reset);
 
-  const handleGameReset = useCallback(() => {
-    reset();
-    setWinner(null);
-    localStorage.removeItem(StorageKeys.dealer);
-    localStorage.removeItem(StorageKeys.roundsScores);
-    localStorage.removeItem(StorageKeys.timerStartTime);
-    localStorage.removeItem(StorageKeys.roundsScores);
-    void navigate("/");
-  }, [reset, navigate, setWinner]);
+  const { handleReset: handleGameReset } = useGameReset({
+    navigateFunction: () => void navigate("/"),
+    removeItemsFromStorage,
+    onComplete: () => setWinner(null),
+  });
 
   const handleClose = useCallback(() => {
     setIsVisible(false);

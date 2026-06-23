@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
-
 import { useState } from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
 
 import { GameMode, type RoundScore, type Team } from "@belot/types";
 
 import PlayerScoreInput from "@/components/game-table/action-buttons/next-round-button/playerScoreInput";
+
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@belot/localizations", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@belot/localizations")>();
@@ -38,6 +38,7 @@ describe("PlayerScoreInput", () => {
           ]}
           teams={[]}
           roundPlayer={{ id: 0, name: "Alice" }}
+          pointsType="micropoints"
         />
       );
     }
@@ -71,6 +72,7 @@ describe("PlayerScoreInput", () => {
           players={[]}
           teams={[{ id: 1, name: "Team B", playersIds: [0, 1] }] as Team[]}
           roundPlayer={{ id: 0, name: "Alice" }}
+          pointsType="micropoints"
         />
       );
     }

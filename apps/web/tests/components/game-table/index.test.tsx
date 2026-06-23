@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import GameTable from "@/components/game-table";
 
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-
-import GameTable from "@/components/game-table";
 
 const mobileMocks = vi.hoisted(() => ({
   isMobile: false,

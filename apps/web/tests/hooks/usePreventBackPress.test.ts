@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
-
-import { renderHook } from "@testing-library/react";
 import { type BlockerFunction, NavigationType } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
 
 import { usePreventBackPress } from "@/hooks/usePreventBackPress";
+
+import { renderHook } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 
 const reset = vi.fn();
 

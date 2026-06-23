@@ -2,7 +2,9 @@ import { useCallback } from "react";
 
 import { StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
-import { prepareEmptyRoundScoreRow, roundByLastDigit, setNextDealer } from "@belot/utils";
+import { normalizeSkippedRoundScore, prepareEmptyRoundScoreRow, setNextDealer } from "@belot/utils";
+
+import { useEffectivePointsType } from "./usePointsTypeFeature";
 
 interface UseHandleSkipRoundProps {
   setItemsToStorage: (items: Partial<Record<StorageKeys, string>>) => Promise<void> | void;
@@ -12,6 +14,7 @@ export const useHandleSkipRound = ({ setItemsToStorage }: UseHandleSkipRoundProp
   const players = useGameStore((state) => state.players);
   const teams = useGameStore((state) => state.teams);
   const mode = useGameStore((state) => state.mode);
+  const pointsType = useEffectivePointsType();
   const roundsScores = useGameStore((state) =>
     Array.isArray(state.roundsScores) ? state.roundsScores : [],
   );
@@ -28,19 +31,28 @@ export const useHandleSkipRound = ({ setItemsToStorage }: UseHandleSkipRoundProp
     const lastIndex = roundsScoresCount - 1;
     const lastRoundScore = roundsScores[lastIndex];
 
+    const previousCompletedRound = lastIndex > 0 ? roundsScores[lastIndex - 1] : null;
+    const skippedTotalRoundScore = previousCompletedRound
+      ? previousCompletedRound.totalRoundScore
+      : normalizeSkippedRoundScore(lastRoundScore.totalRoundScore, pointsType);
+
     const updatedRoundsScores = [...roundsScores];
 
     updatedRoundsScores[lastIndex] = {
       ...lastRoundScore,
-      totalRoundScore: roundByLastDigit(lastRoundScore.totalRoundScore),
+      totalRoundScore: skippedTotalRoundScore,
     };
 
-    const newEmptyRow = prepareEmptyRoundScoreRow({
-      players,
-      teams,
-      mode,
-      roundsScores: updatedRoundsScores,
-    });
+    const newEmptyRow = {
+      ...prepareEmptyRoundScoreRow({
+        players,
+        teams,
+        mode,
+        pointsType,
+        roundsScores: updatedRoundsScores,
+      }),
+      totalRoundScore: skippedTotalRoundScore,
+    };
 
     const nextRoundsScores = [...updatedRoundsScores, newEmptyRow];
     const { dealer: nextDealer } = setNextDealer({
@@ -58,5 +70,5 @@ export const useHandleSkipRound = ({ setItemsToStorage }: UseHandleSkipRoundProp
     }
 
     await setItemsToStorage(storageItems);
-  }, [dealer, mode, players, roundsScores, setItemsToStorage, skipRound, teams]);
+  }, [dealer, mode, players, pointsType, roundsScores, setItemsToStorage, skipRound, teams]);
 };

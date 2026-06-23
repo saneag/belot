@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 
-import { useBlocker, type Blocker } from "react-router-dom";
+import { type Blocker, useBlocker } from "react-router-dom";
 
 export const usePreventBackPress = (onBackPressCallback: () => void): Blocker => {
   const shouldBlock = useCallback(

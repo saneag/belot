@@ -1,9 +1,9 @@
 import { type GameSlice, type PlayersSlice, type RoundSlice } from "@belot/types";
 import {
+  normalizeSkippedRoundScore,
   prepareEmptyRoundScoreRow,
   recalculateScoreOnRedo,
   recalculateScoreOnUndo,
-  roundByLastDigit,
   setNextDealer,
 } from "@belot/utils/src";
 
@@ -69,18 +69,27 @@ export const createRoundSlice: StateCreator<
 
       const lastIndex = roundsScoresCount - 1;
       const lastRoundScore = state.roundsScores[lastIndex];
+      const pointsType = state.pointsType ?? "micropoints";
+
+      const previousCompletedRound = lastIndex > 0 ? state.roundsScores[lastIndex - 1] : null;
+      const skippedTotalRoundScore = previousCompletedRound
+        ? previousCompletedRound.totalRoundScore
+        : normalizeSkippedRoundScore(lastRoundScore.totalRoundScore, pointsType);
 
       const updatedRoundsScores = [...state.roundsScores];
 
       updatedRoundsScores[lastIndex] = {
         ...lastRoundScore,
-        totalRoundScore: roundByLastDigit(lastRoundScore.totalRoundScore),
+        totalRoundScore: skippedTotalRoundScore,
       };
 
-      const newEmptyRow = prepareEmptyRoundScoreRow({
-        ...state,
-        roundsScores: updatedRoundsScores,
-      });
+      const newEmptyRow = {
+        ...prepareEmptyRoundScoreRow({
+          ...state,
+          roundsScores: updatedRoundsScores,
+        }),
+        totalRoundScore: skippedTotalRoundScore,
+      };
 
       return {
         roundsScores: [...updatedRoundsScores, newEmptyRow],

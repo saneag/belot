@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import RoundPlayerDisplay from "@/components/game-table/action-buttons/next-round-button/roundPlayerDisplay";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import RoundPlayerDisplay from "@/components/game-table/action-buttons/next-round-button/roundPlayerDisplay";
 
 vi.mock("@belot/localizations", () => ({
   useLocalization: (_key: string, args?: unknown[]) => {
@@ -18,10 +17,7 @@ describe("RoundPlayerDisplay", () => {
     const setRoundPlayer = vi.fn();
 
     render(
-      <RoundPlayerDisplay
-        roundPlayer={{ id: 0, name: "Alice" }}
-        setRoundPlayer={setRoundPlayer}
-      />,
+      <RoundPlayerDisplay roundPlayer={{ id: 0, name: "Alice" }} setRoundPlayer={setRoundPlayer} />,
     );
 
     expect(screen.getByText("Player:Alice")).toBeTruthy();

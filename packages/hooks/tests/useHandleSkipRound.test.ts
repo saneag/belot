@@ -22,6 +22,10 @@ vi.mock("react", () => ({
   useCallback: (callback: () => void) => callback,
 }));
 
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useEffectivePointsType: () => "micropoints",
+}));
+
 vi.mock("@belot/store", () => ({
   useGameStore: (selector: (state: unknown) => unknown) => selector(mocks.state),
 }));
@@ -52,6 +56,7 @@ describe("useHandleSkipRound", () => {
       players,
       teams: [],
       mode: GameMode.classic,
+      pointsType: "micropoints",
       roundsScores: [initialRound],
       dealer: players[0],
       skipRound: mocks.skipRound,
@@ -100,6 +105,7 @@ describe("useHandleSkipRound", () => {
     expect(storedRoundsScores[0].id).toBe(0);
     expect(storedRoundsScores[0].totalRoundScore).toBe(16);
     expect(storedRoundsScores[1].id).toBe(1);
+    expect(storedRoundsScores[1].totalRoundScore).toBe(16);
     expect(storedDealer).toEqual(players[1]);
   });
 
