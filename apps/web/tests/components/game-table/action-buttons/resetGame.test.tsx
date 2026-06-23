@@ -6,7 +6,6 @@ import ResetGameButton from "@/components/game-table/action-buttons/resetGame";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-const reset = vi.fn();
 const navigateMock = vi.fn();
 
 vi.mock("react-router-dom", async (importOriginal) => {
@@ -21,8 +20,23 @@ vi.mock("@belot/localizations", () => ({
   useLocalization: () => "Reset game",
 }));
 
-vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: { reset: typeof reset }) => unknown) => selector({ reset }),
+vi.mock("@belot/hooks", () => ({
+  useGameReset: ({
+    navigateFunction,
+    onComplete,
+  }: {
+    navigateFunction: () => void;
+    onComplete?: () => void;
+  }) => ({
+    handleReset: () => {
+      navigateFunction();
+      onComplete?.();
+    },
+  }),
+}));
+
+vi.mock("@/helpers/storageHelpers", () => ({
+  removeItemsFromStorage: vi.fn(),
 }));
 
 describe("ResetGameButton", () => {
@@ -37,7 +51,6 @@ describe("ResetGameButton", () => {
 
     screen.getByRole("button", { name: "Reset game" }).click();
 
-    expect(reset).toHaveBeenCalled();
     expect(setWinner).toHaveBeenCalledWith(null);
     expect(navigateMock).toHaveBeenCalledWith("/");
   });

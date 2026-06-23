@@ -15,6 +15,7 @@
   "win.dialog.title.team": "Team {0} won",
   "win.dialog.content": "You can reset the game or check current game points. Do you want to reset the game?",
   "players.count.number.of.players": "Number of players",
+  "players.maxScore.label": "Maximum score",
   "players.names.input.label": "Player {0}",
   "players.names.input.empty.error": "Please enter a name",
   "players.names.input.duplicated.name.error": "Duplicated name",

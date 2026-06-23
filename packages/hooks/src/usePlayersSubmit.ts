@@ -37,6 +37,7 @@ export function usePlayersSubmit({
   const players = useGameStore((state) => state.players);
   const dealer = useGameStore((state) => state.dealer);
   const mode = useGameStore((state) => state.mode);
+  const maxScore = useGameStore((state) => state.maxScore);
   const setRoundsScores = useGameStore((state) => state.setRoundsScores);
   const setGameId = useGameStore((state) => state.setGameId);
   const setPointsType = useGameStore((state) => state.setPointsType);
@@ -93,6 +94,7 @@ export function usePlayersSubmit({
       [StorageKeys.roundsScores]: JSON.stringify([emptyRoundScore]),
       [StorageKeys.players]: JSON.stringify(players),
       [StorageKeys.dealer]: JSON.stringify(dealer),
+      [StorageKeys.maxScore]: String(maxScore),
     });
 
     navigateFunction();
@@ -124,6 +126,7 @@ export function usePlayersSubmit({
     initGame,
     isBackendGameInitEnabled,
     isPointsTypeEnabled,
+    maxScore,
     mode,
     navigateFunction,
     players,

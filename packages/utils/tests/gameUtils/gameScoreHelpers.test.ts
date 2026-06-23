@@ -529,6 +529,56 @@ describe("gameScoreHelpers", () => {
       ).toEqual(mockTeams[0]);
     });
 
+    it("should declare a winner when maxScore is 51 and player reaches 51 points", () => {
+      const mockCalculatedRoundScore: RoundScore = {
+        id: 1,
+        playersScores: [
+          {
+            ...mockPlayersScores[0],
+            totalScore: 57,
+          },
+          ...mockPlayersScores.slice(1).map((ps) => ({ ...ps, totalScore: 10 })),
+        ],
+        teamsScores: mockTeamsScores,
+        totalRoundScore: DEFAULT_ROUND_POINTS,
+        roundPlayer: mockPlayers[0],
+      };
+
+      expect(
+        checkForGameWinner(
+          GameMode.classic,
+          mockPlayers,
+          mockTeams,
+          mockCalculatedRoundScore,
+          0,
+          mockSetGameOverflowCount,
+          51,
+        ),
+      ).toEqual(mockPlayers[0]);
+    });
+
+    it("should not declare a winner when maxScore is 51 and no player has reached 51 points", () => {
+      const mockCalculatedRoundScore: RoundScore = {
+        id: 1,
+        playersScores: mockPlayersScores.map((ps) => ({ ...ps, totalScore: 40 })),
+        teamsScores: mockTeamsScores,
+        totalRoundScore: DEFAULT_ROUND_POINTS,
+        roundPlayer: mockPlayers[0],
+      };
+
+      expect(
+        checkForGameWinner(
+          GameMode.classic,
+          mockPlayers,
+          mockTeams,
+          mockCalculatedRoundScore,
+          0,
+          mockSetGameOverflowCount,
+          51,
+        ),
+      ).toBeNull();
+    });
+
     it("should invoke overflow callback with an incrementing updater", () => {
       mockSetGameOverflowCount.mockClear();
 

@@ -57,6 +57,7 @@ vi.mock("@belot/store", () => ({
 }));
 
 vi.mock("@belot/hooks", () => ({
+  useGameReset: () => ({ handleReset: vi.fn() }),
   useHandleSkipRound: () => vi.fn(),
   useHandleNextRound: () => ({
     handleNextRound: vi.fn(),

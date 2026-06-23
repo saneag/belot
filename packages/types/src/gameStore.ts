@@ -4,9 +4,11 @@ export interface GameSlice {
   mode: GameMode;
   gameId: string | null;
   pointsType: string;
+  maxScore: number;
 
   setGameId: (gameId: string | null) => void;
   setPointsType: (pointsType: string) => void;
+  setMaxScore: (maxScore: number) => void;
 }
 
 export interface RoundSlice {
