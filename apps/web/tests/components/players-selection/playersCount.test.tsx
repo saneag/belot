@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import PlayersCount from "@/components/players-selection/playersCount";
 
 import { render, screen } from "@testing-library/react";

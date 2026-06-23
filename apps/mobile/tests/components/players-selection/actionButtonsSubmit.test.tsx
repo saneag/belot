@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { ToastAndroid } from "react-native";
 
 import { fireEvent, render, screen } from "@testing-library/react";

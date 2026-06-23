@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import GameTablePage from "@/pages/game-table";
 
 import { render, screen } from "@testing-library/react";

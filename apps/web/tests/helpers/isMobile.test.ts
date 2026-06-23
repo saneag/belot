@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { isMobile } from "@/helpers/isMobile";
 
 import { afterEach, describe, expect, it, vi } from "vitest";

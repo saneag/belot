@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import GameTable from "@/components/game-table";
 
 import { cleanup, render, screen, waitFor } from "@testing-library/react";

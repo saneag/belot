@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { THEMES } from "@belot/constants";
 
 import { render, screen } from "@testing-library/react";

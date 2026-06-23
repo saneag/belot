@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { type EmitterSubscription, Keyboard } from "react-native";
 
 import { useKeyboardAvoidView } from "@/hooks/useKeyboardAvoidView";

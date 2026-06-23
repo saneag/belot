@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { useStartingScreenActions } from "@/hooks/starting-screen/useStartingScreenActions";
 
 import { renderHook } from "@testing-library/react";

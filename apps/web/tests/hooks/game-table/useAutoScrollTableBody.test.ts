@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { createRef } from "react";
 
 import useAutoScrollTableBody from "@/hooks/game-table/useAutoScrollTableBody";

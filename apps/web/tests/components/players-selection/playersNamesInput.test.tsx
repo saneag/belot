@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import PlayersNamesInput from "@/components/players-selection/playersNamesInput";
 
 import { fireEvent, render } from "@testing-library/react";
