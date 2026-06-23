@@ -19,7 +19,10 @@ vi.mock("react", async (importOriginal) => {
 
   return {
     ...actual,
-    useContext: () => mocks.toggles,
+    useContext: () => ({
+      toggles: mocks.toggles,
+      setFeatureToggle: vi.fn(),
+    }),
   };
 });
 
@@ -60,5 +63,12 @@ describe("useFeatureToggle", () => {
     const { useFeatureToggle } = await import("../src/featureToggles/useFeatureToggle");
 
     expect(useFeatureToggle("settings-screen")).toBe(false);
+  });
+
+  it("returns the full context from useFeatureToggles", async () => {
+    const { useFeatureToggles } = await import("../src/featureToggles/useFeatureToggle");
+
+    expect(useFeatureToggles().toggles).toEqual(FEATURE_TOGGLES);
+    expect(useFeatureToggles().setFeatureToggle).toEqual(expect.any(Function));
   });
 });

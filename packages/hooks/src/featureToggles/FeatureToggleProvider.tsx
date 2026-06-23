@@ -1,10 +1,13 @@
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+
+import { type FeatureToggleName, StorageKeys } from "@belot/constants";
 
 import { useSyncPointsTypeFeature } from "../usePointsTypeFeature";
 import {
   type FeatureToggleState,
   areFeatureToggleStatesEqual,
   getDefaultFeatureToggleState,
+  serializeFeatureToggleState,
   syncFeatureTogglesToStorage,
 } from "./featureToggleUtils";
 import { FeatureToggleContext } from "./toggleContext";
@@ -25,6 +28,27 @@ export const FeatureToggleProvider = ({
   setToStorage,
 }: FeatureToggleProviderProps) => {
   const [toggles, setToggles] = useState<FeatureToggleState>(getDefaultFeatureToggleState);
+
+  const setFeatureToggle = useCallback(
+    async (name: FeatureToggleName, enabled: boolean) => {
+      const nextToggles = {
+        ...toggles,
+        [name]: enabled,
+      };
+
+      setToggles(nextToggles);
+      await setToStorage(StorageKeys.featureToggles, serializeFeatureToggleState(nextToggles));
+    },
+    [setToStorage, toggles],
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      toggles,
+      setFeatureToggle,
+    }),
+    [setFeatureToggle, toggles],
+  );
 
   useEffect(() => {
     let isCancelled = false;
@@ -50,7 +74,7 @@ export const FeatureToggleProvider = ({
   }, [getFromStorage, setToStorage]);
 
   return (
-    <FeatureToggleContext.Provider value={toggles}>
+    <FeatureToggleContext.Provider value={contextValue}>
       <PointsTypeFeatureSync />
       {children}
     </FeatureToggleContext.Provider>

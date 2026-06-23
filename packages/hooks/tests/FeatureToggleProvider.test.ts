@@ -36,6 +36,8 @@ vi.mock("react", async (importOriginal) => {
   return {
     ...actual,
     useState: () => [mocks.toggles, mocks.setToggles],
+    useCallback: (callback: (...args: unknown[]) => unknown) => callback,
+    useMemo: (factory: () => unknown) => factory(),
     useEffect: (effect: () => void | (() => void)) => {
       mocks.effectCleanups.push(effect());
     },
@@ -61,10 +63,17 @@ describe("FeatureToggleProvider", () => {
       children: "child",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
-    }) as ReactElement<{ value: FeatureToggleState; children: string }>;
+    }) as ReactElement<{
+      value: {
+        toggles: FeatureToggleState;
+        setFeatureToggle: unknown;
+      };
+      children: string;
+    }>;
 
     expect(element.type).toBe(FeatureToggleContext.Provider);
-    expect(element.props.value).toEqual(FEATURE_TOGGLES);
+    expect(element.props.value.toggles).toEqual(FEATURE_TOGGLES);
+    expect(element.props.value.setFeatureToggle).toEqual(expect.any(Function));
     expect(element.props.children).toEqual(expect.arrayContaining(["child"]));
   });
 
@@ -100,6 +109,39 @@ describe("FeatureToggleProvider", () => {
       ...FEATURE_TOGGLES,
       "settings-screen": true,
     });
+  });
+
+  it("persists and provides feature toggle updates", async () => {
+    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleProvider");
+    const { StorageKeys } = await import("@belot/constants");
+    const { serializeFeatureToggleState } =
+      await import("../src/featureToggles/featureToggleUtils");
+
+    const element = FeatureToggleProvider({
+      children: "child",
+      getFromStorage: mocks.getFromStorage,
+      setToStorage: mocks.setToStorage,
+    }) as ReactElement<{
+      value: {
+        toggles: FeatureToggleState;
+        setFeatureToggle: (name: "settings-screen", enabled: boolean) => Promise<void>;
+      };
+      children: string;
+    }>;
+
+    await element.props.value.setFeatureToggle("settings-screen", true);
+
+    expect(mocks.setToggles).toHaveBeenCalledWith({
+      ...FEATURE_TOGGLES,
+      "settings-screen": true,
+    });
+    expect(mocks.setToStorage).toHaveBeenCalledWith(
+      StorageKeys.featureToggles,
+      serializeFeatureToggleState({
+        ...FEATURE_TOGGLES,
+        "settings-screen": true,
+      }),
+    );
   });
 
   it("does not update state after unmount when sync resolves late", async () => {
