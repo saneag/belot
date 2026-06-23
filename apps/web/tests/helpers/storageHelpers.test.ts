@@ -1,7 +1,12 @@
 // @vitest-environment jsdom
 import { StorageKeys } from "@belot/constants";
 
-import { getFromStorage, setMultipleItemsToStorage, setToStorage } from "@/helpers/storageHelpers";
+import {
+  getFromStorage,
+  removeFromStorage,
+  setMultipleItemsToStorage,
+  setToStorage,
+} from "@/helpers/storageHelpers";
 
 import { beforeEach, describe, expect, it } from "vitest";
 
@@ -56,5 +61,19 @@ describe("setMultipleItemsToStorage", () => {
 
     expect(localStorage.getItem(StorageKeys.theme)).toBeNull();
     expect(localStorage.getItem(StorageKeys.dealer)).toBe("Bob");
+  });
+});
+
+describe("removeFromStorage", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("removes a stored value", () => {
+    localStorage.setItem(StorageKeys.theme, "dark");
+
+    removeFromStorage(StorageKeys.theme);
+
+    expect(localStorage.getItem(StorageKeys.theme)).toBeNull();
   });
 });
