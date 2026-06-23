@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { POINTS_TYPE } from "@belot/constants";
 
 import { PointsTypeRadioButton } from "@/components/settings/pointsTypeRadioButton";

@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import PhoneScreen from "@/components/phoneScreen";
 
 import { render } from "@testing-library/react";

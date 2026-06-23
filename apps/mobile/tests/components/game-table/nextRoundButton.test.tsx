@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import type { Player, RoundScore } from "@belot/types";
 import { GameMode } from "@belot/types";
 

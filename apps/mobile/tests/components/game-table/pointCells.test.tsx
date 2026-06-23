@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { GameMode, type RoundScore } from "@belot/types";
 
 import PointCells from "@/components/game-table/pointCells";

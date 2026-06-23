@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { useState } from "react";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
