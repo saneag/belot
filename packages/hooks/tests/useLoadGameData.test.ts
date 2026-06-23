@@ -1,12 +1,15 @@
 import { StorageKeys } from "@belot/constants";
 import type { Player, RoundScore } from "@belot/types";
 
-import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { useIsPointsTypeEnabled } from "../src/usePointsTypeFeature";
 
 const mocks = vi.hoisted(() => {
   const setPlayers = vi.fn();
   const setDealer = vi.fn();
   const setRoundsScores = vi.fn();
+  const setPointsType = vi.fn();
   const stateHolders: { value: unknown }[] = [];
   const hasFetchedRef = { current: false };
 
@@ -14,6 +17,7 @@ const mocks = vi.hoisted(() => {
     setPlayers,
     setDealer,
     setRoundsScores,
+    setPointsType,
     stateHolders,
     hasFetchedRef,
     storeState: {
@@ -40,24 +44,35 @@ vi.mock("react", () => ({
     mocks.stateHolders.push(holder);
     const setState = (next: unknown) => {
       holder.value =
-        typeof next === "function"
-          ? (next as (current: unknown) => unknown)(holder.value)
-          : next;
+        typeof next === "function" ? (next as (current: unknown) => unknown)(holder.value) : next;
     };
     return [holder.value, setState];
   },
 }));
 
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useIsPointsTypeEnabled: vi.fn(() => false),
+}));
+
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: unknown) => unknown) =>
-    selector({
-      players: mocks.storeState.players,
-      dealer: mocks.storeState.dealer,
-      roundsScores: mocks.storeState.roundsScores,
-      setPlayers: mocks.setPlayers,
-      setDealer: mocks.setDealer,
-      setRoundsScores: mocks.setRoundsScores,
-    }),
+  useGameStore: Object.assign(
+    (selector: (state: unknown) => unknown) =>
+      selector({
+        players: mocks.storeState.players,
+        dealer: mocks.storeState.dealer,
+        roundsScores: mocks.storeState.roundsScores,
+        pointsType: "micropoints",
+        setPlayers: mocks.setPlayers,
+        setDealer: mocks.setDealer,
+        setRoundsScores: mocks.setRoundsScores,
+        setPointsType: mocks.setPointsType,
+      }),
+    {
+      getState: () => ({
+        pointsType: "micropoints",
+      }),
+    },
+  ),
 }));
 
 describe("useLoadGameData", () => {
@@ -72,6 +87,31 @@ describe("useLoadGameData", () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("restores default settings when stored points type is invalid", async () => {
+    vi.mocked(useIsPointsTypeEnabled).mockReturnValue(true);
+
+    const setToStorage = vi.fn().mockResolvedValue(undefined);
+    const storage: Partial<Record<StorageKeys, string>> = {
+      [StorageKeys.settings]: JSON.stringify({ pointsType: "invalid" }),
+    };
+
+    const { useLoadGameData } = await import("../src/useLoadGameData");
+
+    useLoadGameData({
+      getFromStorage: (key) => storage[key] ?? null,
+      setToStorage,
+    });
+
+    await vi.waitFor(() => {
+      expect(setToStorage).toHaveBeenCalledWith(
+        StorageKeys.settings,
+        JSON.stringify({ pointsType: "micropoints" }),
+      );
+    });
+
+    expect(mocks.setPointsType).not.toHaveBeenCalled();
   });
 
   it("restores the saved dealer after rounds so hydration does not advance it", async () => {
@@ -107,7 +147,16 @@ describe("useLoadGameData", () => {
     });
 
     expect(mocks.setPlayers).toHaveBeenCalledWith(players);
-    expect(mocks.setRoundsScores).toHaveBeenCalledWith(roundsScores);
+    expect(mocks.setRoundsScores).toHaveBeenCalledWith([
+      expect.objectContaining({
+        id: 0,
+        totalRoundScore: 162,
+      }),
+    ]);
+    const restoredRoundsScores = mocks.setRoundsScores.mock.calls[0]?.[0] as RoundScore[];
+    expect(restoredRoundsScores[0].playersScores).toEqual(
+      expect.arrayContaining([expect.objectContaining({ playerId: 0, score: 0 })]),
+    );
     expect(mocks.setPlayers.mock.invocationCallOrder[0]).toBeLessThan(
       mocks.setRoundsScores.mock.invocationCallOrder[0],
     );
@@ -146,7 +195,14 @@ describe("useLoadGameData", () => {
     });
 
     expect(mocks.stateHolders[1]?.value).toEqual(dealer);
-    expect(mocks.stateHolders[2]?.value).toEqual(roundsScores);
+    const loadedRoundsScores = mocks.stateHolders[2]?.value as RoundScore[];
+    expect(loadedRoundsScores[0]).toMatchObject({
+      id: 0,
+      totalRoundScore: 162,
+    });
+    expect(loadedRoundsScores[0].playersScores).toEqual(
+      expect.arrayContaining([expect.objectContaining({ playerId: 0, score: 0 })]),
+    );
     expect(mocks.setPlayers).not.toHaveBeenCalled();
     expect(mocks.setDealer).not.toHaveBeenCalled();
     expect(mocks.setRoundsScores).not.toHaveBeenCalled();

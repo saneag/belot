@@ -1,6 +1,6 @@
 import express, { type RequestHandler } from "express";
-import { describe, expect, it } from "vitest";
 import request from "supertest";
+import { describe, expect, it } from "vitest";
 
 import { GameValidators } from "../../validators/game-validators";
 
@@ -20,9 +20,7 @@ const validTeams = [
 
 const validRoundScore = {
   id: 0,
-  playersScores: [
-    { id: 0, score: 10, boltCount: 0, totalScore: 10, playerId: 0 },
-  ],
+  playersScores: [{ id: 0, score: 10, boltCount: 0, totalScore: 10, playerId: 0 }],
   teamsScores: [{ id: 0, score: 10, boltCount: 0, totalScore: 10, teamId: 0 }],
   totalRoundScore: 10,
   roundPlayer: { id: 0, name: "Alice" },
@@ -110,7 +108,10 @@ describe("GameValidators", () => {
     const response = await request(app)
       .post("/test")
       .send({
-        players: [{ id: "bad", name: "Alice" }, { id: 1, name: "Bob" }],
+        players: [
+          { id: "bad", name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
         mode: "classic",
         teams: [],
       });
@@ -156,9 +157,7 @@ describe("GameValidators", () => {
   it("updateGame rejects unknown fields", async () => {
     const app = createApp(GameValidators.updateGame);
 
-    const response = await request(app)
-      .patch(`/test/${validId}`)
-      .send({ unexpected: true });
+    const response = await request(app).patch(`/test/${validId}`).send({ unexpected: true });
 
     expect(response.status).toBe(400);
   });
@@ -174,9 +173,7 @@ describe("GameValidators", () => {
   it("updateGame accepts valid patch payloads", async () => {
     const app = createApp(GameValidators.updateGame);
 
-    const response = await request(app)
-      .patch(`/test/${validId}`)
-      .send({ isFinished: true });
+    const response = await request(app).patch(`/test/${validId}`).send({ isFinished: true });
 
     expect(response.status).toBe(200);
   });

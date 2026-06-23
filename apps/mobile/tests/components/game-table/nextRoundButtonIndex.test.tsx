@@ -1,13 +1,12 @@
 // @vitest-environment jsdom
-
 import { useState } from "react";
 
 import { type Player, type Team } from "@belot/types";
 
+import NextRoundButton from "@/components/game-table/action-buttons/next-round-button";
+
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import NextRoundButton from "@/components/game-table/action-buttons/next-round-button";
 
 vi.mock("@belot/hooks", () => ({
   useHandleNextRound: () => ({

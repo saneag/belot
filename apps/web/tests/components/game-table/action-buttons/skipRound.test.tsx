@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import SkipRoundButton from "@/components/game-table/action-buttons/skipRound";
 
 import { screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import SkipRoundButton from "@/components/game-table/action-buttons/skipRound";
 
 import { renderWithTooltip } from "../../../testUtils";
 

@@ -220,6 +220,60 @@ describe("gameScoreHelpers", () => {
       expect(mockSetGameOverflowCount).not.toHaveBeenCalled();
     });
 
+    it("should not declare a winner in points mode when total score is below 101", () => {
+      const mockCalculatedRoundScore: RoundScore = {
+        id: 1,
+        playersScores: [
+          {
+            ...mockPlayersScores[0],
+            totalScore: 34,
+          },
+          ...mockPlayersScores.slice(1).map((ps) => ({ ...ps, totalScore: 5 })),
+        ],
+        teamsScores: mockTeamsScores,
+        totalRoundScore: 16,
+        roundPlayer: mockPlayers[0],
+      };
+
+      expect(
+        checkForGameWinner(
+          GameMode.classic,
+          mockPlayers,
+          mockTeams,
+          mockCalculatedRoundScore,
+          0,
+          mockSetGameOverflowCount,
+        ),
+      ).toBeNull();
+    });
+
+    it("should declare a winner in points mode when total score reaches 101", () => {
+      const mockCalculatedRoundScore: RoundScore = {
+        id: 1,
+        playersScores: [
+          {
+            ...mockPlayersScores[0],
+            totalScore: WIN_POINTS,
+          },
+          ...mockPlayersScores.slice(1),
+        ],
+        teamsScores: mockTeamsScores,
+        totalRoundScore: 16,
+        roundPlayer: mockPlayers[0],
+      };
+
+      expect(
+        checkForGameWinner(
+          GameMode.classic,
+          mockPlayers,
+          mockTeams,
+          mockCalculatedRoundScore,
+          0,
+          mockSetGameOverflowCount,
+        ),
+      ).toEqual(mockPlayers[0]);
+    });
+
     it("should return null if game mode is classic and there is no winner", () => {
       const mockCalculatedRoundScore: RoundScore = {
         id: 1,
@@ -473,6 +527,56 @@ describe("gameScoreHelpers", () => {
           mockSetGameOverflowCount,
         ),
       ).toEqual(mockTeams[0]);
+    });
+
+    it("should declare a winner when maxScore is 51 and player reaches 51 points", () => {
+      const mockCalculatedRoundScore: RoundScore = {
+        id: 1,
+        playersScores: [
+          {
+            ...mockPlayersScores[0],
+            totalScore: 57,
+          },
+          ...mockPlayersScores.slice(1).map((ps) => ({ ...ps, totalScore: 10 })),
+        ],
+        teamsScores: mockTeamsScores,
+        totalRoundScore: DEFAULT_ROUND_POINTS,
+        roundPlayer: mockPlayers[0],
+      };
+
+      expect(
+        checkForGameWinner(
+          GameMode.classic,
+          mockPlayers,
+          mockTeams,
+          mockCalculatedRoundScore,
+          0,
+          mockSetGameOverflowCount,
+          51,
+        ),
+      ).toEqual(mockPlayers[0]);
+    });
+
+    it("should not declare a winner when maxScore is 51 and no player has reached 51 points", () => {
+      const mockCalculatedRoundScore: RoundScore = {
+        id: 1,
+        playersScores: mockPlayersScores.map((ps) => ({ ...ps, totalScore: 40 })),
+        teamsScores: mockTeamsScores,
+        totalRoundScore: DEFAULT_ROUND_POINTS,
+        roundPlayer: mockPlayers[0],
+      };
+
+      expect(
+        checkForGameWinner(
+          GameMode.classic,
+          mockPlayers,
+          mockTeams,
+          mockCalculatedRoundScore,
+          0,
+          mockSetGameOverflowCount,
+          51,
+        ),
+      ).toBeNull();
     });
 
     it("should invoke overflow callback with an incrementing updater", () => {

@@ -1,30 +1,23 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 import { StorageKeys } from "@belot/constants";
-import { useGameStore } from "@belot/store";
+
+import { useGameReset } from "./useGameReset";
 
 interface UseHandleGameResetProps {
   navigateFunction: () => void;
-  setItemsToStorage: (items: Partial<Record<StorageKeys, string>>) => Promise<void> | void;
+  removeItemsFromStorage: (keys: StorageKeys[]) => Promise<void> | void;
+  afterNavigate?: () => void;
 }
 
 export const useHandleGameReset = ({
   navigateFunction,
-  setItemsToStorage,
+  removeItemsFromStorage,
+  afterNavigate,
 }: UseHandleGameResetProps) => {
   const [showDialog, setShowDialog] = useState(false);
 
-  const resetGame = useGameStore((state) => state.reset);
-
-  const handleReset = useCallback(async () => {
-    await setItemsToStorage({
-      [StorageKeys.timerStartTime]: "",
-      [StorageKeys.roundsScores]: JSON.stringify([]),
-      [StorageKeys.dealer]: "",
-    });
-    resetGame();
-    navigateFunction();
-  }, [navigateFunction, resetGame, setItemsToStorage]);
+  const { handleReset } = useGameReset({ navigateFunction, removeItemsFromStorage, afterNavigate });
 
   return {
     handleReset,

@@ -1,10 +1,8 @@
-import { StorageKeys } from "@belot/constants";
-
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   navigateFunction: vi.fn(),
-  setItemsToStorage: vi.fn(),
+  removeItemsFromStorage: vi.fn(),
   resetGame: vi.fn(),
   showDialog: false,
   setShowDialog: vi.fn(),
@@ -22,25 +20,41 @@ vi.mock("@belot/store", () => ({
 describe("useHandleGameReset", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mocks.setItemsToStorage.mockResolvedValue(undefined);
+    mocks.removeItemsFromStorage.mockResolvedValue(undefined);
   });
 
-  it("clears storage, resets game, and navigates", async () => {
+  it("delegates reset to useGameReset and exposes dialog state", async () => {
     const { useHandleGameReset } = await import("../src/useHandleGameReset");
 
-    const { handleReset } = useHandleGameReset({
+    const { handleReset, showDialog, setShowDialog } = useHandleGameReset({
       navigateFunction: mocks.navigateFunction,
-      setItemsToStorage: mocks.setItemsToStorage,
+      removeItemsFromStorage: mocks.removeItemsFromStorage,
     });
 
     await handleReset();
 
-    expect(mocks.setItemsToStorage).toHaveBeenCalledWith({
-      [StorageKeys.timerStartTime]: "",
-      [StorageKeys.roundsScores]: JSON.stringify([]),
-      [StorageKeys.dealer]: "",
-    });
-    expect(mocks.resetGame).toHaveBeenCalledOnce();
+    expect(mocks.removeItemsFromStorage).toHaveBeenCalledOnce();
     expect(mocks.navigateFunction).toHaveBeenCalledOnce();
+    expect(mocks.resetGame).toHaveBeenCalledOnce();
+    expect(showDialog).toBe(false);
+    expect(setShowDialog).toBe(mocks.setShowDialog);
+  });
+
+  it("calls afterNavigate instead of resetting directly when provided", async () => {
+    const { useHandleGameReset } = await import("../src/useHandleGameReset");
+
+    const afterNavigate = vi.fn();
+
+    const { handleReset } = useHandleGameReset({
+      navigateFunction: mocks.navigateFunction,
+      removeItemsFromStorage: mocks.removeItemsFromStorage,
+      afterNavigate,
+    });
+
+    await handleReset();
+
+    expect(mocks.navigateFunction).toHaveBeenCalledOnce();
+    expect(afterNavigate).toHaveBeenCalledOnce();
+    expect(mocks.resetGame).not.toHaveBeenCalled();
   });
 });

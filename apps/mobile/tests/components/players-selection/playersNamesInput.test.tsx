@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -13,8 +12,7 @@ vi.mock("@belot/hooks", () => ({
 }));
 
 vi.mock("@belot/localizations", () => ({
-  useLocalization: (key: string, args?: number[]) =>
-    args ? `${key}:${args[0]}` : key,
+  useLocalization: (key: string, args?: number[]) => (args ? `${key}:${args[0]}` : key),
 }));
 
 vi.mock("@/components/players-selection/inputErrors", () => ({
@@ -24,9 +22,8 @@ vi.mock("@/components/players-selection/inputErrors", () => ({
 
 describe("PlayersNamesInput", () => {
   it("renders input and handles change", async () => {
-    const { default: PlayersNamesInput } = await import(
-      "@/components/players-selection/playersNamesInput"
-    );
+    const { default: PlayersNamesInput } =
+      await import("@/components/players-selection/playersNamesInput");
 
     render(<PlayersNamesInput player={{ id: 0, name: "Alice" }} />);
 

@@ -1,8 +1,13 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from "react";
+import { Dispatch, SetStateAction, useCallback, useMemo } from "react";
 
+import { useSyncPlayerScoreInput } from "@belot/hooks";
 import { formatLocalizationString, useLocalizations } from "@belot/localizations";
 import { GameMode, Player, PlayerScore, RoundScore, Team, TeamScore } from "@belot/types";
-import { handleRoundScoreChange, prepareRoundScoresBasedOnGameMode } from "@belot/utils/src";
+import {
+  getScoreInputMaxLength,
+  handleRoundScoreChange,
+  prepareRoundScoresBasedOnGameMode,
+} from "@belot/utils/src";
 
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
@@ -16,6 +21,7 @@ interface PlayerScoreInputProps {
   players: Player[];
   teams: Team[];
   roundPlayer: Player | null;
+  pointsType: string;
 }
 
 export default function PlayerScoreInput({
@@ -26,6 +32,7 @@ export default function PlayerScoreInput({
   players,
   teams,
   roundPlayer,
+  pointsType,
 }: PlayerScoreInputProps) {
   const messages = useLocalizations([{ key: "next.round.score.for.player" }]);
 
@@ -59,11 +66,12 @@ export default function PlayerScoreInput({
     [gameMode, opponent, roundPlayer, setRoundScore],
   );
 
-  useEffect(() => {
-    if (roundScore.totalRoundScore) {
-      handleInputChange(finalRoundScore?.score || 0);
-    }
-  }, [finalRoundScore?.score, handleInputChange, roundScore.totalRoundScore]);
+  useSyncPlayerScoreInput({
+    opponentId: opponent.id,
+    totalRoundScore: roundScore.totalRoundScore,
+    targetScore: finalRoundScore?.score ?? 0,
+    onScoreChange: handleInputChange,
+  });
 
   return (
     <VStack space="xs">
@@ -71,7 +79,7 @@ export default function PlayerScoreInput({
       <Input variant="rounded" className="w-full">
         <InputField
           value={String(finalRoundScore?.score || 0)}
-          maxLength={3}
+          maxLength={getScoreInputMaxLength(pointsType)}
           keyboardType="number-pad"
           onChangeText={(value) => handleInputChange(Number(value))}
           selectTextOnFocus

@@ -26,9 +26,8 @@ describe("useHandlePlayersSelectionResetButton", () => {
   });
 
   it("resets game store and validations", async () => {
-    const { useHandlePlayersSelectionResetButton } = await import(
-      "../src/useHandlePlayersSelectionReset"
-    );
+    const { useHandlePlayersSelectionResetButton } =
+      await import("../src/useHandlePlayersSelectionReset");
 
     const handleReset = useHandlePlayersSelectionResetButton();
     handleReset();

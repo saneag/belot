@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import { EmptyNameError, RepeatingNamesError } from "@/components/players-selection/inputErrors";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import { EmptyNameError, RepeatingNamesError } from "@/components/players-selection/inputErrors";
 
 vi.mock("@belot/hooks", () => ({
   usePlayersSelectionContext: () => ({
@@ -19,8 +18,10 @@ vi.mock("@belot/localizations", () => ({
 }));
 
 vi.mock("@belot/utils/src", () => ({
-  isPlayerNameValid: (validations: { emptyNames: number[]; repeatingNames: number[] }, id: number) =>
-    !validations.emptyNames.includes(id) && !validations.repeatingNames.includes(id),
+  isPlayerNameValid: (
+    validations: { emptyNames: number[]; repeatingNames: number[] },
+    id: number,
+  ) => !validations.emptyNames.includes(id) && !validations.repeatingNames.includes(id),
   isPlayersNamesEmpty: (validations: { emptyNames: number[] }, id: number) =>
     validations.emptyNames.includes(id),
   isPlayersNamesRepeating: (validations: { repeatingNames: number[] }, id: number) =>

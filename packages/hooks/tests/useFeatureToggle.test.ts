@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   },
 }));
 
-vi.mock("../src/featureToggles/FeatureToggleContext", () => ({
+vi.mock("../src/featureToggles/toggleContext", () => ({
   FeatureToggleContext: {
     Provider: ({ children }: { children: React.ReactNode }) => children,
   },
@@ -52,7 +52,10 @@ describe("useFeatureToggle", () => {
   });
 
   it("returns false when toggle is disabled in context", async () => {
-    mocks.toggles = { ...FEATURE_TOGGLES };
+    mocks.toggles = {
+      ...FEATURE_TOGGLES,
+      "settings-screen": false,
+    };
 
     const { useFeatureToggle } = await import("../src/featureToggles/useFeatureToggle");
 

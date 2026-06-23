@@ -1,6 +1,6 @@
-import { FEATURE_TOGGLES } from "@belot/constants";
-
 import type { ReactElement } from "react";
+
+import { FEATURE_TOGGLES } from "@belot/constants";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -15,6 +15,10 @@ const mocks = vi.hoisted(() => ({
   getFromStorage: vi.fn(),
   setToStorage: vi.fn(),
   effectCleanups: [] as Array<(() => void) | void>,
+}));
+
+vi.mock("../src/usePointsTypeFeature", () => ({
+  useSyncPointsTypeFeature: vi.fn(),
 }));
 
 vi.mock("../src/featureToggles/featureToggleUtils", async (importOriginal) => {
@@ -50,9 +54,8 @@ describe("FeatureToggleProvider", () => {
   });
 
   it("provides default toggle state before sync completes", async () => {
-    const { FeatureToggleContext, FeatureToggleProvider } = await import(
-      "../src/featureToggles/FeatureToggleContext"
-    );
+    const { FeatureToggleContext } = await import("../src/featureToggles/toggleContext");
+    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleProvider");
 
     const element = FeatureToggleProvider({
       children: "child",
@@ -62,11 +65,11 @@ describe("FeatureToggleProvider", () => {
 
     expect(element.type).toBe(FeatureToggleContext.Provider);
     expect(element.props.value).toEqual(FEATURE_TOGGLES);
-    expect(element.props.children).toBe("child");
+    expect(element.props.children).toEqual(expect.arrayContaining(["child"]));
   });
 
   it("syncs centralized toggles on mount", async () => {
-    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleContext");
+    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleProvider");
 
     FeatureToggleProvider({
       children: "child",
@@ -82,10 +85,20 @@ describe("FeatureToggleProvider", () => {
     });
 
     await vi.waitFor(() => {
-      expect(mocks.setToggles).toHaveBeenCalledWith({
+      expect(mocks.setToggles).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    const updateToggles = mocks.setToggles.mock.calls[0]?.[0] as (
+      current: FeatureToggleState,
+    ) => FeatureToggleState;
+    expect(
+      updateToggles({
         ...FEATURE_TOGGLES,
-        "settings-screen": true,
-      });
+        "settings-screen": false,
+      }),
+    ).toEqual({
+      ...FEATURE_TOGGLES,
+      "settings-screen": true,
     });
   });
 
@@ -98,7 +111,7 @@ describe("FeatureToggleProvider", () => {
         }),
     );
 
-    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleContext");
+    const { FeatureToggleProvider } = await import("../src/featureToggles/FeatureToggleProvider");
 
     FeatureToggleProvider({
       children: "child",

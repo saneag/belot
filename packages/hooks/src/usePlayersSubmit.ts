@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import { useGameInit } from "@belot/api-client";
-import { StorageKeys } from "@belot/constants";
+import { POINTS_TYPE, StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import { type RoundScore } from "@belot/types";
 import {
@@ -11,13 +11,15 @@ import {
   validatePlayersNames,
 } from "@belot/utils";
 
-import { usePlayersSelectionContext } from "./usePlayersSelectionContext";
 import { useFeatureToggle } from "./featureToggles/useFeatureToggle";
+import { usePlayersSelectionContext } from "./usePlayersSelectionContext";
+import { useIsPointsTypeEnabled } from "./usePointsTypeFeature";
 
 interface UsePlayersSubmitProps {
   navigateFunction: () => void;
   setItemsToStorage: (items: Partial<Record<StorageKeys, string>>) => Promise<void> | void;
   getApiBaseUrl: () => string;
+  getFromStorage: (key: StorageKeys) => Promise<string | null> | string | null;
   handleCatchError: (error: unknown) => void;
 }
 
@@ -25,6 +27,7 @@ export function usePlayersSubmit({
   navigateFunction,
   setItemsToStorage,
   getApiBaseUrl,
+  getFromStorage,
   handleCatchError,
 }: UsePlayersSubmitProps) {
   const { setValidations } = usePlayersSelectionContext();
@@ -34,9 +37,12 @@ export function usePlayersSubmit({
   const players = useGameStore((state) => state.players);
   const dealer = useGameStore((state) => state.dealer);
   const mode = useGameStore((state) => state.mode);
-  const setEmptyRoundScore = useGameStore((state) => state.setEmptyRoundScore);
+  const maxScore = useGameStore((state) => state.maxScore);
+  const setRoundsScores = useGameStore((state) => state.setRoundsScores);
   const setGameId = useGameStore((state) => state.setGameId);
+  const setPointsType = useGameStore((state) => state.setPointsType);
   const isBackendGameInitEnabled = useFeatureToggle("backend-game-init");
+  const isPointsTypeEnabled = useIsPointsTypeEnabled();
 
   const handleOpenDialog = useCallback(
     (showDialog: () => void) => {
@@ -62,19 +68,33 @@ export function usePlayersSubmit({
       return;
     }
 
-    setEmptyRoundScore();
+    const storageSettings = await getFromStorage(StorageKeys.settings);
+    const storedPointsType = storageSettings
+      ? (JSON.parse(storageSettings) as { pointsType: string }).pointsType
+      : undefined;
+    const pointsType = isPointsTypeEnabled
+      ? (storedPointsType ?? POINTS_TYPE[0].id)
+      : POINTS_TYPE[0].id;
+
+    setPointsType(pointsType);
 
     const emptyRoundScore: RoundScore = prepareEmptyRoundScoreRow({
       dealer,
       mode,
       players,
+      teams: prepareTeams(players, mode),
+      pointsType,
+      roundsScores: [],
     });
+
+    setRoundsScores([emptyRoundScore]);
 
     await setItemsToStorage({
       [StorageKeys.timerStartTime]: "",
       [StorageKeys.roundsScores]: JSON.stringify([emptyRoundScore]),
       [StorageKeys.players]: JSON.stringify(players),
       [StorageKeys.dealer]: JSON.stringify(dealer),
+      [StorageKeys.maxScore]: String(maxScore),
     });
 
     navigateFunction();
@@ -101,15 +121,19 @@ export function usePlayersSubmit({
     );
   }, [
     dealer,
+    getFromStorage,
     handleCatchError,
     initGame,
     isBackendGameInitEnabled,
+    isPointsTypeEnabled,
+    maxScore,
     mode,
     navigateFunction,
     players,
-    setEmptyRoundScore,
+    setRoundsScores,
     setGameId,
     setItemsToStorage,
+    setPointsType,
     setValidations,
   ]);
 

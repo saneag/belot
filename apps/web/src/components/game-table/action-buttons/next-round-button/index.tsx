@@ -32,6 +32,7 @@ export default function NextRoundButton({ setWinner }: NextRoundButtonProps) {
           <TooltipTrigger
             onClick={() => handleDialogOpen(showDialog)}
             className="rounded-lg px-4 py-1"
+            data-testid="next-round-button"
           >
             <ArrowRight />
           </TooltipTrigger>

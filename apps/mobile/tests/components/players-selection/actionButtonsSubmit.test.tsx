@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-
 import { ToastAndroid } from "react-native";
 
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -33,10 +32,7 @@ vi.mock("@belot/localizations", () => ({
 
 vi.mock("@belot/hooks", () => ({
   useHandlePlayersSelectionResetButton: () => mocks.handleReset,
-  usePlayersSubmit: (args: {
-    navigateFunction: () => void;
-    handleCatchError: () => void;
-  }) => {
+  usePlayersSubmit: (args: { navigateFunction: () => void; handleCatchError: () => void }) => {
     args.navigateFunction();
     args.handleCatchError();
     return {
@@ -78,9 +74,7 @@ vi.mock("@belot/hooks", () => ({
 
 describe("actionButtons submit flow", () => {
   it("opens submit dialog and wires submit handlers", async () => {
-    const { default: ActionButtons } = await import(
-      "@/components/players-selection/actionButtons"
-    );
+    const { default: ActionButtons } = await import("@/components/players-selection/actionButtons");
 
     render(<ActionButtons />);
     fireEvent.click(screen.getByText("Submit"));
@@ -91,9 +85,8 @@ describe("actionButtons submit flow", () => {
 
 describe("DealerSelectDialogContent", () => {
   it("selects dealer on press", async () => {
-    const { default: DealerSelectDialogContent } = await import(
-      "@/components/players-selection/dealerSelectDialogContent"
-    );
+    const { default: DealerSelectDialogContent } =
+      await import("@/components/players-selection/dealerSelectDialogContent");
 
     render(<DealerSelectDialogContent />);
     fireEvent.click(screen.getByText("Bob"));

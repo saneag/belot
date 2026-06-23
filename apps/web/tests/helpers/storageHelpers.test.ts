@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-
 import { StorageKeys } from "@belot/constants";
-import { beforeEach, describe, expect, it } from "vitest";
 
 import { getFromStorage, setMultipleItemsToStorage, setToStorage } from "@/helpers/storageHelpers";
+
+import { beforeEach, describe, expect, it } from "vitest";
 
 describe("getFromStorage", () => {
   beforeEach(() => {

@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 
 import { useLoadGameData, useStartingScreenActionsHelper } from "@belot/hooks";
 
-import { getFromStorage, removeFromStorage } from "@/helpers/storageHelpers";
+import { getFromStorage, removeFromStorage, setToStorage } from "@/helpers/storageHelpers";
 
 interface StartingScreenAction {
   index: number;
@@ -16,6 +16,7 @@ export const useStartingScreenActions = (): StartingScreenAction[] => {
 
   const gameData = useLoadGameData({
     getFromStorage,
+    setToStorage,
     shouldSetData: false,
   });
 

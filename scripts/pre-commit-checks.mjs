@@ -72,6 +72,24 @@ function shouldCheckPackage(file, pkg) {
   return /(?:eslint\.config|tsconfig)/.test(path.posix.basename(file));
 }
 
+function shouldFormatCheck(file) {
+  return /\.(ts|tsx|md|js|mjs|cjs|jsx|json|ya?ml|css)$/.test(file);
+}
+
+function runFormatCheck(stagedFiles) {
+  const filesToCheck = stagedFiles.filter(shouldFormatCheck);
+
+  if (filesToCheck.length === 0) {
+    return;
+  }
+
+  console.log(`Running format check for ${filesToCheck.length} staged file(s)...`);
+  execSync(`pnpm prettier --check ${filesToCheck.map((file) => JSON.stringify(file)).join(" ")}`, {
+    cwd: root,
+    stdio: "inherit",
+  });
+}
+
 function runLintAndTypecheck(stagedFiles) {
   const packages = new Map();
 
@@ -99,4 +117,5 @@ function runLintAndTypecheck(stagedFiles) {
 
 const stagedFiles = getStagedFiles();
 syncLockfile(stagedFiles);
+runFormatCheck(stagedFiles);
 runLintAndTypecheck(stagedFiles);

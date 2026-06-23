@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
+import ConfirmationDialog from "@/components/confirmationDialog";
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-
-import ConfirmationDialog from "@/components/confirmationDialog";
 
 const dialogMocks = vi.hoisted(() => ({
   isVisible: false,

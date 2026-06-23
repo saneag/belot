@@ -1,20 +1,22 @@
 // @vitest-environment jsdom
-
 import { useState } from "react";
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
 
 import { GameMode, type Player, type RoundScore } from "@belot/types";
 
 import PlayerScoreInputWrapper from "@/components/game-table/action-buttons/next-round-button/playerScoreInputWrapper";
 
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: {
-    players: Player[];
-    teams: [];
-    roundsScores: RoundScore[];
-    mode: GameMode;
-  }) => unknown) =>
+  useGameStore: (
+    selector: (state: {
+      players: Player[];
+      teams: [];
+      roundsScores: RoundScore[];
+      mode: GameMode;
+    }) => unknown,
+  ) =>
     selector({
       players: [
         { id: 0, name: "Alice" },
@@ -45,7 +47,10 @@ describe("PlayerScoreInputWrapper", () => {
     function Harness() {
       const [roundScore, setRoundScore] = useState<RoundScore>({
         id: 1,
-        playersScores: [],
+        playersScores: [
+          { id: 0, playerId: 0, score: 0, boltCount: 0, totalScore: 0 },
+          { id: 1, playerId: 1, score: 0, boltCount: 0, totalScore: 0 },
+        ],
         teamsScores: [],
         totalRoundScore: 0,
       });
@@ -55,6 +60,7 @@ describe("PlayerScoreInputWrapper", () => {
           roundScore={roundScore}
           setRoundScore={setRoundScore}
           roundPlayer={{ id: 0, name: "Alice" }}
+          pointsType="micropoints"
         />
       );
     }

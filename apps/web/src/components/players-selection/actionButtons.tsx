@@ -8,7 +8,7 @@ import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
-import { setMultipleItemsToStorage } from "@/helpers/storageHelpers";
+import { getFromStorage, setMultipleItemsToStorage } from "@/helpers/storageHelpers";
 
 import { toast } from "sonner";
 
@@ -20,7 +20,7 @@ function ResetButton() {
   const handleReset = useHandlePlayersSelectionResetButton();
 
   return (
-    <Button variant="outline" onClick={handleReset}>
+    <Button variant="outline" onClick={handleReset} data-testid="players-reset-button">
       {resetMsg}
     </Button>
   );
@@ -39,6 +39,7 @@ function SubmitButton() {
     navigateFunction: () => void navigate("/game-table", { replace: true }),
     setItemsToStorage: setMultipleItemsToStorage,
     getApiBaseUrl,
+    getFromStorage,
     handleCatchError: () => {
       toast.error(messages.serverOffline);
     },
@@ -49,7 +50,7 @@ function SubmitButton() {
       title={messages.playersSubmitDialogTitle}
       content={<DealerSelectDialogContent />}
       renderShowDialog={(showDialog) => (
-        <Button onClick={() => handleOpenDialog(showDialog)}>
+        <Button onClick={() => handleOpenDialog(showDialog)} data-testid="players-submit-button">
           {messages.playersSubmitDialogButton}
         </Button>
       )}

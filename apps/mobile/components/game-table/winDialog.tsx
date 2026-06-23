@@ -2,11 +2,14 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "reac
 
 import { useRouter } from "expo-router";
 
+import { useGameReset } from "@belot/hooks";
 import { useLocalizations } from "@belot/localizations";
 import { useGameStore } from "@belot/store";
 import { GameMode, Player, Team } from "@belot/types";
 
 import ConfirmationDialog from "@/components/confirmationDialog";
+
+import { removeItemsFromStorage } from "@/helpers/storageHelpers";
 
 interface WinDialogProps {
   winner: Player | Team | null;
@@ -25,13 +28,14 @@ export default function WinDialog({ winner, setWinner }: WinDialogProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   const gameMode = useGameStore((state) => state.mode);
-  const reset = useGameStore((state) => state.reset);
+  const markForReset = useGameStore((state) => state.markForReset);
 
-  const handleGameReset = useCallback(() => {
-    reset();
-    setWinner(null);
-    router.replace("/starting-screen");
-  }, [reset, router, setWinner]);
+  const { handleReset: handleGameReset } = useGameReset({
+    navigateFunction: () => router.replace("/starting-screen"),
+    removeItemsFromStorage,
+    afterNavigate: markForReset,
+    onComplete: () => setWinner(null),
+  });
 
   const handleClose = useCallback(() => {
     setIsVisible(false);

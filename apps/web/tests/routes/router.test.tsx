@@ -1,8 +1,11 @@
 // @vitest-environment jsdom
+import { Suspense } from "react";
+
+import { RouterProvider } from "react-router-dom";
+
+import { router } from "@/routes/router";
 
 import { render } from "@testing-library/react";
-import { Suspense } from "react";
-import { RouterProvider } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/App", () => ({ default: () => null }));
@@ -10,8 +13,6 @@ vi.mock("@/pages/game-table", () => ({ default: () => null }));
 vi.mock("@/pages/players-selection", () => ({ default: () => null }));
 vi.mock("@/pages/settings", () => ({ default: () => null }));
 vi.mock("@/pages/starting-page", () => ({ default: () => null }));
-
-import { router } from "@/routes/router";
 
 describe("router", () => {
   it("defines the app shell and page routes", () => {

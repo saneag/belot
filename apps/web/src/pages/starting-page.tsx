@@ -18,7 +18,11 @@ export default function StartingPage() {
       </div>
       <div className="flex flex-col gap-3">
         {actions.map((action) => (
-          <Button key={action.index} onClick={action.onPress}>
+          <Button
+            key={action.index}
+            onClick={action.onPress}
+            data-testid={`starting-page-button-${action.index}`}
+          >
             {action.label}
           </Button>
         ))}

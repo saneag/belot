@@ -1,7 +1,6 @@
-import path from "node:path";
-
 import shared, { coverageSourceExclude } from "@belot/vitest-config";
 
+import path from "node:path";
 import { defineConfig, mergeConfig } from "vitest/config";
 
 export default mergeConfig(

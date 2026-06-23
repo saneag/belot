@@ -1,12 +1,11 @@
 // @vitest-environment jsdom
-
-import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, it, vi } from "vitest";
 
 import WinDialog from "@/components/game-table/winDialog";
 
-const reset = vi.fn();
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 const navigateMock = vi.fn();
 const storeMocks = vi.hoisted(() => ({
   mode: "classic",
@@ -21,8 +20,8 @@ vi.mock("react-router-dom", async (importOriginal) => {
 });
 
 vi.mock("@belot/store", () => ({
-  useGameStore: (selector: (state: { mode: typeof storeMocks.mode; reset: typeof reset }) => unknown) =>
-    selector({ mode: storeMocks.mode, reset }),
+  useGameStore: (selector: (state: { mode: typeof storeMocks.mode }) => unknown) =>
+    selector({ mode: storeMocks.mode }),
 }));
 
 vi.mock("@belot/localizations", async (importOriginal) => {
@@ -36,6 +35,25 @@ vi.mock("@belot/localizations", async (importOriginal) => {
     }),
   };
 });
+
+vi.mock("@belot/hooks", () => ({
+  useGameReset: ({
+    navigateFunction,
+    onComplete,
+  }: {
+    navigateFunction: () => void;
+    onComplete?: () => void;
+  }) => ({
+    handleReset: () => {
+      navigateFunction();
+      onComplete?.();
+    },
+  }),
+}));
+
+vi.mock("@/helpers/storageHelpers", () => ({
+  removeItemsFromStorage: vi.fn(),
+}));
 
 vi.mock("@/components/confirmationDialog", () => ({
   default: ({
@@ -69,17 +87,18 @@ describe("WinDialog", () => {
 
   it("shows winner dialog and resets game on confirm", () => {
     storeMocks.mode = "classic";
+    const setWinner = vi.fn();
 
     render(
       <MemoryRouter>
-        <WinDialog winner={{ id: 0, name: "Alice" }} setWinner={vi.fn()} />
+        <WinDialog winner={{ id: 0, name: "Alice" }} setWinner={setWinner} />
       </MemoryRouter>,
     );
 
     expect(screen.getByText("Player wins")).toBeTruthy();
     screen.getByRole("button", { name: "Reset" }).click();
 
-    expect(reset).toHaveBeenCalled();
+    expect(setWinner).toHaveBeenCalledWith(null);
     expect(navigateMock).toHaveBeenCalledWith("/");
   });
 

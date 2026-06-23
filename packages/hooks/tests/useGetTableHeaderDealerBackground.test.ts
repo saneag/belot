@@ -19,9 +19,8 @@ describe("useGetTableHeaderDealerBackground", () => {
   });
 
   it("returns dealer color for matching column index", async () => {
-    const { useGetTableHeaderDealerBackground } = await import(
-      "../src/useGetTableHeaderDealerBackground"
-    );
+    const { useGetTableHeaderDealerBackground } =
+      await import("../src/useGetTableHeaderDealerBackground");
     const { getDealerBackground } = useGetTableHeaderDealerBackground({
       columnsCount: 2,
       color: "red",
@@ -34,9 +33,8 @@ describe("useGetTableHeaderDealerBackground", () => {
   it("uses dealer id 0 when dealer is null", async () => {
     mocks.dealer = null as unknown as { id: number; name: string };
 
-    const { useGetTableHeaderDealerBackground } = await import(
-      "../src/useGetTableHeaderDealerBackground"
-    );
+    const { useGetTableHeaderDealerBackground } =
+      await import("../src/useGetTableHeaderDealerBackground");
     const { getDealerBackground } = useGetTableHeaderDealerBackground({
       columnsCount: 3,
       color: "blue",
