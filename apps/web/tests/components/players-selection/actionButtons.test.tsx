@@ -6,13 +6,23 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 const handleReset = vi.fn();
 const handleOpenDialog = vi.fn();
 const handleSubmit = vi.fn();
+const navigateMock = vi.hoisted(() => vi.fn());
+const playersSubmitProps = vi.hoisted(() => ({
+  current: null as null | {
+    navigateFunction: () => void;
+    handleCatchError: () => void;
+  },
+}));
 
 vi.mock("@belot/hooks", () => ({
   useHandlePlayersSelectionResetButton: () => handleReset,
-  usePlayersSubmit: () => ({
-    handleOpenDialog,
-    handleSubmit,
-  }),
+  usePlayersSubmit: (props: { navigateFunction: () => void; handleCatchError: () => void }) => {
+    playersSubmitProps.current = props;
+    return {
+      handleOpenDialog,
+      handleSubmit,
+    };
+  },
 }));
 
 vi.mock("@belot/localizations", () => ({
@@ -28,7 +38,7 @@ vi.mock("react-router-dom", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-router-dom")>();
   return {
     ...actual,
-    useNavigate: () => vi.fn(),
+    useNavigate: () => navigateMock,
   };
 });
 
@@ -78,5 +88,14 @@ describe("ActionButtons", () => {
     screen.getAllByRole("button", { name: "Confirm submit" })[0]?.click();
 
     expect(handleSubmit).toHaveBeenCalled();
+  });
+
+  it("passes navigation and error callbacks to players submit hook", () => {
+    render(<ActionButtons />);
+
+    playersSubmitProps.current?.navigateFunction();
+    playersSubmitProps.current?.handleCatchError();
+
+    expect(navigateMock).toHaveBeenCalledWith("/game-table", { replace: true });
   });
 });

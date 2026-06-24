@@ -1,6 +1,6 @@
 import ConfirmationDialog from "@/components/confirmationDialog";
 
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 const dialogMocks = vi.hoisted(() => ({
@@ -46,6 +46,9 @@ describe("ConfirmationDialog", () => {
     expect(screen.getByText("Are you sure?")).toBeTruthy();
     expect(screen.getByText("Confirm")).toBeTruthy();
     expect(screen.getByText("Cancel")).toBeTruthy();
+
+    fireEvent.click(screen.getByText("Open"));
+    expect(dialogMocks.showDialog).toHaveBeenCalled();
   });
 
   it("calls dialog handlers and supports asChild layout", () => {
@@ -84,6 +87,22 @@ describe("ConfirmationDialog", () => {
     );
 
     expect(screen.queryByRole("button", { name: "Confirm" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeTruthy();
+  });
+
+  it("supports confirm as the primary action", () => {
+    dialogMocks.isVisible = true;
+
+    render(
+      <ConfirmationDialog
+        title="Submit"
+        content="Submit game?"
+        primaryButton="confirm"
+        renderShowDialog={() => <button type="button">Submit</button>}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Confirm" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Cancel" })).toBeTruthy();
   });
 });
