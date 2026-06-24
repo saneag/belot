@@ -12,18 +12,21 @@ vi.mock("@belot/localizations", () => ({
 
 describe("PlayerScoreInput", () => {
   it("updates score on input change", () => {
-    const setRoundScore = vi.fn();
+    const prevRoundScore = {
+      id: 0,
+      playersScores: [],
+      teamsScores: [],
+      totalRoundScore: 162,
+      roundPlayer: { id: 0, name: "Alice" },
+    };
+    const setRoundScore = vi.fn().mockImplementation((cb: unknown) => {
+      if (typeof cb === "function") cb(prevRoundScore);
+    });
 
     render(
       <PlayerScoreInput
         opponent={{ id: 0, playerId: 1, score: 0, boltCount: 0, totalScore: 0 }}
-        roundScore={{
-          id: 0,
-          playersScores: [],
-          teamsScores: [],
-          totalRoundScore: 162,
-          roundPlayer: { id: 0, name: "Alice" },
-        }}
+        roundScore={prevRoundScore}
         setRoundScore={setRoundScore}
         gameMode={GameMode.classic}
         players={[

@@ -22,6 +22,14 @@ const mocks = vi.hoisted(() => ({
   gameMode: "classic" as "classic" | "teams",
 }));
 
+vi.mock("@belot/hooks", () => ({
+  useSyncPlayerScoreInput: () => {},
+  usePointsTypeSelection: ({ onChange }: { onChange: (value: string) => void }) => ({
+    handleChange: onChange,
+    getOptionLabel: (key: string) => key,
+  }),
+}));
+
 vi.mock("@belot/localizations", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@belot/localizations")>();
 
@@ -91,7 +99,6 @@ describe("next-round-button components", () => {
   });
 
   it("RoundScoreSelect updates round score", () => {
-    const setRoundScore = vi.fn();
     const roundScore: RoundScore = {
       id: 0,
       playersScores: [],
@@ -99,6 +106,9 @@ describe("next-round-button components", () => {
       totalRoundScore: 0,
       roundPlayer: null,
     };
+    const setRoundScore = vi.fn().mockImplementation((cb: unknown) => {
+      if (typeof cb === "function") cb(roundScore);
+    });
 
     render(
       <RoundScoreSelect
@@ -183,5 +193,53 @@ describe("next-round-button components", () => {
     );
 
     expect(document.querySelectorAll("input").length).toBeGreaterThan(0);
+  });
+
+  it("PlayerScoreInputWrapper renders team inputs in teams mode", () => {
+    mocks.gameMode = "teams";
+    render(
+      <PlayerScoreInputWrapper
+        roundPlayer={mocks.players[0]}
+        roundScore={{
+          id: 0,
+          playersScores: [],
+          teamsScores: [
+            { id: 0, teamId: 0, score: 0, boltCount: 0, totalScore: 0 },
+            { id: 1, teamId: 1, score: 0, boltCount: 0, totalScore: 0 },
+          ],
+          totalRoundScore: 162,
+          roundPlayer: mocks.players[0],
+        }}
+        setRoundScore={vi.fn()}
+        pointsType="micropoints"
+      />,
+    );
+
+    expect(document.querySelectorAll("input").length).toBeGreaterThan(0);
+  });
+
+  it("ScoreDialogContent shows points type toggle when enabled", () => {
+    render(
+      <ScoreDialogContent
+        roundPlayer={mocks.players[0]}
+        setRoundPlayer={vi.fn()}
+        roundScore={{
+          id: 0,
+          playersScores: [
+            { id: 0, playerId: 0, score: 0, boltCount: 0, totalScore: 0 },
+            { id: 1, playerId: 1, score: 0, boltCount: 0, totalScore: 0 },
+          ],
+          teamsScores: [],
+          totalRoundScore: 162,
+          roundPlayer: mocks.players[0],
+        }}
+        setRoundScore={vi.fn()}
+        dialogPointsType="micropoints"
+        onDialogPointsTypeChange={vi.fn()}
+        isPointsTypeEnabled={true}
+      />,
+    );
+
+    expect(screen.getByText("settings.points.type.micropoints")).toBeTruthy();
   });
 });
