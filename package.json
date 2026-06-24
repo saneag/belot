@@ -27,6 +27,12 @@
   "devDependencies": {
     "@belot/vitest-config": "workspace:*",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@types/superagent": "*",
+    "@types/supertest": "*",
+    "@types/whatwg-url": "*",
     "@vitest/coverage-v8": "catalog:",
     "husky": "^9.1.7",
     "prettier": "^3.8.4",
