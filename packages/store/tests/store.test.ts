@@ -1,4 +1,4 @@
-import { DEFAULT_ROUND_POINTS } from "@belot/constants";
+import { DEFAULT_ROUND_POINTS, POINTS_TYPE } from "@belot/constants";
 import { GameMode, type Player, type PlayerScore, type RoundScore } from "@belot/types";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -34,6 +34,14 @@ describe("gameStore", () => {
         expect(store.getState().gameId).toBe("game-1");
         store.getState().setGameId(null);
         expect(store.getState().gameId).toBeNull();
+      });
+
+      it("updates points type and max score", () => {
+        store.getState().setPointsType(POINTS_TYPE[1].id);
+        store.getState().setMaxScore(151);
+
+        expect(store.getState().pointsType).toBe(POINTS_TYPE[1].id);
+        expect(store.getState().maxScore).toBe(151);
       });
     });
 
@@ -221,6 +229,24 @@ describe("gameStore", () => {
         expect(store.getState().roundsScores[1].totalRoundScore).toBe(5);
       });
 
+      it("skipRound falls back to micropoints when pointsType is missing", () => {
+        store.getState().setEmptyPlayersNames(3);
+        const row0 = baseRoundScore({
+          id: 0,
+          playersScores: [
+            basePlayerScore({ id: 0, playerId: 0 }),
+            basePlayerScore({ id: 1, playerId: 1 }),
+            basePlayerScore({ id: 2, playerId: 2 }),
+          ],
+          totalRoundScore: 44,
+        });
+        store.setState({ roundsScores: [row0], pointsType: undefined });
+
+        store.getState().skipRound();
+
+        expect(store.getState().roundsScores[0].totalRoundScore).toBe(4);
+      });
+
       it("skipRound copies totalRoundScore from the previous completed round", () => {
         store.getState().setEmptyPlayersNames(3);
         const completedRound = baseRoundScore({
@@ -337,6 +363,11 @@ describe("gameStore", () => {
     });
 
     describe("reset", () => {
+      it("marks the store for reset", () => {
+        store.getState().markForReset();
+        expect(store.getState().pendingReset).toBe(true);
+      });
+
       it("clears players, rounds, dealer, and teams but keeps game slice fields", () => {
         store.getState().setGameId("keep-me");
         store.getState().setEmptyPlayersNames(3);

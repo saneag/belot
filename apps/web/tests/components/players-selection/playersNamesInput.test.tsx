@@ -1,7 +1,7 @@
 import PlayersNamesInput from "@/components/players-selection/playersNamesInput";
 
-import { fireEvent, render } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 const handlePlayerNameChange = vi.fn();
 
@@ -26,11 +26,25 @@ vi.mock("@/components/players-selection/inputErrors", () => ({
 }));
 
 describe("PlayersNamesInput", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("clears the player name when the clear icon is clicked", () => {
     const { container } = render(<PlayersNamesInput player={{ id: 0, name: "Alice" }} />);
 
     fireEvent.click(container.querySelector(".cursor-pointer")!);
 
     expect(handlePlayerNameChange).toHaveBeenCalledWith("");
+  });
+
+  it("updates the player name from input changes", () => {
+    render(<PlayersNamesInput player={{ id: 0, name: "Alice" }} />);
+
+    fireEvent.change(screen.getByTestId("players-names-input-0"), {
+      target: { value: "Ada" },
+    });
+
+    expect(handlePlayerNameChange).toHaveBeenCalledWith("Ada");
   });
 });

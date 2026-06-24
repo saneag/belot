@@ -185,6 +185,48 @@ describe("prepareStates", () => {
   });
 
   describe("repairRoundScoreScores", () => {
+    it("fills missing player scores for a pending round", () => {
+      const roundsScores: RoundScore[] = [
+        baseRoundScore({
+          id: 0,
+          playersScores: [
+            basePlayerScore({ id: 0, playerId: 1, totalScore: 40 }),
+            basePlayerScore({ id: 1, playerId: 2, totalScore: 30 }),
+          ],
+          totalRoundScore: DEFAULT_ROUND_POINTS,
+        }),
+        baseRoundScore({ id: 1, playersScores: [], totalRoundScore: DEFAULT_ROUND_POINTS }),
+      ];
+
+      const repaired = repairRoundScoreScores(roundsScores[1], {
+        mode: GameMode.classic,
+        players: mockPlayers,
+        roundsScores,
+      });
+
+      expect(repaired.playersScores).toEqual([
+        { id: 0, playerId: 1, score: 0, boltCount: 0, totalScore: 40 },
+        { id: 1, playerId: 2, score: 0, boltCount: 0, totalScore: 30 },
+      ]);
+    });
+
+    it("keeps existing player and team scores", () => {
+      const roundScore = baseRoundScore({
+        id: 1,
+        playersScores: [basePlayerScore({ id: 0, playerId: 1 })],
+        teamsScores: [baseTeamScore({ id: 0, teamId: 0 })],
+        totalRoundScore: DEFAULT_ROUND_POINTS,
+      });
+
+      expect(
+        repairRoundScoreScores(roundScore, {
+          mode: GameMode.teams,
+          players: mockPlayers,
+          roundsScores: [roundScore],
+        }),
+      ).toEqual(roundScore);
+    });
+
     it("fills missing team scores for a pending round", () => {
       const roundsScores: RoundScore[] = [
         baseRoundScore({
@@ -208,6 +250,18 @@ describe("prepareStates", () => {
         { id: 0, teamId: 0, score: 0, boltCount: 0, totalScore: 40 },
         { id: 1, teamId: 1, score: 0, boltCount: 0, totalScore: 30 },
       ]);
+    });
+
+    it("repairs scores when previous rounds are missing from state", () => {
+      const repaired = repairRoundScoreScores(
+        baseRoundScore({ id: 0, playersScores: [], totalRoundScore: DEFAULT_ROUND_POINTS }),
+        {
+          mode: GameMode.classic,
+          players: mockPlayers,
+        },
+      );
+
+      expect(repaired.playersScores).toHaveLength(mockPlayers.length);
     });
   });
 

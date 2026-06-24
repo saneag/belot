@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { type ReactElement, Suspense } from "react";
 
 import { RouterProvider } from "react-router-dom";
 
@@ -40,5 +40,32 @@ describe("router", () => {
     );
 
     expect(router.state.location.pathname).toBe("/");
+  });
+
+  it("preloads lazy route components", async () => {
+    const lazyElements = router.routes[0]?.children
+      ?.map((route) => route.element)
+      .filter((element): element is ReactElement => Boolean(element));
+
+    await Promise.all(
+      lazyElements?.map(async (element) => {
+        const lazyType = element.type as unknown as {
+          _init: (payload: unknown) => Promise<unknown>;
+          _payload: unknown;
+        };
+
+        try {
+          return await lazyType._init(lazyType._payload);
+        } catch (thrown) {
+          if (thrown instanceof Promise) {
+            return await (thrown as Promise<unknown>);
+          }
+
+          throw thrown;
+        }
+      }) ?? [],
+    );
+
+    expect(lazyElements).toHaveLength(5);
   });
 });
