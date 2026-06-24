@@ -9,7 +9,8 @@ const appBuildGradlePath = path.join(androidDir, "app", "build.gradle");
 const isWindows = process.platform === "win32";
 const gradlew = isWindows ? "gradlew.bat" : "./gradlew";
 
-const WINDOWS_ENTRY_FIX_MARKER = 'extraPackagerArgs = ["--entry-file", entryFilePath.replace("\\\\", "/")]';
+const WINDOWS_ENTRY_FIX_MARKER =
+  'extraPackagerArgs = ["--entry-file", entryFilePath.replace("\\\\", "/")]';
 
 function ensureWindowsEntryFileOverride() {
   if (!isWindows || !fs.existsSync(appBuildGradlePath)) {
@@ -33,7 +34,7 @@ function ensureWindowsEntryFileOverride() {
     "    entryFile = file(entryFilePath)",
     "    if (isWindows) {",
     "        // Expo monorepo Metro root on Windows can make generated relative entry paths invalid.",
-    "        extraPackagerArgs = [\"--entry-file\", entryFilePath.replace(\"\\\\\", \"/\")]",
+    '        extraPackagerArgs = ["--entry-file", entryFilePath.replace("\\\\", "/")]',
     "    }",
   ].join("\n");
 
@@ -52,9 +53,7 @@ if (!env.NODE_ENV && tasks.some((task) => task.toLowerCase().includes("release")
   env.NODE_ENV = "production";
 }
 
-const hasArchitectureOverride = tasks.some((task) =>
-  task.includes("reactNativeArchitectures"),
-);
+const hasArchitectureOverride = tasks.some((task) => task.includes("reactNativeArchitectures"));
 const gradleArgs = hasArchitectureOverride
   ? tasks
   : [...tasks, "-PreactNativeArchitectures=arm64-v8a,x86_64"];
