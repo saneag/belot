@@ -2,8 +2,8 @@ import { GameMode } from "@belot/types";
 
 import PointCells from "@/components/game-table/pointCells";
 
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@belot/hooks", () => ({
   useEffectivePointsType: () => "micropoints",
@@ -22,6 +22,10 @@ vi.mock("@belot/utils/src", async (importOriginal) => {
 });
 
 describe("PointCells", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("renders player scores in classic mode", () => {
     render(
       <table>
@@ -92,5 +96,27 @@ describe("PointCells", () => {
 
     expect(screen.getAllByText("5").length).toBeGreaterThan(0);
     expect(screen.getByText("0")).toBeTruthy();
+  });
+
+  it("does not render current score text when score is zero", () => {
+    render(
+      <table>
+        <tbody>
+          <tr>
+            <PointCells
+              gameMode={GameMode.classic}
+              roundScore={{
+                id: 0,
+                playersScores: [{ id: 0, playerId: 0, score: 0, boltCount: 0, totalScore: 7 }],
+                teamsScores: [],
+                totalRoundScore: 0,
+              }}
+            />
+          </tr>
+        </tbody>
+      </table>,
+    );
+
+    expect(screen.queryByTestId("current-round-score-0")).toBeNull();
   });
 });

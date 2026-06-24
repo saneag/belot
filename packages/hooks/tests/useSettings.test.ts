@@ -71,6 +71,20 @@ describe("useSettings", () => {
     expect(mocks.settingsRef.current).toEqual(storedSettings);
   });
 
+  it("does not update settings when stored settings match current state", async () => {
+    mocks.getFromStorage.mockResolvedValue(JSON.stringify({ pointsType: POINTS_TYPE[0].id }));
+
+    const { useSettings } = await import("../src/useSettings");
+    const { getSettingsFromLocalStorage } = useSettings({
+      getFromStorage: mocks.getFromStorage,
+      setToStorage: mocks.setToStorage,
+    });
+
+    await getSettingsFromLocalStorage();
+
+    expect(mocks.setSettings).not.toHaveBeenCalled();
+  });
+
   it("ignores stale storage responses", async () => {
     let resolveFirst: (value: string) => void = () => undefined;
     mocks.getFromStorage
@@ -124,5 +138,17 @@ describe("useSettings", () => {
       StorageKeys.settings,
       JSON.stringify({ pointsType: POINTS_TYPE[1].id }),
     );
+  });
+
+  it("skips persisting unchanged settings", async () => {
+    const { useSettings } = await import("../src/useSettings");
+    const { setSettings } = useSettings({
+      getFromStorage: mocks.getFromStorage,
+      setToStorage: mocks.setToStorage,
+    });
+
+    await setSettings({ pointsType: POINTS_TYPE[0].id });
+
+    expect(mocks.setToStorage).not.toHaveBeenCalled();
   });
 });

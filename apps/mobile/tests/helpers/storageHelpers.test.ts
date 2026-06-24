@@ -4,6 +4,7 @@ import {
   convertToObject,
   getFromStorage,
   removeFromStorage,
+  removeItemsFromStorage,
   setMultipleItemsToStorage,
   setToStorage,
 } from "@/helpers/storageHelpers";
@@ -14,6 +15,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 describe("storageHelpers", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(AsyncStorage).multiRemove = vi.fn().mockResolvedValue(undefined);
   });
 
   it("setToStorage calls AsyncStorage.setItem", async () => {
@@ -41,5 +43,10 @@ describe("storageHelpers", () => {
   it("removeFromStorage calls AsyncStorage.removeItem", async () => {
     await removeFromStorage(StorageKeys.theme);
     expect(AsyncStorage.removeItem).toHaveBeenCalledWith(StorageKeys.theme);
+  });
+
+  it("removeItemsFromStorage calls AsyncStorage.multiRemove", async () => {
+    await removeItemsFromStorage([StorageKeys.theme, StorageKeys.dealer]);
+    expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([StorageKeys.theme, StorageKeys.dealer]);
   });
 });

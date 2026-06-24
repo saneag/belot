@@ -3,10 +3,17 @@ import { MemoryRouter } from "react-router-dom";
 import Header from "@/components/game-table/header";
 
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 const handleReset = vi.fn();
 const setShowDialog = vi.fn();
+const blockerReset = vi.fn();
+const headerMocks = vi.hoisted(() => ({
+  showDialog: false,
+  blockerState: "unblocked",
+  gameResetProps: null as null | { navigateFunction: () => void },
+  timeTrackerProps: null as null | { isVisible: () => boolean },
+}));
 
 vi.mock("react-router-dom", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-router-dom")>();
@@ -18,15 +25,21 @@ vi.mock("react-router-dom", async (importOriginal) => {
 
 vi.mock("@belot/components", () => ({
   CurrentDealer: () => <div>Current dealer</div>,
-  TimeTracker: () => <div>Time tracker</div>,
+  TimeTracker: (props: { isVisible: () => boolean }) => {
+    headerMocks.timeTrackerProps = props;
+    return <div>Time tracker</div>;
+  },
 }));
 
 vi.mock("@belot/hooks", () => ({
-  useHandleGameReset: () => ({
-    showDialog: false,
-    setShowDialog,
-    handleReset,
-  }),
+  useHandleGameReset: (props: { navigateFunction: () => void }) => {
+    headerMocks.gameResetProps = props;
+    return {
+      showDialog: headerMocks.showDialog,
+      setShowDialog,
+      handleReset,
+    };
+  },
 }));
 
 vi.mock("@belot/localizations", async (importOriginal) => {
@@ -45,8 +58,8 @@ vi.mock("@/hooks/usePreventBackPress", () => ({
   usePreventBackPress: (callback: () => void) => {
     callback();
     return {
-      state: "unblocked",
-      reset: vi.fn(),
+      state: headerMocks.blockerState,
+      reset: blockerReset,
       proceed: vi.fn(),
       location: undefined,
     };
@@ -71,6 +84,12 @@ vi.mock("@/components/confirmationDialog", () => ({
 }));
 
 describe("Header", () => {
+  afterEach(() => {
+    headerMocks.showDialog = false;
+    headerMocks.blockerState = "unblocked";
+    vi.clearAllMocks();
+  });
+
   it("renders dealer, timer, reset dialog, and opens dialog from back button", () => {
     render(
       <MemoryRouter>
@@ -86,5 +105,29 @@ describe("Header", () => {
     screen.getByRole("button", { name: "Confirm reset" }).click();
 
     expect(handleReset).toHaveBeenCalled();
+  });
+
+  it("passes navigation and visibility callbacks", () => {
+    render(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>,
+    );
+
+    headerMocks.gameResetProps?.navigateFunction();
+    expect(headerMocks.timeTrackerProps?.isVisible()).toBe(true);
+  });
+
+  it("resets the router blocker after a blocked back action is dismissed", () => {
+    headerMocks.showDialog = false;
+    headerMocks.blockerState = "blocked";
+
+    render(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>,
+    );
+
+    expect(blockerReset).toHaveBeenCalled();
   });
 });

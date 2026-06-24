@@ -109,6 +109,33 @@ describe("useHandleSkipRound", () => {
     expect(storedDealer).toEqual(players[1]);
   });
 
+  it("uses the previous completed round total when one exists", async () => {
+    mocks.setState({
+      players,
+      teams: [],
+      mode: GameMode.classic,
+      roundsScores: [
+        { ...initialRound, id: 0, totalRoundScore: 77 },
+        { ...initialRound, id: 1, totalRoundScore: 162 },
+      ],
+      dealer: players[0],
+      skipRound: mocks.skipRound,
+    });
+    const setItemsToStorage = vi.fn();
+    const { useHandleSkipRound } = await import("../src/useHandleSkipRound");
+
+    await useHandleSkipRound({ setItemsToStorage })();
+
+    const storageItems = setItemsToStorage.mock.calls[0]?.[0] as Partial<
+      Record<StorageKeys, string>
+    >;
+    const storedRoundsScores = JSON.parse(
+      storageItems[StorageKeys.roundsScores] ?? "[]",
+    ) as RoundScore[];
+    expect(storedRoundsScores[1].totalRoundScore).toBe(77);
+    expect(storedRoundsScores[2].totalRoundScore).toBe(77);
+  });
+
   it("returns early when there are no rounds to skip", async () => {
     mocks.setState({
       players,

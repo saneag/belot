@@ -10,6 +10,9 @@ jobs:
   ci:
     name: Typecheck, lint, format, build, test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -39,8 +42,21 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Unit tests
-        run: pnpm test
+      - name: Unit tests with coverage
+        run: pnpm test:coverage
+
+      - name: Generate coverage summary
+        run: node scripts/coverage-summary.mjs --output .coverage/coverage-summary.md
+
+      - name: Add coverage to job summary
+        run: cat .coverage/coverage-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment coverage on pull request
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: coverage
+          path: .coverage/coverage-summary.md
 
       - name: Install Playwright browsers
         run: pnpm --filter @belot/e2e install-browsers:ci
