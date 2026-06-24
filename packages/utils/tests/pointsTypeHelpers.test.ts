@@ -6,17 +6,24 @@ import { describe, expect, it, vi } from "vitest";
 import {
   applyDefaultTotalRoundScore,
   convertRoundScoreForPointsType,
+  convertScoreValueForPointsType,
+  finalizeTotalRoundScore,
   formatRoundPointPresetForDisplay,
   formatTotalRoundScoreForDisplay,
+  getBoltLimitDisplayPenalty,
+  getBoltTotalPenalty,
+  getDefaultPointsType,
   getDefaultRoundPoints,
   getLimitOfRoundPoints,
   getNextWinningStep,
   getRoundPointsPresets,
   getScoreInputMaxLength,
   getWinPoints,
+  getZeroScorePenalty,
   isMicropointsMode,
   normalizeSkippedRoundScore,
   parseStoredPointsType,
+  roundScoreValue,
 } from "../src/pointsTypeHelpers";
 
 describe("pointsTypeHelpers", () => {
@@ -37,6 +44,12 @@ describe("pointsTypeHelpers", () => {
 
     it("returns 16 for points", () => {
       expect(getDefaultRoundPoints(POINTS_TYPE[1].id)).toBe(16);
+    });
+  });
+
+  describe("getDefaultPointsType", () => {
+    it("returns the first configured points type", () => {
+      expect(getDefaultPointsType()).toBe(POINTS_TYPE[0].id);
     });
   });
 
@@ -137,6 +150,17 @@ describe("pointsTypeHelpers", () => {
     it("returns point values as-is in points mode", () => {
       expect(formatTotalRoundScoreForDisplay(16, POINTS_TYPE[1].id)).toBe(16);
     });
+
+    it("keeps non-three-digit micropoint values unchanged", () => {
+      expect(formatTotalRoundScoreForDisplay(20, POINTS_TYPE[0].id)).toBe(20);
+    });
+  });
+
+  describe("finalizeTotalRoundScore", () => {
+    it("converts micropoints to points and keeps points unchanged", () => {
+      expect(finalizeTotalRoundScore(162, POINTS_TYPE[0].id)).toBe(16);
+      expect(finalizeTotalRoundScore(16, POINTS_TYPE[1].id)).toBe(16);
+    });
   });
 
   describe("normalizeSkippedRoundScore", () => {
@@ -150,6 +174,20 @@ describe("pointsTypeHelpers", () => {
   });
 
   describe("convertRoundScoreForPointsType", () => {
+    it("returns the original round score when points types match", () => {
+      const roundScore = {
+        id: 0,
+        roundPlayer: null,
+        totalRoundScore: 16,
+        playersScores: [],
+        teamsScores: [],
+      };
+
+      expect(convertRoundScoreForPointsType(roundScore, POINTS_TYPE[1].id, POINTS_TYPE[1].id)).toBe(
+        roundScore,
+      );
+    });
+
     it("converts micropoint round scores to points", () => {
       expect(
         convertRoundScoreForPointsType(
@@ -175,17 +213,70 @@ describe("pointsTypeHelpers", () => {
           {
             id: 0,
             roundPlayer: null,
-            totalRoundScore: 16,
+            totalRoundScore: 99,
             playersScores: [{ id: 0, playerId: 0, score: 5, boltCount: 0, totalScore: 0 }],
-            teamsScores: [],
+            teamsScores: [{ id: 0, teamId: 0, score: 3, boltCount: 0, totalScore: 0 }],
           },
           POINTS_TYPE[1].id,
           POINTS_TYPE[0].id,
         ),
       ).toMatchObject({
-        totalRoundScore: 162,
+        totalRoundScore: LIMIT_OF_ROUND_POINTS.positive,
         playersScores: [{ score: 50 }],
+        teamsScores: [{ score: 30 }],
       });
+    });
+
+    it("clamps converted negative point totals", () => {
+      expect(
+        convertRoundScoreForPointsType(
+          {
+            id: 0,
+            roundPlayer: null,
+            totalRoundScore: -99,
+            playersScores: [],
+            teamsScores: [],
+          },
+          POINTS_TYPE[1].id,
+          POINTS_TYPE[0].id,
+        ).totalRoundScore,
+      ).toBe(LIMIT_OF_ROUND_POINTS.negative);
+    });
+
+    it("keeps converted totals when they are within limits", () => {
+      expect(
+        convertRoundScoreForPointsType(
+          {
+            id: 0,
+            roundPlayer: null,
+            totalRoundScore: 200,
+            playersScores: [],
+            teamsScores: [],
+          },
+          POINTS_TYPE[0].id,
+          POINTS_TYPE[1].id,
+        ).totalRoundScore,
+      ).toBe(20);
+    });
+  });
+
+  describe("penalties and score conversion", () => {
+    it("returns point-type specific penalties", () => {
+      expect(getZeroScorePenalty(POINTS_TYPE[0].id)).toBe(-10);
+      expect(getZeroScorePenalty(POINTS_TYPE[1].id)).toBe(-1);
+      expect(getBoltTotalPenalty(POINTS_TYPE[0].id)).toBe(-10);
+      expect(getBoltTotalPenalty(POINTS_TYPE[1].id)).toBe(-1);
+      expect(getBoltLimitDisplayPenalty(POINTS_TYPE[0].id)).toBe("-10");
+      expect(getBoltLimitDisplayPenalty(POINTS_TYPE[1].id)).toBe("-1");
+    });
+
+    it("rounds score values only in micropoints mode", () => {
+      expect(roundScoreValue(46, POINTS_TYPE[0].id)).toBe(5);
+      expect(roundScoreValue(46, POINTS_TYPE[1].id)).toBe(46);
+    });
+
+    it("returns the original value when converting between matching points types", () => {
+      expect(convertScoreValueForPointsType(42, POINTS_TYPE[0].id, POINTS_TYPE[0].id)).toBe(42);
     });
   });
 
@@ -200,6 +291,15 @@ describe("pointsTypeHelpers", () => {
       const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
       expect(parseStoredPointsType(JSON.stringify({ pointsType: "invalid" }))).toBeNull();
+      expect(warnSpy).toHaveBeenCalled();
+
+      warnSpy.mockRestore();
+    });
+
+    it("returns null and warns when points type is missing", () => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+      expect(parseStoredPointsType(JSON.stringify({}))).toBeNull();
       expect(warnSpy).toHaveBeenCalled();
 
       warnSpy.mockRestore();

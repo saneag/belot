@@ -4,8 +4,8 @@ import { GameMode, type RoundScore, type Team } from "@belot/types";
 
 import PlayerScoreInput from "@/components/game-table/action-buttons/next-round-button/playerScoreInput";
 
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@belot/localizations", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@belot/localizations")>();
@@ -16,6 +16,10 @@ vi.mock("@belot/localizations", async (importOriginal) => {
 });
 
 describe("PlayerScoreInput", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("renders opponent score input and handles changes", () => {
     function Harness() {
       const [roundScore, setRoundScore] = useState<RoundScore>({
@@ -79,5 +83,27 @@ describe("PlayerScoreInput", () => {
     render(<Harness />);
 
     expect(screen.getByText("Score for Team B")).toBeTruthy();
+  });
+
+  it("uses zero when there is no matching score row", () => {
+    render(
+      <PlayerScoreInput
+        opponent={{ id: 99, playerId: 99, score: 0, boltCount: 0, totalScore: 0 }}
+        roundScore={{
+          id: 0,
+          playersScores: [],
+          teamsScores: [],
+          totalRoundScore: 0,
+        }}
+        setRoundScore={vi.fn()}
+        gameMode={GameMode.classic}
+        players={[]}
+        teams={[]}
+        roundPlayer={null}
+        pointsType="micropoints"
+      />,
+    );
+
+    expect(screen.getByRole<HTMLInputElement>("spinbutton").value).toBe("0");
   });
 });

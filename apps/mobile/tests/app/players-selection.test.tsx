@@ -29,6 +29,18 @@ vi.mock("@belot/components", () => ({
   PlayersSelectionContextProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
+const featureMocks = vi.hoisted(() => ({
+  maxScoreEnabled: false,
+}));
+
+vi.mock("@belot/hooks", () => ({
+  useFeatureToggle: () => featureMocks.maxScoreEnabled,
+}));
+
+vi.mock("@/components/players-selection/maxScoreSelector", () => ({
+  default: () => <div>MaxScoreSelector</div>,
+}));
+
 describe("PlayersSelectionScreen", () => {
   it("renders players selection layout", async () => {
     const { default: PlayersSelectionScreen } = await import("@/app/players-selection");
@@ -39,5 +51,14 @@ describe("PlayersSelectionScreen", () => {
     expect(screen.getByText("PlayersNames")).toBeTruthy();
     expect(screen.getByText("ActionButtons")).toBeTruthy();
     expect(screen.getByText("LoadPrevious")).toBeTruthy();
+  });
+
+  it("renders max score selector when enabled", async () => {
+    featureMocks.maxScoreEnabled = true;
+    const { default: PlayersSelectionScreen } = await import("@/app/players-selection");
+
+    render(<PlayersSelectionScreen />);
+
+    expect(screen.getByText("MaxScoreSelector")).toBeTruthy();
   });
 });

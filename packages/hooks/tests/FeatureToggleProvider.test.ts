@@ -68,13 +68,18 @@ describe("FeatureToggleProvider", () => {
         toggles: FeatureToggleState;
         setFeatureToggle: unknown;
       };
-      children: string;
+      children: (string | ReactElement)[];
     }>;
 
     expect(element.type).toBe(FeatureToggleContext.Provider);
     expect(element.props.value.toggles).toEqual(FEATURE_TOGGLES);
     expect(element.props.value.setFeatureToggle).toEqual(expect.any(Function));
     expect(element.props.children).toEqual(expect.arrayContaining(["child"]));
+
+    const syncElement = element.props.children.find(
+      (child: unknown) => typeof child === "object" && child !== null,
+    ) as ReactElement;
+    expect((syncElement.type as (props: Record<string, unknown>) => null)({})).toBeNull();
   });
 
   it("syncs centralized toggles on mount", async () => {
@@ -100,6 +105,11 @@ describe("FeatureToggleProvider", () => {
     const updateToggles = mocks.setToggles.mock.calls[0]?.[0] as (
       current: FeatureToggleState,
     ) => FeatureToggleState;
+    const currentToggles = {
+      ...FEATURE_TOGGLES,
+      "settings-screen": true,
+    };
+    expect(updateToggles(currentToggles)).toBe(currentToggles);
     expect(
       updateToggles({
         ...FEATURE_TOGGLES,
