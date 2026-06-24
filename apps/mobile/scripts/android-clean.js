@@ -1,15 +1,13 @@
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const appRoot = path.resolve(__dirname, "..");
 const androidRoot = path.resolve(appRoot, "android");
 const isWindows = process.platform === "win32";
-const targets = ["build", "app/.cxx", "app/build"].map((p) =>
-  path.join(androidRoot, p),
-);
+const targets = ["build", "app/.cxx", "app/build"].map((p) => path.join(androidRoot, p));
 
 function stopGradleDaemons() {
   const gradlew = isWindows ? "gradlew.bat" : "./gradlew";
@@ -38,9 +36,7 @@ function removePath(target) {
       return true;
     } catch (error) {
       const isLockError =
-        error?.code === "EBUSY" ||
-        error?.code === "EPERM" ||
-        error?.code === "ENOTEMPTY";
+        error?.code === "EBUSY" || error?.code === "EPERM" || error?.code === "ENOTEMPTY";
       const isLastAttempt = attempt === maxAttempts;
 
       if (!isLockError || isLastAttempt) {
