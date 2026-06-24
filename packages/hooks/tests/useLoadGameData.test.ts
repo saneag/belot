@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => {
   const setDealer = vi.fn();
   const setRoundsScores = vi.fn();
   const setPointsType = vi.fn();
+  const setMaxScore = vi.fn();
   const stateHolders: { value: unknown }[] = [];
   const hasFetchedRef = { current: false };
 
@@ -18,6 +19,7 @@ const mocks = vi.hoisted(() => {
     setDealer,
     setRoundsScores,
     setPointsType,
+    setMaxScore,
     stateHolders,
     hasFetchedRef,
     storeState: {
@@ -61,15 +63,18 @@ vi.mock("@belot/store", () => ({
         players: mocks.storeState.players,
         dealer: mocks.storeState.dealer,
         roundsScores: mocks.storeState.roundsScores,
+        maxScore: 101,
         pointsType: "micropoints",
         setPlayers: mocks.setPlayers,
         setDealer: mocks.setDealer,
         setRoundsScores: mocks.setRoundsScores,
         setPointsType: mocks.setPointsType,
+        setMaxScore: mocks.setMaxScore,
       }),
     {
       getState: () => ({
         pointsType: "micropoints",
+        maxScore: 101,
       }),
     },
   ),
@@ -110,6 +115,73 @@ describe("useLoadGameData", () => {
         JSON.stringify({ pointsType: "micropoints" }),
       );
     });
+
+    expect(mocks.setPointsType).not.toHaveBeenCalled();
+  });
+
+  it("restores a stored max score when it differs from the store", async () => {
+    const storage: Partial<Record<StorageKeys, string>> = {
+      [StorageKeys.maxScore]: "151",
+    };
+
+    const { useLoadGameData } = await import("../src/useLoadGameData");
+
+    useLoadGameData({
+      getFromStorage: (key) => storage[key] ?? null,
+    });
+
+    await vi.waitFor(() => {
+      expect(mocks.setMaxScore).toHaveBeenCalledWith(151);
+    });
+  });
+
+  it("ignores invalid and unchanged stored max scores", async () => {
+    const { useLoadGameData } = await import("../src/useLoadGameData");
+
+    useLoadGameData({
+      getFromStorage: (key) => (key === StorageKeys.maxScore ? "not-a-number" : null),
+    });
+    await Promise.resolve();
+    expect(mocks.setMaxScore).not.toHaveBeenCalled();
+
+    mocks.hasFetchedRef.current = false;
+    useLoadGameData({
+      getFromStorage: (key) => (key === StorageKeys.maxScore ? "101" : null),
+    });
+    await Promise.resolve();
+    expect(mocks.setMaxScore).not.toHaveBeenCalled();
+  });
+
+  it("restores a valid stored points type when the feature is enabled", async () => {
+    vi.mocked(useIsPointsTypeEnabled).mockReturnValue(true);
+    const storage: Partial<Record<StorageKeys, string>> = {
+      [StorageKeys.settings]: JSON.stringify({ pointsType: "points" }),
+    };
+
+    const { useLoadGameData } = await import("../src/useLoadGameData");
+
+    useLoadGameData({
+      getFromStorage: (key) => storage[key] ?? null,
+    });
+
+    await vi.waitFor(() => {
+      expect(mocks.setPointsType).toHaveBeenCalledWith("points");
+    });
+  });
+
+  it("does not update points type when stored value matches the store", async () => {
+    vi.mocked(useIsPointsTypeEnabled).mockReturnValue(true);
+    const storage: Partial<Record<StorageKeys, string>> = {
+      [StorageKeys.settings]: JSON.stringify({ pointsType: "micropoints" }),
+    };
+
+    const { useLoadGameData } = await import("../src/useLoadGameData");
+
+    useLoadGameData({
+      getFromStorage: (key) => storage[key] ?? null,
+    });
+
+    await Promise.resolve();
 
     expect(mocks.setPointsType).not.toHaveBeenCalled();
   });
@@ -206,6 +278,60 @@ describe("useLoadGameData", () => {
     expect(mocks.setPlayers).not.toHaveBeenCalled();
     expect(mocks.setDealer).not.toHaveBeenCalled();
     expect(mocks.setRoundsScores).not.toHaveBeenCalled();
+  });
+
+  it("loads empty stored rounds without repairing a pending round", async () => {
+    const players: Player[] = [{ id: 0, name: "A" }];
+    const dealer = players[0];
+    const storage: Partial<Record<StorageKeys, string>> = {
+      [StorageKeys.players]: JSON.stringify(players),
+      [StorageKeys.dealer]: JSON.stringify(dealer),
+      [StorageKeys.roundsScores]: JSON.stringify([]),
+    };
+
+    const { useLoadGameData } = await import("../src/useLoadGameData");
+    useLoadGameData({
+      getFromStorage: (key) => storage[key] ?? null,
+    });
+
+    await vi.waitFor(() => {
+      expect(mocks.setRoundsScores).toHaveBeenCalledWith([]);
+    });
+  });
+
+  it("repairs stored team rounds for four-player games", async () => {
+    const players: Player[] = [
+      { id: 0, name: "A" },
+      { id: 1, name: "B" },
+      { id: 2, name: "C" },
+      { id: 3, name: "D" },
+    ];
+    const dealer = players[0];
+    const roundsScores: RoundScore[] = [
+      {
+        id: 0,
+        playersScores: [],
+        teamsScores: [],
+        totalRoundScore: 162,
+        roundPlayer: null,
+      },
+    ];
+    const storage: Partial<Record<StorageKeys, string>> = {
+      [StorageKeys.players]: JSON.stringify(players),
+      [StorageKeys.dealer]: JSON.stringify(dealer),
+      [StorageKeys.roundsScores]: JSON.stringify(roundsScores),
+    };
+
+    const { useLoadGameData } = await import("../src/useLoadGameData");
+    useLoadGameData({
+      getFromStorage: (key) => storage[key] ?? null,
+    });
+
+    await vi.waitFor(() => {
+      expect(mocks.setRoundsScores).toHaveBeenCalled();
+    });
+    const restoredRounds = mocks.setRoundsScores.mock.calls[0]?.[0] as RoundScore[];
+    expect(restoredRounds[0].teamsScores).toHaveLength(2);
   });
 
   it("does not fetch when storage values are incomplete", async () => {

@@ -3,16 +3,24 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   push: vi.fn(),
+  pendingReset: false,
+  reset: vi.fn(),
+  transitionCallback: null as null | (() => void),
 }));
 
 vi.mock("expo-router", () => ({
-  useNavigation: () => ({ addListener: vi.fn(() => vi.fn()) }),
+  useNavigation: () => ({
+    addListener: vi.fn((_event: string, callback: () => void) => {
+      mocks.transitionCallback = callback;
+      return vi.fn();
+    }),
+  }),
   useRouter: () => ({ push: mocks.push }),
 }));
 
 vi.mock("@belot/store", () => ({
   useGameStore: (selector: (state: { pendingReset: boolean; reset: () => void }) => unknown) =>
-    selector({ pendingReset: false, reset: vi.fn() }),
+    selector({ pendingReset: mocks.pendingReset, reset: mocks.reset }),
 }));
 
 vi.mock("@/hooks/starting-screen/useStartingScreenActions", () => ({
@@ -26,6 +34,8 @@ describe("StartingScreen", () => {
   afterEach(() => {
     document.body.innerHTML = "";
     vi.clearAllMocks();
+    mocks.pendingReset = false;
+    mocks.transitionCallback = null;
   });
 
   it("renders title and action buttons", async () => {
@@ -45,5 +55,22 @@ describe("StartingScreen", () => {
     fireEvent.doubleClick(screen.getByText("Belot-score"));
 
     expect(mocks.push).toHaveBeenCalledWith("/dev-tools");
+  });
+
+  it("does not reset after transition when reset is not pending", async () => {
+    const { default: StartingScreen } = await import("@/app/starting-screen");
+    render(<StartingScreen />);
+    mocks.transitionCallback?.();
+    expect(mocks.reset).not.toHaveBeenCalled();
+  });
+
+  it("resets after transition when reset is pending", async () => {
+    mocks.pendingReset = true;
+    const { default: StartingScreen } = await import("@/app/starting-screen");
+
+    render(<StartingScreen />);
+    mocks.transitionCallback?.();
+
+    expect(mocks.reset).toHaveBeenCalled();
   });
 });

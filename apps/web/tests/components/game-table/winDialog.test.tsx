@@ -58,15 +58,18 @@ vi.mock("@/components/confirmationDialog", () => ({
   default: ({
     title,
     content,
+    renderShowDialog,
     confirmationCallback,
     cancelCallback,
   }: {
     title: React.ReactNode;
     content: React.ReactNode;
+    renderShowDialog: () => React.ReactNode;
     confirmationCallback: () => void;
     cancelCallback: () => void;
   }) => (
     <div>
+      {renderShowDialog()}
       <h2>{title}</h2>
       <p>{content}</p>
       <button type="button" onClick={confirmationCallback}>
@@ -112,5 +115,15 @@ describe("WinDialog", () => {
 
     expect(screen.getByText("Team wins")).toBeTruthy();
     screen.getByRole("button", { name: "Close" }).click();
+  });
+
+  it("stays hidden when there is no winner", () => {
+    render(
+      <MemoryRouter>
+        <WinDialog winner={null} setWinner={vi.fn()} />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText("Congratulations")).toBeTruthy();
   });
 });

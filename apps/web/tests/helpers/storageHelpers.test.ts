@@ -3,6 +3,7 @@ import { StorageKeys } from "@belot/constants";
 import {
   getFromStorage,
   removeFromStorage,
+  removeItemsFromStorage,
   setMultipleItemsToStorage,
   setToStorage,
 } from "@/helpers/storageHelpers";
@@ -74,5 +75,21 @@ describe("removeFromStorage", () => {
     removeFromStorage(StorageKeys.theme);
 
     expect(localStorage.getItem(StorageKeys.theme)).toBeNull();
+  });
+});
+
+describe("removeItemsFromStorage", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("removes multiple stored values", () => {
+    localStorage.setItem(StorageKeys.theme, "dark");
+    localStorage.setItem(StorageKeys.dealer, "Alice");
+
+    removeItemsFromStorage([StorageKeys.theme, StorageKeys.dealer]);
+
+    expect(localStorage.getItem(StorageKeys.theme)).toBeNull();
+    expect(localStorage.getItem(StorageKeys.dealer)).toBeNull();
   });
 });

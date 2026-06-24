@@ -59,8 +59,20 @@ describe("featureToggleUtils", () => {
     });
   });
 
+  it("returns null for empty, malformed, and non-object stored toggle values", () => {
+    expect(parseStoredFeatureToggles(null)).toBeNull();
+    expect(parseStoredFeatureToggles("not-json")).toBeNull();
+    expect(parseStoredFeatureToggles("false")).toBeNull();
+  });
+
   it("detects equivalent feature toggle states", () => {
     expect(areFeatureToggleStatesEqual(FEATURE_TOGGLES, { ...FEATURE_TOGGLES })).toBe(true);
+    expect(
+      areFeatureToggleStatesEqual(FEATURE_TOGGLES, {
+        ...FEATURE_TOGGLES,
+        "settings-screen": !FEATURE_TOGGLES["settings-screen"],
+      }),
+    ).toBe(false);
   });
 
   it("detects when storage is missing newly added feature toggles", () => {
