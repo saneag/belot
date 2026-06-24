@@ -19,6 +19,7 @@ export default defineConfig({
     testTimeout: process.platform === "win32" ? 15_000 : 10_000,
     coverage: {
       provider: "v8",
+      reporter: ["text", "json", "html"],
       include: ["**/*.{ts,tsx}"],
       exclude: [...coverageSourceExclude],
       thresholds: {
