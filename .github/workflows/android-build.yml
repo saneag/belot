@@ -48,7 +48,11 @@ jobs:
 
       - name: Bump Android version
         working-directory: apps/mobile
-        run: pnpm run android:version:bump
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            export VERSION="${GITHUB_REF_NAME#v}"
+          fi
+          pnpm run android:version:bump
 
       - name: Commit Android version bump
         id: version-bump
@@ -63,8 +67,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add apps/mobile/app.json
 
+          VERSION="$(node -p "require('./apps/mobile/app.json').expo.version")"
           VERSION_CODE="$(node -p "require('./apps/mobile/app.json').expo.android.versionCode")"
-          git commit -m "chore(mobile): bump Android version code to ${VERSION_CODE} [skip ci]"
+          git commit -m "chore(mobile): bump version to ${VERSION} (build ${VERSION_CODE}) [skip ci]"
           echo "committed=true" >> "$GITHUB_OUTPUT"
 
       - name: Push Android version bump
