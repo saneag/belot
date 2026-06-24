@@ -30,6 +30,7 @@ const mocks = vi.hoisted(() => {
     setWinner: vi.fn(),
     setToLocalStorage: vi.fn(),
     setGameOverflowCount: vi.fn(),
+    isPointsTypeEnabled: true,
   };
 });
 
@@ -47,7 +48,7 @@ vi.mock("react", () => ({
 }));
 
 vi.mock("../src/usePointsTypeFeature", () => ({
-  useIsPointsTypeEnabled: () => true,
+  useIsPointsTypeEnabled: () => mocks.isPointsTypeEnabled,
 }));
 
 vi.mock("@belot/store", () => ({
@@ -97,6 +98,7 @@ describe("useHandleNextRound", () => {
         roundPlayer: null,
       },
     ];
+    mocks.isPointsTypeEnabled = true;
   });
 
   it("clears round player on cancel", async () => {
@@ -148,6 +150,39 @@ describe("useHandleNextRound", () => {
     handleDialogOpen(showDialog);
 
     expect(showDialog).toHaveBeenCalledOnce();
+  });
+
+  it("converts dialog round score when points type changes", async () => {
+    const { useHandleNextRound } = await import("../src/useHandleNextRound");
+    const { onDialogPointsTypeChange } = useHandleNextRound({
+      setWinner: mocks.setWinner,
+      setToLocalStorage: mocks.setToLocalStorage,
+    });
+
+    onDialogPointsTypeChange("points");
+
+    const roundScoreHolder = mocks.stateHolders[1];
+    expect(roundScoreHolder.value).toMatchObject({
+      totalRoundScore: 16,
+    });
+    expect(mocks.stateHolders[2]?.value).toBe("points");
+  });
+
+  it("does not convert dialog round score when points type feature is disabled", async () => {
+    mocks.isPointsTypeEnabled = false;
+
+    const { useHandleNextRound } = await import("../src/useHandleNextRound");
+    const { onDialogPointsTypeChange } = useHandleNextRound({
+      setWinner: mocks.setWinner,
+      setToLocalStorage: mocks.setToLocalStorage,
+    });
+
+    onDialogPointsTypeChange("micropoints");
+
+    expect(mocks.stateHolders[1]?.value).toMatchObject({
+      totalRoundScore: 162,
+    });
+    expect(mocks.stateHolders[2]?.value).toBe("micropoints");
   });
 
   it("persists next round data when round id matches", async () => {

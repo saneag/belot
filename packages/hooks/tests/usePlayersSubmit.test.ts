@@ -21,9 +21,10 @@ const mocks = vi.hoisted(() => {
     navigateFunction: vi.fn(),
     setItemsToStorage: vi.fn(),
     getApiBaseUrl: vi.fn(() => "https://api.example"),
-    getFromStorage: vi.fn(() => null),
+    getFromStorage: vi.fn<() => string | null>(() => null),
     handleCatchError: vi.fn(),
     mutate: vi.fn(),
+    isPointsTypeEnabled: false,
   };
 });
 
@@ -61,7 +62,7 @@ vi.mock("../src/featureToggles/useFeatureToggle", () => ({
 }));
 
 vi.mock("../src/usePointsTypeFeature", () => ({
-  useIsPointsTypeEnabled: () => false,
+  useIsPointsTypeEnabled: () => mocks.isPointsTypeEnabled,
   useEffectivePointsType: () => "micropoints",
 }));
 
@@ -96,6 +97,8 @@ describe("usePlayersSubmit", () => {
       { id: 1, name: "Bob" },
     ];
     mocks.setItemsToStorage.mockResolvedValue(undefined);
+    mocks.getFromStorage.mockReturnValue(null);
+    mocks.isPointsTypeEnabled = false;
   });
 
   it("blocks dialog open when names are invalid", async () => {
@@ -237,6 +240,42 @@ describe("usePlayersSubmit", () => {
       }),
       expect.any(Object),
     );
+  });
+
+  it("uses stored points type when the points type feature is enabled", async () => {
+    mocks.isPointsTypeEnabled = true;
+    mocks.getFromStorage.mockReturnValue(JSON.stringify({ pointsType: "points" }));
+
+    const { usePlayersSubmit } = await import("../src/usePlayersSubmit");
+    const { handleSubmit } = usePlayersSubmit({
+      navigateFunction: mocks.navigateFunction,
+      setItemsToStorage: mocks.setItemsToStorage,
+      getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
+      handleCatchError: mocks.handleCatchError,
+    });
+
+    await handleSubmit();
+
+    expect(mocks.setPointsType).toHaveBeenCalledWith("points");
+  });
+
+  it("uses default points type when feature is enabled without stored settings", async () => {
+    mocks.isPointsTypeEnabled = true;
+    mocks.getFromStorage.mockReturnValue(null);
+
+    const { usePlayersSubmit } = await import("../src/usePlayersSubmit");
+    const { handleSubmit } = usePlayersSubmit({
+      navigateFunction: mocks.navigateFunction,
+      setItemsToStorage: mocks.setItemsToStorage,
+      getApiBaseUrl: mocks.getApiBaseUrl,
+      getFromStorage: mocks.getFromStorage,
+      handleCatchError: mocks.handleCatchError,
+    });
+
+    await handleSubmit();
+
+    expect(mocks.setPointsType).toHaveBeenCalledWith("micropoints");
   });
 
   it("skips backend game init when feature toggle is disabled", async () => {

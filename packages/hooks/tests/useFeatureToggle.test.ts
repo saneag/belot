@@ -65,6 +65,14 @@ describe("useFeatureToggle", () => {
     expect(useFeatureToggle("settings-screen")).toBe(false);
   });
 
+  it("returns false when a known toggle is absent from context state", async () => {
+    mocks.toggles = {} as { "settings-screen": boolean };
+
+    const { useFeatureToggle } = await import("../src/featureToggles/useFeatureToggle");
+
+    expect(useFeatureToggle("settings-screen")).toBe(false);
+  });
+
   it("returns the full context from useFeatureToggles", async () => {
     const { useFeatureToggles } = await import("../src/featureToggles/useFeatureToggle");
 
