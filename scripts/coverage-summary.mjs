@@ -174,3 +174,8 @@ if (!existsSync(outputDir)) {
 
 writeFileSync(resolvedOutputPath, markdown);
 console.log(markdown);
+
+if (statusFor(totals) === "WARN") {
+  console.error(`Coverage below ${threshold.toFixed(0)}% threshold. Failing CI.`);
+  process.exit(1);
+}
