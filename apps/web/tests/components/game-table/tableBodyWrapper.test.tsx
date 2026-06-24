@@ -23,6 +23,8 @@ vi.mock("@belot/store", () => ({
         { id: 0, playersScores: [], teamsScores: [] },
         { id: 1, playersScores: [], teamsScores: [] },
         { id: 2, playersScores: [], teamsScores: [] },
+        { id: 3, playersScores: [], teamsScores: [] },
+        { id: 4, playersScores: [], teamsScores: [] },
       ],
       mode: GameMode.classic,
     }),
@@ -42,6 +44,7 @@ describe("TableBodyWrapper", () => {
       </table>,
     );
 
-    expect(container.querySelectorAll("tr").length).toBe(2);
+    expect(container.querySelectorAll("tr").length).toBe(4);
+    expect(container.querySelector(".border-t-2\\!")).toBeTruthy();
   });
 });
