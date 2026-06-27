@@ -74,6 +74,12 @@ describe("feature toggles router", () => {
     expect(mocks.setFeatureToggle).not.toHaveBeenCalled();
   });
 
+  it("PUT /:name rejects missing enabled values", async () => {
+    const response = await request(app).put("/feature-toggles/settings-screen").send({});
+
+    expect(response.status).toBe(400);
+    expect(mocks.setFeatureToggle).not.toHaveBeenCalled();
+  });
   it("PUT /:name rejects unknown body fields", async () => {
     const response = await request(app).put("/feature-toggles/settings-screen").send({
       enabled: true,
