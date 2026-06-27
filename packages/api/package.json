@@ -29,6 +29,7 @@
     "vitest": "catalog:"
   },
   "dependencies": {
+    "@belot/constants": "workspace:*",
     "@belot/types": "workspace:*"
   }
 }
