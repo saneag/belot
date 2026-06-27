@@ -17,8 +17,8 @@ describe("devToolsAuthUtils", () => {
   });
 
   it("validates the dev tools password", () => {
-    expect(isDevToolsPasswordValid("123321")).toBe(true);
-    expect(isDevToolsPasswordValid("wrong")).toBe(false);
+    expect(isDevToolsPasswordValid("123321", "123321")).toBe(true);
+    expect(isDevToolsPasswordValid("wrong", "123321")).toBe(false);
   });
 
   it("calculates remaining lock time", () => {
