@@ -1,20 +1,24 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 
-import { type FeatureToggleName, StorageKeys } from "@belot/constants";
+import { FEATURE_TOGGLES, type FeatureToggleName, StorageKeys } from "@belot/constants";
 
 import { useSyncPointsTypeFeature } from "../usePointsTypeFeature";
 import {
   type FeatureToggleState,
+  type PartialFeatureToggleState,
   areFeatureToggleStatesEqual,
+  arePartialFeatureToggleStatesEqual,
   getDefaultFeatureToggleState,
+  getEffectiveFeatureToggleState,
   serializeFeatureToggleState,
   syncFeatureTogglesToStorage,
 } from "./featureToggleUtils";
 import { FeatureToggleContext } from "./toggleContext";
-import type { FeatureToggleStorage } from "./types";
+import type { FeatureToggleStorage, RemoteFeatureToggleFetcher } from "./types";
 
 interface FeatureToggleProviderProps extends FeatureToggleStorage {
   children: ReactNode;
+  fetchRemoteFeatureToggles?: RemoteFeatureToggleFetcher;
 }
 
 const PointsTypeFeatureSync = () => {
@@ -24,22 +28,32 @@ const PointsTypeFeatureSync = () => {
 
 export const FeatureToggleProvider = ({
   children,
+  fetchRemoteFeatureToggles,
   getFromStorage,
   setToStorage,
 }: FeatureToggleProviderProps) => {
   const [toggles, setToggles] = useState<FeatureToggleState>(getDefaultFeatureToggleState);
+  const [remoteToggles, setRemoteToggles] = useState<PartialFeatureToggleState>({});
+  const [localOverrides, setLocalOverrides] = useState<PartialFeatureToggleState>({});
 
   const setFeatureToggle = useCallback(
     async (name: FeatureToggleName, enabled: boolean) => {
-      const nextToggles = {
-        ...toggles,
-        [name]: enabled,
-      };
+      const nextOverrides = { ...localOverrides };
+      const remoteValue = remoteToggles[name] ?? FEATURE_TOGGLES[name];
 
+      if (enabled === remoteValue) {
+        delete nextOverrides[name];
+      } else {
+        nextOverrides[name] = enabled;
+      }
+
+      const nextToggles = getEffectiveFeatureToggleState(remoteToggles, nextOverrides);
+
+      setLocalOverrides(nextOverrides);
       setToggles(nextToggles);
-      await setToStorage(StorageKeys.featureToggles, serializeFeatureToggleState(nextToggles));
+      await setToStorage(StorageKeys.featureToggles, serializeFeatureToggleState(nextOverrides));
     },
-    [setToStorage, toggles],
+    [localOverrides, remoteToggles, setToStorage],
   );
 
   const contextValue = useMemo(
@@ -54,14 +68,25 @@ export const FeatureToggleProvider = ({
     let isCancelled = false;
 
     const initializeFeatureToggles = async () => {
-      const syncedToggles = await syncFeatureTogglesToStorage({
+      const synced = await syncFeatureTogglesToStorage({
+        fetchRemoteFeatureToggles,
         getFromStorage,
         setToStorage,
       });
 
       if (!isCancelled) {
+        setRemoteToggles((current) =>
+          arePartialFeatureToggleStatesEqual(current, synced.remoteToggles)
+            ? current
+            : synced.remoteToggles,
+        );
+        setLocalOverrides((current) =>
+          arePartialFeatureToggleStatesEqual(current, synced.localOverrides)
+            ? current
+            : synced.localOverrides,
+        );
         setToggles((current) =>
-          areFeatureToggleStatesEqual(current, syncedToggles) ? current : syncedToggles,
+          areFeatureToggleStatesEqual(current, synced.toggles) ? current : synced.toggles,
         );
       }
     };
@@ -71,7 +96,7 @@ export const FeatureToggleProvider = ({
     return () => {
       isCancelled = true;
     };
-  }, [getFromStorage, setToStorage]);
+  }, [fetchRemoteFeatureToggles, getFromStorage, setToStorage]);
 
   return (
     <FeatureToggleContext.Provider value={contextValue}>
