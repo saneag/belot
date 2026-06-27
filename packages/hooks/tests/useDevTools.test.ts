@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   submitPassword: vi.fn(),
   setFeatureToggle: vi.fn(),
   toggles: { "settings-screen": true },
+  useDevToolsAuth: vi.fn(),
 }));
 
 vi.mock("react", () => ({
@@ -36,24 +37,35 @@ vi.mock("../src/featureToggles/useFeatureToggle", () => ({
 }));
 
 vi.mock("../src/useDevToolsAuth", () => ({
-  useDevToolsAuth: () => ({
-    status: "locked",
-    remainingBlockMs: 60_000,
-    submitPassword: mocks.submitPassword,
-  }),
+  useDevToolsAuth: (options: unknown) => {
+    mocks.useDevToolsAuth(options);
+    return {
+      status: "locked",
+      remainingBlockMs: 60_000,
+      submitPassword: mocks.submitPassword,
+    };
+  },
 }));
 
 describe("useDevTools", () => {
   it("submits the current password and clears the input", async () => {
     const { useDevTools } = await import("../src/useDevTools");
+    const getFromStorage = vi.fn();
+    const setToStorage = vi.fn();
 
     const result = useDevTools({
-      getFromStorage: vi.fn(),
-      setToStorage: vi.fn(),
+      devToolsPassword: "expected-password",
+      getFromStorage,
+      setToStorage,
     });
 
     result.handleSubmit();
 
+    expect(mocks.useDevToolsAuth).toHaveBeenCalledWith({
+      devToolsPassword: "expected-password",
+      getFromStorage,
+      setToStorage,
+    });
     expect(result.isLocked).toBe(true);
     expect(result.toggles).toEqual(mocks.toggles);
     expect(result.setFeatureToggle).toBe(mocks.setFeatureToggle);

@@ -1,4 +1,3 @@
-export const DEV_TOOLS_PASSWORD = "123321";
 export const MAX_DEV_TOOLS_FAILED_ATTEMPTS = 5;
 export const DEV_TOOLS_BLOCK_DURATION_MS = 5 * 60 * 1000;
 
@@ -19,8 +18,8 @@ export const getDevToolsRemainingBlockMs = (blockedAt: number | null, now: numbe
   return Math.max(blockedAt + DEV_TOOLS_BLOCK_DURATION_MS - now, 0);
 };
 
-export const isDevToolsPasswordValid = (password: string): boolean =>
-  password === DEV_TOOLS_PASSWORD;
+export const isDevToolsPasswordValid = (password: string, expectedPassword: string): boolean =>
+  password === expectedPassword;
 
 export const getNextDevToolsFailedAttemptState = (
   failedAttempts: number,
