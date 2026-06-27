@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 
+import { getDevToolsPassword } from "@/helpers/devToolsPassword";
 import { getFromStorage, setToStorage } from "@/helpers/storageHelpers";
 
 const FEATURE_TOGGLE_NAMES = Object.keys(FEATURE_TOGGLES) as FeatureToggleName[];
@@ -25,7 +26,7 @@ export default function DevToolsScreen() {
     setFeatureToggle,
     setPassword,
     toggles,
-  } = useDevTools({ getFromStorage, setToStorage });
+  } = useDevTools({ devToolsPassword: getDevToolsPassword(), getFromStorage, setToStorage });
 
   return (
     <VStack className="relative w-full flex-1">

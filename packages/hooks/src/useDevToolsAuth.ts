@@ -24,10 +24,15 @@ export interface UseDevToolsAuthResult {
   submitPassword: (password: string) => Promise<void>;
 }
 
+interface UseDevToolsAuthOptions extends FeatureToggleStorage {
+  devToolsPassword: string;
+}
+
 export const useDevToolsAuth = ({
+  devToolsPassword,
   getFromStorage,
   setToStorage,
-}: FeatureToggleStorage): UseDevToolsAuthResult => {
+}: UseDevToolsAuthOptions): UseDevToolsAuthResult => {
   const messages = useLocalizations([
     { key: "dev.tools.locked.error" },
     { key: "dev.tools.too.many.attempts.error" },
@@ -105,7 +110,7 @@ export const useDevToolsAuth = ({
         return;
       }
 
-      if (isDevToolsPasswordValid(password)) {
+      if (isDevToolsPasswordValid(password, devToolsPassword)) {
         setIsAuthenticated(true);
         setFailedAttempts(0);
         setBlockedAt(null);
@@ -141,6 +146,7 @@ export const useDevToolsAuth = ({
     },
     [
       blockedAt,
+      devToolsPassword,
       failedAttempts,
       messages.devToolsIncorrectPasswordError,
       messages.devToolsLockedError,

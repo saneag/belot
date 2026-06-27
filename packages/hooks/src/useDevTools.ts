@@ -7,12 +7,20 @@ import type { FeatureToggleStorage } from "./featureToggles/types";
 import { useFeatureToggles } from "./featureToggles/useFeatureToggle";
 import { useDevToolsAuth } from "./useDevToolsAuth";
 
-export const useDevTools = ({ getFromStorage, setToStorage }: FeatureToggleStorage) => {
+interface UseDevToolsOptions extends FeatureToggleStorage {
+  devToolsPassword: string;
+}
+
+export const useDevTools = ({
+  devToolsPassword,
+  getFromStorage,
+  setToStorage,
+}: UseDevToolsOptions) => {
   const [password, setPassword] = useState("");
 
   const { toggles, setFeatureToggle } = useFeatureToggles();
 
-  const auth = useDevToolsAuth({ getFromStorage, setToStorage });
+  const auth = useDevToolsAuth({ devToolsPassword, getFromStorage, setToStorage });
   const isLocked = auth.status === "locked";
 
   const messages = useLocalizations([

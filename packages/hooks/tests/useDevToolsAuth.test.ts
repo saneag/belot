@@ -68,6 +68,7 @@ describe("useDevToolsAuth", () => {
     const { useDevToolsAuth } = await import("../src/useDevToolsAuth");
 
     useDevToolsAuth({
+      devToolsPassword: "123321",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
     });
@@ -87,6 +88,7 @@ describe("useDevToolsAuth", () => {
     const { useDevToolsAuth } = await import("../src/useDevToolsAuth");
 
     useDevToolsAuth({
+      devToolsPassword: "123321",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
     });
@@ -104,6 +106,7 @@ describe("useDevToolsAuth", () => {
     const { useDevToolsAuth } = await import("../src/useDevToolsAuth");
 
     useDevToolsAuth({
+      devToolsPassword: "123321",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
     });
@@ -126,6 +129,7 @@ describe("useDevToolsAuth", () => {
     const { useDevToolsAuth } = await import("../src/useDevToolsAuth");
 
     useDevToolsAuth({
+      devToolsPassword: "123321",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
     });
@@ -150,6 +154,7 @@ describe("useDevToolsAuth", () => {
     const { useDevToolsAuth } = await import("../src/useDevToolsAuth");
 
     useDevToolsAuth({
+      devToolsPassword: "123321",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
     });
@@ -167,6 +172,7 @@ describe("useDevToolsAuth", () => {
 
     const { useDevToolsAuth } = await import("../src/useDevToolsAuth");
     const auth = useDevToolsAuth({
+      devToolsPassword: "123321",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
     });
@@ -186,6 +192,7 @@ describe("useDevToolsAuth", () => {
 
     const { useDevToolsAuth } = await import("../src/useDevToolsAuth");
     const auth = useDevToolsAuth({
+      devToolsPassword: "123321",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
     });
@@ -203,6 +210,7 @@ describe("useDevToolsAuth", () => {
 
     const { useDevToolsAuth } = await import("../src/useDevToolsAuth");
     const auth = useDevToolsAuth({
+      devToolsPassword: "123321",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
     });
@@ -224,6 +232,7 @@ describe("useDevToolsAuth", () => {
 
     const { useDevToolsAuth } = await import("../src/useDevToolsAuth");
     const auth = useDevToolsAuth({
+      devToolsPassword: "123321",
       getFromStorage: mocks.getFromStorage,
       setToStorage: mocks.setToStorage,
     });

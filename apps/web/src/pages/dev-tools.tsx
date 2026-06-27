@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
+import { getDevToolsPassword } from "@/helpers/devToolsPassword";
 import { getFromStorage, setToStorage } from "@/helpers/storageHelpers";
 
 const FEATURE_TOGGLE_NAMES = Object.keys(FEATURE_TOGGLES) as FeatureToggleName[];
@@ -23,7 +24,7 @@ export default function DevToolsPage() {
     setFeatureToggle,
     setPassword,
     toggles,
-  } = useDevTools({ getFromStorage, setToStorage });
+  } = useDevTools({ devToolsPassword: getDevToolsPassword(), getFromStorage, setToStorage });
 
   return (
     <div className="relative flex h-full flex-col items-center">
