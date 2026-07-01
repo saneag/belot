@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express, { type Application } from "express";
 
+import { corsMiddleware } from "./config/cors-middleware.js";
 import setupDb from "./config/setup-db.js";
 import setupRoutes from "./routes/index.js";
 
@@ -8,6 +9,7 @@ dotenv.config();
 
 const app: Application = express();
 
+app.use(corsMiddleware);
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
@@ -29,7 +31,10 @@ async function startServer() {
 }
 
 if (!process.env.VITEST) {
-  void startServer();
+  startServer().catch((error: unknown) => {
+    console.error("Failed to start server", error);
+    process.exit(1);
+  });
 }
 
 export { app, startServer };

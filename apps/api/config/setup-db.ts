@@ -1,7 +1,4 @@
-import dotenv from "dotenv";
 import mongoose from "mongoose";
-
-dotenv.config();
 
 export default async function setupDb(): Promise<void> {
   if (!process.env.MONGODB_URI) {
