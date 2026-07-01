@@ -24,7 +24,6 @@
     "@types/supertest": "^6.0.3",
     "eslint": "^9.39.4",
     "supertest": "^7.2.2",
-    "tsx": "^4.22.4",
     "typescript": "^5.9.3",
     "vitest": "catalog:"
   },
@@ -34,6 +33,7 @@
     "express": "^5.2.1",
     "express-validator": "^7.3.2",
     "mongoose": "^9.7.0",
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "tsx": "^4.22.4"
   }
 }
