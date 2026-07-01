@@ -2,7 +2,7 @@ import type { GameMode, Player, RoundScore, Team } from "@belot/types";
 
 import mongoose from "mongoose";
 
-import Game from "../schemas/game-schema";
+import Game from "../schemas/game-schema.js";
 
 export type InitGameInput = {
   players: Player[];

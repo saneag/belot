@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 import express, { type Application } from "express";
 
-import setupDb from "./config/setup-db";
-import setupRoutes from "./routes";
+import setupDb from "./config/setup-db.js";
+import setupRoutes from "./routes/index.js";
 
 dotenv.config();
 

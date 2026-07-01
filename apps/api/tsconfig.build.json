@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  },
+  "include": [
+    "index.ts",
+    "config/**/*.ts",
+    "routes/**/*.ts",
+    "schemas/**/*.ts",
+    "services/**/*.ts",
+    "validators/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist", "tests", "vitest.config.ts"]
+}

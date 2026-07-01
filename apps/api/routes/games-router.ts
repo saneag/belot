@@ -1,7 +1,7 @@
 import { type IRouter, Router } from "express";
 
-import { GameService, type InitGameInput, type UpdateGameInput } from "../services/game-service";
-import { GameValidators } from "../validators/game-validators";
+import { GameService, type InitGameInput, type UpdateGameInput } from "../services/game-service.js";
+import { GameValidators } from "../validators/game-validators.js";
 
 const router: IRouter = Router();
 
