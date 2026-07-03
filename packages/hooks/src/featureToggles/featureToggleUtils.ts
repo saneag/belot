@@ -1,10 +1,19 @@
 import { FEATURE_TOGGLES, type FeatureToggleName, StorageKeys } from "@belot/constants";
 
-import type { FeatureToggleStorage } from "./types";
+import type {
+  FeatureToggleStorage,
+  RemoteFeatureToggleFetcher,
+  RemoteFeatureTogglesResponse,
+} from "./types";
 
 export type FeatureToggleState = Record<FeatureToggleName, boolean>;
+export type PartialFeatureToggleState = Partial<FeatureToggleState>;
 
 const FEATURE_TOGGLE_NAMES = Object.keys(FEATURE_TOGGLES) as FeatureToggleName[];
+const remoteFeatureToggleRequests = new WeakMap<
+  RemoteFeatureToggleFetcher,
+  Promise<RemoteFeatureTogglesResponse>
+>();
 
 export const getDefaultFeatureToggleState = (): FeatureToggleState => ({
   ...FEATURE_TOGGLES,
@@ -19,17 +28,19 @@ export const logUnknownFeatureToggle = (name: string): void => {
   );
 };
 
-export const serializeFeatureToggleState = (state: FeatureToggleState): string =>
+export const serializeFeatureToggleState = (state: PartialFeatureToggleState): string =>
   JSON.stringify(
-    FEATURE_TOGGLE_NAMES.reduce<FeatureToggleState>((serializedState, name) => {
-      serializedState[name] = state[name];
+    FEATURE_TOGGLE_NAMES.reduce<PartialFeatureToggleState>((serializedState, name) => {
+      if (typeof state[name] === "boolean") {
+        serializedState[name] = state[name];
+      }
       return serializedState;
-    }, {} as FeatureToggleState),
+    }, {}),
   );
 
 export const parseStoredFeatureToggles = (
   storedValue: string | null,
-): Partial<FeatureToggleState> | null => {
+): PartialFeatureToggleState | null => {
   if (!storedValue) {
     return null;
   }
@@ -42,7 +53,7 @@ export const parseStoredFeatureToggles = (
     }
 
     const storedRecord = parsed as Record<string, unknown>;
-    const parsedToggles: Partial<FeatureToggleState> = {};
+    const parsedToggles: PartialFeatureToggleState = {};
 
     FEATURE_TOGGLE_NAMES.forEach((name) => {
       const value = storedRecord[name];
@@ -58,36 +69,128 @@ export const parseStoredFeatureToggles = (
   }
 };
 
-export const needsFeatureToggleStorageSync = (storedValue: string | null): boolean => {
-  const storedToggles = parseStoredFeatureToggles(storedValue);
+export const parseRemoteFeatureToggles = (
+  response: RemoteFeatureTogglesResponse,
+): PartialFeatureToggleState => {
+  const remoteToggles: PartialFeatureToggleState = {};
 
-  if (!storedToggles) {
-    return true;
+  if (!Array.isArray(response.toggles)) {
+    return remoteToggles;
   }
 
-  // Only sync when storage is missing a toggle that exists in code (new toggle added)
-  return FEATURE_TOGGLE_NAMES.some((name) => storedToggles[name] === undefined);
+  response.toggles.forEach(({ name, enabled }) => {
+    if (isKnownFeatureToggle(name) && typeof enabled === "boolean") {
+      remoteToggles[name] = enabled;
+    }
+  });
+
+  return remoteToggles;
 };
+
+export const needsFeatureToggleStorageSync = (storedValue: string | null): boolean =>
+  parseStoredFeatureToggles(storedValue) === null;
 
 export const areFeatureToggleStatesEqual = (
   left: FeatureToggleState,
   right: FeatureToggleState,
 ): boolean => FEATURE_TOGGLE_NAMES.every((name) => left[name] === right[name]);
 
+export const arePartialFeatureToggleStatesEqual = (
+  left: PartialFeatureToggleState,
+  right: PartialFeatureToggleState,
+): boolean => FEATURE_TOGGLE_NAMES.every((name) => left[name] === right[name]);
+
+export const getEffectiveFeatureToggleState = (
+  remoteToggles: PartialFeatureToggleState,
+  localOverrides: PartialFeatureToggleState,
+): FeatureToggleState => ({
+  ...getDefaultFeatureToggleState(),
+  ...remoteToggles,
+  ...localOverrides,
+});
+
+export const removeOverridesMatchingRemote = (
+  localOverrides: PartialFeatureToggleState,
+  remoteToggles: PartialFeatureToggleState,
+): PartialFeatureToggleState => {
+  const nextOverrides: PartialFeatureToggleState = {};
+
+  FEATURE_TOGGLE_NAMES.forEach((name) => {
+    const override = localOverrides[name];
+
+    if (typeof override !== "boolean") {
+      return;
+    }
+
+    const remoteValue = remoteToggles[name] ?? FEATURE_TOGGLES[name];
+    if (override !== remoteValue) {
+      nextOverrides[name] = override;
+    }
+  });
+
+  return nextOverrides;
+};
+
+const fetchRemoteFeatureTogglesOnce = (
+  fetchRemoteFeatureToggles: RemoteFeatureToggleFetcher,
+): Promise<RemoteFeatureTogglesResponse> => {
+  const existingRequest = remoteFeatureToggleRequests.get(fetchRemoteFeatureToggles);
+
+  if (existingRequest) {
+    return existingRequest;
+  }
+
+  const request = fetchRemoteFeatureToggles().catch((error: unknown) => {
+    remoteFeatureToggleRequests.delete(fetchRemoteFeatureToggles);
+    throw error;
+  });
+  remoteFeatureToggleRequests.set(fetchRemoteFeatureToggles, request);
+
+  return request;
+};
+
 export const syncFeatureTogglesToStorage = async ({
   getFromStorage,
   setToStorage,
-}: FeatureToggleStorage): Promise<FeatureToggleState> => {
-  const centralizedState = getDefaultFeatureToggleState();
-  const storedValue = await getFromStorage(StorageKeys.featureToggles);
-  const storedToggles = parseStoredFeatureToggles(storedValue) ?? {};
+  fetchRemoteFeatureToggles,
+}: FeatureToggleStorage & {
+  fetchRemoteFeatureToggles?: RemoteFeatureToggleFetcher;
+}): Promise<{
+  toggles: FeatureToggleState;
+  remoteToggles: PartialFeatureToggleState;
+  localOverrides: PartialFeatureToggleState;
+}> => {
+  const [cachedRemoteValue, localOverridesValue] = await Promise.all([
+    getFromStorage(StorageKeys.remoteFeatureToggles),
+    getFromStorage(StorageKeys.featureToggles),
+  ]);
 
-  // Stored values override code defaults; code defaults fill in any missing toggles
-  const mergedState: FeatureToggleState = { ...centralizedState, ...storedToggles };
+  let remoteToggles = parseStoredFeatureToggles(cachedRemoteValue) ?? {};
 
-  if (needsFeatureToggleStorageSync(storedValue)) {
-    await setToStorage(StorageKeys.featureToggles, serializeFeatureToggleState(mergedState));
+  if (fetchRemoteFeatureToggles) {
+    try {
+      remoteToggles = parseRemoteFeatureToggles(
+        await fetchRemoteFeatureTogglesOnce(fetchRemoteFeatureToggles),
+      );
+      await setToStorage(
+        StorageKeys.remoteFeatureToggles,
+        serializeFeatureToggleState(remoteToggles),
+      );
+    } catch {
+      // Cached remote toggles keep the app usable when the endpoint is unavailable.
+    }
   }
 
-  return mergedState;
+  const storedLocalOverrides = parseStoredFeatureToggles(localOverridesValue) ?? {};
+  const localOverrides = removeOverridesMatchingRemote(storedLocalOverrides, remoteToggles);
+
+  if (!arePartialFeatureToggleStatesEqual(storedLocalOverrides, localOverrides)) {
+    await setToStorage(StorageKeys.featureToggles, serializeFeatureToggleState(localOverrides));
+  }
+
+  return {
+    toggles: getEffectiveFeatureToggleState(remoteToggles, localOverrides),
+    remoteToggles,
+    localOverrides,
+  };
 };

@@ -9,6 +9,10 @@ function toPosix(file) {
   return file.replace(/\\/g, "/");
 }
 
+function quoteFiles(files) {
+  return files.map((file) => JSON.stringify(file)).join(" ");
+}
+
 function getStagedFiles() {
   const output = execSync("git diff --cached --name-only --diff-filter=ACMR -z", {
     encoding: "buffer",
@@ -25,7 +29,7 @@ function syncLockfile(stagedFiles) {
   }
 
   console.log("package.json changed — syncing pnpm-lock.yaml...");
-  execSync("pnpm install --lockfile-only", { cwd: root, stdio: "inherit" });
+  execSync("pnpm lockfile:sync", { cwd: root, stdio: "inherit" });
   execSync("git add pnpm-lock.yaml", { cwd: root, stdio: "inherit" });
   console.log("pnpm-lock.yaml updated and staged.");
 }
@@ -62,20 +66,17 @@ function shouldCheckPackage(file, pkg) {
 
   return /(?:eslint\.config|tsconfig)/.test(path.posix.basename(file));
 }
-
 function runFormat(stagedFiles) {
   if (stagedFiles.length === 0) {
     return;
   }
 
-  const quotedFiles = stagedFiles.map((file) => JSON.stringify(file)).join(" ");
-
   console.log(`Formatting ${stagedFiles.length} staged file(s)...`);
-  execSync(`pnpm format:staged ${quotedFiles}`, {
+  execSync(`pnpm format:staged ${quoteFiles(stagedFiles)}`, {
     cwd: root,
     stdio: "inherit",
   });
-  execSync(`git add ${quotedFiles}`, { cwd: root, stdio: "inherit" });
+  execSync(`git add -- ${quoteFiles(stagedFiles)}`, { cwd: root, stdio: "inherit" });
 }
 
 function runLintAndTypecheck(stagedFiles) {
@@ -105,5 +106,6 @@ function runLintAndTypecheck(stagedFiles) {
 
 const stagedFiles = getStagedFiles();
 syncLockfile(stagedFiles);
-runFormat(stagedFiles);
-runLintAndTypecheck(stagedFiles);
+const formattedStagedFiles = getStagedFiles();
+runFormat(formattedStagedFiles);
+runLintAndTypecheck(formattedStagedFiles);

@@ -29,6 +29,7 @@
     "vitest": "catalog:"
   },
   "dependencies": {
+    "@belot/constants": "workspace:*",
     "@belot/types": "workspace:*",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

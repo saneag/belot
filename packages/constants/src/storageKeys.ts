@@ -6,6 +6,7 @@ export enum StorageKeys {
   theme = "theme",
   settings = "settings",
   featureToggles = "featureToggles",
+  remoteFeatureToggles = "remoteFeatureToggles",
   maxScore = "maxScore",
   devToolsFailedAttempts = "devToolsFailedAttempts",
   devToolsBlockedAt = "devToolsBlockedAt",

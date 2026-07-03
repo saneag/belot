@@ -74,6 +74,9 @@ importers:
 
   apps/api:
     dependencies:
+      "@belot/constants":
+        specifier: workspace:*
+        version: link:../../packages/constants
       "@belot/types":
         specifier: workspace:*
         version: link:../../packages/types
@@ -486,6 +489,9 @@ importers:
 
   packages/api:
     dependencies:
+      "@belot/constants":
+        specifier: workspace:*
+        version: link:../constants
       "@belot/types":
         specifier: workspace:*
         version: link:../types

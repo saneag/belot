@@ -4,14 +4,25 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   areFeatureToggleStatesEqual,
+  arePartialFeatureToggleStatesEqual,
   getDefaultFeatureToggleState,
+  getEffectiveFeatureToggleState,
   isKnownFeatureToggle,
   logUnknownFeatureToggle,
   needsFeatureToggleStorageSync,
+  parseRemoteFeatureToggles,
   parseStoredFeatureToggles,
+  removeOverridesMatchingRemote,
   serializeFeatureToggleState,
   syncFeatureTogglesToStorage,
 } from "../src/featureToggles/featureToggleUtils";
+
+const remoteResponse = {
+  toggles: [
+    { name: "settings-screen", enabled: true },
+    { name: "backend-game-init", enabled: false },
+  ],
+};
 
 describe("featureToggleUtils", () => {
   beforeEach(() => {
@@ -38,8 +49,11 @@ describe("featureToggleUtils", () => {
     );
   });
 
-  it("serializes feature toggles using centralized key order", () => {
+  it("serializes feature toggles using centralized key order and omits missing values", () => {
     expect(serializeFeatureToggleState(FEATURE_TOGGLES)).toBe(JSON.stringify(FEATURE_TOGGLES));
+    expect(serializeFeatureToggleState({ "settings-screen": true })).toBe(
+      JSON.stringify({ "settings-screen": true }),
+    );
   });
 
   it("parses only known feature toggles from storage", () => {
@@ -65,6 +79,17 @@ describe("featureToggleUtils", () => {
     expect(parseStoredFeatureToggles("false")).toBeNull();
   });
 
+  it("parses known toggles from remote responses", () => {
+    expect(
+      parseRemoteFeatureToggles({
+        toggles: [
+          { name: "settings-screen", enabled: true },
+          { name: "missing-toggle", enabled: true },
+        ],
+      }),
+    ).toEqual({ "settings-screen": true });
+  });
+
   it("detects equivalent feature toggle states", () => {
     expect(areFeatureToggleStatesEqual(FEATURE_TOGGLES, { ...FEATURE_TOGGLES })).toBe(true);
     expect(
@@ -73,102 +98,155 @@ describe("featureToggleUtils", () => {
         "settings-screen": !FEATURE_TOGGLES["settings-screen"],
       }),
     ).toBe(false);
+    expect(arePartialFeatureToggleStatesEqual({}, {})).toBe(true);
+    expect(arePartialFeatureToggleStatesEqual({ "settings-screen": true }, {})).toBe(false);
   });
 
-  it("detects when storage is missing newly added feature toggles", () => {
+  it("detects malformed override storage", () => {
+    expect(needsFeatureToggleStorageSync("not-json")).toBe(true);
+    expect(needsFeatureToggleStorageSync(JSON.stringify({}))).toBe(false);
+  });
+
+  it("builds effective state from defaults, remote toggles, then local overrides", () => {
     expect(
-      needsFeatureToggleStorageSync(
-        JSON.stringify({
-          "settings-screen": true,
-          "backend-game-init": false,
-        }),
+      getEffectiveFeatureToggleState(
+        { "settings-screen": true, "points-type": true },
+        { "settings-screen": false },
       ),
-    ).toBe(true);
+    ).toEqual({
+      ...FEATURE_TOGGLES,
+      "settings-screen": false,
+      "points-type": true,
+    });
   });
 
-  it("does not trigger sync when stored values differ from centralized defaults", () => {
+  it("removes local overrides that match the current remote value", () => {
     expect(
-      needsFeatureToggleStorageSync(
-        JSON.stringify({
-          ...FEATURE_TOGGLES,
-          "settings-screen": true,
-        }),
+      removeOverridesMatchingRemote(
+        { "settings-screen": true, "points-type": true },
+        { "settings-screen": true, "points-type": false },
       ),
-    ).toBe(false);
+    ).toEqual({ "points-type": true });
   });
 
-  it("skips storage sync when all centralized toggles match storage", () => {
-    expect(needsFeatureToggleStorageSync(JSON.stringify(FEATURE_TOGGLES))).toBe(false);
-  });
-
-  it("syncs centralized toggles to storage", async () => {
+  it("initializes from code defaults when no remote cache or overrides exist", async () => {
     const getFromStorage = vi.fn().mockResolvedValue(null);
     const setToStorage = vi.fn().mockResolvedValue(undefined);
 
-    const syncedToggles = await syncFeatureTogglesToStorage({
-      getFromStorage,
-      setToStorage,
-    });
+    const synced = await syncFeatureTogglesToStorage({ getFromStorage, setToStorage });
 
+    expect(getFromStorage).toHaveBeenCalledWith(StorageKeys.remoteFeatureToggles);
     expect(getFromStorage).toHaveBeenCalledWith(StorageKeys.featureToggles);
-    expect(setToStorage).toHaveBeenCalledWith(
-      StorageKeys.featureToggles,
-      serializeFeatureToggleState(FEATURE_TOGGLES),
-    );
-    expect(syncedToggles).toEqual(FEATURE_TOGGLES);
+    expect(setToStorage).not.toHaveBeenCalled();
+    expect(synced).toEqual({ toggles: FEATURE_TOGGLES, remoteToggles: {}, localOverrides: {} });
   });
 
-  it("updates storage when a new centralized toggle is missing from storage", async () => {
-    const getFromStorage = vi.fn().mockResolvedValue(
-      JSON.stringify({
-        "settings-screen": true,
-        "backend-game-init": false,
-      }),
-    );
+  it("fetches, caches, and applies remote toggles", async () => {
+    const getFromStorage = vi.fn().mockResolvedValue(null);
     const setToStorage = vi.fn().mockResolvedValue(undefined);
+    const fetchRemoteFeatureToggles = vi.fn().mockResolvedValue(remoteResponse);
 
-    const syncedToggles = await syncFeatureTogglesToStorage({
+    const synced = await syncFeatureTogglesToStorage({
+      fetchRemoteFeatureToggles,
       getFromStorage,
       setToStorage,
     });
 
-    const expectedState = {
+    expect(setToStorage).toHaveBeenCalledWith(
+      StorageKeys.remoteFeatureToggles,
+      JSON.stringify({ "settings-screen": true, "backend-game-init": false }),
+    );
+    expect(synced.toggles).toEqual({
       ...FEATURE_TOGGLES,
       "settings-screen": true,
       "backend-game-init": false,
-    };
-    expect(setToStorage).toHaveBeenCalledWith(
-      StorageKeys.featureToggles,
-      serializeFeatureToggleState(expectedState),
-    );
-    expect(syncedToggles).toEqual(expectedState);
+    });
   });
 
-  it("skips storage write when centralized toggles are already synced", async () => {
-    const getFromStorage = vi.fn().mockResolvedValue(serializeFeatureToggleState(FEATURE_TOGGLES));
-    const setToStorage = vi.fn();
+  it("shares concurrent remote feature toggle requests", async () => {
+    const getFromStorage = vi.fn().mockResolvedValue(null);
+    const setToStorage = vi.fn().mockResolvedValue(undefined);
+    let resolveRemoteFeatureToggles: (response: typeof remoteResponse) => void = () => undefined;
+    const remoteFeatureTogglesPromise = new Promise<typeof remoteResponse>((resolve) => {
+      resolveRemoteFeatureToggles = resolve;
+    });
+    const fetchRemoteFeatureToggles = vi.fn().mockReturnValue(remoteFeatureTogglesPromise);
 
-    await syncFeatureTogglesToStorage({
+    const firstSync = syncFeatureTogglesToStorage({
+      fetchRemoteFeatureToggles,
+      getFromStorage,
+      setToStorage,
+    });
+    const secondSync = syncFeatureTogglesToStorage({
+      fetchRemoteFeatureToggles,
       getFromStorage,
       setToStorage,
     });
 
+    await vi.waitFor(() => {
+      expect(fetchRemoteFeatureToggles).toHaveBeenCalledTimes(1);
+    });
+
+    resolveRemoteFeatureToggles(remoteResponse);
+
+    await expect(firstSync).resolves.toMatchObject({
+      remoteToggles: { "settings-screen": true, "backend-game-init": false },
+    });
+    await expect(secondSync).resolves.toMatchObject({
+      remoteToggles: { "settings-screen": true, "backend-game-init": false },
+    });
+    expect(fetchRemoteFeatureToggles).toHaveBeenCalledTimes(1);
+  });
+  it("local overrides override remote values", async () => {
+    const getFromStorage = vi.fn((key: StorageKeys) => {
+      if (key === StorageKeys.remoteFeatureToggles) {
+        return JSON.stringify({ "settings-screen": true });
+      }
+      return JSON.stringify({ "settings-screen": false });
+    });
+    const setToStorage = vi.fn();
+
+    const synced = await syncFeatureTogglesToStorage({ getFromStorage, setToStorage });
+
+    expect(synced.toggles["settings-screen"]).toBe(false);
+    expect(synced.localOverrides).toEqual({ "settings-screen": false });
+  });
+
+  it("failed endpoint fetch falls back to cached remote values", async () => {
+    const getFromStorage = vi.fn((key: StorageKeys) => {
+      if (key === StorageKeys.remoteFeatureToggles) {
+        return JSON.stringify({ "settings-screen": true });
+      }
+      return null;
+    });
+    const setToStorage = vi.fn();
+    const fetchRemoteFeatureToggles = vi.fn().mockRejectedValue(new Error("offline"));
+
+    const synced = await syncFeatureTogglesToStorage({
+      fetchRemoteFeatureToggles,
+      getFromStorage,
+      setToStorage,
+    });
+
+    expect(synced.toggles["settings-screen"]).toBe(true);
     expect(setToStorage).not.toHaveBeenCalled();
   });
 
-  it("supports synchronous storage adapters", async () => {
-    const getFromStorage = vi.fn().mockReturnValue(null);
+  it("prunes stored local overrides that match remote values", async () => {
+    const getFromStorage = vi.fn((key: StorageKeys) => {
+      if (key === StorageKeys.remoteFeatureToggles) {
+        return JSON.stringify({ "settings-screen": true });
+      }
+      return JSON.stringify({ "settings-screen": true, "points-type": true });
+    });
     const setToStorage = vi.fn();
 
-    const syncedToggles = await syncFeatureTogglesToStorage({
-      getFromStorage,
-      setToStorage,
-    });
+    const synced = await syncFeatureTogglesToStorage({ getFromStorage, setToStorage });
 
-    expect(syncedToggles).toEqual(FEATURE_TOGGLES);
+    expect(synced.localOverrides).toEqual({ "points-type": true });
     expect(setToStorage).toHaveBeenCalledWith(
       StorageKeys.featureToggles,
-      serializeFeatureToggleState(FEATURE_TOGGLES),
+      JSON.stringify({ "points-type": true }),
     );
   });
 });
