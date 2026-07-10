@@ -20,6 +20,14 @@ export const calculateTeamsScore = (
     const isEqualScore = score === halfScore;
     const isOwnTeam = roundPlayer?.teamId === teamId;
 
+    if (score === 0) {
+      return {
+        ...teamScore,
+        score: zeroScorePenalty,
+        totalScore: totalScore + zeroScorePenalty,
+      };
+    }
+
     if (isOwnTeam && isScoreLowerThanHalfOfTotalScore && !isEqualScore) {
       if (boltCount === BOLT_COUNT_LIMIT) {
         return {
@@ -45,14 +53,6 @@ export const calculateTeamsScore = (
         ...teamScore,
         score: finalScore,
         totalScore: totalScore + finalScore,
-      };
-    }
-
-    if (score === 0) {
-      return {
-        ...teamScore,
-        score: zeroScorePenalty,
-        totalScore: totalScore + zeroScorePenalty,
       };
     }
 
