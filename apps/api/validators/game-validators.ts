@@ -137,9 +137,6 @@ export const GameValidators = {
       .isArray()
       .withMessage("roundsScores must be an array")
       .custom((rounds: unknown) => {
-        if (rounds === undefined) {
-          return true;
-        }
         (rounds as unknown[]).forEach((r, i) => validateRoundScore(r, `roundsScores[${i}]`));
         return true;
       }),
@@ -147,9 +144,6 @@ export const GameValidators = {
       .optional()
       .isArray()
       .custom((rounds: unknown) => {
-        if (rounds === undefined) {
-          return true;
-        }
         (rounds as unknown[]).forEach((r, i) => validateRoundScore(r, `undoneRoundsScores[${i}]`));
         return true;
       }),
@@ -184,9 +178,6 @@ export const GameValidators = {
       .optional()
       .isArray()
       .custom((rounds: unknown) => {
-        if (rounds === undefined) {
-          return true;
-        }
         (rounds as unknown[]).forEach((r, i) => validateRoundScore(r, `roundsScores[${i}]`));
         return true;
       }),
@@ -194,9 +185,6 @@ export const GameValidators = {
       .optional()
       .isArray()
       .custom((rounds: unknown) => {
-        if (rounds === undefined) {
-          return true;
-        }
         (rounds as unknown[]).forEach((r, i) => validateRoundScore(r, `undoneRoundsScores[${i}]`));
         return true;
       }),
