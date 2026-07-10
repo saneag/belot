@@ -44,7 +44,8 @@ export const setPreviousDealer = (state: Partial<RoundSlice> & Partial<PlayersSl
 
   const currentDealerIndex = players.findIndex((player) => player.id === state.dealer?.id);
 
-  const calculatedPreviousDealerIndex = currentDealerIndex - 1 < 0 ? 0 : currentDealerIndex - 1;
+  const calculatedPreviousDealerIndex =
+    currentDealerIndex - 1 < 0 ? players.length - 1 : currentDealerIndex - 1;
 
   const previousDealerIndex =
     currentDealerIndex === -1 ? 0 : calculatedPreviousDealerIndex % players.length;

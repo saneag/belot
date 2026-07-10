@@ -274,6 +274,26 @@ describe("gameStore", () => {
         expect(store.getState().roundsScores[2].totalRoundScore).toBe(36);
       });
 
+      it("undoRoundScore restores the previous dealer after skipping from the last player", () => {
+        store.getState().setEmptyPlayersNames(4);
+        store.getState().setDealer(store.getState().players[0]);
+
+        store.getState().setEmptyRoundScore();
+
+        for (let roundId = 0; roundId < 3; roundId += 1) {
+          store.getState().updateRoundScore({ id: roundId, totalRoundScore: 16 });
+        }
+
+        expect(store.getState().dealer?.id).toBe(3);
+
+        store.getState().skipRound();
+        expect(store.getState().dealer?.id).toBe(0);
+
+        store.getState().undoRoundScore();
+
+        expect(store.getState().dealer?.id).toBe(3);
+      });
+
       it("undoRoundScore delegates to recalculateScoreOnUndo", () => {
         store.getState().setEmptyPlayersNames(3);
         const r0 = baseRoundScore({
