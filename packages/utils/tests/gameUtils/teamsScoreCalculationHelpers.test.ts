@@ -66,6 +66,36 @@ describe("teamsScoreCalculationHelpers", () => {
       });
     });
 
+    it("applies -10 instead of a bolt when the declaring team has zero points", () => {
+      const teamsScores: TeamScore[] = [
+        baseTeamScore({ id: 1, teamId: 1, score: 0, boltCount: 0, totalScore: 100 }),
+        baseTeamScore({ id: 2, teamId: 2, score: 162, totalScore: 100 }),
+      ];
+
+      const result = calculateTeamsScore(teamsScores, mockPlayers[0], 162);
+
+      expect(result.find((t) => t.teamId === 1)).toMatchObject({
+        score: -10,
+        boltCount: 0,
+        totalScore: 90,
+      });
+    });
+
+    it("still applies a bolt when the declaring team has one point below half", () => {
+      const teamsScores: TeamScore[] = [
+        baseTeamScore({ id: 1, teamId: 1, score: 1, boltCount: 0, totalScore: 100 }),
+        baseTeamScore({ id: 2, teamId: 2, score: 161, totalScore: 100 }),
+      ];
+
+      const result = calculateTeamsScore(teamsScores, mockPlayers[0], 162);
+
+      expect(result.find((t) => t.teamId === 1)).toMatchObject({
+        score: BOLT_POINTS,
+        boltCount: 1,
+        totalScore: 100,
+      });
+    });
+
     it("awards rounded total round points to the opposing team when they beat half the round total", () => {
       const teamsScores: TeamScore[] = [
         baseTeamScore({ id: 1, teamId: 1, score: 30, totalScore: 50 }),
