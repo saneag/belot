@@ -87,11 +87,10 @@ describe("gameScoreHelpers", () => {
       const mockState: RoundSlice & Partial<PlayersSlice> = {
         ...mockRoundSlice,
         roundsScores: mockRoundScores,
-        dealer: mockDealer,
+        dealer: mockPlayers[1],
         players: mockPlayers,
       };
 
-      setNextDealer(mockState);
       const result = setPreviousDealer(mockState);
 
       expect(result).toEqual({
@@ -133,7 +132,7 @@ describe("gameScoreHelpers", () => {
       expect(setPreviousDealer(mockState)).toEqual({ dealer: mockPlayers[0] });
     });
 
-    it("should clamp previous index when current dealer is first in list", () => {
+    it("should wrap previous index when current dealer is first in list", () => {
       const mockState: RoundSlice & Partial<PlayersSlice> = {
         ...mockRoundSlice,
         roundsScores: mockRoundScores,
@@ -141,7 +140,7 @@ describe("gameScoreHelpers", () => {
         players: mockPlayers,
       };
 
-      expect(setPreviousDealer(mockState)).toEqual({ dealer: mockPlayers[0] });
+      expect(setPreviousDealer(mockState)).toEqual({ dealer: mockPlayers.at(-1) });
     });
 
     it("should return the preceding player when dealer is not at index zero", () => {
