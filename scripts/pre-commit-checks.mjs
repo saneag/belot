@@ -14,17 +14,11 @@ function getStagedFiles() {
     encoding: "buffer",
   });
 
-  return output
-    .toString("utf8")
-    .split("\0")
-    .filter(Boolean)
-    .map(toPosix);
+  return output.toString("utf8").split("\0").filter(Boolean).map(toPosix);
 }
 
 function syncLockfile(stagedFiles) {
-  const hasPackageJsonChange = stagedFiles.some((file) =>
-    /(^|\/)package\.json$/.test(file),
-  );
+  const hasPackageJsonChange = stagedFiles.some((file) => /(^|\/)package\.json$/.test(file));
 
   if (!hasPackageJsonChange) {
     return;
@@ -42,10 +36,7 @@ function findWorkspacePackage(file) {
   while (dir && dir !== ".") {
     const packageJsonPath = path.join(root, dir, "package.json");
 
-    if (
-      (dir.startsWith("apps/") || dir.startsWith("packages/")) &&
-      existsSync(packageJsonPath)
-    ) {
+    if ((dir.startsWith("apps/") || dir.startsWith("packages/")) && existsSync(packageJsonPath)) {
       const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"));
       return { dir, name: packageJson.name, scripts: packageJson.scripts ?? {} };
     }
@@ -72,22 +63,19 @@ function shouldCheckPackage(file, pkg) {
   return /(?:eslint\.config|tsconfig)/.test(path.posix.basename(file));
 }
 
-function shouldFormatCheck(file) {
-  return /\.(ts|tsx|md|js|mjs|cjs|jsx|json|ya?ml|css)$/.test(file);
-}
-
-function runFormatCheck(stagedFiles) {
-  const filesToCheck = stagedFiles.filter(shouldFormatCheck);
-
-  if (filesToCheck.length === 0) {
+function runFormat(stagedFiles) {
+  if (stagedFiles.length === 0) {
     return;
   }
 
-  console.log(`Running format check for ${filesToCheck.length} staged file(s)...`);
-  execSync(`pnpm prettier --check ${filesToCheck.map((file) => JSON.stringify(file)).join(" ")}`, {
+  const quotedFiles = stagedFiles.map((file) => JSON.stringify(file)).join(" ");
+
+  console.log(`Formatting ${stagedFiles.length} staged file(s)...`);
+  execSync(`pnpm format:staged ${quotedFiles}`, {
     cwd: root,
     stdio: "inherit",
   });
+  execSync(`git add ${quotedFiles}`, { cwd: root, stdio: "inherit" });
 }
 
 function runLintAndTypecheck(stagedFiles) {
@@ -117,5 +105,5 @@ function runLintAndTypecheck(stagedFiles) {
 
 const stagedFiles = getStagedFiles();
 syncLockfile(stagedFiles);
-runFormatCheck(stagedFiles);
+runFormat(stagedFiles);
 runLintAndTypecheck(stagedFiles);

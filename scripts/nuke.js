@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 
-const projectRoot = __dirname;
+const projectRoot = path.resolve(__dirname, "..");
 const dryRun = process.argv.includes("--dry-run");
 const skipDirectories = new Set([".git", ".turbo", ".pnpm-store"]);
 
