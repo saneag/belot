@@ -1,8 +1,8 @@
 // eslint.config.mjs
+import expoConfig from "eslint-config-expo/flat.js";
+import { defineConfig } from "eslint/config";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { defineConfig } from "eslint/config";
-import expoConfig from "eslint-config-expo/flat.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
