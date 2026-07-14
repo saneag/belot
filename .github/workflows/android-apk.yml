@@ -51,6 +51,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Validate dev tools password
+        env:
+          EXPO_PUBLIC_DEV_TOOLS_PASSWORD: ${{ secrets.EXPO_PUBLIC_DEV_TOOLS_PASSWORD }}
+        run: |
+          if [ -z "$EXPO_PUBLIC_DEV_TOOLS_PASSWORD" ]; then
+            echo "Missing required GitHub secret: EXPO_PUBLIC_DEV_TOOLS_PASSWORD" >&2
+            exit 1
+          fi
+
       - name: Bump Android version
         if: github.event_name == 'workflow_dispatch'
         working-directory: apps/mobile
@@ -105,6 +114,7 @@ jobs:
         working-directory: apps/mobile
         env:
           NODE_ENV: production
+          EXPO_PUBLIC_DEV_TOOLS_PASSWORD: ${{ secrets.EXPO_PUBLIC_DEV_TOOLS_PASSWORD }}
         run: node ./scripts/android-gradlew.js assembleRelease
 
       - name: Prepare release artifact

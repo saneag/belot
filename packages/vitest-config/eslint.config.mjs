@@ -1,4 +1,5 @@
 import { createBelotTsConfig } from "@belot/eslint-config";
+
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 

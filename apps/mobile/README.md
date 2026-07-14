@@ -43,3 +43,14 @@ adb install -r android/app/build/outputs/apk/release/app-release.apk
 ```
 
 **EAS Build (expo.dev):** From `apps/mobile` run `eas build --platform android --profile preview` (or use the Expo dashboard). The project uses a minimal Metro config compatible with EAS cloud builds.
+
+## Dev tools password
+
+The dev tools screen reads its password from `EXPO_PUBLIC_DEV_TOOLS_PASSWORD` at build time.
+
+For GitHub Actions APK builds, create a repository secret named
+`EXPO_PUBLIC_DEV_TOOLS_PASSWORD`. The Android workflows fail early if this secret is missing.
+
+For EAS cloud builds, also configure `EXPO_PUBLIC_DEV_TOOLS_PASSWORD` in the Expo/EAS project
+environment for the build profile you use, because public Expo variables are bundled into the app
+during the remote build.
