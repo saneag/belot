@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { body, param, query, validationResult } from "express-validator";
 
+import { HttpStatus } from "../constants/http-status.js";
+
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -91,7 +93,7 @@ function validateRoundScore(value: unknown, path: string): void {
 function sendValidationErrors(req: Request, res: Response, next: NextFunction): Response | void {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
   }
   next();
 }
@@ -119,9 +121,6 @@ export const GameValidators = {
     body("dealer")
       .optional({ values: "null" })
       .custom((v: unknown) => {
-        if (v === null || v === undefined) {
-          return true;
-        }
         validatePlayer(v, "dealer");
         return true;
       }),
@@ -153,9 +152,13 @@ export const GameValidators = {
 
   updateGame: [
     param("id").isMongoId().withMessage("id must be a valid MongoDB ObjectId"),
-    body().custom((bodyValue: Record<string, unknown>) => {
+    body().custom((bodyValue: unknown) => {
+      if (!isPlainObject(bodyValue)) {
+        throw new Error("Request body must be an object");
+      }
+
       const allowed = ["dealer", "roundsScores", "undoneRoundsScores", "isFinished"] as const;
-      const keys = Object.keys(bodyValue ?? {});
+      const keys = Object.keys(bodyValue);
       const unknown = keys.filter((k) => !allowed.includes(k as (typeof allowed)[number]));
       if (unknown.length > 0) {
         throw new Error(`Unknown fields: ${unknown.join(", ")}`);
@@ -168,9 +171,6 @@ export const GameValidators = {
     body("dealer")
       .optional({ values: "null" })
       .custom((v: unknown) => {
-        if (v === null || v === undefined) {
-          return true;
-        }
         validatePlayer(v, "dealer");
         return true;
       }),
