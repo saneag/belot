@@ -121,9 +121,6 @@ export const GameValidators = {
     body("dealer")
       .optional({ values: "null" })
       .custom((v: unknown) => {
-        if (v === null || v === undefined) {
-          return true;
-        }
         validatePlayer(v, "dealer");
         return true;
       }),
@@ -155,9 +152,13 @@ export const GameValidators = {
 
   updateGame: [
     param("id").isMongoId().withMessage("id must be a valid MongoDB ObjectId"),
-    body().custom((bodyValue: Record<string, unknown>) => {
+    body().custom((bodyValue: unknown) => {
+      if (!isPlainObject(bodyValue)) {
+        throw new Error("Request body must be an object");
+      }
+
       const allowed = ["dealer", "roundsScores", "undoneRoundsScores", "isFinished"] as const;
-      const keys = Object.keys(bodyValue ?? {});
+      const keys = Object.keys(bodyValue);
       const unknown = keys.filter((k) => !allowed.includes(k as (typeof allowed)[number]));
       if (unknown.length > 0) {
         throw new Error(`Unknown fields: ${unknown.join(", ")}`);
@@ -170,9 +171,6 @@ export const GameValidators = {
     body("dealer")
       .optional({ values: "null" })
       .custom((v: unknown) => {
-        if (v === null || v === undefined) {
-          return true;
-        }
         validatePlayer(v, "dealer");
         return true;
       }),

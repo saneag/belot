@@ -119,6 +119,54 @@ describe("GameValidators", () => {
     expect(response.status).toBe(400);
   });
 
+  it("initGame rejects non-object players", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: ["bad", { id: 1, name: "Bob" }],
+        mode: "classic",
+        teams: [],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects players without names", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: 123 },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects invalid teamId types", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice", teamId: "bad" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
   it("initGame rejects invalid team payloads", async () => {
     const app = createApp(GameValidators.initGame);
 
@@ -131,6 +179,74 @@ describe("GameValidators", () => {
         ],
         mode: "classic",
         teams: [{ id: 0, name: "A", playersIds: ["bad"] }],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects non-object teams", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: ["bad"],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects teams without numeric ids", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [{ id: "bad", name: "A", playersIds: [0] }],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects teams without string names", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [{ id: 0, name: 123, playersIds: [0] }],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects teams without playersIds arrays", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [{ id: 0, name: "A", playersIds: "bad" }],
       });
 
     expect(response.status).toBe(400);
@@ -154,6 +270,243 @@ describe("GameValidators", () => {
     expect(response.status).toBe(400);
   });
 
+  it("initGame rejects invalid dealer objects", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        dealer: { id: 0 },
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects non-object round scores", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        undoneRoundsScores: ["bad"],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects round scores without numeric ids", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        roundsScores: [
+          {
+            id: "bad",
+            playersScores: [],
+            teamsScores: [],
+            totalRoundScore: 10,
+          },
+        ],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects round scores without playersScores arrays", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        roundsScores: [
+          {
+            id: 0,
+            playersScores: "bad",
+            teamsScores: [],
+            totalRoundScore: 10,
+          },
+        ],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects round scores without teamsScores arrays", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        roundsScores: [
+          {
+            id: 0,
+            playersScores: [],
+            teamsScores: "bad",
+            totalRoundScore: 10,
+          },
+        ],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects base score rows missing numeric fields", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        roundsScores: [
+          {
+            id: 0,
+            playersScores: [{ id: 0, score: "bad", boltCount: 0, totalScore: 10, playerId: 0 }],
+            teamsScores: [],
+            totalRoundScore: 10,
+          },
+        ],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects invalid player score rows", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        roundsScores: [
+          {
+            id: 0,
+            playersScores: [{ id: 0, score: 10, boltCount: 0, totalScore: 10 }],
+            teamsScores: [],
+            totalRoundScore: 10,
+          },
+        ],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects non-object player score rows", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        roundsScores: [
+          {
+            id: 0,
+            playersScores: ["bad"],
+            teamsScores: [],
+            totalRoundScore: 10,
+          },
+        ],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects invalid team score rows", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        roundsScores: [
+          {
+            id: 0,
+            playersScores: [],
+            teamsScores: [{ id: 0, score: 10, boltCount: 0, totalScore: 10 }],
+            totalRoundScore: 10,
+          },
+        ],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("initGame rejects invalid round player objects", async () => {
+    const app = createApp(GameValidators.initGame);
+
+    const response = await request(app)
+      .post("/test")
+      .send({
+        players: [
+          { id: 0, name: "Alice" },
+          { id: 1, name: "Bob" },
+        ],
+        mode: "classic",
+        teams: [],
+        roundsScores: [
+          {
+            id: 0,
+            playersScores: [],
+            teamsScores: [],
+            totalRoundScore: 10,
+            roundPlayer: { id: 0 },
+          },
+        ],
+      });
+
+    expect(response.status).toBe(400);
+  });
+
   it("updateGame rejects unknown fields", async () => {
     const app = createApp(GameValidators.updateGame);
 
@@ -166,6 +519,25 @@ describe("GameValidators", () => {
     const app = createApp(GameValidators.updateGame);
 
     const response = await request(app).patch(`/test/${validId}`).send({});
+
+    expect(response.status).toBe(400);
+  });
+
+  it("updateGame rejects a null body", async () => {
+    const app = createApp(GameValidators.updateGame);
+
+    const response = await request(app)
+      .patch(`/test/${validId}`)
+      .set("Content-Type", "application/json")
+      .send("null");
+
+    expect(response.status).toBe(400);
+  });
+
+  it("updateGame rejects an array body", async () => {
+    const app = createApp(GameValidators.updateGame);
+
+    const response = await request(app).patch(`/test/${validId}`).send([]);
 
     expect(response.status).toBe(400);
   });
@@ -200,6 +572,22 @@ describe("GameValidators", () => {
       .send({ dealer: { id: 0, name: 123 } });
 
     expect(response.status).toBe(400);
+  });
+
+  it("updateGame rejects invalid mongo ids", async () => {
+    const app = createApp(GameValidators.updateGame);
+
+    const response = await request(app).patch("/test/not-valid").send({ isFinished: true });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("updateGame accepts null dealer", async () => {
+    const app = createApp(GameValidators.updateGame);
+
+    const response = await request(app).patch(`/test/${validId}`).send({ dealer: null });
+
+    expect(response.status).toBe(200);
   });
 
   it("updateGame rejects invalid round payloads", async () => {

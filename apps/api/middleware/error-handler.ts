@@ -13,9 +13,9 @@ export function sendApiError(error: unknown, res: Response): void {
     return;
   }
 
-  // Express body-parser errors expose their client-error status directly.
-  if (isClientError(error)) {
-    res.status(error.statusCode).json({ message: error.message });
+  const clientError = getClientError(error);
+  if (clientError) {
+    res.status(clientError.statusCode).json({ message: clientError.message });
     return;
   }
 
@@ -23,20 +23,24 @@ export function sendApiError(error: unknown, res: Response): void {
   res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
 }
 
-function isClientError(error: unknown): error is { message: string; statusCode: number } {
+function getClientError(error: unknown): { message: string; statusCode: number } | null {
   if (typeof error !== "object" || error === null) {
-    return false;
+    return null;
   }
 
   const candidate = error as { message?: unknown; status?: unknown; statusCode?: unknown };
   const statusCode = candidate.statusCode ?? candidate.status;
 
-  return (
+  if (
     typeof candidate.message === "string" &&
     typeof statusCode === "number" &&
     statusCode >= 400 &&
     statusCode < 500
-  );
+  ) {
+    return { message: candidate.message, statusCode };
+  }
+
+  return null;
 }
 
 export const notFoundHandler: RequestHandler = (_req, res) => {

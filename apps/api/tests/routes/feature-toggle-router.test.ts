@@ -78,6 +78,13 @@ describe("feature toggle router", () => {
     expect(response.body).toEqual({ message: "Feature name is required" });
   });
 
+  it("returns 400 when the feature name query is blank", async () => {
+    const response = await request(app).get("/feature-toggles/isEnabled").query({ name: " " });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ message: "Feature name is required" });
+  });
+
   it("returns a success message when a feature is created", async () => {
     const response = await request(app).post("/feature-toggles").send({ name: " new-feature " });
 
@@ -85,6 +92,22 @@ describe("feature toggle router", () => {
     expect(response.body).toEqual({ message: "Feature 'new-feature' has been created" });
     expect(mocks.getFeatureToggleByName).toHaveBeenCalledWith("new-feature");
     expect(mocks.createFeatureToggle).toHaveBeenCalledWith("new-feature");
+  });
+
+  it("returns 400 when creating a feature without a name", async () => {
+    const response = await request(app).post("/feature-toggles").send({ enabled: true });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ message: "Feature name is required" });
+    expect(mocks.createFeatureToggle).not.toHaveBeenCalled();
+  });
+
+  it("returns 400 when creating a feature with a blank name", async () => {
+    const response = await request(app).post("/feature-toggles").send({ name: " " });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ message: "Feature name must be a non-empty string" });
+    expect(mocks.createFeatureToggle).not.toHaveBeenCalled();
   });
 
   it("returns 400 when creating a duplicate feature", async () => {
@@ -128,6 +151,30 @@ describe("feature toggle router", () => {
     expect(mocks.toggleFeature).not.toHaveBeenCalled();
   });
 
+  it("does not update a feature that is already disabled", async () => {
+    mocks.getFeatureToggleByName.mockResolvedValue({ name: "score-preview", enabled: false });
+
+    const response = await request(app)
+      .post("/feature-toggles/toggle")
+      .send({ name: "score-preview", enabled: false });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ message: "Feature 'score-preview' is already disabled" });
+    expect(mocks.toggleFeature).not.toHaveBeenCalled();
+  });
+
+  it("disables an existing feature", async () => {
+    mocks.getFeatureToggleByName.mockResolvedValue({ name: "score-preview", enabled: true });
+
+    const response = await request(app)
+      .post("/feature-toggles/toggle")
+      .send({ name: "score-preview", enabled: false });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ message: "Feature 'score-preview' has been disabled" });
+    expect(mocks.toggleFeature).toHaveBeenCalledWith("score-preview", false);
+  });
+
   it("returns 400 when toggling a missing feature", async () => {
     const response = await request(app)
       .post("/feature-toggles/toggle")
@@ -145,6 +192,23 @@ describe("feature toggle router", () => {
 
     expect(response.status).toBe(400);
     expect(response.body).toEqual({ message: "Enabled must be a boolean value" });
+  });
+
+  it("returns 400 when toggling with an array body", async () => {
+    const response = await request(app).post("/feature-toggles/toggle").send([]);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ message: "Request body must be a valid JSON object" });
+  });
+
+  it("returns 400 when toggling with a blank name", async () => {
+    const response = await request(app)
+      .post("/feature-toggles/toggle")
+      .send({ name: " ", enabled: true });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ message: "Feature name must be a non-empty string" });
+    expect(mocks.toggleFeature).not.toHaveBeenCalled();
   });
 
   it("continues to return 500 for unexpected service errors", async () => {
