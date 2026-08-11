@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { body, param, query, validationResult } from "express-validator";
 
+import { HttpStatus } from "../constants/http-status.js";
+
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -91,7 +93,7 @@ function validateRoundScore(value: unknown, path: string): void {
 function sendValidationErrors(req: Request, res: Response, next: NextFunction): Response | void {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(HttpStatus.BAD_REQUEST).json({ errors: errors.array() });
   }
   next();
 }

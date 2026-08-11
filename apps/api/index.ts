@@ -3,6 +3,8 @@ import express, { type Application } from "express";
 
 import { corsMiddleware } from "./config/cors-middleware.js";
 import setupDb from "./config/setup-db.js";
+import { HttpStatus } from "./constants/http-status.js";
+import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 import setupRoutes from "./routes/index.js";
 
 dotenv.config();
@@ -13,8 +15,12 @@ app.use(corsMiddleware);
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
-  res.status(200).json({ status: "ok" });
+  res.status(HttpStatus.OK).json({ status: "ok" });
 });
+
+setupRoutes(app);
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 async function startServer() {
   if (!process.env.PORT) {
@@ -23,7 +29,6 @@ async function startServer() {
   }
 
   await setupDb();
-  setupRoutes(app);
 
   app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);

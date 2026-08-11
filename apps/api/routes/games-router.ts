@@ -1,5 +1,7 @@
 import { type IRouter, Router } from "express";
 
+import { HttpStatus } from "../constants/http-status.js";
+import { sendApiError } from "../middleware/error-handler.js";
 import { GameService, type InitGameInput, type UpdateGameInput } from "../services/game-service.js";
 import { GameValidators } from "../validators/game-validators.js";
 
@@ -8,10 +10,9 @@ const router: IRouter = Router();
 router.post("/init", ...GameValidators.initGame, async (req, res) => {
   try {
     const game = await GameService.initGame(req.body as InitGameInput);
-    res.status(201).json({ id: game.id });
+    res.status(HttpStatus.CREATED).json({ id: game.id });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    sendApiError(error, res);
   }
 });
 
@@ -23,8 +24,7 @@ router.get("/", ...GameValidators.listGames, async (req, res) => {
     const result = await GameService.listGames(page, limit);
     res.json(result);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    sendApiError(error, res);
   }
 });
 
@@ -33,14 +33,13 @@ router.get("/:id", ...GameValidators.gameIdParam, async (req, res) => {
     const game = await GameService.getGameById(req.params.id as string);
 
     if (!game) {
-      res.status(404).json({ message: "Game not found" });
+      res.status(HttpStatus.NOT_FOUND).json({ message: "Game not found" });
       return;
     }
 
     res.json(game);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    sendApiError(error, res);
   }
 });
 
@@ -52,14 +51,13 @@ router.patch("/:id", ...GameValidators.updateGame, async (req, res) => {
     );
 
     if (!game) {
-      res.status(404).json({ message: "Game not found" });
+      res.status(HttpStatus.NOT_FOUND).json({ message: "Game not found" });
       return;
     }
 
     res.json(game);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    sendApiError(error, res);
   }
 });
 
