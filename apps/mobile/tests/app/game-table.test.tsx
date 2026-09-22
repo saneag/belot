@@ -3,7 +3,6 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@belot/hooks", () => ({
   useLoadGameData: vi.fn(),
-  useGameInitRetry: vi.fn(),
 }));
 
 vi.mock("@/components/game-table", () => ({

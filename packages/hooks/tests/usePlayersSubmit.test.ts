@@ -137,7 +137,7 @@ describe("usePlayersSubmit", () => {
     expect(showDialog).toHaveBeenCalledOnce();
   });
 
-  it("submits players and persists pending game initialization", async () => {
+  it("submits players, persists storage, and initializes game", async () => {
     const { usePlayersSubmit } = await import("../src/usePlayersSubmit");
     const { handleSubmit } = usePlayersSubmit({
       navigateFunction: mocks.navigateFunction,
@@ -161,15 +161,22 @@ describe("usePlayersSubmit", () => {
     const storedItems = mocks.setItemsToStorage.mock.calls[0]?.[0] as Record<string, string>;
     expect(typeof storedItems[StorageKeys.roundsScores]).toBe("string");
     expect(mocks.navigateFunction).toHaveBeenCalledOnce();
-    expect(JSON.parse(storedItems[StorageKeys.pendingGameInit])).toEqual(
+    expect(mocks.mutate).toHaveBeenCalledWith(
       expect.objectContaining({
         players: mocks.players,
         mode: mocks.mode,
       }),
+      expect.any(Object),
     );
+    const mutateOptions = mocks.mutate.mock.calls[0]?.[1] as {
+      onSuccess: unknown;
+      onError: unknown;
+    };
+    expect(typeof mutateOptions.onSuccess).toBe("function");
+    expect(typeof mutateOptions.onError).toBe("function");
   });
 
-  it("does not invoke the backend mutation directly", async () => {
+  it("handles init game success and error callbacks", async () => {
     const { usePlayersSubmit } = await import("../src/usePlayersSubmit");
     const { handleSubmit } = usePlayersSubmit({
       navigateFunction: mocks.navigateFunction,
@@ -181,7 +188,18 @@ describe("usePlayersSubmit", () => {
 
     await handleSubmit();
 
-    expect(mocks.mutate).not.toHaveBeenCalled();
+    const mutateCall = mocks.mutate.mock.calls[0];
+    const options = mutateCall?.[1] as {
+      onSuccess: (response: { id: string }) => void;
+      onError: (error: unknown) => void;
+    };
+
+    options.onSuccess({ id: "game-1" });
+    expect(mocks.setGameId).toHaveBeenCalledWith("game-1");
+
+    const error = new Error("init failed");
+    options.onError(error);
+    expect(mocks.handleCatchError).toHaveBeenCalledWith(error);
   });
 
   it("returns early on submit when validation fails", async () => {
@@ -216,9 +234,11 @@ describe("usePlayersSubmit", () => {
 
     await handleSubmit();
 
-    const storedItems = mocks.setItemsToStorage.mock.calls[0]?.[0] as Record<string, string>;
-    expect(JSON.parse(storedItems[StorageKeys.pendingGameInit])).toEqual(
-      expect.objectContaining({ dealer: null }),
+    expect(mocks.mutate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dealer: null,
+      }),
+      expect.any(Object),
     );
   });
 
