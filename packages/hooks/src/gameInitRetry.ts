@@ -1,7 +1,7 @@
 import type { InitGameInput } from "@belot/api-client";
 
 export const GAME_INIT_RETRY_TIMEOUT_MS = 5 * 60 * 1000;
-export const GAME_INIT_RETRY_INTERVAL_MS = 5 * 1000;
+export const GAME_INIT_RETRY_INTERVAL_MS = 20 * 1000;
 
 interface RetryGameInitOptions {
   initGame: () => Promise<{ id: string }>;

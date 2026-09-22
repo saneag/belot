@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  GAME_INIT_RETRY_INTERVAL_MS,
   GAME_INIT_RETRY_TIMEOUT_MS,
   parsePendingGameInit,
   retryGameInit,
@@ -22,7 +23,7 @@ describe("retryGameInit", () => {
       });
 
       await Promise.resolve();
-      await vi.advanceTimersByTimeAsync(5_000);
+      await vi.advanceTimersByTimeAsync(GAME_INIT_RETRY_INTERVAL_MS);
       await promise;
 
       expect(initGame).toHaveBeenCalledTimes(2);
