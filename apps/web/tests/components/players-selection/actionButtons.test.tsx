@@ -10,13 +10,12 @@ const navigateMock = vi.hoisted(() => vi.fn());
 const playersSubmitProps = vi.hoisted(() => ({
   current: null as null | {
     navigateFunction: () => void;
-    handleCatchError: () => void;
   },
 }));
 
 vi.mock("@belot/hooks", () => ({
   useHandlePlayersSelectionResetButton: () => handleReset,
-  usePlayersSubmit: (props: { navigateFunction: () => void; handleCatchError: () => void }) => {
+  usePlayersSubmit: (props: { navigateFunction: () => void }) => {
     playersSubmitProps.current = props;
     return {
       handleOpenDialog,
@@ -90,11 +89,10 @@ describe("ActionButtons", () => {
     expect(handleSubmit).toHaveBeenCalled();
   });
 
-  it("passes navigation and error callbacks to players submit hook", () => {
+  it("passes navigation to players submit hook", () => {
     render(<ActionButtons />);
 
     playersSubmitProps.current?.navigateFunction();
-    playersSubmitProps.current?.handleCatchError();
 
     expect(navigateMock).toHaveBeenCalledWith("/game-table", { replace: true });
   });

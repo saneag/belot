@@ -7,10 +7,7 @@ import { useLocalization, useLocalizations } from "@belot/localizations";
 import ConfirmationDialog from "@/components/confirmationDialog";
 import { Button } from "@/components/ui/button";
 
-import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
 import { getFromStorage, setMultipleItemsToStorage } from "@/helpers/storageHelpers";
-
-import { toast } from "sonner";
 
 import DealerSelectDialogContent from "./dealerSelectDialogContent";
 
@@ -32,17 +29,12 @@ function SubmitButton() {
   const messages = useLocalizations([
     { key: "players.submit.dialog.title" },
     { key: "players.submit.dialog.button" },
-    { key: "server.offline" },
   ]);
 
   const { handleOpenDialog, handleSubmit } = usePlayersSubmit({
     navigateFunction: () => void navigate("/game-table", { replace: true }),
     setItemsToStorage: setMultipleItemsToStorage,
-    getApiBaseUrl,
     getFromStorage,
-    handleCatchError: () => {
-      toast.error(messages.serverOffline);
-    },
   });
 
   return (

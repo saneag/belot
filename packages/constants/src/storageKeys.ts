@@ -9,4 +9,5 @@ export enum StorageKeys {
   maxScore = "maxScore",
   devToolsFailedAttempts = "devToolsFailedAttempts",
   devToolsBlockedAt = "devToolsBlockedAt",
+  pendingGameInit = "pendingGameInit",
 }
