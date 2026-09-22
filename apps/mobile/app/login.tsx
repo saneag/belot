@@ -4,6 +4,9 @@ import { TextInput, View } from "react-native";
 
 import { Link, useRouter } from "expo-router";
 
+import { useLocalization } from "@belot/localizations";
+
+import { BackButton } from "@/components/backButton";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
@@ -16,10 +19,12 @@ export default function LoginScreen() {
   const [error, setError] = useState("");
   const { signIn } = useAuth();
   const router = useRouter();
+  const loginLabel = useLocalization("login");
   return (
     <View className="flex-1 justify-center px-6">
+      <BackButton />
       <VStack className="gap-3">
-        <Text>Sign in</Text>
+        <Text>{loginLabel}</Text>
         <TextInput
           placeholder="Username or email"
           value={identifier}
@@ -41,10 +46,12 @@ export default function LoginScreen() {
               .catch((e: unknown) => setError(e instanceof Error ? e.message : "Unable to sign in"))
           }
         >
-          <ButtonText>Sign in</ButtonText>
+          <ButtonText>{loginLabel}</ButtonText>
         </Button>
         {error ? <Text>{error}</Text> : null}
-        <Link href={"/register" as never}>Create account</Link>
+        <Link className="self-center" replace href={"/register" as never}>
+          Create account
+        </Link>
       </VStack>
     </View>
   );

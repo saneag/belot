@@ -34,6 +34,9 @@ export const useStartingScreenActions = (): StartingScreenAction[] => {
         case "settings":
           router.push("/settings-screen");
           break;
+        case "login":
+          router.push("/login" as never);
+          break;
         default:
           throw new Error(`Unknown navigation path: ${path}`);
       }
