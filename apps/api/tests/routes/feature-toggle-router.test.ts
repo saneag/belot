@@ -23,8 +23,20 @@ vi.mock("../../services/feature-toggle-service", () => ({
   },
 }));
 
+vi.mock("../../middleware/auth", () => ({
+  requireAuth: (req: { user?: unknown }, _res: unknown, next: () => void) => {
+    req.user = { id: "admin-id", username: "admin", email: "admin@example.com", role: "admin" };
+    next();
+  },
+  requireAdmin: (_req: unknown, _res: unknown, next: () => void) => next(),
+}));
+
 const app = express();
 app.use(express.json());
+app.use((req, _res, next) => {
+  req.user = { id: "admin-id", username: "admin", email: "admin@example.com", role: "admin" };
+  next();
+});
 app.use("/feature-toggles", featureToggleRouter);
 
 describe("feature toggle router", () => {

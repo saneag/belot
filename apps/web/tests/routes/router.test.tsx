@@ -13,12 +13,13 @@ vi.mock("@/pages/game-table", () => ({ default: () => null }));
 vi.mock("@/pages/players-selection", () => ({ default: () => null }));
 vi.mock("@/pages/settings", () => ({ default: () => null }));
 vi.mock("@/pages/starting-page", () => ({ default: () => null }));
+vi.mock("@/pages/auth", () => ({ default: () => null }));
 
 describe("router", () => {
   it("defines the app shell and page routes", () => {
-    expect(router.routes).toHaveLength(1);
+    expect(router.routes).toHaveLength(3);
 
-    const rootRoute = router.routes[0];
+    const rootRoute = router.routes.find((route) => route.path === "/");
     expect(rootRoute?.path).toBe("/");
     expect(rootRoute?.children).toHaveLength(5);
 
@@ -43,7 +44,8 @@ describe("router", () => {
   });
 
   it("preloads lazy route components", async () => {
-    const lazyElements = router.routes[0]?.children
+    const rootRoute = router.routes.find((route) => route.path === "/");
+    const lazyElements = rootRoute?.children
       ?.map((route) => route.element)
       .filter((element): element is ReactElement => Boolean(element));
 

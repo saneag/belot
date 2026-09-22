@@ -12,6 +12,9 @@ vi.mock("@belot/hooks", () => ({
     setToStorage: unknown;
   }) => sharedProviderSpy(props),
 }));
+vi.mock("@/auth/authContext", () => ({
+  useAuth: () => ({ user: null, loading: false }),
+}));
 
 describe("FeatureToggleProvider", () => {
   it("passes web storage helpers to the shared provider", async () => {

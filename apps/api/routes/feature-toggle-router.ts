@@ -2,6 +2,7 @@ import { type IRouter, Router } from "express";
 
 import { HttpStatus } from "../constants/http-status.js";
 import { BadRequestError } from "../errors/api-error.js";
+import { requireAdmin, requireAuth } from "../middleware/auth.js";
 import { sendApiError } from "../middleware/error-handler.js";
 import { FeatureToggleService } from "../services/feature-toggle-service.js";
 
@@ -36,7 +37,7 @@ router.get("/isEnabled", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", requireAuth, requireAdmin, async (req, res) => {
   try {
     if (!isJsonObject(req.body)) {
       throw new BadRequestError("Request body must be a valid JSON object");
@@ -46,7 +47,7 @@ router.post("/", async (req, res) => {
       throw new BadRequestError("Feature name is required");
     }
 
-    const { name } = req.body as { name: string };
+    const { name, enabled } = req.body as { name: string; enabled?: boolean };
 
     if (typeof name !== "string" || !name.trim()) {
       throw new BadRequestError("Feature name must be a non-empty string");
@@ -59,7 +60,11 @@ router.post("/", async (req, res) => {
       throw new BadRequestError(`Feature toggle '${normalizedFeatureName}' already exists`);
     }
 
-    await FeatureToggleService.createFeatureToggle(normalizedFeatureName);
+    if (enabled === undefined) {
+      await FeatureToggleService.createFeatureToggle(normalizedFeatureName);
+    } else {
+      await FeatureToggleService.createFeatureToggle(normalizedFeatureName, enabled);
+    }
     res
       .status(HttpStatus.CREATED)
       .json({ message: `Feature '${normalizedFeatureName}' has been created` });
@@ -68,7 +73,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/toggle", async (req, res) => {
+router.post("/toggle", requireAuth, requireAdmin, async (req, res) => {
   try {
     if (!isJsonObject(req.body)) {
       throw new BadRequestError("Request body must be a valid JSON object");
