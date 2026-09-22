@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 
-import { useGameInit } from "@belot/api-client";
 import { POINTS_TYPE, StorageKeys } from "@belot/constants";
 import { useGameStore } from "@belot/store";
 import { type RoundScore } from "@belot/types";
@@ -18,28 +17,23 @@ import { useIsPointsTypeEnabled } from "./usePointsTypeFeature";
 interface UsePlayersSubmitProps {
   navigateFunction: () => void;
   setItemsToStorage: (items: Partial<Record<StorageKeys, string>>) => Promise<void> | void;
-  getApiBaseUrl: () => string;
+  getApiBaseUrl?: () => string;
   getFromStorage: (key: StorageKeys) => Promise<string | null> | string | null;
-  handleCatchError: (error: unknown) => void;
+  handleCatchError?: (error: unknown) => void;
 }
 
 export function usePlayersSubmit({
   navigateFunction,
   setItemsToStorage,
-  getApiBaseUrl,
   getFromStorage,
-  handleCatchError,
 }: UsePlayersSubmitProps) {
   const { setValidations } = usePlayersSelectionContext();
-
-  const initGame = useGameInit(getApiBaseUrl());
 
   const players = useGameStore((state) => state.players);
   const dealer = useGameStore((state) => state.dealer);
   const mode = useGameStore((state) => state.mode);
   const maxScore = useGameStore((state) => state.maxScore);
   const setRoundsScores = useGameStore((state) => state.setRoundsScores);
-  const setGameId = useGameStore((state) => state.setGameId);
   const setPointsType = useGameStore((state) => state.setPointsType);
   const isBackendGameInitEnabled = useFeatureToggle("backend-game-init");
   const isPointsTypeEnabled = useIsPointsTypeEnabled();
@@ -89,41 +83,28 @@ export function usePlayersSubmit({
 
     setRoundsScores([emptyRoundScore]);
 
+    const gameInitInput = {
+      players,
+      mode,
+      teams: prepareTeams(players, mode),
+      dealer: dealer || null,
+    };
+
     await setItemsToStorage({
       [StorageKeys.timerStartTime]: "",
       [StorageKeys.roundsScores]: JSON.stringify([emptyRoundScore]),
       [StorageKeys.players]: JSON.stringify(players),
       [StorageKeys.dealer]: JSON.stringify(dealer),
       [StorageKeys.maxScore]: String(maxScore),
+      ...(isBackendGameInitEnabled
+        ? { [StorageKeys.pendingGameInit]: JSON.stringify(gameInitInput) }
+        : {}),
     });
 
     navigateFunction();
-
-    if (!isBackendGameInitEnabled) {
-      return;
-    }
-
-    initGame.mutate(
-      {
-        players,
-        mode,
-        teams: prepareTeams(players, mode),
-        dealer: dealer || null,
-      },
-      {
-        onSuccess: (gameInitResponse) => {
-          setGameId(gameInitResponse.id);
-        },
-        onError: (error) => {
-          handleCatchError(error);
-        },
-      },
-    );
   }, [
     dealer,
     getFromStorage,
-    handleCatchError,
-    initGame,
     isBackendGameInitEnabled,
     isPointsTypeEnabled,
     maxScore,
@@ -131,7 +112,6 @@ export function usePlayersSubmit({
     navigateFunction,
     players,
     setRoundsScores,
-    setGameId,
     setItemsToStorage,
     setPointsType,
     setValidations,

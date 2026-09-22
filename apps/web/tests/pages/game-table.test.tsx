@@ -3,12 +3,16 @@ import GameTablePage from "@/pages/game-table";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-const useLoadGameData = vi.fn<(options: { getFromStorage: (key: string) => unknown }) => void>();
+const mocks = vi.hoisted(() => ({
+  useLoadGameData: vi.fn<(options: { getFromStorage: (key: string) => unknown }) => void>(),
+  useGameInitRetry: vi.fn(),
+}));
 
 vi.mock("@belot/hooks", () => ({
   useLoadGameData: (options: { getFromStorage: (key: string) => unknown }) => {
-    useLoadGameData(options);
+    mocks.useLoadGameData(options);
   },
+  useGameInitRetry: mocks.useGameInitRetry,
 }));
 
 vi.mock("@/components/game-table", () => ({
@@ -27,9 +31,9 @@ describe("GameTablePage", () => {
   it("loads game data from storage and renders layout", () => {
     render(<GameTablePage />);
 
-    expect(useLoadGameData).toHaveBeenCalledOnce();
+    expect(mocks.useLoadGameData).toHaveBeenCalledOnce();
 
-    const options = useLoadGameData.mock.calls[0]?.[0];
+    const options = mocks.useLoadGameData.mock.calls[0]?.[0];
     expect(typeof options?.getFromStorage).toBe("function");
     expect(options?.getFromStorage("dealer")).toBeNull();
 

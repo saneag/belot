@@ -1,5 +1,3 @@
-import { ToastAndroid } from "react-native";
-
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -31,9 +29,8 @@ vi.mock("@belot/localizations", () => ({
 
 vi.mock("@belot/hooks", () => ({
   useHandlePlayersSelectionResetButton: () => mocks.handleReset,
-  usePlayersSubmit: (args: { navigateFunction: () => void; handleCatchError: () => void }) => {
+  usePlayersSubmit: (args: { navigateFunction: () => void }) => {
     args.navigateFunction();
-    args.handleCatchError();
     return {
       handleOpenDialog: mocks.handleOpenDialog,
       handleSubmit: mocks.handleSubmit,
@@ -78,7 +75,6 @@ describe("actionButtons submit flow", () => {
     render(<ActionButtons />);
     fireEvent.click(screen.getByText("Submit"));
     expect(mocks.handleOpenDialog).toHaveBeenCalled();
-    expect(ToastAndroid.showWithGravity).toHaveBeenCalled();
   });
 });
 

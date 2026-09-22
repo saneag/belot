@@ -5,6 +5,7 @@ export * from "./useGetInputPosition";
 export * from "./useHandlePlayersNames";
 export * from "./useHandlePlayersSelectionReset";
 export * from "./usePlayersSubmit";
+export * from "./useGameInitRetry";
 export * from "./useLoadGameData";
 export * from "./useGameReset";
 export * from "./useHandleGameReset";
