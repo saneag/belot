@@ -18,6 +18,7 @@ vi.mock("@belot/localizations", () => ({
     continueLastGame: "Continue",
     newGame: "New game",
     settings: "Settings",
+    login: "Login",
   }),
 }));
 
@@ -56,7 +57,7 @@ describe("useStartingScreenActionsHelper", () => {
       navigate: mocks.navigate,
     });
 
-    expect(actions).toHaveLength(3);
+    expect(actions).toHaveLength(4);
     expect(actions[0].label).toBe("Continue");
     expect(actions[0].isActive).toBe(true);
 
@@ -74,7 +75,7 @@ describe("useStartingScreenActionsHelper", () => {
       navigate: mocks.navigate,
     });
 
-    expect(actions).toHaveLength(2);
+    expect(actions).toHaveLength(3);
     expect(actions.some((action) => action.label === "Continue")).toBe(false);
   });
 

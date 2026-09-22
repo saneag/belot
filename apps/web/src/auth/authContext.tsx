@@ -1,19 +1,11 @@
-import { type ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 
 import { getSession, login, logout, register } from "@belot/api-client";
-import type { AuthSession, LoginInput, RegisterInput, User } from "@belot/types";
+import type { AuthSession, LoginInput, RegisterInput } from "@belot/types";
 
+import { AuthContext, type AuthContextValue } from "@/auth/authContextValue";
 import { getApiBaseUrl } from "@/helpers/apiBaseUrl";
 
-interface AuthContextValue {
-  user: User | null;
-  loading: boolean;
-  session: AuthSession | null;
-  signIn: (input: LoginInput) => Promise<void>;
-  signUp: (input: RegisterInput) => Promise<void>;
-  signOut: () => Promise<void>;
-}
-const AuthContext = createContext<AuthContextValue | null>(null);
 const baseUrl = getApiBaseUrl();
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -30,9 +22,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user: session?.user ?? null,
       loading,
       session,
-      signIn: async (input) =>
+      signIn: async (input: LoginInput) =>
         setSession(await login(baseUrl, input).then((result) => result.session)),
-      signUp: async (input) =>
+      signUp: async (input: RegisterInput) =>
         setSession(await register(baseUrl, input).then((result) => result.session)),
       signOut: async () => {
         await logout(baseUrl);
@@ -43,9 +35,3 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-
-export const useAuth = () => {
-  const value = useContext(AuthContext);
-  if (!value) throw new Error("useAuth must be used within AuthProvider");
-  return value;
-};

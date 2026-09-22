@@ -2,13 +2,16 @@ import { useState } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import { useLocalization } from "@belot/localizations";
+
 import { Layout } from "@/components/_layout";
+import { BackButton } from "@/components/backButton";
 import PhoneScreen from "@/components/phoneScreen";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { useAuth } from "@/auth/authContext";
+import { useAuth } from "@/auth/useAuth";
 
 export default function AuthPage({ mode }: { mode: "login" | "register" }) {
   const isRegister = mode === "register";
@@ -17,6 +20,7 @@ export default function AuthPage({ mode }: { mode: "login" | "register" }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const { signIn, signUp } = useAuth();
+  const loginLabel = useLocalization("login");
   const navigate = useNavigate();
   const location = useLocation();
   const submit = async (event: React.FormEvent) => {
@@ -25,7 +29,7 @@ export default function AuthPage({ mode }: { mode: "login" | "register" }) {
     try {
       if (isRegister) await signUp({ username, email, password });
       else await signIn({ identifier: username, password });
-      navigate((location.state as { from?: string } | null)?.from ?? "/");
+      void navigate((location.state as { from?: string } | null)?.from ?? "/");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Unable to authenticate");
     }
@@ -33,9 +37,10 @@ export default function AuthPage({ mode }: { mode: "login" | "register" }) {
   return (
     <Layout>
       <PhoneScreen>
+        <BackButton />
         <div className="mx-auto flex h-full w-full max-w-sm flex-col justify-center gap-4 px-6">
-          <h1 className="text-2xl font-semibold">{isRegister ? "Create account" : "Sign in"}</h1>
-          <form className="flex flex-col gap-3" onSubmit={submit}>
+          <h1 className="text-2xl font-semibold">{isRegister ? "Create account" : loginLabel}</h1>
+          <form className="flex flex-col gap-3" onSubmit={(event) => void submit(event)}>
             {isRegister && (
               <>
                 <Label htmlFor="email">Email</Label>
@@ -63,11 +68,15 @@ export default function AuthPage({ mode }: { mode: "login" | "register" }) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Button type="submit">{isRegister ? "Register" : "Sign in"}</Button>
+            <Button type="submit">{isRegister ? "Register" : loginLabel}</Button>
             {error && <p className="text-destructive text-sm">{error}</p>}
           </form>
-          <Link className="text-sm underline" to={isRegister ? "/login" : "/register"}>
-            {isRegister ? "Already have an account? Sign in" : "Need an account? Register"}
+          <Link
+            className="w-fit self-center text-sm underline"
+            replace
+            to={isRegister ? "/login" : "/register"}
+          >
+            {isRegister ? `Already have an account? ${loginLabel}` : "Need an account? Register"}
           </Link>
         </div>
       </PhoneScreen>

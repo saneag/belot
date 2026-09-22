@@ -10,7 +10,6 @@ import PhoneScreen from "@/components/phoneScreen";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-import { AuthProvider } from "@/auth/authContext";
 import { getDeviceLanguage } from "@/helpers/localization";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -21,20 +20,18 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <LocalizationContextProvider getDeviceLanguage={getDeviceLanguage}>
-        <AuthProvider>
-          <FeatureToggleProvider>
-            <Layout>
-              <TooltipProvider>
-                <PhoneScreen>
-                  <Suspense>
-                    <Outlet />
-                  </Suspense>
-                  <Toaster />
-                </PhoneScreen>
-              </TooltipProvider>
-            </Layout>
-          </FeatureToggleProvider>
-        </AuthProvider>
+        <FeatureToggleProvider>
+          <Layout>
+            <TooltipProvider>
+              <PhoneScreen>
+                <Suspense>
+                  <Outlet />
+                </Suspense>
+                <Toaster />
+              </PhoneScreen>
+            </TooltipProvider>
+          </Layout>
+        </FeatureToggleProvider>
       </LocalizationContextProvider>
     </QueryClientProvider>
   );

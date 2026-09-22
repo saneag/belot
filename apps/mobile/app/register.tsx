@@ -4,6 +4,7 @@ import { TextInput, View } from "react-native";
 
 import { Link, useRouter } from "expo-router";
 
+import { BackButton } from "@/components/backButton";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
@@ -19,6 +20,7 @@ export default function RegisterScreen() {
   const router = useRouter();
   return (
     <View className="flex-1 justify-center px-6">
+      <BackButton />
       <VStack className="gap-3">
         <Text>Create account</Text>
         <TextInput
@@ -54,7 +56,9 @@ export default function RegisterScreen() {
           <ButtonText>Register</ButtonText>
         </Button>
         {error ? <Text>{error}</Text> : null}
-        <Link href={"/login" as never}>Sign in</Link>
+        <Link className="self-center" replace href={"/login" as never}>
+          Sign in
+        </Link>
       </VStack>
     </View>
   );
