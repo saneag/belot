@@ -10,4 +10,6 @@ export enum StorageKeys {
   devToolsFailedAttempts = "devToolsFailedAttempts",
   devToolsBlockedAt = "devToolsBlockedAt",
   authSession = "authSession",
+  authenticatedUser = "authenticatedUser",
+  featureToggleOverrides = "featureToggleOverrides",
 }

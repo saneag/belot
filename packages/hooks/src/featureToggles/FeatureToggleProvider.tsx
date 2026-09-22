@@ -7,13 +7,12 @@ import {
   type FeatureToggleState,
   areFeatureToggleStatesEqual,
   getDefaultFeatureToggleState,
-  serializeFeatureToggleState,
   syncFeatureTogglesToStorage,
 } from "./featureToggleUtils";
 import { FeatureToggleContext } from "./toggleContext";
-import type { FeatureToggleStorage } from "./types";
+import type { FeatureToggleRemoteState, FeatureToggleStorage } from "./types";
 
-interface FeatureToggleProviderProps extends FeatureToggleStorage {
+interface FeatureToggleProviderProps extends FeatureToggleStorage, FeatureToggleRemoteState {
   children: ReactNode;
 }
 
@@ -26,20 +25,24 @@ export const FeatureToggleProvider = ({
   children,
   getFromStorage,
   setToStorage,
+  fetchGlobalToggles,
+  updateGlobalToggle,
+  userId,
 }: FeatureToggleProviderProps) => {
-  const [toggles, setToggles] = useState<FeatureToggleState>(getDefaultFeatureToggleState);
+  const [toggles, setToggles] = useState<Record<string, boolean>>(getDefaultFeatureToggleState);
 
   const setFeatureToggle = useCallback(
     async (name: FeatureToggleName, enabled: boolean) => {
+      if (updateGlobalToggle) await updateGlobalToggle(name, enabled);
       const nextToggles = {
         ...toggles,
         [name]: enabled,
       };
 
       setToggles(nextToggles);
-      await setToStorage(StorageKeys.featureToggles, serializeFeatureToggleState(nextToggles));
+      await setToStorage(StorageKeys.featureToggles, JSON.stringify(nextToggles));
     },
-    [setToStorage, toggles],
+    [setToStorage, toggles, updateGlobalToggle],
   );
 
   const contextValue = useMemo(
@@ -59,9 +62,37 @@ export const FeatureToggleProvider = ({
         setToStorage,
       });
 
+      let nextToggles: Record<string, boolean> = syncedToggles;
+      if (fetchGlobalToggles) {
+        try {
+          nextToggles = await fetchGlobalToggles();
+          await setToStorage(StorageKeys.featureToggles, JSON.stringify(nextToggles));
+        } catch {
+          // The cached state initialized above is the offline fallback.
+        }
+      }
+      if (userId) {
+        const rawOverrides = await getFromStorage(StorageKeys.featureToggleOverrides);
+        try {
+          const allOverrides = rawOverrides
+            ? (JSON.parse(rawOverrides) as Record<string, Record<string, boolean | null>>)
+            : {};
+          const overrides = allOverrides[userId] ?? {};
+          nextToggles = Object.fromEntries(
+            Object.entries(nextToggles).map(([name, value]) => [name, overrides[name] ?? value]),
+          );
+        } catch {
+          /* ignore malformed local overrides */
+        }
+      }
       if (!isCancelled) {
         setToggles((current) =>
-          areFeatureToggleStatesEqual(current, syncedToggles) ? current : syncedToggles,
+          areFeatureToggleStatesEqual(
+            current as FeatureToggleState,
+            nextToggles as FeatureToggleState,
+          )
+            ? current
+            : nextToggles,
         );
       }
     };
@@ -71,7 +102,7 @@ export const FeatureToggleProvider = ({
     return () => {
       isCancelled = true;
     };
-  }, [getFromStorage, setToStorage]);
+  }, [fetchGlobalToggles, getFromStorage, setToStorage, userId]);
 
   return (
     <FeatureToggleContext.Provider value={contextValue}>

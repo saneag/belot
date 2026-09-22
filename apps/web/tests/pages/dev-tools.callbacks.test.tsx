@@ -1,61 +1,23 @@
 import { FEATURE_TOGGLES } from "@belot/constants";
 
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-const devToolsMocks = vi.hoisted(() => ({
-  setPassword: vi.fn(),
-}));
-
-vi.mock("@belot/hooks", () => ({
-  useDevTools: () => ({
-    auth: {
-      isAuthenticated: false,
-      error: null,
-    },
-    handleSubmit: vi.fn(),
-    isLocked: false,
-    messages: {
-      devToolsFeatureToggleLabel: "{0} feature toggle",
-      devToolsPasswordLabel: "Password",
-      devToolsTitle: "Dev tools",
-      devToolsTryAgainIn: "Try again",
-      devToolsUnlockButton: "Unlock",
-    },
-    password: "",
-    setFeatureToggle: vi.fn(),
-    setPassword: devToolsMocks.setPassword,
-    toggles: FEATURE_TOGGLES,
+vi.mock("@/auth/authContext", () => ({
+  useAuth: () => ({
+    user: { id: "admin", username: "admin", email: "admin@example.com", role: "admin" },
+    loading: false,
   }),
 }));
-
-vi.mock("@belot/localizations", () => ({
-  formatLocalizationString: (value: string) => value,
+vi.mock("@belot/hooks", () => ({
+  useFeatureToggles: () => ({ toggles: FEATURE_TOGGLES, setFeatureToggle: vi.fn() }),
 }));
-
-vi.mock("@/components/backButton", () => ({
-  BackButton: () => null,
-}));
-
-vi.mock("@/components/ui/input", () => ({
-  Input: ({
-    id,
-    onChange,
-  }: {
-    id: string;
-    onChange: (event: { target: { value: string } }) => void;
-  }) => {
-    onChange({ target: { value: "typed" } });
-    return <input id={id} aria-label="Password" />;
-  },
-}));
+vi.mock("@/components/backButton", () => ({ BackButton: () => null }));
 
 describe("DevToolsPage callbacks", () => {
-  it("forwards password input changes", async () => {
+  it("renders the global toggle controls", async () => {
     const { default: DevToolsPage } = await import("@/pages/dev-tools");
-
     render(<DevToolsPage />);
-
-    expect(devToolsMocks.setPassword).toHaveBeenCalledWith("typed");
+    expect(screen.getByRole("switch", { name: "settings-screen feature toggle" })).toBeTruthy();
   });
 });

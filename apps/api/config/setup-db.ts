@@ -8,8 +8,12 @@ export default async function setupDb(): Promise<void> {
 
   await mongoose.connect(process.env.MONGODB_URI);
   if (!process.env.VITEST) {
-    const { provisionAdmin } = await import("../services/auth-service.js");
+    const [{ provisionAdmin }, { FeatureToggleService }] = await Promise.all([
+      import("../services/auth-service.js"),
+      import("../services/feature-toggle-service.js"),
+    ]);
     await provisionAdmin();
+    await FeatureToggleService.ensureCodeDefinedFeatureToggles();
   }
   console.log("Connected to MongoDB");
 }
