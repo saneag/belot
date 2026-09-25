@@ -56,7 +56,10 @@ export const calculateTeamsScore = (
       };
     }
 
-    const finalScore = roundScoreValue(score, pointsType);
+    const finalScore = isOwnTeam
+      ? roundScoreValue(totalRoundScore, pointsType) -
+        roundScoreValue(totalRoundScore - score, pointsType)
+      : roundScoreValue(score, pointsType);
 
     return {
       ...teamScore,

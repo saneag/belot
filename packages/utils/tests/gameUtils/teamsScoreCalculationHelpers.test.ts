@@ -168,6 +168,20 @@ describe("teamsScoreCalculationHelpers", () => {
       ]);
     });
 
+    it("keeps rounded team scores equal to the rounded round total", () => {
+      const teamsScores: TeamScore[] = [
+        baseTeamScore({ id: 1, teamId: 1, score: 96, totalScore: 100 }),
+        baseTeamScore({ id: 2, teamId: 2, score: 86, totalScore: 100 }),
+      ];
+
+      const result = calculateTeamsScore(teamsScores, mockPlayers[0], 182);
+
+      expect(result).toEqual([
+        expect.objectContaining({ teamId: 1, score: 9, totalScore: 109 }),
+        expect.objectContaining({ teamId: 2, score: 9, totalScore: 109 }),
+      ]);
+    });
+
     it("treats every team as non-own when roundPlayer is null, using opponent-win and default paths", () => {
       const teamsScores: TeamScore[] = [
         baseTeamScore({ id: 1, teamId: 1, score: 70, totalScore: 100 }),
