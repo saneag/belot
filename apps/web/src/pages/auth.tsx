@@ -2,7 +2,11 @@ import { useState } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { getAuthErrorLocalizationKey, useLocalization } from "@belot/localizations";
+import {
+  formatLocalizationKey,
+  getAuthErrorLocalizationKey,
+  useLocalizations,
+} from "@belot/localizations";
 
 import { Layout } from "@/components/_layout";
 import { BackButton } from "@/components/backButton";
@@ -22,16 +26,19 @@ export default function AuthPage({ mode }: { mode: "login" | "register" }) {
     null,
   );
   const { signIn, signUp } = useAuth();
-  const loginLabel = useLocalization("login");
-  const registerTitle = useLocalization("auth.create.account.title");
-  const registerLabel = useLocalization("auth.register");
-  const emailLabel = useLocalization("auth.email.label");
-  const usernameLabel = useLocalization("auth.username.label");
-  const identifierLabel = useLocalization("auth.identifier.label");
-  const passwordLabel = useLocalization("auth.password.label");
-  const needAccountLabel = useLocalization("auth.need.account");
-  const alreadyHaveAccountLabel = useLocalization("auth.already.have.account");
-  const errorMessage = useLocalization(errorKey ?? "auth.error.generic");
+  const messages = useLocalizations([
+    { key: "login" },
+    { key: "auth.create.account.title" },
+    { key: "auth.register" },
+    { key: "auth.email.label" },
+    { key: "auth.username.label" },
+    { key: "auth.identifier.label" },
+    { key: "auth.password.label" },
+    { key: "auth.need.account" },
+    { key: "auth.already.have.account" },
+    { key: errorKey ?? "auth.error.generic" },
+  ]);
+  const errorMessage = messages[formatLocalizationKey(errorKey ?? "auth.error.generic")];
   const navigate = useNavigate();
   const location = useLocation();
   const submit = async (event: React.FormEvent) => {
@@ -50,11 +57,13 @@ export default function AuthPage({ mode }: { mode: "login" | "register" }) {
       <PhoneScreen>
         <BackButton />
         <div className="mx-auto flex h-full w-full max-w-sm flex-col justify-center gap-4 px-6">
-          <h1 className="text-2xl font-semibold">{isRegister ? registerTitle : loginLabel}</h1>
+          <h1 className="text-2xl font-semibold">
+            {isRegister ? messages.authCreateAccountTitle : messages.login}
+          </h1>
           <form className="flex flex-col gap-3" onSubmit={(event) => void submit(event)}>
             {isRegister && (
               <>
-                <Label htmlFor="email">{emailLabel}</Label>
+                <Label htmlFor="email">{messages.authEmailLabel}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -64,14 +73,16 @@ export default function AuthPage({ mode }: { mode: "login" | "register" }) {
                 />
               </>
             )}
-            <Label htmlFor="identifier">{isRegister ? usernameLabel : identifierLabel}</Label>
+            <Label htmlFor="identifier">
+              {isRegister ? messages.authUsernameLabel : messages.authIdentifierLabel}
+            </Label>
             <Input
               id="identifier"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-            <Label htmlFor="password">{passwordLabel}</Label>
+            <Label htmlFor="password">{messages.authPasswordLabel}</Label>
             <Input
               id="password"
               type="password"
@@ -79,7 +90,7 @@ export default function AuthPage({ mode }: { mode: "login" | "register" }) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Button type="submit">{isRegister ? registerLabel : loginLabel}</Button>
+            <Button type="submit">{isRegister ? messages.authRegister : messages.login}</Button>
             {errorKey && <p className="text-destructive text-sm">{errorMessage}</p>}
           </form>
           <Link
@@ -87,7 +98,7 @@ export default function AuthPage({ mode }: { mode: "login" | "register" }) {
             replace
             to={isRegister ? "/login" : "/register"}
           >
-            {isRegister ? alreadyHaveAccountLabel : needAccountLabel}
+            {isRegister ? messages.authAlreadyHaveAccount : messages.authNeedAccount}
           </Link>
         </div>
       </PhoneScreen>
