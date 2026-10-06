@@ -49,7 +49,7 @@
   "auth.need.account": "Nu ai un cont? Înregistrează-te",
   "auth.error.fields.required": "Completează toate câmpurile obligatorii.",
   "auth.error.invalid.credentials": "Numele de utilizator/e-mail sau parola nu sunt corecte.",
-  "auth.error.username.invalid": "Numele de utilizator trebuie să conțină cel puțin 3 litere, cifre, _ sau -.",
+  "auth.error.username.invalid": "Numele de utilizator trebuie să aibă cel puțin 3 caractere și să conțină doar litere latine, cifre, liniuțe de subliniere sau cratime.",
   "auth.error.email.invalid": "Adresa de e-mail nu este validă.",
   "auth.error.password.short": "Parola trebuie să aibă cel puțin 8 caractere.",
   "auth.error.account.create": "Nu se poate crea un cont cu aceste date.",

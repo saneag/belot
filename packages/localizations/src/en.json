@@ -49,7 +49,7 @@
   "auth.need.account": "Need an account? Register",
   "auth.error.fields.required": "Please fill in all required fields.",
   "auth.error.invalid.credentials": "Invalid username/email or password.",
-  "auth.error.username.invalid": "Username must contain at least 3 letters, numbers, _ or -.",
+  "auth.error.username.invalid": "Username must be at least 3 characters and contain only English letters, numbers, underscores, or hyphens.",
   "auth.error.email.invalid": "Email address is invalid.",
   "auth.error.password.short": "Password must be at least 8 characters.",
   "auth.error.account.create": "Unable to create an account with those details.",

@@ -29,7 +29,9 @@ function toUser(user: { _id: unknown; username: string; email: string; role: Use
 
 function validateCredentials(username: string, email: string, password: string) {
   if (username.length < 3 || !/^[a-z0-9_-]+$/.test(username)) {
-    throw new BadRequestError("Username must contain at least 3 letters, numbers, _ or -");
+    throw new BadRequestError(
+      "Username must be at least 3 characters and contain only English letters, numbers, underscores, or hyphens.",
+    );
   }
   if (!email.includes("@") || email.length > 254) throw new BadRequestError("Email is invalid");
   if (password.length < 8) throw new BadRequestError("Password must be at least 8 characters");
