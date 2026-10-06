@@ -49,7 +49,7 @@ export default function LoginScreen() {
           <ButtonText>{loginLabel}</ButtonText>
         </Button>
         {error ? <Text>{error}</Text> : null}
-        <Link className="self-center" replace href={"/register" as never}>
+        <Link className="self-center" replace href="/register">
           Create account
         </Link>
       </VStack>

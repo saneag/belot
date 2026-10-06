@@ -56,7 +56,7 @@ export default function RegisterScreen() {
           <ButtonText>Register</ButtonText>
         </Button>
         {error ? <Text>{error}</Text> : null}
-        <Link className="self-center" replace href={"/login" as never}>
+        <Link className="self-center" replace href="/login">
           Sign in
         </Link>
       </VStack>
