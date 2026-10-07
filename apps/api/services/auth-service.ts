@@ -6,6 +6,7 @@ import { promisify } from "node:util";
 import { BadRequestError, UnauthorizedError } from "../errors/api-error.js";
 import Session from "../schemas/session-schema.js";
 import UserModel from "../schemas/user-schema.js";
+import type { UserFields } from "../schemas/user-schema.js";
 
 const scrypt = promisify(scryptCallback);
 export const SESSION_LIFETIME_MS = 30 * 24 * 60 * 60 * 1000;
@@ -72,11 +73,9 @@ export async function getUserForToken(token: string): Promise<User | null> {
   const tokenHash = (await hashPassword(token, "session-token-salt")).hash;
   const session = await Session.findOne()
     .where({ tokenHash, expiresAt: { $gt: new Date() } })
-    .populate("user");
-  if (!session || !session.user || typeof session.user !== "object") return null;
-  return toUser(
-    session.user as unknown as { _id: unknown; username: string; email: string; role: UserRole },
-  );
+    .populate<{ user: (UserFields & { _id: unknown }) | null }>("user");
+  if (!session?.user) return null;
+  return toUser(session.user);
 }
 
 export async function logout(token: string) {

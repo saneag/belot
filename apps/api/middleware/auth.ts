@@ -6,6 +6,8 @@ import { ForbiddenError, UnauthorizedError } from "../errors/api-error.js";
 import { getUserForToken } from "../services/auth-service.js";
 
 declare global {
+  // Express request augmentation uses namespace merging by design.
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: User;

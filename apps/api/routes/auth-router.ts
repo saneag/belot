@@ -1,4 +1,4 @@
-import { type IRouter, type Response, Router } from "express";
+import { type IRouter, type Request, type Response, Router } from "express";
 
 import { HttpStatus } from "../constants/http-status.js";
 import { BadRequestError } from "../errors/api-error.js";
@@ -9,6 +9,10 @@ import { login, logout, register } from "../services/auth-service.js";
 const router: IRouter = Router();
 const cookieName = () => process.env.AUTH_SESSION_COOKIE_NAME ?? "belot_session";
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 function setSessionCookie(res: Response, token: string, expiresAt: string) {
   res.setHeader(
     "Set-Cookie",
@@ -16,9 +20,10 @@ function setSessionCookie(res: Response, token: string, expiresAt: string) {
   );
 }
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req: Request<Record<string, string>, unknown, unknown>, res) => {
   try {
-    const { username, email, password } = req.body ?? {};
+    const body = isRecord(req.body) ? req.body : {};
+    const { username, email, password } = body;
     if (typeof username !== "string" || typeof email !== "string" || typeof password !== "string") {
       throw new BadRequestError("Username, email, and password are required");
     }
@@ -30,9 +35,10 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req: Request<Record<string, string>, unknown, unknown>, res) => {
   try {
-    const { identifier, password } = req.body ?? {};
+    const body = isRecord(req.body) ? req.body : {};
+    const { identifier, password } = body;
     if (typeof identifier !== "string" || typeof password !== "string")
       throw new BadRequestError("Identifier and password are required");
     const session = await login({ identifier, password });

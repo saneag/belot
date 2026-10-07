@@ -1,6 +1,16 @@
+import type { UserRole } from "@belot/types";
+
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
+export interface UserFields {
+  username: string;
+  email: string;
+  passwordHash: string;
+  passwordSalt: string;
+  role: UserRole;
+}
+
+const userSchema = new mongoose.Schema<UserFields>(
   {
     username: { type: String, required: true, unique: true, index: true },
     email: { type: String, required: true, unique: true, index: true },
@@ -11,5 +21,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const UserModel = mongoose.models.User ?? mongoose.model("User", userSchema);
+const UserModel =
+  (mongoose.models.User as mongoose.Model<UserFields> | undefined) ??
+  mongoose.model<UserFields>("User", userSchema);
 export default UserModel;
