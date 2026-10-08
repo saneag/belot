@@ -1,4 +1,5 @@
 export const FEATURE_TOGGLES = {
+  "user-authentication": true,
   "settings-screen": false,
   "backend-game-init": false,
   "points-type": false,

@@ -73,6 +73,15 @@ describe("useStartingScreenActions", () => {
     expect(mocks.push).toHaveBeenCalledWith("/settings-screen");
   });
 
+  it("navigates to login path", async () => {
+    const { useStartingScreenActions } =
+      await import("@/hooks/starting-screen/useStartingScreenActions");
+    useStartingScreenActions();
+
+    mocks.navigateArgs?.navigate("login");
+    expect(mocks.push).toHaveBeenCalledWith("/login");
+  });
+
   it("throws for unknown navigation path", async () => {
     const { useStartingScreenActions } =
       await import("@/hooks/starting-screen/useStartingScreenActions");
