@@ -1,4 +1,4 @@
-import { execSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -59,6 +59,19 @@ if (tasks.length === 0) {
 }
 
 const env = { ...process.env };
+const defaultMacAndroidSdk = path.join(env.HOME ?? "", "Library", "Android", "sdk");
+const androidSdk =
+  env.ANDROID_HOME ||
+  env.ANDROID_SDK_ROOT ||
+  (process.platform === "darwin" && fs.existsSync(defaultMacAndroidSdk)
+    ? defaultMacAndroidSdk
+    : undefined);
+
+if (androidSdk && fs.existsSync(androidSdk)) {
+  env.ANDROID_HOME ??= androidSdk;
+  env.ANDROID_SDK_ROOT ??= androidSdk;
+}
+
 if (!env.NODE_ENV && tasks.some((task) => task.toLowerCase().includes("release"))) {
   env.NODE_ENV = "production";
 }
@@ -71,12 +84,19 @@ const gradleArgs = hasArchitectureOverride
 try {
   ensureWindowsEntryFileOverride();
 
-  execSync(`${gradlew} ${gradleArgs.join(" ")}`, {
+  const result = spawnSync(gradlew, gradleArgs, {
     cwd: androidDir,
     stdio: "inherit",
     env,
     shell: isWindows,
   });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  process.exit(result.status ?? 1);
 } catch (err) {
+  console.error(`Could not run Gradle wrapper: ${err.message}`);
   process.exit(err.status ?? 1);
 }
