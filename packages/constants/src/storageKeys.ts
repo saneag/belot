@@ -10,4 +10,5 @@ export enum StorageKeys {
   devToolsFailedAttempts = "devToolsFailedAttempts",
   devToolsBlockedAt = "devToolsBlockedAt",
   pendingGameInit = "pendingGameInit",
+  authSession = "authSession",
 }

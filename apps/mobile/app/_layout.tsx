@@ -7,6 +7,7 @@ import { FeatureToggleProvider } from "@/components/featureToggles/FeatureToggle
 import { JsStack, stackScreenOptions } from "@/components/navigation";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 
+import { AuthProvider } from "@/auth/authContext";
 import { getDeviceLanguage } from "@/helpers/localization";
 import { useReadInitialTheme } from "@/hooks/useReadInitialTheme";
 import "@/styles/global.css";
@@ -21,17 +22,19 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <LocalizationContextProvider getDeviceLanguage={getDeviceLanguage}>
-        <FeatureToggleProvider>
-          <SafeAreaProvider>
-            <ThemeContextProvider initialTheme={theme}>
-              <GluestackUIProvider mode="system">
-                <SafeAreaView className="relative w-full flex-1 bg-phone-screen-background">
-                  <JsStack screenOptions={stackScreenOptions} />
-                </SafeAreaView>
-              </GluestackUIProvider>
-            </ThemeContextProvider>
-          </SafeAreaProvider>
-        </FeatureToggleProvider>
+        <AuthProvider>
+          <FeatureToggleProvider>
+            <SafeAreaProvider>
+              <ThemeContextProvider initialTheme={theme}>
+                <GluestackUIProvider mode="system">
+                  <SafeAreaView className="relative w-full flex-1 bg-phone-screen-background">
+                    <JsStack screenOptions={stackScreenOptions} />
+                  </SafeAreaView>
+                </GluestackUIProvider>
+              </ThemeContextProvider>
+            </SafeAreaProvider>
+          </FeatureToggleProvider>
+        </AuthProvider>
       </LocalizationContextProvider>
     </QueryClientProvider>
   );

@@ -9,8 +9,11 @@ const DevToolsPage = lazy(() => import("@/pages/dev-tools"));
 const PlayersSelectionPage = lazy(() => import("@/pages/players-selection"));
 const SettingsPage = lazy(() => import("@/pages/settings"));
 const StartingPage = lazy(() => import("@/pages/starting-page"));
+const AuthPage = lazy(() => import("@/pages/auth"));
 
 export const router = createBrowserRouter([
+  { path: "/login", element: <AuthPage mode="login" /> },
+  { path: "/register", element: <AuthPage mode="register" /> },
   {
     path: "/",
     element: <App />,
