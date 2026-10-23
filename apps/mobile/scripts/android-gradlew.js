@@ -10,7 +10,7 @@ const isWindows = process.platform === "win32";
 const gradlew = isWindows ? "gradlew.bat" : "./gradlew";
 
 const WINDOWS_ENTRY_FIX_MARKER =
-  'extraPackagerArgs = ["--entry-file", entryFilePath.replace("\\\\", "/")]';
+  'extraPackagerArgs = ["--entry-file", entryFile.get().asFile.absolutePath.replace("\\\\", "/")]';
 
 function ensureWindowsEntryFileOverride() {
   if (!isWindows || !fs.existsSync(appBuildGradlePath)) {
@@ -18,25 +18,35 @@ function ensureWindowsEntryFileOverride() {
   }
 
   const original = fs.readFileSync(appBuildGradlePath, "utf8");
+  const wrappedOverride = [
+    "    if (isWindows) {",
+    "        // Expo monorepo Metro root on Windows can make generated relative entry paths invalid.",
+    `        ${WINDOWS_ENTRY_FIX_MARKER}`,
+    "    }",
+  ].join("\n");
+  if (original.includes(wrappedOverride)) {
+    const replacement = [
+      "    // Expo monorepo Metro root on Windows can make generated relative entry paths invalid.",
+      `    ${WINDOWS_ENTRY_FIX_MARKER}`,
+    ].join("\n");
+    fs.writeFileSync(appBuildGradlePath, original.replace(wrappedOverride, replacement), "utf8");
+    return;
+  }
+
   if (original.includes(WINDOWS_ENTRY_FIX_MARKER)) {
     return;
   }
 
-  const target = "    entryFile = file(entryFilePath)";
-  if (!original.includes(target)) {
+  const target = /^\s*entryFile = file\(.*resolveAppEntry.*$/m;
+  const match = original.match(target);
+  if (!match) {
     console.warn(
       "Could not apply Windows entry-file override: react.entryFile line not found in android/app/build.gradle",
     );
     return;
   }
 
-  const snippet = [
-    "    entryFile = file(entryFilePath)",
-    "    if (isWindows) {",
-    "        // Expo monorepo Metro root on Windows can make generated relative entry paths invalid.",
-    '        extraPackagerArgs = ["--entry-file", entryFilePath.replace("\\\\", "/")]',
-    "    }",
-  ].join("\n");
+  const snippet = `${match[0]}\n    // Expo monorepo Metro root on Windows can make generated relative entry paths invalid.\n    ${WINDOWS_ENTRY_FIX_MARKER}`;
 
   const updated = original.replace(target, snippet);
   fs.writeFileSync(appBuildGradlePath, updated, "utf8");

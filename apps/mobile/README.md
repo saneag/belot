@@ -11,9 +11,9 @@
 
 **Local build:**
 
-1. Go to `apps/mobile` and run `pnpm run prebuild:android`. It will generate the `android` directory with native code and configuration.
+1. Run `pnpm run prebuild:android` once to generate the `android` directory with native code and configuration.
 2. Add your keystore file to the `android/app` directory.
-3. Update the `android/gradle.properties` file with your keystore passwords (just put at the end of the file).
+3. Add these four values to `android/gradle.properties`:
 
    Replace the `*` values with your actual keystore information:
 
@@ -32,7 +32,9 @@ MYAPP_UPLOAD_KEY_PASSWORD=*
 
 `MYAPP_UPLOAD_KEY_PASSWORD` - password for your signing key. This is often the same as the keystore password, but it can be different if you specified a separate password for the key when you created it.
 
-4. Run `pnpm run android:apk:release` to build the release APK
+The config plugin applies the signing configuration automatically whenever Expo generates the Android project. You only need the keystore file and these four values; the release build uses debug signing if no keystore properties are present.
+
+4. Run `pnpm run android:apk:release` to build the release APK. This command also runs prebuild, so the signing config is applied automatically.
 5. The APK file will be in `android/app/build/outputs/apk/release/`
 6. Install it on your phone as an update
 

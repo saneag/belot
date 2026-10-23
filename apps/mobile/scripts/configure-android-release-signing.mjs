@@ -5,7 +5,6 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const mobileRoot = path.resolve(__dirname, "..");
 const androidRoot = path.join(mobileRoot, "android");
-const buildGradlePath = path.join(androidRoot, "app", "build.gradle");
 const gradlePropertiesPath = path.join(androidRoot, "gradle.properties");
 
 const {
@@ -47,53 +46,4 @@ fs.appendFileSync(
   ].join("\n"),
 );
 
-const signingBlock = `    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
-        release {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-            }
-        }
-    }`;
-
-const oldSigning = `    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
-    }`;
-
-const releaseBlock = `        release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug`;
-
-const patchedRelease = `        release {
-            signingConfig signingConfigs.release`;
-
-let text = fs.readFileSync(buildGradlePath, "utf8");
-
-if (!text.includes(oldSigning)) {
-  throw new Error("Could not patch signingConfigs in android/app/build.gradle");
-}
-
-text = text.replace(oldSigning, signingBlock);
-
-if (!text.includes(releaseBlock)) {
-  throw new Error("Could not find release buildType in android/app/build.gradle");
-}
-
-text = text.replace(releaseBlock, patchedRelease);
-
-fs.writeFileSync(buildGradlePath, text);
-console.log("Configured Android release signing.");
+console.log("Installed Android release keystore and Gradle properties.");
