@@ -7,5 +7,9 @@ export default async function setupDb(): Promise<void> {
   }
 
   await mongoose.connect(process.env.MONGODB_URI);
+  if (!process.env.VITEST) {
+    const { provisionAdmin } = await import("../services/auth-service.js");
+    await provisionAdmin();
+  }
   console.log("Connected to MongoDB");
 }

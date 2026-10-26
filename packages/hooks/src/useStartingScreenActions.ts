@@ -31,6 +31,7 @@ export const useStartingScreenActionsHelper = ({
 }: UseStartingScreenActionsHelperProps) => {
   const reset = useGameStore((state) => state.reset);
   const isSettingsScreenEnabled = useFeatureToggle("settings-screen");
+  const isUserAuthenticationEnabled = useFeatureToggle("user-authentication");
 
   const messages = useLocalizations([
     {
@@ -41,6 +42,9 @@ export const useStartingScreenActionsHelper = ({
     },
     {
       key: "settings",
+    },
+    {
+      key: "login",
     },
   ]);
 
@@ -84,7 +88,18 @@ export const useStartingScreenActionsHelper = ({
     [messages.settings, navigate, isSettingsScreenEnabled],
   );
 
+  const loginAction = useMemo<StartingScreenAction>(
+    () => ({
+      index: 3,
+      label: messages.login,
+      isActive: isUserAuthenticationEnabled,
+      onPress: () => void navigate("login"),
+    }),
+    [isUserAuthenticationEnabled, messages.login, navigate],
+  );
+
   return [continueGameAction, newGameAction, settingsAction]
     .filter((action) => action.isActive)
-    .sort((a, b) => a.index - b.index);
+    .sort((a, b) => a.index - b.index)
+    .concat(loginAction.isActive ? [loginAction] : []);
 };

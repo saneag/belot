@@ -24,3 +24,17 @@ export class BadRequestError extends ApiError {
     this.name = "BadRequestError";
   }
 }
+
+export class UnauthorizedError extends ApiError {
+  constructor(message = "Authentication required") {
+    super(HttpStatus.UNAUTHORIZED, message);
+    this.name = "UnauthorizedError";
+  }
+}
+
+export class ForbiddenError extends ApiError {
+  constructor(message = "Forbidden") {
+    super(HttpStatus.FORBIDDEN, message);
+    this.name = "ForbiddenError";
+  }
+}
