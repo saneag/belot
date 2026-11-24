@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This is a pnpm 11/Turborepo TypeScript monorepo. Applications live in `apps/`: `web` is the Vite React app, `mobile` is the Expo Router React Native app, `api` is the Express/Mongoose service, and `e2e` contains Playwright suites. Shared packages live in `packages/`, including `api`, `components`, `constants`, `hooks`, `localizations`, `store`, `types`, `utils`, plus shared `eslint-config` and `vitest-config` workspaces. Unit tests are colocated under each workspace's `tests/`; public/static assets are under `apps/web/public` and `apps/mobile/assets`.
+This is a pnpm 11/Turborepo TypeScript monorepo. Applications live in `apps/`: `web` is the Vite React app, `mobile` is the Expo Router React Native app, `api` is the Express/PostgreSQL service, and `e2e` contains Playwright suites. Shared packages live in `packages/`, including `api`, `components`, `constants`, `hooks`, `localizations`, `store`, `types`, `utils`, plus shared `eslint-config` and `vitest-config` workspaces. Unit tests are colocated under each workspace's `tests/`; public/static assets are under `apps/web/public` and `apps/mobile/assets`.
 
 ## Build, Test, and Development Commands
 
@@ -32,4 +32,4 @@ Recent history uses concise Conventional Commit-style subjects such as `fix: res
 
 ## Security & Configuration Tips
 
-Keep app secrets in local `.env` files only. Common local variables are `MONGODB_URI` for `apps/api`, `VITE_API_URL` for `apps/web`, and `EXPO_PUBLIC_API_BASE_URL` for `apps/mobile`. The API builds to `apps/api/dist/index.js` for Node hosting and exposes `/health` for service health checks. Do not commit generated credentials, local database data, Playwright reports, or Android release signing artifacts.
+Keep app secrets in local `.env` files only. Common local variables are `DATABASE_URL` for `apps/api`, `VITE_API_URL` for `apps/web`, and `EXPO_PUBLIC_API_BASE_URL` for `apps/mobile`. The API builds to `apps/api/dist/index.js` for Node hosting and exposes `/health` for service health checks. Do not commit generated credentials, local database data, Playwright reports, or Android release signing artifacts.

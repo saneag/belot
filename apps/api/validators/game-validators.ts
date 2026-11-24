@@ -151,7 +151,7 @@ export const GameValidators = {
   ],
 
   updateGame: [
-    param("id").isMongoId().withMessage("id must be a valid MongoDB ObjectId"),
+    param("id").isMongoId().withMessage("id must be a valid 24-character hexadecimal game ID"),
     body().custom((bodyValue: unknown) => {
       if (!isPlainObject(bodyValue)) {
         throw new Error("Request body must be an object");
@@ -199,7 +199,7 @@ export const GameValidators = {
   ],
 
   gameIdParam: [
-    param("id").isMongoId().withMessage("id must be a valid MongoDB ObjectId"),
+    param("id").isMongoId().withMessage("id must be a valid 24-character hexadecimal game ID"),
     sendValidationErrors,
   ],
 };

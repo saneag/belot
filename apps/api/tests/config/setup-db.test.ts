@@ -1,47 +1,18 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-const mocks = vi.hoisted(() => ({
-  connect: vi.fn(),
-  config: vi.fn(),
-}));
+import setupDb from "../../config/setup-db";
 
-vi.mock("mongoose", () => ({
-  default: {
-    connect: mocks.connect,
-  },
-}));
-
-vi.mock("dotenv", () => ({
-  default: { config: mocks.config },
-}));
-
+const { query } = vi.hoisted(() => ({ query: vi.fn() }));
+vi.mock("../../config/postgres.js", () => ({ pool: { query }, schemaSql: "schema" }));
+afterEach(() => vi.unstubAllEnvs());
 describe("setupDb", () => {
-  beforeEach(() => {
-    mocks.connect.mockReset();
-    mocks.config.mockReset();
-    vi.stubEnv("MONGODB_URI", "mongodb://localhost:27017/belot");
+  it("requires DATABASE_URL", async () => {
+    vi.stubEnv("DATABASE_URL", "");
+    await expect(setupDb()).rejects.toThrow("DATABASE_URL");
   });
-
-  it("connects when MONGODB_URI is set", async () => {
-    mocks.connect.mockResolvedValue(undefined);
-
-    const setupDb = (await import("../../config/setup-db")).default;
+  it("applies the idempotent schema", async () => {
+    vi.stubEnv("DATABASE_URL", "postgresql://example/db");
     await setupDb();
-
-    expect(mocks.connect).toHaveBeenCalledWith("mongodb://localhost:27017/belot");
-  });
-
-  it("exits when MONGODB_URI is missing", async () => {
-    vi.stubEnv("MONGODB_URI", "");
-    delete process.env.MONGODB_URI;
-    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {
-      throw new Error("process.exit");
-    });
-
-    const setupDb = (await import("../../config/setup-db")).default;
-
-    await expect(setupDb()).rejects.toThrow("process.exit");
-    expect(mocks.connect).not.toHaveBeenCalled();
-    exitSpy.mockRestore();
+    expect(query).toHaveBeenCalledWith("schema");
   });
 });

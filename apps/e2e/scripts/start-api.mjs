@@ -1,67 +1,28 @@
-import { MongoMemoryServer } from "mongodb-memory-server";
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import pg from "pg";
 
 const require = createRequire(import.meta.url);
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(__dirname, "../../..");
-const apiDir = path.join(root, "apps", "api");
-const apiPort = process.env.E2E_API_PORT ?? "3001";
-
-function resolveTsxCli() {
-  for (const lookupDir of [apiDir, root]) {
-    try {
-      return require.resolve("tsx/cli", { paths: [lookupDir] });
-    } catch {
-      // try next lookup root
-    }
-  }
-
-  throw new Error("Could not resolve tsx CLI. Run `pnpm install` from the repo root.");
-}
-
-const mongod = await MongoMemoryServer.create();
-const mongoUri = mongod.getUri();
-const tsxCli = resolveTsxCli();
-
-const child = spawn(process.execPath, [tsxCli, "index.ts"], {
-  cwd: apiDir,
-  env: {
-    ...process.env,
-    MONGODB_URI: mongoUri,
-    PORT: apiPort,
-  },
+if (!process.env.TEST_DATABASE_URL)
+  throw new Error("Set TEST_DATABASE_URL to a dedicated PostgreSQL test database");
+const schema = "e2e_" + process.pid;
+const admin = new pg.Pool({ connectionString: process.env.TEST_DATABASE_URL });
+await admin.query('CREATE SCHEMA "' + schema + '"');
+const url = new URL(process.env.TEST_DATABASE_URL);
+url.searchParams.set("options", "-c search_path=" + schema);
+const child = spawn(process.execPath, [require.resolve("tsx/cli"), "index.ts"], {
+  cwd: new URL("../../api/", import.meta.url),
+  env: { ...process.env, DATABASE_URL: url.toString(), PORT: process.env.E2E_API_PORT ?? "3001" },
   stdio: "inherit",
 });
-
-let shuttingDown = false;
-
-async function cleanup(signal) {
-  if (shuttingDown) {
-    return;
-  }
-
-  shuttingDown = true;
-
-  if (signal) {
-    child.kill(signal);
-  }
-
-  await mongod.stop();
+let stopping = false;
+async function cleanup(code = 0) {
+  if (stopping) return;
+  stopping = true;
+  await admin.query('DROP SCHEMA "' + schema + '" CASCADE');
+  await admin.end();
+  process.exit(code);
 }
-
-process.on("SIGINT", () => {
-  void cleanup("SIGINT");
-});
-
-process.on("SIGTERM", () => {
-  void cleanup("SIGTERM");
-});
-
-child.on("exit", (code) => {
-  void mongod.stop().finally(() => {
-    process.exit(code ?? 0);
-  });
-});
+process.on("SIGINT", () => child.kill("SIGINT"));
+process.on("SIGTERM", () => child.kill("SIGTERM"));
+child.on("exit", (code) => void cleanup(code ?? 0));

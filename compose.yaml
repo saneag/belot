@@ -1,0 +1,41 @@
+name: belot
+services:
+  api:
+    build:
+      context: .
+      target: api
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in server .env}
+      PORT: 3001
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      home-apps:
+        aliases: [belot-api]
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3001/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+  web:
+    build:
+      context: .
+      target: web
+    ports:
+      - "127.0.0.1:${WEB_PORT:-5008}:80"
+    networks: [home-apps]
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+networks:
+  home-apps:
+    external: true

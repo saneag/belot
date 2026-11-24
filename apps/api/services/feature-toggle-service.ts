@@ -1,39 +1,31 @@
+import { pool } from "../config/postgres.js";
 import { NotFoundError } from "../errors/api-error.js";
-import FeatureToggle from "../schemas/feature-toggle-schema.js";
 
 export const FeatureToggleService = {
-  createFeatureToggle: async (featureName: string): Promise<void> => {
-    await FeatureToggle.create({ name: featureName, enabled: false });
+  createFeatureToggle: async (name: string): Promise<void> => {
+    await pool.query("INSERT INTO feature_toggles (name) VALUES ($1)", [name]);
   },
-
-  isFeatureEnabled: async (featureName: string): Promise<boolean> => {
-    const featureToggle = await FeatureToggle.findOne({ name: featureName });
-
-    if (!featureToggle) {
-      throw new NotFoundError(`Feature toggle '${featureName}' not found`);
-    }
-
-    return featureToggle.enabled;
+  isFeatureEnabled: async (name: string): Promise<boolean> => {
+    const toggle = await FeatureToggleService.getFeatureToggleByName(name);
+    if (!toggle) throw new NotFoundError(`Feature toggle '${name}' not found`);
+    return toggle.enabled;
   },
-
-  toggleFeature: async (featureName: string, enabled: boolean): Promise<void> => {
-    await FeatureToggle.updateOne({ name: featureName }, { $set: { enabled } });
+  toggleFeature: async (name: string, enabled: boolean): Promise<void> => {
+    await pool.query("UPDATE feature_toggles SET enabled = $2 WHERE name = $1", [name, enabled]);
   },
-
-  getAllFeatureToggles: async (): Promise<{ name: string; enabled: boolean }[]> => {
-    const featureToggles = await FeatureToggle.find();
-    return featureToggles.map((toggle) => ({ name: toggle.name, enabled: toggle.enabled }));
-  },
-
+  getAllFeatureToggles: async (): Promise<{ name: string; enabled: boolean }[]> =>
+    (
+      await pool.query<{ name: string; enabled: boolean }>(
+        "SELECT name, enabled FROM feature_toggles ORDER BY name",
+      )
+    ).rows,
   getFeatureToggleByName: async (
-    featureName: string,
-  ): Promise<{ name: string; enabled: boolean } | null> => {
-    const featureToggle = await FeatureToggle.findOne({ name: featureName });
-
-    if (!featureToggle) {
-      return null;
-    }
-
-    return { name: featureToggle.name, enabled: featureToggle.enabled };
-  },
+    name: string,
+  ): Promise<{ name: string; enabled: boolean } | null> =>
+    (
+      await pool.query<{ name: string; enabled: boolean }>(
+        "SELECT name, enabled FROM feature_toggles WHERE name = $1",
+        [name],
+      )
+    ).rows[0] ?? null,
 };

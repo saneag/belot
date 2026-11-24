@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import express, { type Application } from "express";
 
 import { corsMiddleware } from "./config/cors-middleware.js";
@@ -6,8 +6,6 @@ import setupDb from "./config/setup-db.js";
 import { HttpStatus } from "./constants/http-status.js";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 import setupRoutes from "./routes/index.js";
-
-dotenv.config();
 
 const app: Application = express();
 

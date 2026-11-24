@@ -8,7 +8,7 @@ package workspaces.
 
 - `apps/web` - Vite, React, React Router, Tailwind CSS web app.
 - `apps/mobile` - Expo and React Native mobile app.
-- `apps/api` - Express API backed by MongoDB.
+- `apps/api` - Express API backed by PostgreSQL.
 - `apps/e2e` - Playwright end-to-end tests for web, mobile-web, and API flows.
 - `packages/api` - API client, React Query hooks, and API types.
 - `packages/components` - shared UI and context components.
@@ -24,7 +24,7 @@ package workspaces.
 
 - Node.js `>=18`
 - PNPM `11.9.0`
-- MongoDB for running the API locally
+- PostgreSQL for running the API locally
 - Android Studio, an emulator, or a physical device for mobile
   development
 - Playwright browsers for end-to-end tests
@@ -51,7 +51,7 @@ Create environment files only for the apps you run locally.
 
 ```bash
 PORT=3001
-MONGODB_URI=mongodb://127.0.0.1:27017/belot
+DATABASE_URL=postgresql://belot_dev:CHANGE_ME@127.0.0.1:5432/belot-dev
 ```
 
 `apps/web/.env`:
@@ -143,3 +143,7 @@ The e2e scripts start their required local targets automatically and default to:
 - `pnpm lockfile:sync` updates `pnpm-lock.yaml` after package manifest changes.
 - `pnpm lockfile:check` verifies the lockfile with a frozen install.
 - `pnpm nuke` removes nested `node_modules` directories inside the repository.
+
+## Home server
+
+See [deployment and mobile backend instructions](deploy/HOME-SERVER.md).
