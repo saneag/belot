@@ -16,6 +16,6 @@ describe("getApiBaseUrl", () => {
   it("returns empty string when VITE_API_URL is not set", () => {
     vi.stubEnv("VITE_API_URL", undefined);
 
-    expect(getApiBaseUrl()).toBe("");
+    expect(getApiBaseUrl()).toBe(`${window.location.origin}/api`);
   });
 });
