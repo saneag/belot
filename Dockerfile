@@ -11,6 +11,7 @@ ENV NODE_ENV=production PORT=3001
 WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/apps/api/dist ./dist
+COPY --from=build /app/apps/api/package.json ./package.json
 USER node
 EXPOSE 3001
 CMD ["node", "dist/index.js"]
