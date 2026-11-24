@@ -2,6 +2,8 @@
 **/.env*
 !**/.env.example
 .git
+Dockerfile
+deploy/mobile-api-url.txt
 **/dist
 **/.turbo
 **/coverage
