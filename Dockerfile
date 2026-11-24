@@ -20,11 +20,12 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 COPY . .
 RUN pnpm --filter @belot/api build
 RUN pnpm --filter @belot/web build
+RUN pnpm --filter @belot/api --prod deploy --legacy --offline /runtime
 
 FROM node:24-bookworm-slim AS api
 ENV NODE_ENV=production PORT=3001
 WORKDIR /app
-COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /runtime/node_modules ./node_modules
 COPY --from=build /app/apps/api/dist ./dist
 COPY --from=build /app/apps/api/package.json ./package.json
 USER node
