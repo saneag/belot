@@ -13,7 +13,7 @@ describe("getApiBaseUrl", () => {
     expect(getApiBaseUrl()).toBe("https://api.example.com");
   });
 
-  it("returns empty string when VITE_API_URL is not set", () => {
+  it("uses the same-origin API when VITE_API_URL is not set", () => {
     vi.stubEnv("VITE_API_URL", undefined);
 
     expect(getApiBaseUrl()).toBe(`${window.location.origin}/api`);
